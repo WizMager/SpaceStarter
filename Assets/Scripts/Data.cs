@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "Data/Data", fileName = "Data")]

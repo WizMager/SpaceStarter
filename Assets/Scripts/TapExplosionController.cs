@@ -8,14 +8,16 @@ public class TapExplosionController : IExecute, IClean
     private IUserInput<Vector3> _inputTouch;
     private Vector3 _touchPosition;
     private bool _isTouched;
+    private GameObject _particle;
 
-    public TapExplosionController(Camera camera, IUserInput<Vector3> inputTouch, float explosionArea, float explosionForce)
+    public TapExplosionController(Camera camera, IUserInput<Vector3> inputTouch, float explosionArea, float explosionForce, GameObject particle)
     {
         _camera = camera;
         _explosionArea = explosionArea;
         _explosionForce = explosionForce;
         _inputTouch = inputTouch;
         _inputTouch.OnChange += TouchPositionOnChange;
+        _particle = particle;
     }
 
     private void TouchPositionOnChange(Vector3 touchPosition)
@@ -50,12 +52,13 @@ public class TapExplosionController : IExecute, IClean
             
             if (hitsSphereCast.Length > 1)
             {
-                var explosionVector = hitsSphereCast[0].point - hitSphereExplosion.point;
                 hitSphereExplosion.rigidbody.AddForce(hitsSphereCast[0].normal * _explosionForce, ForceMode.Impulse);
+                Object.Instantiate(_particle, hitRaycast[0].point, Quaternion.identity);
             }
             else
             {
                 hitsSphereCast[0].rigidbody.AddForce(ray.direction * _explosionForce, ForceMode.Impulse);
+                Object.Instantiate(_particle, hitRaycast[0].point, Quaternion.identity);
             }
         }
         

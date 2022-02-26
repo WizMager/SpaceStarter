@@ -10,6 +10,6 @@ public class GameInitialization
       controllers.Add(new CameraFirstPersonMoveController(inputInitialization.GetAxisInput(), camera,
          data.Planet.planetCenter, data.Player.swipeSensitivity));
       controllers.Add(new TapExplosionController(camera, inputInitialization.GetTouchInput(), data.Player.explosionArea,
-         data.Player.explosionForce));
+         data.Player.explosionForce, data.Planet.explosionParticle));
    }
 }
