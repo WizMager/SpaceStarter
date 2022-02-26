@@ -47,12 +47,11 @@ public class TapExplosionController : IExecute, IClean
                     hitSphereExplosion = hitSphereCast;
                 }
             }
-
-            Debug.Log(hitsSphereCast.Length);
+            
             if (hitsSphereCast.Length > 1)
             {
                 var explosionVector = hitsSphereCast[0].point - hitSphereExplosion.point;
-                hitSphereExplosion.rigidbody.AddForce(explosionVector * _explosionForce, ForceMode.Impulse);
+                hitSphereExplosion.rigidbody.AddForce(hitsSphereCast[0].normal * _explosionForce, ForceMode.Impulse);
             }
             else
             {

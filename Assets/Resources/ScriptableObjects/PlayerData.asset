@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   missileCount: 0
   explosionArea: 1
-  explosionForce: 10
+  explosionForce: 50
   swipeSensitivity: 10
