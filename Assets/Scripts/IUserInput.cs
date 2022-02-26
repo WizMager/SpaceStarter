@@ -1,6 +1,6 @@
 ﻿using System;
 
-public interface IUserInput<out T>
+public interface IUserInput<T>
 {
     event Action<T> OnChange;
     void GetInput();

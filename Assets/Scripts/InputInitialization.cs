@@ -1,8 +1,10 @@
-﻿public class InputInitialization : IInitialization
+﻿using UnityEngine;
+
+public class InputInitialization : IInitialization
 {
     private IUserInput<float> _inputVertical;
     private IUserInput<float> _inputHorizontal;
-    private IUserInput<bool> _inputTouch;
+    private IUserInput<Vector3> _inputTouch;
     
     public InputInitialization()
     {
@@ -11,9 +13,9 @@
         _inputTouch = new InputTouch();
     }
 
-    public (IUserInput<float> inputVertical, IUserInput<float> inputHorizontal, IUserInput<bool> inputTouch) GetAllInput()
+    public (IUserInput<float> inputVertical, IUserInput<float> inputHorizontal, IUserInput<Vector3> inputTouch) GetAllInput()
     {
-        (IUserInput<float> inputVertical, IUserInput<float> inputHorizontal, IUserInput<bool> inputTouch) result =
+        (IUserInput<float> inputVertical, IUserInput<float> inputHorizontal, IUserInput<Vector3> inputTouch) result =
             (_inputVertical, _inputHorizontal, _inputTouch);
         return result;
     }
@@ -25,7 +27,7 @@
         return result;
     }
     
-    public IUserInput<bool> GetTouchInput()
+    public IUserInput<Vector3> GetTouchInput()
     {
         return _inputTouch;
     }

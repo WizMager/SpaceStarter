@@ -1,10 +1,12 @@
-﻿public class InputController : IExecute
+﻿using UnityEngine;
+
+public class InputController : IExecute
 {
     private readonly IUserInput<float> _inputVertical;
     private readonly IUserInput<float> _inputHorizontal;
-    private readonly IUserInput<bool> _inputTouch;
+    private readonly IUserInput<Vector3> _inputTouch;
 
-    public InputController((IUserInput<float> inputInputVertical, IUserInput<float> inputInputHorizontal, IUserInput<bool> inputInputTouch) allInput)
+    public InputController((IUserInput<float> inputInputVertical, IUserInput<float> inputInputHorizontal, IUserInput<Vector3> inputInputTouch) allInput)
     {
         var (inputInputVertical, inputInputHorizontal, inputInputTouch) = allInput;
         _inputVertical = inputInputVertical;
