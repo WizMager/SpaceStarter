@@ -8,6 +8,6 @@ public class GameInitialization
       var inputInitialization = new InputInitialization();
       controllers.Add(new InputController(inputInitialization.GetAllInput()));
       controllers.Add(new CameraFirstPersonMoveController(inputInitialization.GetAxisInput(), camera,
-         data.Planet.planetCenter, data.Planet.swipeSensitivity));
+         data.Planet.planetCenter, data.Player.swipeSensitivity));
    }
 }

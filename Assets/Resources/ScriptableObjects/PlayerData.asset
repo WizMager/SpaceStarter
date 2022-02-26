@@ -13,4 +13,6 @@ MonoBehaviour:
   m_Name: PlayerData
   m_EditorClassIdentifier: 
   missileCount: 0
-  explosionPower: 0
+  explosionArea: 2
+  explosionForce: 50
+  swipeSensitivity: 10

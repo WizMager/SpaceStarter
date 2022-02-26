@@ -4,5 +4,7 @@
 public class PlayerData : ScriptableObject
 {
      public int missileCount;
-     public int explosionPower;
+     public float explosionArea;
+     public float explosionForce;
+     public float swipeSensitivity;
 }
