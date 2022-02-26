@@ -9,7 +9,7 @@ public class InputTouch : IUserInput<Vector3>
      {
           if (Input.GetMouseButtonDown(0))
           {
-               OnChange?.Invoke(Input.mousePosition);
+               OnChange?.Invoke(Input.mousePosition);   
           }
      }
 }
