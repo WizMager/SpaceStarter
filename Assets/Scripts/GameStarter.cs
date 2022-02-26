@@ -5,7 +5,6 @@ public class GameStarter : MonoBehaviour
 {
     [SerializeField] private Data _data;
     private Controllers _controllers;
-    private float _deltaTime;
 
     private void Start()
     {
@@ -16,8 +15,8 @@ public class GameStarter : MonoBehaviour
 
     private void Update()
     {
-        _deltaTime = Time.deltaTime;
-        _controllers.Execute(_deltaTime);
+        var deltaTime = Time.deltaTime;
+        _controllers.Execute(deltaTime);
     }
 
     private void OnDestroy()

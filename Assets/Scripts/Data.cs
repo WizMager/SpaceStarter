@@ -1,10 +1,13 @@
 ﻿using System.IO;
 using UnityEngine;
 
+[CreateAssetMenu(menuName = "Data/Data", fileName = "Data")]
 public class Data : ScriptableObject
 {
     [SerializeField] private string _playerDataPath;
+    [SerializeField] private string _planetDataPath;
     private PlayerData _playerData;
+    private PlanetData _planetData;
 
     public PlayerData Player
     {
@@ -16,6 +19,19 @@ public class Data : ScriptableObject
             }
 
             return _playerData;
+        }
+    }
+
+    public PlanetData Planet
+    {
+        get
+        {
+            if (_planetData == null)
+            {
+                _planetData = Load<PlanetData>(_planetDataPath);
+            }
+
+            return _planetData;
         }
     }
 
