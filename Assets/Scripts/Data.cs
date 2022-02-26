@@ -1,13 +1,12 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "Data/Data", fileName = "Data")]
 public class Data : ScriptableObject
 {
-    [SerializeField] private string _playerDataPath;
-    [SerializeField] private string _planetDataPath;
-    private PlayerData _playerData;
-    private PlanetData _planetData;
+    [SerializeField] private PlayerData _playerData;
+    [SerializeField] private PlanetData _planetData;
 
     public PlayerData Player
     {
@@ -15,7 +14,7 @@ public class Data : ScriptableObject
         {
             if (_playerData == null)
             {
-                _playerData = Load<PlayerData>(_playerDataPath);
+                throw new NullReferenceException("You don't create PlayerData scriptable object");
             }
 
             return _playerData;
@@ -28,15 +27,10 @@ public class Data : ScriptableObject
         {
             if (_planetData == null)
             {
-                _planetData = Load<PlanetData>(_planetDataPath);
+                throw new NullReferenceException("You don't create PlanetData scriptable object");
             }
 
             return _planetData;
         }
-    }
-
-    private T Load<T>(string resourcePath) where T : Object
-    {
-        return Resources.Load<T>(Path.ChangeExtension(resourcePath, null));
     }
 }

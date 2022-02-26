@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d41979ff318c466ab5373b88e0ca63ae, type: 3}
   m_Name: Data
   m_EditorClassIdentifier: 
-  _playerDataPath: ScriptableObjects/PlayerData.asset
-  _planetDataPath: ScriptableObjects/PlanetData.asset
+  _playerData: {fileID: 11400000, guid: ebc4737f03cc9b74d9404968bd1dc31c, type: 2}
+  _planetData: {fileID: 11400000, guid: eb0c80d327312694aafa2e74f3a114fc, type: 2}

@@ -42,13 +42,15 @@ public class CameraFirstPersonMoveController : IExecute, IClean
     
     private void MoveHorizontal()
     {
-        _camera.transform.RotateAround(_planetCenter.position, Vector3.up, -_horizontalChange * _swipeSensitivity);
+        var position = _planetCenter.position;
+        _camera.transform.RotateAround(position, Vector3.up, -_horizontalChange * _swipeSensitivity);
         _horizontalChange = 0;
     }
     
     private void MoveVertical()
     {
-        _camera.transform.RotateAround(_planetCenter.position, Vector3.right, _verticalChange * _swipeSensitivity);
+        var position = _planetCenter.position;
+        _camera.transform.RotateAround(position, Vector3.right, _verticalChange * _swipeSensitivity);
         _verticalChange = 0;
     }
 
