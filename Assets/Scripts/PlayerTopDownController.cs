@@ -1,21 +1,26 @@
-﻿using UnityEngine;
+﻿using UnityEditor;
+using UnityEngine;
 
 public class PlayerTopDownController : IExecute, IClean
 {
-    private Transform _player;
+    //private GameObject _player;
     private IUserInput<Vector3> _inputTouch;
     private bool _isTouched;
     private float _gravityForce;
     private float _engineForce;
     private Transform _currentPlanet;
     private float _speedRotation;
+    private Rigidbody _playerRigidbody;
+    private Transform _playerTransform;
 
-    public PlayerTopDownController(IUserInput<Vector3> inputTouch, Transform player, float gravityForce, 
+    public PlayerTopDownController(IUserInput<Vector3> inputTouch, GameObject player, float gravityForce, 
         float engineForce,Transform planet, float speedRotation)
     {
-        _player = player;
+        //_player = player;
         _inputTouch = inputTouch;
         _inputTouch.OnChange += OnTouched;
+        _playerRigidbody = player.GetComponent<Rigidbody>();
+        _playerTransform = player.GetComponent<Transform>();
         _gravityForce = gravityForce;
         _engineForce = engineForce;
         _currentPlanet = planet;
@@ -33,19 +38,23 @@ public class PlayerTopDownController : IExecute, IClean
         if (isTouched)
         {
             shipPositionAxisX.x = -_engineForce;
-            _player.Translate(shipPositionAxisX * deltaTime);
+            _playerTransform.transform.Translate(shipPositionAxisX * deltaTime);
+            //_playerRigidbody.AddForce(_playerTransform.up * _engineForce, ForceMode.Force);
             _isTouched = false;
         }
         else
         {
             shipPositionAxisX.x = _gravityForce;
-            _player.Translate(shipPositionAxisX * deltaTime);
+            _playerTransform.transform.Translate(shipPositionAxisX * deltaTime);
+            //_playerRigidbody.AddForce(_playerTransform.right * _gravityForce * deltaTime, ForceMode.Impulse);
         }
     }
     
     private void PlayerRotation(float deltaTime)
     {
-        _player.RotateAround(_currentPlanet.position, Vector3.up, _speedRotation * deltaTime);
+        //_playerRigidbody.AddForce(_playerTransform.up * _speedRotation * deltaTime / 5, ForceMode.Impulse);
+        //_playerTransform.LookAt(_playerTransform, Vector3.left);
+        _playerTransform.RotateAround(_currentPlanet.position, Vector3.up, _speedRotation * deltaTime);
     }
     
     public void Execute(float deltaTime)
