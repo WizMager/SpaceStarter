@@ -5,7 +5,8 @@ using UnityEngine;
 public class Data : ScriptableObject
 {
     [SerializeField] private PlayerData _playerData;
-    [SerializeField] private PlanetData _planetData;
+    [SerializeField] private LastPlanetData lastPlanetData;
+    //[SerializeField] private PlanetData _planetData;
 
     public PlayerData Player
     {
@@ -20,16 +21,29 @@ public class Data : ScriptableObject
         }
     }
 
-    public PlanetData Planet
+    public LastPlanetData LastPlanet
     {
         get
         {
-            if (_planetData == null)
+            if (lastPlanetData == null)
             {
-                throw new NullReferenceException("You don't create PlanetData scriptable object");
+                throw new NullReferenceException("You don't create LastPlanetData scriptable object");
             }
 
-            return _planetData;
+            return lastPlanetData;
         }
     }
+
+    // public PlanetData Planet
+    // {
+    //     get
+    //     {
+    //         if (_planetData == null)
+    //         {
+    //             throw new NullReferenceException("You don't create PlanetData scriptable object");
+    //         }
+    //         
+    //         return Planet;
+    //     }
+    // }
 }

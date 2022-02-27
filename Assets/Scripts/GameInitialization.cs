@@ -1,15 +1,21 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 public class GameInitialization
 {
-   public GameInitialization(Controllers controllers, Data data)
+   public GameInitialization(Controllers controllers, Data data, IReadOnlyList<Camera> cameras, 
+      IReadOnlyList<GameObject> planetsCenter, Transform playerTransform)
    {
-      var camera = Camera.main;
+      var firstPersonCamera = cameras[0];
+      var topDownCamera = cameras[1];
+
       var inputInitialization = new InputInitialization();
       controllers.Add(new InputController(inputInitialization.GetAllInput()));
-      controllers.Add(new CameraFirstPersonMoveController(inputInitialization.GetAxisInput(), camera,
-         data.Planet.planetCenter, data.Player.swipeSensitivity));
-      controllers.Add(new TapExplosionController(camera, inputInitialization.GetTouchInput(), data.Player.explosionArea,
-         data.Player.explosionForce, data.Planet.explosionParticle));
+      //controllers.Add(new CameraFirstPersonMoveController(inputInitialization.GetAxisInput(), firstPersonCamera,
+         //planetsCenter[1].transform, data.Player.swipeSensitivity));
+      //controllers.Add(new TapExplosionController(firstPersonCamera, inputInitialization.GetTouchInput(), data.Player.explosionArea,
+         //data.Player.explosionForce, data.LastPlanet.explosionParticle));
+      controllers.Add(new CameraTopDownMoveController(inputInitialization.GetTouchInput(), playerTransform,
+         data.Player.gravity, data.Player.engineForce, data.Player.speedRotation, planetsCenter[0].transform));
    }
 }

@@ -2,45 +2,60 @@
 
 public class CameraTopDownMoveController : IExecute, IClean
 {
-    private Camera _camera;
-    private IUserInput<float> _inputVertical;
-    private IUserInput<float> _inputHorizontal;
-    private float _vertical;
-    private float _horizontal;
-    private bool _isChangeAxis;
+    private Transform _playerTransform;
+    private IUserInput<Vector3> _inputTouch;
+    private bool _isTouched;
+    private float _gravityForce;
+    private float _engineForce;
+    private float _speedRotation;
+    private Transform _currentPlanet;
 
-    public CameraTopDownMoveController((IUserInput<float> vertical, IUserInput<float> horizontal) axisInput, Camera camera)
+    public CameraTopDownMoveController(IUserInput<Vector3> inputTouch, Transform playerTransform, float gravityForce, 
+        float engineForce, float speedRotation, Transform planetTransform)
     {
-        _camera = camera;
-        var (vertical, horizontal) = axisInput;
-        _inputVertical = vertical;
-        _inputHorizontal = horizontal;
-        _inputVertical.OnChange += VerticalAxisOnChange;
-        _inputHorizontal.OnChange += HorizontalAxisOnChange;
+        _playerTransform = playerTransform;
+        _inputTouch = inputTouch;
+        _inputTouch.OnChange += OnTouched;
+        _gravityForce = gravityForce;
+        _engineForce = engineForce;
+        _speedRotation = speedRotation;
+        _currentPlanet = planetTransform;
     }
 
-    private void VerticalAxisOnChange(float vertical)
+    private void OnTouched(Vector3 touchPosition)
     {
-        _vertical = vertical;
+        _isTouched = true;
+    }
+    
+    private void CameraRotation(float deltaTime)
+    {
+        _playerTransform.RotateAround(_currentPlanet.position, Vector3.up, _speedRotation * deltaTime);
     }
 
-    private void HorizontalAxisOnChange(float horizontal)
+    private void CameraMove(bool isTouched, float deltaTime)
     {
-        _horizontal = horizontal;
-    }
-
-    private void CameraMove()
-    {
-        
+        var shipPositionAxisX = new Vector3(0, 0);
+        if (isTouched)
+        {
+            shipPositionAxisX.x = -_engineForce;
+            _playerTransform.Translate(shipPositionAxisX * deltaTime);
+            _isTouched = false;
+        }
+        else
+        {
+            shipPositionAxisX.x = _gravityForce;
+            _playerTransform.Translate(shipPositionAxisX * deltaTime);
+        }
     }
     
     public void Execute(float deltaTime)
     {
-        
+        CameraMove(_isTouched, deltaTime);
+        CameraRotation(deltaTime);
     }
 
     public void Clean()
     {
-        
+        _inputTouch.OnChange -= OnTouched;
     }
 }

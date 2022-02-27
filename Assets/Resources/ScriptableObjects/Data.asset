@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: Data
   m_EditorClassIdentifier: 
   _playerData: {fileID: 11400000, guid: ebc4737f03cc9b74d9404968bd1dc31c, type: 2}
-  _planetData: {fileID: 11400000, guid: eb0c80d327312694aafa2e74f3a114fc, type: 2}
+  lastPlanetData: {fileID: 11400000, guid: 007deee80969c494cb99d210a7f267f7, type: 2}

@@ -4,12 +4,15 @@ using UnityEngine;
 public class GameStarter : MonoBehaviour
 {
     [SerializeField] private Data _data;
+    [SerializeField] private Camera[] _cameras;
+    [SerializeField] private GameObject[] _planetsCenter;
+    [SerializeField] private Transform _playerTransform;
     private Controllers _controllers;
 
     private void Start()
     {
         _controllers = new Controllers();
-        new GameInitialization(_controllers, _data);
+        new GameInitialization(_controllers, _data, _cameras, _planetsCenter, _playerTransform);
         _controllers.Initialization();
     }
 

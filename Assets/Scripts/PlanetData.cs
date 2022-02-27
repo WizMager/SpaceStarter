@@ -3,6 +3,7 @@
 [CreateAssetMenu(menuName = "Data/PlanetData", fileName = "PlanetData")]
 public class PlanetData : ScriptableObject
 {
-   public GameObject explosionParticle;
-   public Transform planetCenter;
+       public float gravity;
+       public float speedRotation;
+       public float engineForce;
 }
