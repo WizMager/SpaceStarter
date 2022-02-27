@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-public class GameInitialization
+public class GameInitialization 
 {
    public GameInitialization(Controllers controllers, Data data, IReadOnlyList<Camera> cameras, 
       IReadOnlyList<GameObject> planetsCenter, Transform playerTransform)
@@ -15,7 +15,8 @@ public class GameInitialization
          //planetsCenter[1].transform, data.Player.swipeSensitivity));
       //controllers.Add(new TapExplosionController(firstPersonCamera, inputInitialization.GetTouchInput(), data.Player.explosionArea,
          //data.Player.explosionForce, data.LastPlanet.explosionParticle));
-      controllers.Add(new CameraTopDownMoveController(inputInitialization.GetTouchInput(), playerTransform,
-         data.Player.gravity, data.Player.engineForce, data.Player.speedRotation, planetsCenter[0].transform));
+      controllers.Add(new PlayerTopDownController(inputInitialization.GetTouchInput(), playerTransform,
+         data.Player.gravity, data.Player.engineForce,planetsCenter[0].transform, data.Player.speedRotation));
+      controllers.Add(new CameraTopDownController(topDownCamera, planetsCenter[0].transform, data.Player.speedRotation));
    }
 }
