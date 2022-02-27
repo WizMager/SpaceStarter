@@ -10,6 +10,8 @@ public class CameraFirstPersonMoveController : IExecute, IClean
     private float _horizontalChange;
     private IUserInput<float> _inputVertical;
     private IUserInput<float> _inputHorizontal;
+    private bool _isChangeVertical;
+    private bool _isChangeHorizontal;
 
     public CameraFirstPersonMoveController((IUserInput<float> inputVertical, IUserInput<float> inputHorizontal) axisInput, Camera camera, Transform planetCenter, float swipeSensitivity)
     {
@@ -19,44 +21,47 @@ public class CameraFirstPersonMoveController : IExecute, IClean
         var (inputVertical, inputHorizontal) = axisInput;
         _inputVertical = inputVertical;
         _inputHorizontal = inputHorizontal;
-        _inputVertical.OnChange += VerticalOnAxisChange;
-        _inputHorizontal.OnChange += HorizontalOnAxisChange;
+        _inputVertical.OnChange += VerticalAxisOnChange;
+        _inputHorizontal.OnChange += HorizontalAxisOnChange;
     }
 
-    private void VerticalOnAxisChange(float value)
+    private void VerticalAxisOnChange(float value)
     {
         _verticalChange = value;
-        
+        _isChangeVertical = true;
     }
 
-    private void HorizontalOnAxisChange(float value)
+    private void HorizontalAxisOnChange(float value)
     {
         _horizontalChange = value;
+        _isChangeHorizontal = true;
     }
 
     public void Execute(float deltaTime)
     {
-        MoveHorizontal();
-        MoveVertical();
+        MoveHorizontal(_isChangeHorizontal);
+        MoveVertical(_isChangeVertical);
     }
     
-    private void MoveHorizontal()
+    private void MoveHorizontal(bool isChangeHorizontal)
     {
         var position = _planetCenter.position;
         _camera.transform.RotateAround(position, Vector3.up, -_horizontalChange * _swipeSensitivity);
         _horizontalChange = 0;
+        _isChangeHorizontal = false;
     }
     
-    private void MoveVertical()
+    private void MoveVertical(bool isChangeVertical)
     {
         var position = _planetCenter.position;
         _camera.transform.RotateAround(position, Vector3.right, _verticalChange * _swipeSensitivity);
         _verticalChange = 0;
+        _isChangeVertical = false;
     }
 
     public void Clean()
     {
-        _inputVertical.OnChange -= VerticalOnAxisChange;
-        _inputHorizontal.OnChange -= HorizontalOnAxisChange;
+        _inputVertical.OnChange -= VerticalAxisOnChange;
+        _inputHorizontal.OnChange -= HorizontalAxisOnChange;
     }
 }
