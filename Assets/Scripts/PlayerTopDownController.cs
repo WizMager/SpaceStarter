@@ -3,22 +3,23 @@ using UnityEngine;
 
 public class PlayerTopDownController : IExecute, IClean
 {
-    //private GameObject _player;
-    private IUserInput<Vector3> _inputTouch;
+    private IUserInput<Vector3> _inputTouchDown;
+    private IUserInput<Vector3> _inputTouchUp;
     private bool _isTouched;
     private float _gravityForce;
     private float _engineForce;
     private Transform _currentPlanet;
     private float _speedRotation;
-    private Rigidbody _playerRigidbody;
     private Transform _playerTransform;
+    private Rigidbody _playerRigidbody;
 
-    public PlayerTopDownController(IUserInput<Vector3> inputTouch, GameObject player, float gravityForce, 
-        float engineForce,Transform planet, float speedRotation)
+    public PlayerTopDownController((IUserInput<Vector3> inputTouchDownDown, IUserInput<Vector3> inputTouchUp) touchInput, 
+        GameObject player, float gravityForce, float engineForce, Transform planet, float speedRotation)
     {
-        //_player = player;
-        _inputTouch = inputTouch;
-        _inputTouch.OnChange += OnTouched;
+        _inputTouchDown = touchInput.inputTouchDownDown;
+        _inputTouchUp = touchInput.inputTouchUp;
+        _inputTouchDown.OnChange += OnTouchedDown;
+        _inputTouchUp.OnChange += OnTouchedUp;
         _playerRigidbody = player.GetComponent<Rigidbody>();
         _playerTransform = player.GetComponent<Transform>();
         _gravityForce = gravityForce;
@@ -27,12 +28,17 @@ public class PlayerTopDownController : IExecute, IClean
         _speedRotation = speedRotation;
     }
 
-    private void OnTouched(Vector3 touchPosition)
+    private void OnTouchedDown(Vector3 touchPosition)
     {
         _isTouched = true;
     }
+    
+    private void OnTouchedUp(Vector3 touchPosition)
+    {
+        _isTouched = false;
+    }
 
-    private void CameraMove(bool isTouched, float deltaTime)
+    private void PlayerMove(bool isTouched, float deltaTime)
     {
         var shipPositionAxisX = new Vector3(0, 0);
         if (isTouched)
@@ -40,15 +46,15 @@ public class PlayerTopDownController : IExecute, IClean
             shipPositionAxisX.x = -_engineForce;
             _playerTransform.transform.Translate(shipPositionAxisX * deltaTime);
             //_playerRigidbody.AddForce(_playerTransform.up * _engineForce, ForceMode.Force);
-            _isTouched = false;
+            //_isTouched = false;
         }
         else
         {
             shipPositionAxisX.x = _gravityForce;
             _playerTransform.transform.Translate(shipPositionAxisX * deltaTime);
             //_playerRigidbody.AddForce(_playerTransform.right * _gravityForce * deltaTime, ForceMode.Impulse);
-            var directionToPlanet = (_currentPlanet.position - _playerTransform.position).normalized;
-            var distanceToPlanet = (_currentPlanet.position - _playerTransform.position).magnitude;
+            //var directionToPlanet = (_currentPlanet.position - _playerTransform.position).normalized;
+            //var distanceToPlanet = (_currentPlanet.position - _playerTransform.position).magnitude;
             //_playerRigidbody.AddForce(directionToPlanet * _gravityForce / distanceToPlanet);
         }
     }
@@ -62,12 +68,12 @@ public class PlayerTopDownController : IExecute, IClean
     
     public void Execute(float deltaTime)
     {
-        CameraMove(_isTouched, deltaTime);
+        PlayerMove(_isTouched, deltaTime);
         PlayerRotation(deltaTime);
     }
 
     public void Clean()
     {
-        _inputTouch.OnChange -= OnTouched;
+        _inputTouchDown.OnChange -= OnTouchedDown;
     }
 }

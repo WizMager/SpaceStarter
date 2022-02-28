@@ -1,12 +1,10 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class GameStarter : MonoBehaviour
 {
     [SerializeField] private Data _data;
     [SerializeField] private Camera[] _cameras;
     [SerializeField] private GameObject[] _planetsCenter;
-    //[SerializeField] private Transform _playerTransform;
     [SerializeField] private GameObject _player;
     private Controllers _controllers;
 
@@ -23,18 +21,24 @@ public class GameStarter : MonoBehaviour
         _controllers.Execute(deltaTime);
     }
 
+    private void FixedUpdate()
+    {
+        var fixedDeltaTime = Time.fixedDeltaTime;
+        _controllers.FixedExecute(fixedDeltaTime);
+    }
+
     private void OnDestroy()
     {
         _controllers.Clean();
     }
 
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawRay(_player.transform.position, _player.transform.up);
-        Gizmos.color = Color.green;
-        Gizmos.DrawRay(_player.transform.position, _player.transform.right);
-        Gizmos.color = Color.red;
-        Gizmos.DrawRay(_player.transform.position, _player.transform.up - _player.transform.right);
-    }
+    // private void OnDrawGizmos()
+    // {
+    //     Gizmos.color = Color.yellow;
+    //     Gizmos.DrawRay(_player.transform.position, _player.transform.up);
+    //     Gizmos.color = Color.green;
+    //     Gizmos.DrawRay(_player.transform.position, _player.transform.right);
+    //     Gizmos.color = Color.red;
+    //     Gizmos.DrawRay(_player.transform.position, _player.transform.up - _player.transform.right);
+    // }
 }

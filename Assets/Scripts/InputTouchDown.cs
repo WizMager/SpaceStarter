@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-public class InputTouch : IUserInput<Vector3>
+public class InputTouchDown : IUserInput<Vector3>
 {
      public event Action<Vector3> OnChange;
      

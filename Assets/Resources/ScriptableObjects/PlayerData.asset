@@ -16,6 +16,6 @@ MonoBehaviour:
   explosionArea: 1
   explosionForce: 50
   swipeSensitivity: 10
-  gravity: 0.5
+  gravity: 3
   speedRotation: 25
-  engineForce: 75
+  engineForce: 3
