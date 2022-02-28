@@ -17,6 +17,6 @@ public class GameInitialization
          //data.Player.explosionForce, data.LastPlanet.explosionParticle));
       controllers.Add(new PlayerTopDownController(inputInitialization.GetTouchInput(), player,
          data.Player.gravity, data.Player.engineForce,planetsCenter[0].transform, data.Player.speedRotation));
-      controllers.Add(new CameraTopDownController(topDownCamera, planetsCenter[0].transform, data.Player.speedRotation));
+      controllers.Add(new CameraTopDownController(topDownCamera, planetsCenter[0].transform, data.Player.speedRotation, player.transform));
    }
 }

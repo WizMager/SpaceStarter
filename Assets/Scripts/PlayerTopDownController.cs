@@ -47,6 +47,9 @@ public class PlayerTopDownController : IExecute, IClean
             shipPositionAxisX.x = _gravityForce;
             _playerTransform.transform.Translate(shipPositionAxisX * deltaTime);
             //_playerRigidbody.AddForce(_playerTransform.right * _gravityForce * deltaTime, ForceMode.Impulse);
+            var directionToPlanet = (_currentPlanet.position - _playerTransform.position).normalized;
+            var distanceToPlanet = (_currentPlanet.position - _playerTransform.position).magnitude;
+            //_playerRigidbody.AddForce(directionToPlanet * _gravityForce / distanceToPlanet);
         }
     }
     
