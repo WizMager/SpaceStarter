@@ -32,13 +32,13 @@ public class GameStarter : MonoBehaviour
         _controllers.Clean();
     }
 
-    // private void OnDrawGizmos()
-    // {
-    //     Gizmos.color = Color.yellow;
-    //     Gizmos.DrawRay(_player.transform.position, _player.transform.up);
-    //     Gizmos.color = Color.green;
-    //     Gizmos.DrawRay(_player.transform.position, _player.transform.right);
-    //     Gizmos.color = Color.red;
-    //     Gizmos.DrawRay(_player.transform.position, _player.transform.up - _player.transform.right);
-    // }
+    private void OnDrawGizmos()
+    {
+        // Gizmos.color = Color.yellow;
+        // Gizmos.DrawRay(_player.transform.position, _player.transform.up);
+        // Gizmos.color = Color.green;
+        // Gizmos.DrawRay();
+        // Gizmos.color = Color.red;
+        // Gizmos.DrawRay();
+    }
 }

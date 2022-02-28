@@ -8,13 +8,15 @@ public class PlayerTopDownController : IExecute, IClean
     private bool _isTouched;
     private float _gravityForce;
     private float _engineForce;
-    private Transform _currentPlanet;
+    private GameObject _currentPlanet;
+    private Transform _currentPlanetTransform;
     private float _speedRotation;
     private Transform _playerTransform;
     private Rigidbody _playerRigidbody;
+    private bool _insidePlanet;
 
     public PlayerTopDownController((IUserInput<Vector3> inputTouchDownDown, IUserInput<Vector3> inputTouchUp) touchInput, 
-        GameObject player, float gravityForce, float engineForce, Transform planet, float speedRotation)
+        GameObject player, float gravityForce, float engineForce, GameObject planet, float speedRotation)
     {
         _inputTouchDown = touchInput.inputTouchDownDown;
         _inputTouchUp = touchInput.inputTouchUp;
@@ -25,6 +27,9 @@ public class PlayerTopDownController : IExecute, IClean
         _gravityForce = gravityForce;
         _engineForce = engineForce;
         _currentPlanet = planet;
+        _currentPlanetTransform = _currentPlanet.transform;
+        _currentPlanet.GetComponent<PlanetCollider>().OnPlayerEnter += PlayerInsidePlanet;
+        _currentPlanet.GetComponent<PlanetCollider>().OnPlayerExit += PlayerOutsidePlanet;
         _speedRotation = speedRotation;
     }
 
@@ -45,25 +50,33 @@ public class PlayerTopDownController : IExecute, IClean
         {
             shipPositionAxisX.x = -_engineForce;
             _playerTransform.transform.Translate(shipPositionAxisX * deltaTime);
-            //_playerRigidbody.AddForce(_playerTransform.up * _engineForce, ForceMode.Force);
-            //_isTouched = false;
+        }
+        else 
+        if (_insidePlanet)
+        {
+            shipPositionAxisX.x = -_engineForce;
+            _playerTransform.transform.Translate(shipPositionAxisX * deltaTime);
         }
         else
         {
             shipPositionAxisX.x = _gravityForce;
             _playerTransform.transform.Translate(shipPositionAxisX * deltaTime);
-            //_playerRigidbody.AddForce(_playerTransform.right * _gravityForce * deltaTime, ForceMode.Impulse);
-            //var directionToPlanet = (_currentPlanet.position - _playerTransform.position).normalized;
-            //var distanceToPlanet = (_currentPlanet.position - _playerTransform.position).magnitude;
-            //_playerRigidbody.AddForce(directionToPlanet * _gravityForce / distanceToPlanet);
         }
     }
     
     private void PlayerRotation(float deltaTime)
     {
-        //_playerRigidbody.AddForce(_playerTransform.up * _speedRotation * deltaTime / 5, ForceMode.Impulse);
-        //_playerTransform.LookAt(_playerTransform, Vector3.left);
-        _playerTransform.RotateAround(_currentPlanet.position, Vector3.up, _speedRotation * deltaTime);
+        _playerTransform.RotateAround(_currentPlanetTransform.position, Vector3.up, _speedRotation * deltaTime);
+    }
+
+    private void PlayerInsidePlanet()
+    {
+        _insidePlanet = true;
+    }
+
+    private void PlayerOutsidePlanet()
+    {
+        _insidePlanet = false;
     }
     
     public void Execute(float deltaTime)
