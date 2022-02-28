@@ -12,4 +12,5 @@ public class PlayerData : ScriptableObject
      public float gravity;
      public float speedRotation;
      public float engineForce;
+     public float playerFlyingAngle;
 }

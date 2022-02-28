@@ -19,3 +19,4 @@ MonoBehaviour:
   gravity: 3.2
   speedRotation: 25
   engineForce: 3.2
+  playerFlyingAngle: 580

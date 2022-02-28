@@ -2,26 +2,28 @@
 
 public class CameraTopDownController: IExecute
 {
-    private Camera _camera;
-    private Transform _currentPlanet;
+    private Camera _cameraTopDown;
+    private Camera _cameraFirstPerson;
+    private Transform[] _planets;
     private readonly Transform _player;
     private Vector3 _startVector;
     private Vector3 _endVector;
 
-    public CameraTopDownController(Camera cameraTopDown, Transform planet, Transform playerTransform)
+    public CameraTopDownController(Camera[] cameras, Transform[] firstStagePlanetsTransfrom, Transform playerTransform)
     {
-        _camera = cameraTopDown;
-        _currentPlanet = planet;
+        _cameraTopDown = cameras[0];
+        _cameraFirstPerson = cameras[1];
+        _planets = firstStagePlanetsTransfrom;
         _player = playerTransform;
-        _startVector = _player.position - _currentPlanet.position;
+        _startVector = _player.position - _planets[0].position;
         _endVector = _startVector;
     }
 
     public void Execute(float deltaTime)
     {
-        _startVector = _player.position - _currentPlanet.position;
+        _startVector = _player.position - _planets[0].position;
         var rotateAngle = Vector3.Angle(_endVector, _startVector);
-        _camera.transform.RotateAround(_currentPlanet.position, Vector3.up, rotateAngle);
-        _endVector = _player.position - _currentPlanet.position;
+        _cameraTopDown.transform.RotateAround(_planets[0].position, Vector3.up, rotateAngle);
+        _endVector = _player.position - _planets[0].position;
     }
 }
