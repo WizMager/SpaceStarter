@@ -13,3 +13,6 @@ MonoBehaviour:
   m_Name: LastPlanetData
   m_EditorClassIdentifier: 
   explosionParticle: {fileID: 159918, guid: a0040bf7072bc2f4e82d887d50a9c5e2, type: 3}
+  explosionBox: {fileID: 6524765222234926335, guid: 7729ee09beefe444b8ef8cb038b06c73, type: 3}
+  explosionBoxForce: 5
+  center: {fileID: 2940909977932438384, guid: 2f5f02ad1c0db174d83cbe41c4819195, type: 3}

@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class GameInitialization 
 {
@@ -13,13 +12,15 @@ public class GameInitialization
       };
       var inputInitialization = new InputInitialization();
       controllers.Add(new InputController(inputInitialization.GetAllInput()));
-      // controllers.Add(new CameraFirstPersonMoveController(inputInitialization.GetAxisInput(), firstPersonCamera,
-      //    planets[3].transform, data.Player.swipeSensitivity));
-      // controllers.Add(new TapExplosionController(firstPersonCamera, inputInitialization.GetTouchInput(), data.Player.explosionArea,
+      controllers.Add(new CameraFirstPersonMoveController(inputInitialization.GetAxisInput(), cameras[1],
+         planets[3].transform, data.Player.swipeSensitivity));
+       controllers.Add(new TapExplosionControllerExperimental(cameras[1], inputInitialization.GetTouchDown(), data.Player.explosionArea,
+          data.LastPlanet.explosionBoxForce, data.LastPlanet.explosionParticle, data.LastPlanet.explosionBox, planets[3]));
+      // controllers.Add(new TapExplosionController(cameras[1], inputInitialization.GetTouchDown(), data.Player.explosionArea,
       //    data.Player.explosionForce, data.LastPlanet.explosionParticle));
-      controllers.Add(new PlayerTopDownController(inputInitialization.GetTouchAllInput(), player,
-         data.Player.gravity, data.Player.engineForce,firstStagePlanets, data.Player.speedRotation, 
-         gravityFields, data.Player.playerFlyingAngle));
-      controllers.Add(new CameraTopDownController(cameras, firstStagePlanetsTransform, player.transform));
+      // controllers.Add(new PlayerTopDownController(inputInitialization.GetTouchAllInput(), player,
+      //    data.Player.gravity, data.Player.engineForce,firstStagePlanets, data.Player.speedRotation, 
+      //    gravityFields, data.Player.playerFlyingAngle));
+      // controllers.Add(new CameraTopDownController(cameras, firstStagePlanetsTransform, player.transform));
    }
 }

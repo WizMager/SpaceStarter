@@ -4,4 +4,7 @@
 public class LastPlanetData : ScriptableObject
 {
    public GameObject explosionParticle;
+   public GameObject explosionBox;
+   public float explosionBoxForce;
+   public GameObject center;
 }
