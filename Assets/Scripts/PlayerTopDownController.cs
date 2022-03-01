@@ -4,15 +4,15 @@ public class PlayerTopDownController : IExecute, IClean
 {
     private IUserInput<Vector3> _inputTouchDown;
     private IUserInput<Vector3> _inputTouchUp;
-    private bool _isTouched;
     private GameObject[] _planets;
     private Transform _playerTransform;
-    private bool _insidePlanet;
     private GameObject[] _gravityFields;
     private float _playerEndFlyingAngle;
     private float _playerCurrentFlyingAngle;
     private Vector3 _playerStartFlying;
     private Vector3 _playerEndFlying;
+    private bool _isTouched;
+    private bool _isPathFinished;
 
     private PlayerMovementTopDown _playerMovementTopDown;
 
@@ -29,6 +29,7 @@ public class PlayerTopDownController : IExecute, IClean
         _planets[0].GetComponent<PlanetCollider>().OnPlayerPlanetEnter += PlayerEnteredPlanet;
         _planets[0].GetComponent<PlanetCollider>().OnPlayerPlanetExit += PlayerExitedPlanet;
         _gravityFields = gravityFields;
+        _gravityFields[0].GetComponent<GravityCollider>().OnPlayerFirstGravityEnter += PlayerFirstEnteredGravity;
         _gravityFields[0].GetComponent<GravityCollider>().OnPlayerGravityEnter += PlayerEnteredGravity;
         _gravityFields[0].GetComponent<GravityCollider>().OnPlayerGravityExit += PlayerExitedGravity;
         _playerEndFlyingAngle = playerFlyingAngle;
@@ -38,40 +39,48 @@ public class PlayerTopDownController : IExecute, IClean
 
     private void OnTouchedDown(Vector3 touchPosition)
     {
-        _isTouched = true;
+        _playerMovementTopDown.PlayerTouched(true);
     }
     
     private void OnTouchedUp(Vector3 touchPosition)
     {
-        _isTouched = false;
+        _playerMovementTopDown.PlayerTouched(false);
     }
     
     private void PlayerEnteredPlanet()
     {
-        _insidePlanet = true;
+        _playerMovementTopDown.InsidePlanet(true);
     }
 
     private void PlayerExitedPlanet()
     {
-        _insidePlanet = false;
+        _playerMovementTopDown.InsidePlanet(false);
     }
 
-    private void PlayerEnteredGravity(Vector3 contact)
+    private void PlayerFirstEnteredGravity(Vector3 contact)
     {
         _playerEndFlying = _planets[0].transform.position - contact;
     }
 
+    private void PlayerEnteredGravity()
+    {
+        _playerMovementTopDown.EdgeGravityPlayerState(false);
+    }
+    
     private void PlayerExitedGravity()
     {
-        
+        if (!_isPathFinished)
+        {
+            _playerMovementTopDown.EdgeGravityPlayerState(true);
+        }
     }
 
     private void FlyingAngle()
     {
         _playerStartFlying = _planets[0].transform.position - _playerTransform.position;
-        Debug.Log(_playerCurrentFlyingAngle);
         if (_playerCurrentFlyingAngle >= _playerEndFlyingAngle)
         {
+            _isPathFinished = true;
             Debug.Log($"Your way ended here! {_playerCurrentFlyingAngle}");
         }
         else
@@ -83,7 +92,7 @@ public class PlayerTopDownController : IExecute, IClean
     
     public void Execute(float deltaTime)
     {
-        _playerMovementTopDown.Move(_isTouched, _insidePlanet, deltaTime);
+        _playerMovementTopDown.Move(deltaTime);
         _playerMovementTopDown.Rotation(deltaTime, _planets[0].transform);
         FlyingAngle();
     }
