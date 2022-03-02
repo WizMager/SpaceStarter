@@ -12,8 +12,7 @@ public class GameInitialization
       //    planets[3].transform, data.Player.swipeSensitivity));
       // controllers.Add(new TapExplosionController(cameras[1], inputInitialization.GetTouchDown(), data.Player.explosionArea,
       //    data.Player.explosionForce, data.LastPlanet.explosionParticle));
-      controllers.Add(new PlayerTopDownController(inputInitialization.GetTouchAllInput(), player,
-         data.Player.gravity, data.Player.engineForce,firstStagePlanets, data.Player.speedRotation, 
-         gravityFields, data.Player.playerFlyingAngle, cameras));
+      controllers.Add(new PlayerTopDownController(data, inputInitialization.GetTouchAllInput(), player, firstStagePlanets, 
+         gravityFields, cameras));
    }
 }

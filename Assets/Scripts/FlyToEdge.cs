@@ -6,9 +6,9 @@ public class FlyToEdge
     private float _rotationAngle;
     private bool _isActive;
 
-    public FlyToEdge(float speedRotation)
+    public FlyToEdge(float speedRotationToGravityEdge)
     {
-        _speedRotation = speedRotation;
+        _speedRotation = speedRotationToGravityEdge;
     }
     
     public bool FlyingToEdge(Transform playerTransform, float deltaTime)

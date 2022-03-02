@@ -10,7 +10,7 @@ public class PlayerTopDownController : IExecute, IClean
     private readonly Transform _playerTransform;
     private readonly GameObject[] _gravityFields;
     private readonly float _playerEndFlyingAngle;
-    
+
     private float _playerCurrentFlyingAngle;
     private Vector3 _playerStartFlying;
     private Vector3 _playerEndFlying;
@@ -21,9 +21,8 @@ public class PlayerTopDownController : IExecute, IClean
     private readonly FlyToEdge _flyToEdge;
     private readonly PlayerMoveNextPlanet _playerMoveNextPlanet;
 
-    public PlayerTopDownController((IUserInput<Vector3> inputTouchDownDown, IUserInput<Vector3> inputTouchUp) touchInput, 
-        GameObject player, float gravityForce, float engineForce, GameObject[] planets, float speedRotation, 
-        GameObject[] gravityFields, float playerFlyingAngle, IReadOnlyList<Camera> cameras)
+    public PlayerTopDownController(Data data, (IUserInput<Vector3> inputTouchDownDown, IUserInput<Vector3> inputTouchUp) touchInput, 
+        GameObject player, GameObject[] planets, GameObject[] gravityFields, IReadOnlyList<Camera> cameras)
     {
         _playerTransform = player.GetComponent<Transform>();
         _inputTouchDown = touchInput.inputTouchDownDown;
@@ -37,11 +36,12 @@ public class PlayerTopDownController : IExecute, IClean
         _gravityFields[0].GetComponent<GravityCollider>().OnPlayerFirstGravityEnter += PlayerFirstEnteredGravity;
         _gravityFields[0].GetComponent<GravityCollider>().OnPlayerGravityEnter += PlayerEnteredGravity;
         _gravityFields[0].GetComponent<GravityCollider>().OnPlayerGravityExit += PlayerExitedGravity;
-        _playerEndFlyingAngle = playerFlyingAngle;
-        
-        _playerMovementTopDown = new PlayerMovementTopDown(engineForce, gravityForce, speedRotation, _playerTransform);
-        _cameraTopDown = new CameraTopDown(cameras[0]);
-        _flyToEdge = new FlyToEdge(speedRotation);
+        _playerEndFlyingAngle = data.Player.flyingAroundPlanetAngle;
+
+        _playerMovementTopDown = new PlayerMovementTopDown(data.Player.engineForce, data.Player.gravity, 
+            data.Player.speedRotationAroundPlanet, _playerTransform);
+        _cameraTopDown = new CameraTopDown(cameras[0], data.Player.cameraUpDivision);
+        _flyToEdge = new FlyToEdge(data.Player.speedRotationToEdgeGravity);
         //_playerMoveNextPlanet = new PlayerMoveNextPlanet(player.transform);
     }
 
@@ -124,11 +124,11 @@ public class PlayerTopDownController : IExecute, IClean
             if (!_flyToEdge.FlyingToEdge(_playerTransform, deltaTime))
             {
                 _playerMoveNextPlanet.Moving(deltaTime);
-                _cameraTopDown.FollowPlayer(_playerTransform, 10f);
+                _cameraTopDown.FollowPlayer(_playerTransform, 10f, deltaTime);
             }
             else
             {
-                _cameraTopDown.FollowPlayer(_playerTransform, 10f);
+                _cameraTopDown.FollowPlayer(_playerTransform, 10f, deltaTime);
             }
         }
     }

@@ -10,7 +10,9 @@ public class PlayerData : ScriptableObject
      public float swipeSensitivity;
      
      public float gravity;
-     public float speedRotation;
+     public float speedRotationAroundPlanet;
      public float engineForce;
-     public float playerFlyingAngle;
+     public float flyingAroundPlanetAngle;
+     public float speedRotationToEdgeGravity;
+     public float cameraUpDivision;
 }

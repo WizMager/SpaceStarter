@@ -17,6 +17,8 @@ MonoBehaviour:
   explosionForce: 50
   swipeSensitivity: 10
   gravity: 3.2
-  speedRotation: 25
+  speedRotationAroundPlanet: 25
   engineForce: 3.2
-  playerFlyingAngle: 50
+  flyingAroundPlanetAngle: 50
+  speedRotationToEdgeGravity: 75
+  cameraUpDivision: 2
