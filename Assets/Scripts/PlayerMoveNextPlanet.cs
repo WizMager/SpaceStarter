@@ -15,6 +15,10 @@ public class PlayerMoveNextPlanet
 
       private void RotatePlayer()
       {
+            if (_isTappedDown)
+            {
+                  Vector3.RotateTowards(_player.forward, _moveDirection, 180, 0);
+            }
             var rotationAngle = Vector3.Angle(_player.forward, _moveDirection);
             _player.Rotate(_player.up, rotationAngle);
       }
@@ -23,7 +27,7 @@ public class PlayerMoveNextPlanet
       {
             if (_isFlying)
             {
-                  _player.Translate(_moveDirection * deltaTime);  
+                  _player.Translate(_moveDirection.normalized * deltaTime);  
             }
       }
 
@@ -32,14 +36,8 @@ public class PlayerMoveNextPlanet
             if (_isTappedUp) return;
             _isFlying = true;
             _isTappedUp = true;
-            var lastY = _player.position.y;
-            _moveDirection = (tapPoint - _player.position).normalized;
+            _moveDirection = (tapPoint - _player.position);
             _moveDirection.y = 0;
             RotatePlayer();
-      }
-
-      public void FirstTapDeactivation()
-      {
-            _isTappedUp = false;
       }
 }

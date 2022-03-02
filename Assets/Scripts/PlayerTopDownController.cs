@@ -42,7 +42,7 @@ public class PlayerTopDownController : IExecute, IClean
         _playerMovementTopDown = new PlayerMovementTopDown(engineForce, gravityForce, speedRotation, _playerTransform);
         _cameraTopDown = new CameraTopDown(cameras[0]);
         _flyToEdge = new FlyToEdge(speedRotation);
-        _playerMoveNextPlanet = new PlayerMoveNextPlanet(player.transform);
+        //_playerMoveNextPlanet = new PlayerMoveNextPlanet(player.transform);
     }
 
     private void OnTouchedDown(Vector3 touchPosition)
@@ -54,7 +54,7 @@ public class PlayerTopDownController : IExecute, IClean
     {
         if (_isPathFinished)
         {
-            _playerMoveNextPlanet.PlayerTapPointSet(touchPosition);
+            //_playerMoveNextPlanet.PlayerTapPointSet(touchPosition);
         }
         else
         {
