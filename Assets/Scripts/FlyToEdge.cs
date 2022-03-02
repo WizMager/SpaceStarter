@@ -11,9 +11,9 @@ public class FlyToEdge
         _speedRotation = speedRotation;
     }
     
-    public void FlyingToEdge(Transform playerTransform, float deltaTime)
+    public bool FlyingToEdge(Transform playerTransform, float deltaTime)
     {
-        if (!_isActive) return;
+        if (!_isActive) return false;
         
         if (_rotationAngle <= 0)
         {
@@ -25,6 +25,7 @@ public class FlyToEdge
             playerTransform.Rotate(Vector3.forward * angleToRotate);
             _rotationAngle -= angleToRotate;
         }
+        return true;
     }
 
     public void Activator(bool isActive)
