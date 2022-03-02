@@ -9,11 +9,11 @@ public class CameraTopDownController: IExecute
     private Vector3 _startVector;
     private Vector3 _endVector;
 
-    public CameraTopDownController(Camera[] cameras, Transform[] firstStagePlanetsTransfrom, Transform playerTransform)
+    public CameraTopDownController(Camera[] cameras, Transform[] firstStagePlanetsTransform, Transform playerTransform)
     {
         _cameraTopDown = cameras[0];
         _cameraFirstPerson = cameras[1];
-        _planets = firstStagePlanetsTransfrom;
+        _planets = firstStagePlanetsTransform;
         _player = playerTransform;
         _startVector = _player.position - _planets[0].position;
         _endVector = _startVector;

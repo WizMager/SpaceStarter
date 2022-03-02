@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 public class PlayerTopDownController : IExecute, IClean
 {
@@ -8,6 +9,7 @@ public class PlayerTopDownController : IExecute, IClean
     private Transform _playerTransform;
     private GameObject[] _gravityFields;
     private float _playerEndFlyingAngle;
+    
     private float _playerCurrentFlyingAngle;
     private Vector3 _playerStartFlying;
     private Vector3 _playerEndFlying;
@@ -15,6 +17,7 @@ public class PlayerTopDownController : IExecute, IClean
     private bool _isPathFinished;
 
     private PlayerMovementTopDown _playerMovementTopDown;
+    private FlyToEdge _flyToEdge;
 
     public PlayerTopDownController((IUserInput<Vector3> inputTouchDownDown, IUserInput<Vector3> inputTouchUp) touchInput, 
         GameObject player, float gravityForce, float engineForce, GameObject[] planets, float speedRotation, 
@@ -35,6 +38,7 @@ public class PlayerTopDownController : IExecute, IClean
         _playerEndFlyingAngle = playerFlyingAngle;
         
         _playerMovementTopDown = new PlayerMovementTopDown(engineForce, gravityForce, speedRotation, _playerTransform);
+        _flyToEdge = new FlyToEdge(speedRotation);
     }
 
     private void OnTouchedDown(Vector3 touchPosition)
@@ -73,6 +77,10 @@ public class PlayerTopDownController : IExecute, IClean
         {
             _playerMovementTopDown.EdgeGravityPlayerState(true);
         }
+        else
+        {
+           _flyToEdge.Activator(false); 
+        }
     }
 
     private void FlyingAngle()
@@ -81,6 +89,7 @@ public class PlayerTopDownController : IExecute, IClean
         if (_playerCurrentFlyingAngle >= _playerEndFlyingAngle)
         {
             _isPathFinished = true;
+            _flyToEdge.Activator(true);
             Debug.Log($"Your way ended here! {_playerCurrentFlyingAngle}");
         }
         else
@@ -89,12 +98,19 @@ public class PlayerTopDownController : IExecute, IClean
             _playerEndFlying = _playerStartFlying;
         }
     }
-    
+
     public void Execute(float deltaTime)
     {
-        _playerMovementTopDown.Move(deltaTime);
-        _playerMovementTopDown.Rotation(deltaTime, _planets[0].transform);
-        FlyingAngle();
+        if (!_isPathFinished)
+        {
+            _playerMovementTopDown.Move(deltaTime);
+            _playerMovementTopDown.Rotation(deltaTime, _planets[0].transform);
+            FlyingAngle();  
+        }
+        else
+        {
+            _flyToEdge.FlyingToEdge(_playerTransform, deltaTime);
+        }
     }
 
     public void Clean()
