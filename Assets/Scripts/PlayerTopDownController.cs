@@ -116,7 +116,8 @@ public class PlayerTopDownController : IExecute, IClean
         {
             _playerMovementTopDown.Move(deltaTime);
             _playerMovementTopDown.Rotation(deltaTime, _planets[0].transform);
-            _cameraTopDown.RotateAroundPlanet(_playerTransform, _planets[0].transform);
+            _cameraTopDown.FollowPlayer(_playerTransform, 7);
+            //_cameraTopDown.RotateAroundPlanet(_playerTransform, _planets[0].transform);
             FlyingAngle();  
         }
         else
