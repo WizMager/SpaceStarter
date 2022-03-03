@@ -6,12 +6,14 @@ public class CameraTopDown
     private Vector3 _startVector;
     private Vector3 _endVector;
     private float _distanceToPlayer;
-    private float _cameraUpDivision;
+    private float _cameraStartUpDivision;
+    private float _cameraUpMultiply;
 
-    public CameraTopDown(Camera camera, float cameraUpDivision)
+    public CameraTopDown(Camera camera, float cameraStartUpDivision, float cameraUpMultiply)
     {
         _camera = camera;
-        _cameraUpDivision = cameraUpDivision;
+        _cameraStartUpDivision = cameraStartUpDivision;
+        _cameraUpMultiply = cameraUpMultiply;
     }
 
     public void RotateAroundPlanet(Transform player, Transform currentPlanet)
@@ -28,9 +30,9 @@ public class CameraTopDown
         {
             if (_distanceToPlayer == 0)
             {
-                _distanceToPlayer = (Mathf.Abs(player.position.y) - Mathf.Abs(_camera.transform.position.y)) / _cameraUpDivision;
+                _distanceToPlayer = (Mathf.Abs(player.position.y) - Mathf.Abs(_camera.transform.position.y)) / _cameraStartUpDivision;
             }
-            _distanceToPlayer += deltaTime;
+            _distanceToPlayer += deltaTime * _cameraUpMultiply;
         }
         var offsetPosition = player.transform.position;
         offsetPosition.y += _distanceToPlayer;

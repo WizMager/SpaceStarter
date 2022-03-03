@@ -13,6 +13,8 @@ public class PlayerData : ScriptableObject
      public float speedRotationAroundPlanet;
      public float engineForce;
      public float flyingAroundPlanetAngle;
+     public float speedMoveToEdgeGravity;
      public float speedRotationToEdgeGravity;
-     public float cameraUpDivision;
+     public float cameraStartUpDivision;
+     public float cameraUpMultiply;
 }

@@ -44,8 +44,8 @@ public class PlayerTopDownController : IExecute, IClean
 
         _playerMovementTopDown = new PlayerMovementTopDown(data.Player.engineForce, data.Player.gravity, 
             data.Player.speedRotationAroundPlanet, _playerTransform);
-        _cameraTopDown = new CameraTopDown(cameras[0], data.Player.cameraUpDivision);
-        _flyToEdge = new FlyToEdge(data.Player.speedRotationToEdgeGravity);
+        _cameraTopDown = new CameraTopDown(cameras[0], data.Player.cameraStartUpDivision, data.Player.cameraUpMultiply);
+        _flyToEdge = new FlyToEdge(data.Player.speedRotationToEdgeGravity, data.Player.speedMoveToEdgeGravity);
         //_playerMoveNextPlanet = new PlayerMoveNextPlanet(player.transform);
     }
 

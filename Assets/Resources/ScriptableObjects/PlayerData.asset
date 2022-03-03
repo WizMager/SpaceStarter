@@ -20,5 +20,7 @@ MonoBehaviour:
   speedRotationAroundPlanet: 25
   engineForce: 3.2
   flyingAroundPlanetAngle: 50
+  speedMoveToEdgeGravity: 1
   speedRotationToEdgeGravity: 75
-  cameraUpDivision: 2
+  cameraStartUpDivision: 2
+  cameraUpMultiply: 1

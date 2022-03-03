@@ -3,12 +3,14 @@
 public class FlyToEdge
 {
     private readonly float _speedRotation;
+    private readonly float _moveSpeed;
     private float _rotationAngle;
     private bool _isActive;
 
-    public FlyToEdge(float speedRotationToGravityEdge)
+    public FlyToEdge(float speedRotationToGravityEdge, float speedMoveToEdgeGravity)
     {
         _speedRotation = speedRotationToGravityEdge;
+        _moveSpeed = speedMoveToEdgeGravity;
     }
     
     public bool FlyingToEdge(Transform playerTransform, float deltaTime)
@@ -17,7 +19,7 @@ public class FlyToEdge
         
         if (_rotationAngle <= 0)
         {
-            playerTransform.Translate(-playerTransform.forward * deltaTime);
+            playerTransform.Translate(-playerTransform.forward * deltaTime * _moveSpeed);
         }
         else
         {
