@@ -6,6 +6,7 @@ public class PlayerTopDownController : IExecute, IClean
 {
     private readonly IUserInput<Vector3> _inputTouchDown;
     private readonly IUserInput<Vector3> _inputTouchUp;
+    private readonly IUserInput<Vector3> _inputTouchHold;
     private readonly GameObject[] _planets;
     private readonly Transform _playerTransform;
     private readonly GameObject[] _gravityFields;
@@ -21,14 +22,17 @@ public class PlayerTopDownController : IExecute, IClean
     private readonly FlyToEdge _flyToEdge;
     private readonly PlayerMoveNextPlanet _playerMoveNextPlanet;
 
-    public PlayerTopDownController(Data data, (IUserInput<Vector3> inputTouchDownDown, IUserInput<Vector3> inputTouchUp) touchInput, 
+    public PlayerTopDownController(Data data, 
+        (IUserInput<Vector3> inputTouchDownDown, IUserInput<Vector3> inputTouchUp, IUserInput<Vector3> inputTouchHold) touchInput, 
         GameObject player, GameObject[] planets, GameObject[] gravityFields, IReadOnlyList<Camera> cameras)
     {
-        _playerTransform = player.GetComponent<Transform>();
         _inputTouchDown = touchInput.inputTouchDownDown;
         _inputTouchUp = touchInput.inputTouchUp;
+        _inputTouchHold = touchInput.inputTouchHold;
         _inputTouchDown.OnChange += OnTouchedDown;
         _inputTouchUp.OnChange += OnTouchedUp;
+        _inputTouchHold.OnChange += OnTouchedHold;
+        _playerTransform = player.GetComponent<Transform>();
         _planets = planets;
         _planets[0].GetComponent<PlanetCollider>().OnPlayerPlanetEnter += PlayerEnteredPlanet;
         _planets[0].GetComponent<PlanetCollider>().OnPlayerPlanetExit += PlayerExitedPlanet;
@@ -61,6 +65,11 @@ public class PlayerTopDownController : IExecute, IClean
             _playerMovementTopDown.PlayerTouched(false); 
         }
     }
+
+    private void OnTouchedHold(Vector3 touchPosition)
+    {
+        
+    }
     
     private void PlayerEnteredPlanet()
     {
@@ -79,14 +88,14 @@ public class PlayerTopDownController : IExecute, IClean
 
     private void PlayerEnteredGravity()
     {
-        _playerMovementTopDown.EdgeGravityPlayerState(false);
+        _playerMovementTopDown.EdgeGravityState(false);
     }
     
     private void PlayerExitedGravity()
     {
         if (!_isPathFinished)
         {
-            _playerMovementTopDown.EdgeGravityPlayerState(true);
+            _playerMovementTopDown.EdgeGravityState(true);
         }
         else
         {
@@ -114,8 +123,7 @@ public class PlayerTopDownController : IExecute, IClean
     {
         if (!_isPathFinished)
         {
-            _playerMovementTopDown.Move(deltaTime);
-            _playerMovementTopDown.Rotation(deltaTime, _planets[0].transform);
+            _playerMovementTopDown.MoveAroundPlanet(deltaTime, _planets[0].transform);
             _cameraTopDown.RotateAroundPlanet(_playerTransform, _planets[0].transform);
             FlyingAngle();  
         }
@@ -137,5 +145,6 @@ public class PlayerTopDownController : IExecute, IClean
     {
         _inputTouchDown.OnChange -= OnTouchedDown;
         _inputTouchUp.OnChange -= OnTouchedUp;
+        _inputTouchHold.OnChange -= OnTouchedHold;
     }
 }

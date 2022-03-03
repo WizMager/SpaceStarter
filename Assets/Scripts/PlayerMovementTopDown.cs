@@ -19,7 +19,13 @@ public class PlayerMovementTopDown
         _playerTransform = playerTransform;
     }
 
-    public void Move(float deltaTime)
+    public void MoveAroundPlanet(float deltaTime, Transform currentPlanet)
+    {
+        Move(deltaTime);
+        RotationAroundPlanet(deltaTime, currentPlanet);
+    }
+    
+    private void Move(float deltaTime)
     {
         var shipPositionAxisX = new Vector3(0, 0);
         if (_isTouched && !_outsideGravity)
@@ -39,7 +45,7 @@ public class PlayerMovementTopDown
         }
     }
     
-    public void Rotation(float deltaTime, Transform currentPlanet)
+    private void RotationAroundPlanet(float deltaTime, Transform currentPlanet)
     {
         _playerTransform.RotateAround(currentPlanet.position, Vector3.up, _speedRotation * deltaTime);
     }
@@ -54,7 +60,7 @@ public class PlayerMovementTopDown
         _isTouched = isTouched;
     }
     
-    public void EdgeGravityPlayerState(bool isOut)
+    public void EdgeGravityState(bool isOut)
     {
         _outsideGravity = isOut;
     }

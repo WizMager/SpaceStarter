@@ -33,7 +33,7 @@ public class FlyToEdge
         _isActive = isActive;
         if (_isActive)
         {
-            _rotationAngle = 90f;
+            _rotationAngle = GlobalData.PlayerRotationAngleBeforeFlyToEdge;
         }
     }
 }
