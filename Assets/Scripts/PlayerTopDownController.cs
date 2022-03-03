@@ -56,19 +56,23 @@ public class PlayerTopDownController : IExecute, IClean
     
     private void OnTouchedUp(Vector3 touchPosition)
     {
+        _playerMovementTopDown.PlayerTouched(false); 
         if (_isPathFinished)
         {
             //_playerMoveNextPlanet.PlayerTapPointSet(touchPosition);
         }
         else
         {
-            _playerMovementTopDown.PlayerTouched(false); 
+            
         }
     }
 
     private void OnTouchedHold(Vector3 touchPosition)
     {
-        
+        if (_isPathFinished)
+        {
+            _playerMovementTopDown.RotationPlayer(touchPosition);
+        }
     }
     
     private void PlayerEnteredPlanet()
@@ -131,7 +135,7 @@ public class PlayerTopDownController : IExecute, IClean
         {
             if (!_flyToEdge.FlyingToEdge(_playerTransform, deltaTime))
             {
-                _playerMoveNextPlanet.Moving(deltaTime);
+                //_playerMoveNextPlanet.Moving(deltaTime);
                 _cameraTopDown.FollowPlayer(_playerTransform, 10f, deltaTime);
             }
             else

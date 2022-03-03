@@ -55,6 +55,14 @@ public class PlayerMovementTopDown
         _insidePlanet = isInside;
     }
 
+    public void RotationPlayer(Vector3 touchPoint)
+    {
+        if (!_isTouched) return;
+        var rotationVector = (touchPoint - _playerTransform.position).normalized;
+        rotationVector.y = 0;
+        _playerTransform.up = rotationVector;
+    }
+    
     public void PlayerTouched(bool isTouched)
     {
         _isTouched = isTouched;
