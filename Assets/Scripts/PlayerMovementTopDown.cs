@@ -48,7 +48,7 @@ public class PlayerMovementTopDown
     
     private void RotationAroundPlanet(float deltaTime, Transform currentPlanet)
     {
-        _playerTransform.RotateAround(currentPlanet.position, Vector3.up, _speedRotation * deltaTime);
+        _playerTransform.RotateAround(currentPlanet.position, -_playerTransform.forward, _speedRotation * deltaTime);
     }
 
     public void InsidePlanet(bool isInside)

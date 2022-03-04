@@ -3,8 +3,8 @@
 public class CameraTopDown
 {
     private readonly Camera _camera;
+    //private Vector3 endVector;
     private Vector3 _startVector;
-    private Vector3 _endVector;
     private float _distanceToPlayer;
     private float _cameraStartUpDivision;
     private float _cameraUpMultiply;
@@ -18,10 +18,10 @@ public class CameraTopDown
 
     public void RotateAroundPlanet(Transform player, Transform currentPlanet)
     {
-        _startVector = player.position - currentPlanet.position;
-        var rotateAngle = Vector3.Angle(_endVector, _startVector);
-        _camera.transform.RotateAround(currentPlanet.position, Vector3.up, rotateAngle);
-        _endVector = player.position - currentPlanet.position;
+         var endVector = player.position - currentPlanet.position;
+         var rotateAngle = -Vector3.Angle(_startVector, endVector);
+         _camera.transform.RotateAround(currentPlanet.position, _camera.transform.forward, rotateAngle);
+         _startVector = endVector;
     }
 
     public void FollowPlayer(Transform player, float distanceToPlayer, float deltaTime)

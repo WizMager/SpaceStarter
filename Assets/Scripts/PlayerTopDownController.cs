@@ -112,7 +112,7 @@ public class PlayerTopDownController : IExecute, IClean
         else
         {
             _isEdgeAchived = true;
-           _flyToEdge.Activator(false);
+           _flyToEdge.Deactivate();
            _flyToNextPlanet.SetDirection(_planets[_currentPlanetIndex + 1].transform.position);
            UnsignetFromPlanet(_currentPlanetIndex);
            SignetToPlanet(+_currentPlanetIndex);
@@ -124,8 +124,10 @@ public class PlayerTopDownController : IExecute, IClean
         _playerStartFlying = _planets[_currentPlanetIndex].transform.position - _playerTransform.position;
         if (_playerCurrentFlyingAngle >= _playerEndFlyingAngle)
         {
+            var endDirection = _playerTransform.position - _planets[_currentPlanetIndex].transform.position;
+            var startDirection = _playerTransform.forward;
             _isPathFinished = true;
-            _flyToEdge.Activator(true);
+            _flyToEdge.Activate(startDirection, endDirection);
             //Debug.Log($"Your way ended here! {_playerCurrentFlyingAngle}");
         }
         else
