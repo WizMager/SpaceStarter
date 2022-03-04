@@ -10,6 +10,7 @@ public class PlayerMovementTopDown
     private bool _isTouched;
     private bool _insidePlanet;
     private bool _outsideGravity;
+    private bool _firstRotateInGravity;
 
     public PlayerMovementTopDown(float engineForce, float gravityForce, float speedRotation, Transform playerTransform)
     {

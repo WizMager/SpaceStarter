@@ -27,6 +27,7 @@ public class FlyToEdge
             playerTransform.Rotate(Vector3.forward * angleToRotate);
             _rotationAngle -= angleToRotate;
         }
+        
         return true;
     }
 
