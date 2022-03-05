@@ -44,7 +44,8 @@ public class PlayerController : IExecute, IClean
         _planetsTransforms = SetPlanetsTransform(planetsViews);
 
         _movementController = new MovementController(data.Player.engineForce, data.Player.gravity, 
-            data.Player.speedRotationAroundPlanet, playerView.transform);
+            data.Player.speedRotationAroundPlanet, playerView.transform, data.Player.speedRotationToEdgeGravity, 
+            data.Player.speedMoveToEdgeGravity);
         _cameraController = new CameraController(camera, data.Player.cameraStartUpDivision, data.Player.cameraUpMultiply);
         _flyToEdge = new FlyToEdge(data.Player.speedRotationToEdgeGravity, data.Player.speedMoveToEdgeGravity);
         _flyToNextPlanet = new FlyToNextPlanet(data.Player.speedMoveToEdgeGravity, data.Player.speedRotationToEdgeGravity);
@@ -138,10 +139,9 @@ public class PlayerController : IExecute, IClean
         _playerStartFlying = _planetsTransforms[_currentPlanetIndex].transform.position - _playerTransform.position;
         if (_playerCurrentFlyingAngle >= _playerEndFlyingAngle)
         {
-            var endDirection = _playerTransform.position - _planetsTransforms[_currentPlanetIndex].transform.position;
-            var startDirection = _playerTransform.forward;
+            var lookDirection = (_playerTransform.position - _planetsTransforms[_currentPlanetIndex].transform.position).normalized;
             _isPathFinished = true;
-            _flyToEdge.Activate(startDirection, endDirection);
+            _movementController.SetDirection(lookDirection);
             Debug.Log($"Your way ended here! {_playerCurrentFlyingAngle}");
         }
         else
@@ -155,14 +155,15 @@ public class PlayerController : IExecute, IClean
     {
         if (!_isPathFinished)
         {
-            _movementController.MoveAroundPlanet(deltaTime, _planetsTransforms[_currentPlanetIndex].transform);
-            _cameraController.RotateAroundPlanet(_playerTransform, _planetsTransforms[_currentPlanetIndex].transform);
+            _movementController.MoveAroundPlanet(deltaTime, _planetsTransforms[_currentPlanetIndex]);
+            _cameraController.RotateAroundPlanet(_playerTransform, _planetsTransforms[_currentPlanetIndex]);
             FlyingAngle();  
         }
         else
         {
-            if (_flyToEdge.FlyingToEdge(_playerTransform, deltaTime))
+            if (_isPathFinished)
             {
+                _movementController.MoveToPoint(deltaTime);
                 _cameraController.FollowPlayer(_playerTransform, 10f, deltaTime);
             }
             else

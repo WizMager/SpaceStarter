@@ -30,11 +30,11 @@ public class CameraController
         {
             if (_distanceToPlayer == 0)
             {
-                _distanceToPlayer = (Mathf.Abs(player.position.y) - Mathf.Abs(_camera.transform.position.y)) / _cameraStartUpDivision;
+                _distanceToPlayer = (_camera.transform.position.y - player.position.y) / _cameraStartUpDivision;
             }
             _distanceToPlayer += deltaTime * _cameraUpMultiply;
         }
-        var offsetPosition = player.transform.position;
+        var offsetPosition = player.position;
         offsetPosition.y += _distanceToPlayer;
         _camera.transform.position = offsetPosition;
     }
