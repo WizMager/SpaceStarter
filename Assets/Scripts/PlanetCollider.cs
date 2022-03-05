@@ -5,12 +5,13 @@ public class PlanetCollider : MonoBehaviour
 {
     public event Action OnPlayerPlanetEnter;
     public event Action OnPlayerPlanetExit;
-    private void OnCollisionEnter(Collision collision)
+
+    private void OnTriggerEnter(Collider other)
     {
         OnPlayerPlanetEnter?.Invoke();
     }
 
-    private void OnCollisionExit(Collision other)
+    private void OnTriggerExit(Collider other)
     {
         OnPlayerPlanetExit?.Invoke();
     }
