@@ -7,7 +7,7 @@ public class FlyToNextPlanet
       private float _speedRotation;
 
       private bool _isActive;
-      private bool _isRotation = true;
+      //private bool _isRotation = true;
       private bool _isFirstMove;
       private float _angleToRotation;
 

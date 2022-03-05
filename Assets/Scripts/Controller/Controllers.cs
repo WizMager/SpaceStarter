@@ -1,74 +1,77 @@
 ﻿using System.Collections.Generic;
 
-public class Controllers: IInitialization, IExecute, IClean
+namespace Controller
 {
-    private readonly List<IInitialization> _initializationControllers;
-    private readonly List<IExecute> _executeControllers;
-    private readonly List<IFixedExecute> _fixedExecuteControllers;
-    private readonly List<IClean> _cleanControllers;
-
-    public Controllers()
+    public class Controllers: IInitialization, IExecute, IClean
     {
-        _initializationControllers = new List<IInitialization>();
-        _executeControllers = new List<IExecute>();
-        _fixedExecuteControllers = new List<IFixedExecute>();
-        _cleanControllers = new List<IClean>();
-    }
+        private readonly List<IInitialization> _initializationControllers;
+        private readonly List<IExecute> _executeControllers;
+        private readonly List<IFixedExecute> _fixedExecuteControllers;
+        private readonly List<IClean> _cleanControllers;
 
-    public Controllers Add(IController controller)
-    {
-        if (controller is IInitialization initializationController)
+        public Controllers()
         {
-            _initializationControllers.Add(initializationController);
+            _initializationControllers = new List<IInitialization>();
+            _executeControllers = new List<IExecute>();
+            _fixedExecuteControllers = new List<IFixedExecute>();
+            _cleanControllers = new List<IClean>();
         }
 
-        if (controller is IExecute executeController)
+        public Controllers Add(IController controller)
         {
-            _executeControllers.Add(executeController);
-        }
+            if (controller is IInitialization initializationController)
+            {
+                _initializationControllers.Add(initializationController);
+            }
 
-        if (controller is IFixedExecute fixedExecuteController)
-        {
-            _fixedExecuteControllers.Add(fixedExecuteController);
-        }
+            if (controller is IExecute executeController)
+            {
+                _executeControllers.Add(executeController);
+            }
+
+            if (controller is IFixedExecute fixedExecuteController)
+            {
+                _fixedExecuteControllers.Add(fixedExecuteController);
+            }
         
-        if (controller is IClean cleanController)
-        {
-            _cleanControllers.Add(cleanController);
-        }
+            if (controller is IClean cleanController)
+            {
+                _cleanControllers.Add(cleanController);
+            }
 
-        return this;
-    }
+            return this;
+        }
     
-    public void Initialization()
-    {
-        for (int index = 0; index < _initializationControllers.Count; index++)
+        public void Initialization()
         {
-            _initializationControllers[index].Initialization();
+            for (int index = 0; index < _initializationControllers.Count; index++)
+            {
+                _initializationControllers[index].Initialization();
+            }
         }
-    }
 
-    public void Execute(float deltaTime)
-    {
-        for (int index = 0; index < _executeControllers.Count; index++)
+        public void Execute(float deltaTime)
         {
-            _executeControllers[index].Execute(deltaTime);
+            for (int index = 0; index < _executeControllers.Count; index++)
+            {
+                _executeControllers[index].Execute(deltaTime);
+            }
         }
-    }
 
-    public void FixedExecute(float fixedDeltaTime)
-    {
-        for (int index = 0; index < _fixedExecuteControllers.Count; index++)
+        public void FixedExecute(float fixedDeltaTime)
         {
-            _fixedExecuteControllers[index].FixedExecute(fixedDeltaTime);
+            for (int index = 0; index < _fixedExecuteControllers.Count; index++)
+            {
+                _fixedExecuteControllers[index].FixedExecute(fixedDeltaTime);
+            }
         }
-    }
     
-    public void Clean()
-    {
-        for (int index = 0; index < _cleanControllers.Count; index++)
+        public void Clean()
         {
-            _cleanControllers[index].Clean();
-        } 
+            for (int index = 0; index < _cleanControllers.Count; index++)
+            {
+                _cleanControllers[index].Clean();
+            } 
+        }
     }
 }
