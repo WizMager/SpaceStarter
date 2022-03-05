@@ -19,8 +19,8 @@ public class CameraController
     public void RotateAroundPlanet(Transform player, Transform currentPlanet)
     {
          var endVector = player.position - currentPlanet.position;
-         var rotateAngle = -Vector3.Angle(_startVector, endVector);
-         _camera.transform.RotateAround(currentPlanet.position, _camera.transform.right, rotateAngle);
+         var rotateAngle = Vector3.Angle(_startVector, endVector);
+         _camera.transform.RotateAround(currentPlanet.position, currentPlanet.up, rotateAngle);
          _startVector = endVector;
     }
 
