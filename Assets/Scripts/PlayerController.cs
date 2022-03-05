@@ -21,7 +21,7 @@ public class PlayerController : IExecute, IClean
     private bool _isEdgeAchived;
     private readonly Transform[] _planetsTransforms;
 
-    private readonly PlayerMovement _playerMovement;
+    private readonly MovementController _movementController;
     private readonly CameraController _cameraController;
     private readonly FlyToEdge _flyToEdge;
     private readonly FlyToNextPlanet _flyToNextPlanet;
@@ -43,7 +43,7 @@ public class PlayerController : IExecute, IClean
         _playerEndFlyingAngle = data.Player.flyingAroundPlanetAngle;
         _planetsTransforms = SetPlanetsTransform(planetsViews);
 
-        _playerMovement = new PlayerMovement(data.Player.engineForce, data.Player.gravity, 
+        _movementController = new MovementController(data.Player.engineForce, data.Player.gravity, 
             data.Player.speedRotationAroundPlanet, playerView.transform);
         _cameraController = new CameraController(camera, data.Player.cameraStartUpDivision, data.Player.cameraUpMultiply);
         _flyToEdge = new FlyToEdge(data.Player.speedRotationToEdgeGravity, data.Player.speedMoveToEdgeGravity);
@@ -63,14 +63,14 @@ public class PlayerController : IExecute, IClean
     
     private void OnTouchedDown(Vector3 touchPosition)
     {
-        _playerMovement.PlayerTouched(true);
+        _movementController.PlayerTouched(true);
     }
     
     private void OnTouchedUp(Vector3 touchPosition)
     {
         if (!_isPathFinished)
         {
-            _playerMovement.PlayerTouched(false);
+            _movementController.PlayerTouched(false);
         }
         else
         {
@@ -92,12 +92,12 @@ public class PlayerController : IExecute, IClean
     
     private void PlayerEnteredPlanet()
     {
-        _playerMovement.InsidePlanet(true);
+        _movementController.InsidePlanet(true);
     }
 
     private void PlayerExitedPlanet()
     {
-        _playerMovement.InsidePlanet(false);
+        _movementController.InsidePlanet(false);
     }
 
     private void PlayerFirstEnteredGravity(Vector3 contact)
@@ -109,7 +109,7 @@ public class PlayerController : IExecute, IClean
     {
         if (!_isPathFinished)
         {
-            _playerMovement.EdgeGravityState(false); 
+            _movementController.EdgeGravityState(false); 
         }
         else
         {
@@ -121,7 +121,7 @@ public class PlayerController : IExecute, IClean
     {
         if (!_isPathFinished)
         {
-            _playerMovement.EdgeGravityState(true);
+            _movementController.EdgeGravityState(true);
         }
         else
         {
@@ -155,7 +155,7 @@ public class PlayerController : IExecute, IClean
     {
         if (!_isPathFinished)
         {
-            _playerMovement.MoveAroundPlanet(deltaTime, _planetsTransforms[_currentPlanetIndex].transform);
+            _movementController.MoveAroundPlanet(deltaTime, _planetsTransforms[_currentPlanetIndex].transform);
             _cameraController.RotateAroundPlanet(_playerTransform, _planetsTransforms[_currentPlanetIndex].transform);
             FlyingAngle();  
         }

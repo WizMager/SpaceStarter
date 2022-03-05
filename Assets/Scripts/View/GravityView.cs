@@ -11,7 +11,7 @@ namespace View
 
         private void OnCollisionEnter(Collision collision)
         {
-            if (!collision.gameObject.GetComponentInParent<PlayerView>()) return;
+            if (!collision.gameObject.GetComponent<PlayerView>()) return;
             
             var contact = collision.GetContact(0);
             OnPlayerFirstGravityEnter?.Invoke(contact.point);
@@ -19,14 +19,14 @@ namespace View
 
         private void OnTriggerEnter(Collider other)
         {
-            if (!other.GetComponentInParent<PlayerView>()) return;
+            if (!other.GetComponent<PlayerView>()) return;
 
             OnPlayerGravityEnter?.Invoke();
         }
 
         private void OnTriggerExit(Collider other)
         {
-            if (!other.GetComponentInParent<PlayerView>()) return;
+            if (!other.GetComponent<PlayerView>()) return;
             
             OnPlayerGravityExit?.Invoke();
         }

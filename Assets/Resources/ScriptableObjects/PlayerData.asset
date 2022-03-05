@@ -19,7 +19,7 @@ MonoBehaviour:
   gravity: 3.2
   speedRotationAroundPlanet: 25
   engineForce: 3.2
-  flyingAroundPlanetAngle: 100
+  flyingAroundPlanetAngle: 7000
   speedMoveToEdgeGravity: 1
   speedRotationToEdgeGravity: 4
   cameraStartUpDivision: 2
