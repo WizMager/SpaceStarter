@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Controller;
 using UnityEngine;
 using View;
 
@@ -8,8 +9,9 @@ public class PlayerController : IExecute, IClean
     private readonly IUserInput<Vector3> _inputTouchDown;
     private readonly IUserInput<Vector3> _inputTouchUp;
     private readonly IUserInput<Vector3> _inputTouchHold;
-    private readonly PlanetView[] _planetsViews;
+    private readonly PlayerView _playerView;
     private readonly Transform _playerTransform;
+    private readonly PlanetView[] _planetsViews;
     private readonly GravityView[] _gravityViews;
     private readonly float _playerEndFlyingAngle;
 
@@ -23,8 +25,6 @@ public class PlayerController : IExecute, IClean
 
     private readonly MovementController _movementController;
     private readonly CameraController _cameraController;
-    private readonly FlyToEdge _flyToEdge;
-    private readonly FlyToNextPlanet _flyToNextPlanet;
 
     public PlayerController(Data data, 
         (IUserInput<Vector3> inputTouchDownDown, IUserInput<Vector3> inputTouchUp, IUserInput<Vector3> inputTouchHold) touchInput, 
@@ -36,6 +36,7 @@ public class PlayerController : IExecute, IClean
         _inputTouchDown.OnChange += OnTouchedDown;
         _inputTouchUp.OnChange += OnTouchedUp;
         _inputTouchHold.OnChange += OnTouchedHold;
+        _playerView = playerView;
         _playerTransform = playerView.transform;
         _planetsViews = planetsViews;
         _gravityViews = gravityViews;
@@ -44,11 +45,9 @@ public class PlayerController : IExecute, IClean
         _planetsTransforms = SetPlanetsTransform(planetsViews);
 
         _movementController = new MovementController(data.Player.engineForce, data.Player.gravity, 
-            data.Player.speedRotationAroundPlanet, playerView.transform, data.Player.speedRotationToEdgeGravity, 
+            data.Player.speedRotationAroundPlanet, playerView, data.Player.speedRotationToEdgeGravity, 
             data.Player.speedMoveToEdgeGravity);
         _cameraController = new CameraController(camera, data.Player.cameraStartUpDivision, data.Player.cameraUpMultiply);
-        _flyToEdge = new FlyToEdge(data.Player.speedRotationToEdgeGravity, data.Player.speedMoveToEdgeGravity);
-        _flyToNextPlanet = new FlyToNextPlanet(data.Player.speedMoveToEdgeGravity, data.Player.speedRotationToEdgeGravity);
     }
 
     private Transform[] SetPlanetsTransform(PlanetView[] planetViews)
@@ -77,7 +76,7 @@ public class PlayerController : IExecute, IClean
         {
             if (_isEdgeAchived)
             {
-                _flyToNextPlanet.SetActive(true); 
+                
             }
         }
         
@@ -85,10 +84,7 @@ public class PlayerController : IExecute, IClean
     
     private void OnTouchedHold(Vector3 touchPosition)
     {
-        // if (_isPathFinished)
-        // {
-        //     _playerMovementTopDown.RotationPlayer(touchPosition);
-        // }
+        
     }
     
     private void PlayerEnteredPlanet()
@@ -127,10 +123,8 @@ public class PlayerController : IExecute, IClean
         else
         {
             _isEdgeAchived = true;
-           _flyToEdge.Deactivate();
-           _flyToNextPlanet.SetDirection(_planetsTransforms[_currentPlanetIndex + 1].transform.position);
-           UnsignetFromPlanet(_currentPlanetIndex);
-           SignetToPlanet(+_currentPlanetIndex);
+            UnsignetFromPlanet(_currentPlanetIndex);
+            SignetToPlanet(+_currentPlanetIndex);
         }
     }
     
@@ -142,12 +136,13 @@ public class PlayerController : IExecute, IClean
             var lookDirection = (_playerTransform.position - _planetsTransforms[_currentPlanetIndex].transform.position).normalized;
             _isPathFinished = true;
             _movementController.SetDirection(lookDirection);
+            //_playerView.StartCoroutine(_moveToPoint.Rotate());
             Debug.Log($"Your way ended here! {_playerCurrentFlyingAngle}");
         }
         else
         {
-            _playerCurrentFlyingAngle += Vector3.Angle(_playerStartFlying, _playerEndFlying);
-            _playerEndFlying = _playerStartFlying;
+             _playerCurrentFlyingAngle += Vector3.Angle(_playerStartFlying, _playerEndFlying);
+             _playerEndFlying = _playerStartFlying;
         }
     }
 
@@ -161,16 +156,8 @@ public class PlayerController : IExecute, IClean
         }
         else
         {
-            if (_isPathFinished)
-            {
-                _movementController.MoveToPoint(deltaTime);
-                _cameraController.FollowPlayer(_playerTransform, 10f, deltaTime);
-            }
-            else
-            {
-                _flyToNextPlanet.Move(_playerTransform, deltaTime);
-                _cameraController.FollowPlayer(_playerTransform, 10f, deltaTime);
-            }
+            _movementController.MoveToPoint(deltaTime);
+            _cameraController.FollowPlayer(_playerTransform, 10f, deltaTime);
         }
     }
 

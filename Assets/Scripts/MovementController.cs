@@ -1,6 +1,7 @@
 ﻿using Controller;
 using DefaultNamespace;
 using UnityEngine;
+using View;
 
 public class MovementController
 {
@@ -8,10 +9,10 @@ public class MovementController
     private readonly MoveToPoint _moveToPoint;
     
     public MovementController(float engineForce, float gravityForce, float rotationAroundPlanet, 
-        Transform playerTransform, float rotationSpeed, float moveSpeed)
+        PlayerView playerView, float rotationSpeed, float moveSpeed)
     {
-        _moveAroundPlanet = new MoveAroundPlanet(engineForce, gravityForce, rotationAroundPlanet, playerTransform);
-        _moveToPoint = new MoveToPoint(rotationSpeed, moveSpeed, playerTransform);
+        _moveAroundPlanet = new MoveAroundPlanet(engineForce, gravityForce, rotationAroundPlanet, playerView.transform);
+        _moveToPoint = new MoveToPoint(rotationSpeed, moveSpeed, playerView);
     }
 
     public void MoveAroundPlanet(float deltaTime, Transform currentPlanet)
