@@ -10,7 +10,6 @@ public class PlayerMovement
     private bool _isTouched;
     private bool _insidePlanet;
     private bool _outsideGravity;
-    private bool _firstRotateInGravity;
 
     public PlayerMovement(float engineForce, float gravityForce, float speedRotation, Transform playerTransform)
     {
@@ -22,7 +21,7 @@ public class PlayerMovement
 
     public void MoveAroundPlanet(float deltaTime, Transform currentPlanet)
     {
-        //Move(deltaTime);
+        Move(deltaTime);
         RotationAroundPlanet(deltaTime, currentPlanet);
     }
     

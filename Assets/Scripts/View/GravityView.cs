@@ -11,24 +11,24 @@ namespace View
 
         private void OnCollisionEnter(Collision collision)
         {
+            if (!collision.gameObject.GetComponentInParent<PlayerView>()) return;
+            
             var contact = collision.GetContact(0);
             OnPlayerFirstGravityEnter?.Invoke(contact.point);
         }
 
         private void OnTriggerEnter(Collider other)
         {
-            if (other.gameObject.name == "Player")
-            {
-                OnPlayerGravityEnter?.Invoke();
-            }
+            if (!other.GetComponentInParent<PlayerView>()) return;
+
+            OnPlayerGravityEnter?.Invoke();
         }
 
         private void OnTriggerExit(Collider other)
         {
-            if (other.gameObject.name == "Player")
-            {
-                OnPlayerGravityExit?.Invoke();
-            }
+            if (!other.GetComponentInParent<PlayerView>()) return;
+            
+            OnPlayerGravityExit?.Invoke();
         }
     }
 }

@@ -28,7 +28,7 @@ public class PlayerController : IExecute, IClean
 
     public PlayerController(Data data, 
         (IUserInput<Vector3> inputTouchDownDown, IUserInput<Vector3> inputTouchUp, IUserInput<Vector3> inputTouchHold) touchInput, 
-        PlayerView playerView, PlanetView[] planets, GravityView[] gravityViews, Camera camera)
+        PlayerView playerView, PlanetView[] planetsViews, GravityView[] gravityViews, Camera camera)
     {
         _inputTouchDown = touchInput.inputTouchDownDown;
         _inputTouchUp = touchInput.inputTouchUp;
@@ -37,11 +37,11 @@ public class PlayerController : IExecute, IClean
         _inputTouchUp.OnChange += OnTouchedUp;
         _inputTouchHold.OnChange += OnTouchedHold;
         _playerTransform = playerView.transform;
-        _planetsViews = planets;
+        _planetsViews = planetsViews;
         _gravityViews = gravityViews;
         SignetToPlanet(_currentPlanetIndex);
         _playerEndFlyingAngle = data.Player.flyingAroundPlanetAngle;
-        _planetsTransforms = SetPlanetsTransform(planets);
+        _planetsTransforms = SetPlanetsTransform(planetsViews);
 
         _playerMovement = new PlayerMovement(data.Player.engineForce, data.Player.gravity, 
             data.Player.speedRotationAroundPlanet, playerView.transform);
@@ -142,7 +142,7 @@ public class PlayerController : IExecute, IClean
             var startDirection = _playerTransform.forward;
             _isPathFinished = true;
             _flyToEdge.Activate(startDirection, endDirection);
-            //Debug.Log($"Your way ended here! {_playerCurrentFlyingAngle}");
+            Debug.Log($"Your way ended here! {_playerCurrentFlyingAngle}");
         }
         else
         {
