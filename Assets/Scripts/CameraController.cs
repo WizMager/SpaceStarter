@@ -3,21 +3,27 @@
 public class CameraController
 {
     private readonly Camera _camera;
-    //private Vector3 endVector;
     private Vector3 _startVector;
     private float _distanceToPlayer;
     private float _cameraStartUpDivision;
     private float _cameraUpMultiply;
+    private Vector3 _cameraRotationOffset;
+    private Vector3 _cameraPositionOffset;
 
     public CameraController(Camera camera, float cameraStartUpDivision, float cameraUpMultiply)
     {
         _camera = camera;
         _cameraStartUpDivision = cameraStartUpDivision;
         _cameraUpMultiply = cameraUpMultiply;
+        _cameraRotationOffset = new Vector3(camera.transform.rotation.eulerAngles.x, 0, camera.transform.rotation.eulerAngles.z);
+        _cameraPositionOffset = _camera.transform.position;
     }
 
     public void RotateAroundPlanet(Transform player, Transform currentPlanet)
     {
+        //_camera.transform.position = currentPlanet.position + new Vector3(0, _cameraPositionOffset.y, 0);
+
+        _camera.transform.rotation = Quaternion.Euler(_cameraRotationOffset.x, _camera.transform.rotation.eulerAngles.y, _cameraRotationOffset.z);
          var endVector = player.position - currentPlanet.position;
          var rotateAngle = Vector3.Angle(_startVector, endVector);
          _camera.transform.RotateAround(currentPlanet.position, currentPlanet.up, rotateAngle);

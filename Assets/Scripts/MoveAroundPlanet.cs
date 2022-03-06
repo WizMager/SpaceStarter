@@ -44,32 +44,27 @@ namespace DefaultNamespace
 
         private void MovementAroundPlanet(float deltaTime)
         {
-            var shipPositionAxisX = new Vector3(0, 0);
+            var shipPositionAxisX = Vector3.zero;
             if (_isTouched && !_outsideGravity)
             {
                 shipPositionAxisX.x = -_engineForce;
-                _playerTransform.Translate(shipPositionAxisX * -_engineForce * deltaTime);
+                _playerTransform.Translate(shipPositionAxisX * deltaTime);
             }
             else if (_insidePlanet && !_outsideGravity)
             {
                 shipPositionAxisX.x = -_engineForce;
-                _playerTransform.Translate(shipPositionAxisX * -_engineForce * deltaTime);
+                _playerTransform.Translate(shipPositionAxisX * deltaTime);
             }
             else
             {
                 shipPositionAxisX.x = _gravityForce;
-                _playerTransform.Translate(shipPositionAxisX * _gravityForce * deltaTime);
+                _playerTransform.Translate(shipPositionAxisX * deltaTime);
             }
         }
 
         private void RotationAroundPlanet(float deltaTime, Transform currentPlanet)
         {
             _playerTransform.RotateAround(currentPlanet.position, currentPlanet.up, _speedRotation * deltaTime);
-        }
-
-        public void FirstMoveToEdge(float deltaTime)
-        {
-            _playerTransform.Translate(_playerTransform.right * _gravityForce * deltaTime);
         }
     }
 }

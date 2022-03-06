@@ -20,11 +20,6 @@ public class MovementController
         _moveAroundPlanet.MovementAroundPlanet(deltaTime, currentPlanet);
     }
 
-    public void FirstMove(float deltaTime)
-    {
-        _moveAroundPlanet.FirstMoveToEdge(deltaTime);
-    }
-    
     public void MoveToPoint(float deltaTime)
     {
         _moveToDirection.MovingToPoint(deltaTime);
@@ -48,6 +43,10 @@ public class MovementController
     public void EdgeGravityState(bool isOut)
     {
         _moveAroundPlanet.OutsideGravity = isOut;
+    }
+
+    public void GravityDirectionMove(bool isOut)
+    {
         _moveToDirection.Activation(!isOut);
     }
 }

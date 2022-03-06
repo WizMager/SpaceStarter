@@ -1,7 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using Controller;
-using UnityEngine;
+﻿using UnityEngine;
 using View;
 
 public class PlayerController : IExecute, IClean
@@ -18,12 +15,11 @@ public class PlayerController : IExecute, IClean
     private float _playerCurrentFlyingAngle;
     private Vector3 _playerStartFlying;
     private Vector3 _playerEndFlying;
-    private bool _isPathFinished;
-    private int _currentPlanetIndex = 0;
-    private bool _isEdgeAchived;
+    private bool _isPathFinished = true;
+    private int _currentPlanetIndex;
+    private bool _isEdgeAchived = true;
     private readonly Transform[] _planetsTransforms;
     private bool _isRightRotated;
-    private bool _firstStart = true;
 
     private readonly MovementController _movementController;
     private readonly CameraController _cameraController;
@@ -70,11 +66,7 @@ public class PlayerController : IExecute, IClean
     
     private void OnTouchedUp(Vector3 touchPosition)
     {
-        if (!_isPathFinished)
-        {
-            _movementController.PlayerTouched(false);
-        }
-        else
+        if (_isPathFinished)
         {
             if (_isEdgeAchived)
             {
@@ -82,6 +74,10 @@ public class PlayerController : IExecute, IClean
                 _movementController.SetDirection(lookDirection);
                 _isEdgeAchived = false;
             }
+        }
+        else
+        {
+            _movementController.PlayerTouched(false);
         }
         
     }
@@ -109,28 +105,34 @@ public class PlayerController : IExecute, IClean
 
     private void PlayerEnteredGravity()
     {
-        _firstStart = false;
-        if (!_isPathFinished)
+        if (_isPathFinished)
         {
-            _movementController.EdgeGravityState(false); 
+            _isPathFinished = false;
+            _movementController.InsidePlanet(false);
+            _movementController.PlayerTouched(false);
+            _movementController.EdgeGravityState(false);
+            _isRightRotated = false;
         }
         else
         {
-            _isPathFinished = false;
+            _movementController.EdgeGravityState(false);
         }
     }
     
     private void PlayerExitedGravity()
     {
-        _movementController.EdgeGravityState(true);
-        
-        if (!_isPathFinished) return;
-        
-        _isEdgeAchived = true;
-        UnsignetFromPlanet(_currentPlanetIndex);
-        _currentPlanetIndex++;
-        SignetToPlanet(_currentPlanetIndex);
-
+        if (_isPathFinished)
+        {
+            _isEdgeAchived = true;
+            _movementController.GravityDirectionMove(true);
+            UnsignetFromPlanet(_currentPlanetIndex);
+            _currentPlanetIndex++;
+            SignetToPlanet(_currentPlanetIndex);
+        }
+        else
+        {
+            _movementController.EdgeGravityState(true); 
+        }
     }
     
     private void FlyingAngle()
@@ -141,50 +143,41 @@ public class PlayerController : IExecute, IClean
             var lookDirection = (_playerTransform.position - _planetsTransforms[_currentPlanetIndex].position).normalized;
             _isPathFinished = true;
             _movementController.SetDirection(lookDirection);
-            Debug.Log(_playerCurrentFlyingAngle);
         }
         else
         {
-             _playerCurrentFlyingAngle += Vector3.Angle(_playerStartFlying, _playerEndFlying);
+            _playerCurrentFlyingAngle += Vector3.Angle(_playerStartFlying, _playerEndFlying);
              _playerEndFlying = _playerStartFlying;
         }
     }
 
     private void RotateBeforeAround()
     {
-        var direction = _planetsTransforms[_currentPlanetIndex].localPosition - _playerTransform.localPosition;
+        var direction = _planetsTransforms[_currentPlanetIndex].position - _playerTransform.position;
         _playerTransform.right = direction;
         _isRightRotated = true;
     }
 
     public void Execute(float deltaTime)
     {
-        if (!_isPathFinished)
+        if (_isPathFinished)
+        {
+            _movementController.MoveToPoint(deltaTime);
+            _cameraController.FollowPlayer(_playerTransform, 10f, deltaTime);
+        }
+        else
         {
             if (_isRightRotated)
             {
                 _movementController.MoveAroundPlanet(deltaTime, _planetsTransforms[_currentPlanetIndex]);
-                _cameraController.RotateAroundPlanet(_playerTransform, _planetsTransforms[_currentPlanetIndex]);
+                _cameraController.FollowPlayer(_playerTransform, 10f, deltaTime);
+                //_cameraController.RotateAroundPlanet(_playerTransform, _planetsTransforms[_currentPlanetIndex]);
                 FlyingAngle();  
             }
             else
             {
-                if (_firstStart)
-                {
-                    //RotateBeforeAround(); 
-                    _movementController.FirstMove(deltaTime);
-                    _cameraController.FollowPlayer(_playerTransform, 6f, deltaTime);
-                }
-                else
-                {
-                    RotateBeforeAround(); 
-                }
+                RotateBeforeAround();
             }
-        }
-        else
-        {
-            _movementController.MoveToPoint(deltaTime);
-            _cameraController.FollowPlayer(_playerTransform, 10f, deltaTime);
         }
     }
 
