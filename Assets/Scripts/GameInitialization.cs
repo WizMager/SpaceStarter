@@ -46,6 +46,9 @@ public class GameInitialization
             case ObjectNumber.Third:
                sortedPlanets[2] = planet;
                break;
+            case ObjectNumber.Last:
+               sortedPlanets[3] = planet;
+               break;
             default:
                throw new ArgumentOutOfRangeException($"Too much planet!");
          }
@@ -63,6 +66,9 @@ public class GameInitialization
                break;
             case ObjectNumber.Third:
                sortedGravities[2]= gravity;
+               break;
+            case ObjectNumber.Last:
+               sortedGravities[3] = gravity;
                break;
             default:
                throw new ArgumentOutOfRangeException($"Too much gravities!");

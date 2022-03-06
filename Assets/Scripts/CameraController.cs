@@ -7,8 +7,10 @@ public class CameraController
     private float _distanceToPlayer;
     private float _cameraStartUpDivision;
     private float _cameraUpMultiply;
+    
     private Vector3 _cameraRotationOffset;
     private Vector3 _cameraPositionOffset;
+    private bool _isLastPlanet;
 
     public CameraController(Camera camera, float cameraStartUpDivision, float cameraUpMultiply)
     {
@@ -21,8 +23,6 @@ public class CameraController
 
     public void RotateAroundPlanet(Transform player, Transform currentPlanet)
     {
-        //_camera.transform.position = currentPlanet.position + new Vector3(0, _cameraPositionOffset.y, 0);
-
         _camera.transform.rotation = Quaternion.Euler(_cameraRotationOffset.x, _camera.transform.rotation.eulerAngles.y, _cameraRotationOffset.z);
          var endVector = player.position - currentPlanet.position;
          var rotateAngle = Vector3.Angle(_startVector, endVector);
@@ -43,6 +43,18 @@ public class CameraController
         var offsetPosition = player.position;
         offsetPosition.y += _distanceToPlayer;
         _camera.transform.position = offsetPosition;
+    }
+
+    public void FirstPersonRotation()
+    {
+        
+    }
+
+    public void SetupFirstPerson()
+    {
+        var position = new Vector3(-12f, 1f, 40.8f);
+        var rotation = Quaternion.Euler(new Vector3(0, -90f, 0));
+        _camera.transform.SetPositionAndRotation(position, rotation);
     }
     
     public void FollowPlayerWithRotation(Transform player, float distanceToPlayer)

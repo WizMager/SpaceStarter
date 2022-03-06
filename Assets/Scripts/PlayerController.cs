@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using Utils;
 using View;
 
 public class PlayerController : IExecute, IClean
@@ -20,9 +21,13 @@ public class PlayerController : IExecute, IClean
     private bool _isEdgeAchived = true;
     private readonly Transform[] _planetsTransforms;
     private bool _isRightRotated;
+    //TODO: _isLastPlanet must be false for start from first stage
+    //private bool _isLastPlanet = true;
+    private bool _isLastPlanet;
 
     private readonly MovementController _movementController;
     private readonly CameraController _cameraController;
+    private readonly TapExplosionController _tapExplosionController;
 
     public PlayerController(Data data, 
         (IUserInput<Vector3> inputTouchDownDown, IUserInput<Vector3> inputTouchUp, IUserInput<Vector3> inputTouchHold) touchInput, 
@@ -46,6 +51,10 @@ public class PlayerController : IExecute, IClean
             data.Player.speedRotationAroundPlanet, playerView, data.Player.speedRotationToEdgeGravity, 
             data.Player.speedMoveToEdgeGravity);
         _cameraController = new CameraController(camera, data.Player.cameraStartUpDivision, data.Player.cameraUpMultiply);
+        _tapExplosionController = new TapExplosionController(camera, data.Player.explosionArea,
+            data.Player.explosionForce, data.LastPlanet.explosionParticle);
+        //TODO: delete last string
+        //_cameraController.SetupFirstPerson();
     }
 
     private Transform[] SetPlanetsTransform(PlanetView[] planetViews)
@@ -66,20 +75,28 @@ public class PlayerController : IExecute, IClean
     
     private void OnTouchedUp(Vector3 touchPosition)
     {
-        if (_isPathFinished)
+        if (_isLastPlanet)
         {
-            if (_isEdgeAchived)
-            {
-                var lookDirection = (_planetsTransforms[_currentPlanetIndex].transform.position - _playerTransform.position).normalized;
-                _movementController.SetDirection(lookDirection);
-                _isEdgeAchived = false;
-            }
+            _tapExplosionController.Shoot(touchPosition);
         }
         else
         {
-            _movementController.PlayerTouched(false);
+            if (_isPathFinished)
+            {
+                if (_isEdgeAchived)
+                {
+                    var lookDirection =
+                        (_planetsTransforms[_currentPlanetIndex].transform.position - _playerTransform.position)
+                        .normalized;
+                    _movementController.SetDirection(lookDirection);
+                    _isEdgeAchived = false;
+                }
+            }
+            else
+            {
+                _movementController.PlayerTouched(false);
+            }
         }
-        
     }
     
     private void OnTouchedHold(Vector3 touchPosition)
@@ -158,27 +175,35 @@ public class PlayerController : IExecute, IClean
         _isRightRotated = true;
     }
 
+    private void LastPlanetGravityEntered()
+    {
+        _isLastPlanet = true;
+        _cameraController.SetupFirstPerson();
+    }
+    
     public void Execute(float deltaTime)
     {
-        if (_isPathFinished)
-        {
-            _movementController.MoveToPoint(deltaTime);
-            _cameraController.FollowPlayer(_playerTransform, 10f, deltaTime);
-        }
-        else
-        {
-            if (_isRightRotated)
+        if (_isLastPlanet) return;
+
+            if (_isPathFinished)
             {
-                _movementController.MoveAroundPlanet(deltaTime, _planetsTransforms[_currentPlanetIndex]);
+                _movementController.MoveToPoint(deltaTime);
                 _cameraController.FollowPlayer(_playerTransform, 10f, deltaTime);
-                //_cameraController.RotateAroundPlanet(_playerTransform, _planetsTransforms[_currentPlanetIndex]);
-                FlyingAngle();  
             }
             else
             {
-                RotateBeforeAround();
+                if (_isRightRotated)
+                {
+                    _movementController.MoveAroundPlanet(deltaTime, _planetsTransforms[_currentPlanetIndex]);
+                    _cameraController.FollowPlayer(_playerTransform, 10f, deltaTime);
+                    //_cameraController.RotateAroundPlanet(_playerTransform, _planetsTransforms[_currentPlanetIndex]);
+                    FlyingAngle();
+                }
+                else
+                {
+                    RotateBeforeAround();
+                }
             }
-        }
     }
 
     private void SignetToPlanet(int index)
@@ -188,6 +213,10 @@ public class PlayerController : IExecute, IClean
         _gravityViews[index].OnPlayerFirstGravityEnter += PlayerFirstEnteredGravity;
         _gravityViews[index].OnPlayerGravityEnter += PlayerEnteredGravity;
         _gravityViews[index].OnPlayerGravityExit += PlayerExitedGravity;
+        if (_gravityViews[index].number == ObjectNumber.Last)
+        {
+            _gravityViews[index].OnLastPlanetGravityEnter += LastPlanetGravityEntered;
+        }
     }
 
     private void UnsignetFromPlanet(int index)
@@ -197,6 +226,10 @@ public class PlayerController : IExecute, IClean
         _gravityViews[index].OnPlayerFirstGravityEnter -= PlayerFirstEnteredGravity;
         _gravityViews[index].OnPlayerGravityEnter -= PlayerEnteredGravity;
         _gravityViews[index].OnPlayerGravityExit -= PlayerExitedGravity;
+        if (_gravityViews[index].number == ObjectNumber.Last)
+        {
+            _gravityViews[index].OnLastPlanetGravityEnter -= LastPlanetGravityEntered;
+        }
     }
     
     public void Clean()

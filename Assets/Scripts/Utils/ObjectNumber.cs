@@ -4,6 +4,7 @@
     {
         First,
         Second,
-        Third
+        Third,
+        Last
     }
 }
