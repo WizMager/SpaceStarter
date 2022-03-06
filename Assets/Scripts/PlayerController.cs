@@ -116,16 +116,14 @@ public class PlayerController : IExecute, IClean
     
     private void PlayerExitedGravity()
     {
-        if (!_isPathFinished)
-        {
-            _movementController.EdgeGravityState(true);
-        }
-        else
-        {
-            _isEdgeAchived = true;
-            UnsignetFromPlanet(_currentPlanetIndex);
-            SignetToPlanet(+_currentPlanetIndex);
-        }
+        _movementController.EdgeGravityState(true);
+        
+        if (_isPathFinished) return;
+        
+        _isEdgeAchived = true;
+        UnsignetFromPlanet(_currentPlanetIndex);
+        SignetToPlanet(+_currentPlanetIndex);
+
     }
     
     private void FlyingAngle()
@@ -136,8 +134,6 @@ public class PlayerController : IExecute, IClean
             var lookDirection = (_playerTransform.position - _planetsTransforms[_currentPlanetIndex].transform.position).normalized;
             _isPathFinished = true;
             _movementController.SetDirection(lookDirection);
-            //_playerView.StartCoroutine(_moveToPoint.Rotate());
-            Debug.Log($"Your way ended here! {_playerCurrentFlyingAngle}");
         }
         else
         {
