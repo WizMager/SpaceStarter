@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using Utils;
 
 namespace View
 {
@@ -8,19 +9,14 @@ namespace View
         public event Action<Vector3> OnPlayerFirstGravityEnter;
         public event Action OnPlayerGravityEnter;
         public event Action OnPlayerGravityExit;
-
-        private void OnCollisionEnter(Collision collision)
-        {
-            if (!collision.gameObject.GetComponent<PlayerView>()) return;
-            
-            var contact = collision.GetContact(0);
-            OnPlayerFirstGravityEnter?.Invoke(contact.point);
-        }
+        public ObjectNumber number;
 
         private void OnTriggerEnter(Collider other)
         {
             if (!other.GetComponent<PlayerView>()) return;
 
+            var contact = other.gameObject.transform.position;
+            OnPlayerFirstGravityEnter?.Invoke(contact);
             OnPlayerGravityEnter?.Invoke();
         }
 

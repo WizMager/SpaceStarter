@@ -20,6 +20,11 @@ public class MovementController
         _moveAroundPlanet.MovementAroundPlanet(deltaTime, currentPlanet);
     }
 
+    public void FirstMove(float deltaTime)
+    {
+        _moveAroundPlanet.FirstMoveToEdge(deltaTime);
+    }
+    
     public void MoveToPoint(float deltaTime)
     {
         _moveToDirection.MovingToPoint(deltaTime);

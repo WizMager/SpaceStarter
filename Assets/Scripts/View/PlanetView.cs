@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using Utils;
 
 namespace View
 {
@@ -7,6 +8,7 @@ namespace View
     {
         public event Action OnPlayerPlanetEnter;
         public event Action OnPlayerPlanetExit;
+        public ObjectNumber number;
 
         private void OnTriggerEnter(Collider other)
         {

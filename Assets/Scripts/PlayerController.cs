@@ -22,6 +22,8 @@ public class PlayerController : IExecute, IClean
     private int _currentPlanetIndex = 0;
     private bool _isEdgeAchived;
     private readonly Transform[] _planetsTransforms;
+    private bool _isRightRotated;
+    private bool _firstStart = true;
 
     private readonly MovementController _movementController;
     private readonly CameraController _cameraController;
@@ -55,7 +57,7 @@ public class PlayerController : IExecute, IClean
         var planetTransforms = new Transform[planetViews.Length];
         for (int i = 0; i < planetViews.Length; i++)
         {
-            planetTransforms[i] = planetViews[0].transform;
+            planetTransforms[i] = planetViews[i].transform;
         }
 
         return planetTransforms;
@@ -76,7 +78,9 @@ public class PlayerController : IExecute, IClean
         {
             if (_isEdgeAchived)
             {
-                
+                var lookDirection = (_planetsTransforms[_currentPlanetIndex].transform.position - _playerTransform.position).normalized;
+                _movementController.SetDirection(lookDirection);
+                _isEdgeAchived = false;
             }
         }
         
@@ -99,18 +103,20 @@ public class PlayerController : IExecute, IClean
 
     private void PlayerFirstEnteredGravity(Vector3 contact)
     {
-        _playerEndFlying = _planetsTransforms[_currentPlanetIndex].transform.position - contact;
+        _playerCurrentFlyingAngle = 0;
+        _playerEndFlying = _planetsTransforms[_currentPlanetIndex].position - contact;
     }
 
     private void PlayerEnteredGravity()
     {
+        _firstStart = false;
         if (!_isPathFinished)
         {
             _movementController.EdgeGravityState(false); 
         }
         else
         {
-            
+            _isPathFinished = false;
         }
     }
     
@@ -118,22 +124,24 @@ public class PlayerController : IExecute, IClean
     {
         _movementController.EdgeGravityState(true);
         
-        if (_isPathFinished) return;
+        if (!_isPathFinished) return;
         
         _isEdgeAchived = true;
         UnsignetFromPlanet(_currentPlanetIndex);
-        SignetToPlanet(+_currentPlanetIndex);
+        _currentPlanetIndex++;
+        SignetToPlanet(_currentPlanetIndex);
 
     }
     
     private void FlyingAngle()
     {
-        _playerStartFlying = _planetsTransforms[_currentPlanetIndex].transform.position - _playerTransform.position;
+        _playerStartFlying = _planetsTransforms[_currentPlanetIndex].position - _playerTransform.position;
         if (_playerCurrentFlyingAngle >= _playerEndFlyingAngle)
         {
-            var lookDirection = (_playerTransform.position - _planetsTransforms[_currentPlanetIndex].transform.position).normalized;
+            var lookDirection = (_playerTransform.position - _planetsTransforms[_currentPlanetIndex].position).normalized;
             _isPathFinished = true;
             _movementController.SetDirection(lookDirection);
+            Debug.Log(_playerCurrentFlyingAngle);
         }
         else
         {
@@ -142,13 +150,36 @@ public class PlayerController : IExecute, IClean
         }
     }
 
+    private void RotateBeforeAround()
+    {
+        var direction = _planetsTransforms[_currentPlanetIndex].localPosition - _playerTransform.localPosition;
+        _playerTransform.right = direction;
+        _isRightRotated = true;
+    }
+
     public void Execute(float deltaTime)
     {
         if (!_isPathFinished)
         {
-            _movementController.MoveAroundPlanet(deltaTime, _planetsTransforms[_currentPlanetIndex]);
-            _cameraController.RotateAroundPlanet(_playerTransform, _planetsTransforms[_currentPlanetIndex]);
-            FlyingAngle();  
+            if (_isRightRotated)
+            {
+                _movementController.MoveAroundPlanet(deltaTime, _planetsTransforms[_currentPlanetIndex]);
+                _cameraController.RotateAroundPlanet(_playerTransform, _planetsTransforms[_currentPlanetIndex]);
+                FlyingAngle();  
+            }
+            else
+            {
+                if (_firstStart)
+                {
+                    //RotateBeforeAround(); 
+                    _movementController.FirstMove(deltaTime);
+                    _cameraController.FollowPlayer(_playerTransform, 6f, deltaTime);
+                }
+                else
+                {
+                    RotateBeforeAround(); 
+                }
+            }
         }
         else
         {
