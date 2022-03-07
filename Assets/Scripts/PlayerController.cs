@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Data;
+using UnityEngine;
 using Utils;
 using View;
 
@@ -18,7 +19,7 @@ public class PlayerController : IExecute, IClean
     private Vector3 _playerEndFlying;
     private bool _isPathFinished = true;
     private int _currentPlanetIndex;
-    private bool _isEdgeAchived = true;
+    private bool _isEdgeAchieved = true;
     private readonly Transform[] _planetsTransforms;
     private bool _isRightRotated;
     //TODO: _isLastPlanet must be false for start from first stage
@@ -29,9 +30,10 @@ public class PlayerController : IExecute, IClean
     private readonly CameraController _cameraController;
     private readonly TapExplosionController _tapExplosionController;
 
-    public PlayerController(Data data, 
+    public PlayerController(ScriptableData data, 
         (IUserInput<Vector3> inputTouchDownDown, IUserInput<Vector3> inputTouchUp, IUserInput<Vector3> inputTouchHold) touchInput, 
-        PlayerView playerView, PlanetView[] planetsViews, GravityView[] gravityViews, Camera camera)
+        PlayerView playerView, PlanetView[] planetsViews, GravityView[] gravityViews, Camera camera, 
+        (IUserInput<float> InputVertical, IUserInput<float> InputHorizontal) axisInput)
     {
         _inputTouchDown = touchInput.inputTouchDownDown;
         _inputTouchUp = touchInput.inputTouchUp;
@@ -44,17 +46,18 @@ public class PlayerController : IExecute, IClean
         _planetsViews = planetsViews;
         _gravityViews = gravityViews;
         SignetToPlanet(_currentPlanetIndex);
-        _playerEndFlyingAngle = data.Player.flyingAroundPlanetAngle;
+        _playerEndFlyingAngle = data.Planet.maxAngleFlyAround;
         _planetsTransforms = SetPlanetsTransform(planetsViews);
 
-        _movementController = new MovementController(data.Player.engineForce, data.Player.gravity, 
-            data.Player.speedRotationAroundPlanet, playerView, data.Player.speedRotationToEdgeGravity, 
-            data.Player.speedMoveToEdgeGravity);
-        _cameraController = new CameraController(camera, data.Player.cameraStartUpDivision, data.Player.cameraUpMultiply);
-        _tapExplosionController = new TapExplosionController(camera, data.Player.explosionArea,
-            data.Player.explosionForce, data.LastPlanet.explosionParticle);
-        //TODO: delete last string
-        //_cameraController.SetupFirstPerson();
+        _movementController = new MovementController(data.Planet.engineForce, data.Planet.gravity, 
+            data.Planet.speedRotationAroundPlanet, playerView, data.Planet.rotationSpeedToDirection, 
+            data.Planet.moveSpeedToDirection);
+        _cameraController = new CameraController(camera, data.Camera.startUpDivision, data.Camera.upSpeed, 
+            data.Camera.upOffsetFromPlayer, axisInput, data.LastPlanet.center, data.Camera.firstPersonRotationSpeed);
+        _tapExplosionController = new TapExplosionController(camera, data.LastPlanet.explosionArea,
+            data.LastPlanet.explosionForce, data.LastPlanet.explosionParticle);
+        //TODO: delete last string for start from first stage
+        //_cameraController.FirstPersonActivation();
     }
 
     private Transform[] SetPlanetsTransform(PlanetView[] planetViews)
@@ -83,13 +86,13 @@ public class PlayerController : IExecute, IClean
         {
             if (_isPathFinished)
             {
-                if (_isEdgeAchived)
+                if (_isEdgeAchieved)
                 {
                     var lookDirection =
                         (_planetsTransforms[_currentPlanetIndex].transform.position - _playerTransform.position)
                         .normalized;
                     _movementController.SetDirection(lookDirection);
-                    _isEdgeAchived = false;
+                    _isEdgeAchieved = false;
                 }
             }
             else
@@ -140,7 +143,7 @@ public class PlayerController : IExecute, IClean
     {
         if (_isPathFinished)
         {
-            _isEdgeAchived = true;
+            _isEdgeAchieved = true;
             _movementController.GravityDirectionMove(true);
             UnsignetFromPlanet(_currentPlanetIndex);
             _currentPlanetIndex++;
@@ -178,32 +181,33 @@ public class PlayerController : IExecute, IClean
     private void LastPlanetGravityEntered()
     {
         _isLastPlanet = true;
-        _cameraController.SetupFirstPerson();
+        _cameraController.FirstPersonActivation();
+        _playerView.gameObject.SetActive(false);
     }
-    
+
     public void Execute(float deltaTime)
     {
         if (_isLastPlanet) return;
-
-            if (_isPathFinished)
+        
+        if (_isPathFinished)
+        {
+            _movementController.MoveToPoint(deltaTime);
+            _cameraController.FollowPlayer(_playerTransform, deltaTime);
+        }
+        else
+        {
+            if (_isRightRotated)
             {
-                _movementController.MoveToPoint(deltaTime);
-                _cameraController.FollowPlayer(_playerTransform, 10f, deltaTime);
+                _movementController.MoveAroundPlanet(deltaTime, _planetsTransforms[_currentPlanetIndex]);
+                _cameraController.FollowPlayer(_playerTransform, deltaTime);
+                //_cameraController.RotateAroundPlanet(_playerTransform, _planetsTransforms[_currentPlanetIndex]);
+                FlyingAngle();
             }
             else
             {
-                if (_isRightRotated)
-                {
-                    _movementController.MoveAroundPlanet(deltaTime, _planetsTransforms[_currentPlanetIndex]);
-                    _cameraController.FollowPlayer(_playerTransform, 10f, deltaTime);
-                    //_cameraController.RotateAroundPlanet(_playerTransform, _planetsTransforms[_currentPlanetIndex]);
-                    FlyingAngle();
-                }
-                else
-                {
-                    RotateBeforeAround();
-                }
+                RotateBeforeAround();
             }
+        }
     }
 
     private void SignetToPlanet(int index)

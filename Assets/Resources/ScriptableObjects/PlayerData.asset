@@ -13,14 +13,3 @@ MonoBehaviour:
   m_Name: PlayerData
   m_EditorClassIdentifier: 
   missileCount: 0
-  explosionArea: 0.5
-  explosionForce: 50
-  swipeSensitivity: 10
-  gravity: 3.2
-  speedRotationAroundPlanet: 25
-  engineForce: 3.2
-  flyingAroundPlanetAngle: 50
-  speedMoveToEdgeGravity: 1
-  speedRotationToEdgeGravity: 1
-  cameraStartUpDivision: 1
-  cameraUpMultiply: 1

@@ -1,10 +1,13 @@
 ﻿using UnityEngine;
 
-[CreateAssetMenu(menuName = "Data/LastPlanetData", fileName = "LastPlanetData")]
-public class LastPlanetData : ScriptableObject
+namespace Data
 {
-   public GameObject explosionParticle;
-   public GameObject explosionBox;
-   public float explosionBoxForce;
-   public GameObject center;
+   [CreateAssetMenu(menuName = "Data/LastPlanetData", fileName = "LastPlanetData")]
+   public class LastPlanetData : ScriptableObject
+   {
+      public float explosionArea;
+      public float explosionForce;
+      public GameObject explosionParticle;
+      public Vector3 center;
+   }
 }

@@ -25,12 +25,11 @@ public class TapExplosionController
             var hitSphereExplosion = hitsSphereCast[0];
             foreach (var hitSphereCast in hitsSphereCast)
             {
-                //TODO: fix problem with null ref when access to rb in array from spherecast
                 if (hitSphereCast.rigidbody.isKinematic)
                 {
                     hitSphereCast.rigidbody.isKinematic = false;
                 }
-
+                
                 if (hitSphereCast.distance > hitSphereExplosion.distance)
                 {
                     hitSphereExplosion = hitSphereCast;

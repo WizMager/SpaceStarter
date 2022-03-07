@@ -1,5 +1,6 @@
 ﻿using System;
 using Controller;
+using Data;
 using UnityEngine;
 using Utils;
 using View;
@@ -10,7 +11,7 @@ public class GameInitialization
    private PlanetView[] _planets;
    private GravityView[] _gravities;
 
-   public GameInitialization(Controllers controllers, Data data)
+   public GameInitialization(Controllers controllers, ScriptableData data)
    {
       var player = Object.FindObjectOfType<PlayerView>();
       var camera = Object.FindObjectOfType<Camera>();
@@ -20,12 +21,8 @@ public class GameInitialization
       
       var inputInitialization = new InputInitialization();
       controllers.Add(new InputController(inputInitialization.GetAllInput()));
-      // controllers.Add(new CameraFirstPersonMoveController(inputInitialization.GetAxisInput(), cameras[1],
-      //    planets[3].transform, data.Player.swipeSensitivity));
-      // controllers.Add(new TapExplosionController(cameras[1], inputInitialization.GetTouchDown(), data.Player.explosionArea,
-      //    data.Player.explosionForce, data.LastPlanet.explosionParticle));
       controllers.Add(new PlayerController(data, inputInitialization.GetTouchAll(), player, _planets, 
-         _gravities, camera));
+         _gravities, camera, inputInitialization.GetAxis()));
    }
 
    private void SortPlanetObjects()
