@@ -106,7 +106,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3445460351065923654}
   m_Layer: 0
-  m_Name: PlanetObject
+  m_Name: PlanetAndGravity
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
