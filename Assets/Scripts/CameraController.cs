@@ -63,7 +63,7 @@ public class CameraController : IClean
 
     public void FirstPersonActivation()
     {
-        var position = new Vector3(-12f, 1f, 40.9f);
+        var position = new Vector3(-6.8f, 7.6f, 38.8f);
         var rotation = Quaternion.Euler(new Vector3(0, -90f, 0));
         _camera.transform.SetPositionAndRotation(position, rotation);
         _isLastPlanet = true;

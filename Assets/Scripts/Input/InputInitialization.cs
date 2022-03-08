@@ -18,11 +18,11 @@ public class InputInitialization : IInitialization
     }
 
     public (IUserInput<float> inputVertical, IUserInput<float> inputHorizontal, IUserInput<Vector3> inputTouchDown, 
-        IUserInput<Vector3> inputTouchUp, IUserInput<Vector3> inputTouchHold) GetAllInput()
+            IUserInput<Vector3> inputTouchHold, IUserInput<Vector3> inputTouchUp) GetAllInput()
     {
         (IUserInput<float> inputVertical, IUserInput<float> inputHorizontal, IUserInput<Vector3> inputTouch, 
-            IUserInput<Vector3> inputTouchUp, IUserInput<Vector3> inputTouchHold) result =
-            (_inputVertical, _inputHorizontal, _inputTouchDown, _inputTouchUp, _inputTouchHold);
+            IUserInput<Vector3> inputTouchHold, IUserInput<Vector3> inputTouchUp) result =
+            (_inputVertical, _inputHorizontal, _inputTouchDown, _inputTouchHold,_inputTouchUp);
         return result;
     }
     
@@ -33,26 +33,11 @@ public class InputInitialization : IInitialization
         return result;
     }
     
-    public (IUserInput<Vector3> inputTouchDown, IUserInput<Vector3> inputTouchUp,IUserInput<Vector3> inputTouchHold) GetTouchAll()
+    public (IUserInput<Vector3> inputTouchDown, IUserInput<Vector3> inputTouchHold, IUserInput<Vector3> inputTouchUp) GetTouchAll()
     {
-        (IUserInput<Vector3> inputTouchDown, IUserInput<Vector3> inputTouchUp, IUserInput<Vector3> inputTouchHold)
-            result = (_inputTouchDown, _inputTouchUp, _inputTouchHold);
+        (IUserInput<Vector3> inputTouchDown, IUserInput<Vector3> inputTouchHold, IUserInput<Vector3> inputTouchUp)
+            result = (_inputTouchDown, _inputTouchHold, _inputTouchUp);
         return result;
-    }
-
-    public IUserInput<Vector3> GetTouchDown()
-    {
-        return _inputTouchDown;
-    }
-    
-    public IUserInput<Vector3> GetTouchUp()
-    {
-        return _inputTouchUp;
-    }
-    
-    public IUserInput<Vector3> GetTouchHold()
-    {
-        return _inputTouchHold;
     }
     
     public void Initialization()

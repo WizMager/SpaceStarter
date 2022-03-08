@@ -23,8 +23,8 @@ public class PlayerController : IExecute, IClean
     private readonly Transform[] _planetsTransforms;
     private bool _isRightRotated;
     //TODO: _isLastPlanet must be false for start from first stage
-    //private bool _isLastPlanet = true;
-    private bool _isLastPlanet;
+    private bool _isLastPlanet = true;
+    //private bool _isLastPlanet;
 
     private readonly MovementController _movementController;
     private readonly CameraController _cameraController;
@@ -57,7 +57,7 @@ public class PlayerController : IExecute, IClean
         _tapExplosionController = new TapExplosionController(camera, data.LastPlanet.explosionArea,
             data.LastPlanet.explosionForce, data.LastPlanet.explosionParticle);
         //TODO: delete last string for start from first stage
-        //_cameraController.FirstPersonActivation();
+        _cameraController.FirstPersonActivation();
     }
 
     private Transform[] SetPlanetsTransform(PlanetView[] planetViews)
