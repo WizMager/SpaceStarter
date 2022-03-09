@@ -6,13 +6,13 @@ using View;
 public class MovementController
 {
     private readonly MoveAroundPlanet _moveAroundPlanet;
-    private readonly MoveToDirection _moveToDirection;
+    private readonly MoveToDirectionOld _moveToDirectionOld;
     
     public MovementController(float engineForce, float gravityForce, float rotationAroundPlanet, 
         PlayerView playerView, float rotationSpeed, float moveSpeed)
     {
         _moveAroundPlanet = new MoveAroundPlanet(engineForce, gravityForce, rotationAroundPlanet, playerView.transform);
-        _moveToDirection = new MoveToDirection(rotationSpeed, moveSpeed, playerView);
+        _moveToDirectionOld = new MoveToDirectionOld(rotationSpeed, moveSpeed, playerView);
     }
 
     public void MoveAroundPlanet(float deltaTime, Transform currentPlanet)
@@ -22,12 +22,12 @@ public class MovementController
 
     public void MoveToPoint(float deltaTime)
     {
-        _moveToDirection.MovingToPoint(deltaTime);
+        _moveToDirectionOld.MovingToPoint(deltaTime);
     }
 
     public void SetDirection(Vector3 lookDirection)
     {
-        _moveToDirection.SetDirection(lookDirection);
+        _moveToDirectionOld.SetDirection(lookDirection);
     }
     
     public void InsidePlanet(bool isInside)
@@ -47,6 +47,6 @@ public class MovementController
 
     public void GravityDirectionMove(bool isOut)
     {
-        _moveToDirection.Activation(!isOut);
+        _moveToDirectionOld.Activation(!isOut);
     }
 }

@@ -26,17 +26,18 @@ public class InputInitialization : IInitialization
         return result;
     }
     
-    public (IUserInput<float> inputVertical, IUserInput<float> inputHorizontal) GetAxis()
+    public IUserInput<float>[] GetAxis()
     {
-        (IUserInput<float> inputVertical, IUserInput<float> inputHorizontal) result =
-            (_inputVertical, _inputHorizontal);
+        var result = new[] {_inputVertical, _inputHorizontal};
         return result;
     }
     
-    public (IUserInput<Vector3> inputTouchDown, IUserInput<Vector3> inputTouchHold, IUserInput<Vector3> inputTouchUp) GetTouchAll()
+    public IUserInput<Vector3>[] GetTouchAll()
     {
-        (IUserInput<Vector3> inputTouchDown, IUserInput<Vector3> inputTouchHold, IUserInput<Vector3> inputTouchUp)
-            result = (_inputTouchDown, _inputTouchHold, _inputTouchUp);
+        var result = new[]
+        {
+            _inputTouchDown, _inputTouchHold, _inputTouchUp
+        };
         return result;
     }
     

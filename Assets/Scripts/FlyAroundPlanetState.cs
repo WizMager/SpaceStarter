@@ -1,12 +1,14 @@
-﻿namespace DefaultNamespace
+﻿using UnityEngine;
+
+namespace DefaultNamespace
 {
     public class FlyAroundPlanetState : State
     {
-
         public override void Move(float deltaTime)
         {
-            if (!_stateContext.FlyAroundPlanet(deltaTime)) return;
-            _stateContext.TransitionTo(new FlyToEdgeGravityState());
+            var lookDirection = _stateContext.FlyAroundPlanet(deltaTime);
+            if (lookDirection == Vector3.zero) return;
+            _stateContext.TransitionTo(new FlyToEdgeGravityState(lookDirection));
         }
     }
 }

@@ -6,7 +6,7 @@ namespace DefaultNamespace
     {
         private readonly float _speedRotation;
         private readonly Transform _playerTransform;
-        private readonly Transform _currentPlanet;
+        private Transform _currentPlanet;
 
         public RotationAroundPlanet(float speedRotation, Transform playerTransform, Transform currentPlanet)
         {
@@ -18,6 +18,11 @@ namespace DefaultNamespace
         public void Move(float deltaTime)
         {
             _playerTransform.RotateAround(_currentPlanet.position, _currentPlanet.up, _speedRotation * deltaTime);
+        }
+
+        public void ChangePlanet(Transform currentPlanet)
+        {
+            _currentPlanet = currentPlanet;
         }
     }
 }

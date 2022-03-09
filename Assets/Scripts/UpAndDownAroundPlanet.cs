@@ -9,8 +9,8 @@ namespace DefaultNamespace
         private readonly float _engineForce;
         private readonly float _gravityForce;
         private readonly Transform _playerTransform;
-        private readonly GravityView _gravityView;
-        private readonly PlanetView _planetView;
+        private GravityView _gravityView;
+        private PlanetView _planetView;
         private readonly IUserInput<Vector3>[] _touch;
 
         private bool _isTouched;
@@ -85,6 +85,22 @@ namespace DefaultNamespace
             _isTouched = false;
         }
 
+        public void ChangePlanet(PlanetView currentPlanet, GravityView currentGravity)
+        {
+            _planetView.OnPlayerPlanetEnter -= PlanetEntered;
+            _planetView.OnPlayerPlanetExit -= PlanetExited;
+            _gravityView.OnPlayerGravityEnter -= GravityEntered;
+            _gravityView.OnPlayerGravityExit -= GravityExited;
+
+            _planetView = currentPlanet;
+            _gravityView = currentGravity;
+            
+            _planetView.OnPlayerPlanetEnter += PlanetEntered;
+            _planetView.OnPlayerPlanetExit += PlanetExited;
+            _gravityView.OnPlayerGravityEnter += GravityEntered;
+            _gravityView.OnPlayerGravityExit += GravityExited;
+        }
+        
         public void OnDestroy()
         {
             _planetView.OnPlayerPlanetEnter -= PlanetEntered;

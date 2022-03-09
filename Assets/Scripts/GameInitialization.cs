@@ -1,6 +1,7 @@
 ﻿using System;
 using Controller;
 using Data;
+using DefaultNamespace;
 using UnityEngine;
 using Utils;
 using View;
@@ -18,11 +19,14 @@ public class GameInitialization
       _planets = Object.FindObjectsOfType<PlanetView>();
       _gravities = Object.FindObjectsOfType<GravityView>();
       SortPlanetObjects();
-      
+
       var inputInitialization = new InputInitialization();
       controllers.Add(new InputController(inputInitialization.GetAllInput()));
-      controllers.Add(new PlayerController(data, inputInitialization.GetTouchAll(), player, _planets, 
-         _gravities, camera, inputInitialization.GetAxis()));
+      // controllers.Add(new PlayerController(data, inputInitialization.GetTouchAll(), player, _planets, 
+      //    _gravities, camera, inputInitialization.GetAxis()));
+      controllers.Add(new StateContext(new AimNextPlanetState(), data, player,
+         inputInitialization.GetTouchAll(),
+         inputInitialization.GetAxis(), _planets, _gravities, camera));
    }
 
    private void SortPlanetObjects()
@@ -34,17 +38,20 @@ public class GameInitialization
       {
          switch (planet.number)
          {
-            case ObjectNumber.First:
+            case ObjectNumber.NotPlanet:
                sortedPlanets[0] = planet;
                break;
-            case ObjectNumber.Second:
+            case ObjectNumber.First:
                sortedPlanets[1] = planet;
                break;
-            case ObjectNumber.Third:
+            case ObjectNumber.Second:
                sortedPlanets[2] = planet;
                break;
-            case ObjectNumber.Last:
+            case ObjectNumber.Third:
                sortedPlanets[3] = planet;
+               break;
+            case ObjectNumber.Last:
+               sortedPlanets[4] = planet;
                break;
             default:
                throw new ArgumentOutOfRangeException($"Too much planet!");
@@ -55,17 +62,20 @@ public class GameInitialization
       {
          switch (gravity.number)
          {
-            case ObjectNumber.First:
+            case ObjectNumber.NotPlanet:
                sortedGravities[0] = gravity;
                break;
-            case ObjectNumber.Second:
+            case ObjectNumber.First:
                sortedGravities[1] = gravity;
                break;
+            case ObjectNumber.Second:
+               sortedGravities[2] = gravity;
+               break;
             case ObjectNumber.Third:
-               sortedGravities[2]= gravity;
+               sortedGravities[3]= gravity;
                break;
             case ObjectNumber.Last:
-               sortedGravities[3] = gravity;
+               sortedGravities[4] = gravity;
                break;
             default:
                throw new ArgumentOutOfRangeException($"Too much gravities!");

@@ -4,7 +4,7 @@ namespace DefaultNamespace
 {
     public class FlyPlanetAngle
     {
-        private readonly Transform _planet;
+        private Transform _planet;
         private readonly Transform _player;
 
         private Vector3 _start;
@@ -35,6 +35,14 @@ namespace DefaultNamespace
                 _end = _start;
                 return Vector3.zero;
             }
+        }
+
+        public void ChangePlanet(Transform currentPlanet, Transform nextPlanet)
+        {
+            _planet = currentPlanet;
+            _start = _player.position - currentPlanet.position;
+            _end = _start;
+            _fullAngle = Vector3.Angle(_start, nextPlanet.position - currentPlanet.position) + 360f;
         }
     }
 }
