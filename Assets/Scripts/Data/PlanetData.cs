@@ -8,7 +8,6 @@ namespace Data
         public float gravity;
         public float speedRotationAroundPlanet;
         public float engineForce;
-        public float maxAngleFlyAround;
         public float moveSpeedToDirection;
         public float rotationSpeedToDirection;
     }

@@ -16,25 +16,25 @@ namespace DefaultNamespace
         {
             _planet = currentPlanet;
             _player = player;
-            _start = player.position - currentPlanet.position;
+            _start = _player.position - _planet.position;
             _end = _start;
             _fullAngle = Vector3.Angle(_start, nextPlanet.position - currentPlanet.position) + 360f;
         }
         
         public Vector3 FlewAngle()
         {
-            _start = _planet.position - _player.position;
+            Debug.Log(_currentAngle);
+            _start = _player.position - _planet.position;
             if (_currentAngle >= _fullAngle)
             {
                 var lookDirection = (_player.position - _planet.position).normalized;
                 return lookDirection;
             }
-            else
-            {
-                _currentAngle += Vector3.Angle(_start, _end);
-                _end = _start;
-                return Vector3.zero;
-            }
+            
+            _currentAngle += Vector3.Angle(_start, _end);
+            _end = _start;
+            return Vector3.zero;
+            
         }
 
         public void ChangePlanet(Transform currentPlanet, Transform nextPlanet)

@@ -12,10 +12,9 @@ namespace DefaultNamespace
             private readonly Transform _playerTransform;
         
             private bool _isInGravity;
-            private bool _isFinished;
+            private bool _isRotated;
             private Quaternion _lookRotation;
-            private Vector3 _lookDirection;
-        
+
             public MoveToDirection(float rotationSpeed, float moveSpeed, GravityView gravityView, Transform playerTransform)
             {
                 _rotationSpeed = rotationSpeed;
@@ -29,28 +28,12 @@ namespace DefaultNamespace
 
             public void SetDirection(Vector3 lookDirection)
             {
-                _isFinished = false;
                 _isInGravity = true;
-                _lookDirection = lookDirection;
+                _isRotated = false;
                 _lookRotation = Quaternion.LookRotation(new Vector3(lookDirection.x, 0, lookDirection.z));
-                _gravityView.StartCoroutine(Move());
+                _gravityView.StartCoroutine(Rotate());
             }
-            
-            private IEnumerator Move()
-            {
-                Debug.Log("coroutine start");
-                if (_isInGravity)
-                {
-                    _gravityView.StartCoroutine(Rotate());
-                    _playerTransform.Translate(_lookDirection * Time.deltaTime * _moveSpeed, Space.World);
-                    yield return null;
-                }
-                else
-                {
-                    _gravityView.StopCoroutine(Move());
-                    _isFinished = true;
-                }
-            }
+
             private IEnumerator Rotate()
             {
                 var startRotation = _playerTransform.rotation;
@@ -59,7 +42,8 @@ namespace DefaultNamespace
                     _playerTransform.rotation = Quaternion.Lerp(startRotation, _lookRotation, i / _rotationSpeed);
                     yield return null;
                 }
-                
+
+                _isRotated = true;
                 _gravityView.StopCoroutine(Rotate());
             }
 
@@ -75,7 +59,13 @@ namespace DefaultNamespace
 
             public bool IsFinished()
             {
-                return _isFinished;
+                if (!_isInGravity) return true;
+                if (_isRotated)
+                {
+                    _playerTransform.Translate(_playerTransform.forward * Time.deltaTime * _moveSpeed, Space.World);
+                }
+
+                return false;
             }
 
             public void ChangePlanet(GravityView currentGravityView)
@@ -89,6 +79,7 @@ namespace DefaultNamespace
             public void OnDestroy()
             {
                 _gravityView.OnPlayerGravityExit -= GravityExited;
+                _gravityView.OnPlayerGravityEnter -= GravityEntered;
             }
     }
 }

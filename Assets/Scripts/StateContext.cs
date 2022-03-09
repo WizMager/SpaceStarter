@@ -8,13 +8,14 @@ namespace DefaultNamespace
     public class StateContext : IExecute, IClean
     {
         private State _state;
-        private int _planetIndex;
+        private int _planetIndex = 1;
         private readonly PlanetView[] _planetViews;
         private readonly GravityView[] _gravityViews;
         private readonly PlayerView _playerView;
         
 
         private Vector3 _lookDirection;
+        private bool _isRightRotation;
         
         private RotationAroundPlanet _rotationAroundPlanet;
         private UpAndDownAroundPlanet _upAndDownAroundPlanet;
@@ -36,16 +37,16 @@ namespace DefaultNamespace
             _rotationAroundPlanet = new RotationAroundPlanet(data.Planet.speedRotationAroundPlanet,
                 playerView.transform, planetViews[_planetIndex].transform);
             _flyPlanetAngle =
-                new FlyPlanetAngle(planetViews[0].transform, playerView.transform, planetViews[1].transform);
+                new FlyPlanetAngle(planetViews[_planetIndex].transform, playerView.transform, planetViews[_planetIndex + 1].transform);
             _moveToDirection = new MoveToDirection(data.Planet.rotationSpeedToDirection,
-                data.Planet.moveSpeedToDirection, gravityViews[0], playerView.transform);
+                data.Planet.moveSpeedToDirection, gravityViews[_planetIndex], playerView.transform);
             _aimNextPlanet = new AimNextPlanet(touchInput, playerView.transform);
             _cameraController = new CameraController(camera, data.Camera.startUpDivision, data.Camera.upSpeed,
                 data.Camera.upOffsetFromPlayer, axisInput, data.LastPlanet.center,
                 data.Camera.firstPersonRotationSpeed);
 
-            _state = new AimNextPlanetState();
-            _state.SetContext(this);
+            _state = new AimNextPlanetState(this);
+            //_state = new FlyNextPlanetState(_planetViews[_planetIndex].transform.position - _playerView.transform.position, this);
         }
 
         public void TransitionTo(State state)
@@ -61,12 +62,19 @@ namespace DefaultNamespace
             _flyPlanetAngle.ChangePlanet(_planetViews[_planetIndex].transform, _planetViews[_planetIndex + 1].transform);
             _rotationAroundPlanet.ChangePlanet(_planetViews[_planetIndex].transform);
             _upAndDownAroundPlanet.ChangePlanet(_planetViews[_planetIndex], _gravityViews[_planetIndex]);
+            _isRightRotation = false;
         }
         
         public Vector3 FlyAroundPlanet(float deltaTime)
         {
-            _rotationAroundPlanet.Move(deltaTime);
+            if (!_isRightRotation)
+            {
+                var direction = _planetViews[_planetIndex].transform.position - _playerView.transform.position;
+                _playerView.transform.right = direction;
+                _isRightRotation = true;
+            }
             _upAndDownAroundPlanet.Move(deltaTime);
+            _rotationAroundPlanet.Move(deltaTime);
             return _flyPlanetAngle.FlewAngle();
         }
 
