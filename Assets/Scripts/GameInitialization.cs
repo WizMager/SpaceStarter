@@ -24,7 +24,7 @@ public class GameInitialization
       controllers.Add(new InputController(inputInitialization.GetAllInput()));
       // controllers.Add(new PlayerController(data, inputInitialization.GetTouchAll(), player, _planets, 
       //    _gravities, camera, inputInitialization.GetAxis()));
-      controllers.Add(new StateContext(new AimNextPlanetState(), data, player,
+      controllers.Add(new StateContext(data, player,
          inputInitialization.GetTouchAll(),
          inputInitialization.GetAxis(), _planets, _gravities, camera));
    }

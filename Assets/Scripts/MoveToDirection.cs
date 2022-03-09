@@ -38,6 +38,7 @@ namespace DefaultNamespace
             
             private IEnumerator Move()
             {
+                Debug.Log("coroutine start");
                 if (_isInGravity)
                 {
                     _gravityView.StartCoroutine(Rotate());

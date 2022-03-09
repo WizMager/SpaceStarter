@@ -11,6 +11,7 @@ namespace DefaultNamespace
         private int _planetIndex;
         private readonly PlanetView[] _planetViews;
         private readonly GravityView[] _gravityViews;
+        private readonly PlayerView _playerView;
         
 
         private Vector3 _lookDirection;
@@ -20,13 +21,15 @@ namespace DefaultNamespace
         private FlyPlanetAngle _flyPlanetAngle;
         private MoveToDirection _moveToDirection;
         private AimNextPlanet _aimNextPlanet;
+        private CameraController _cameraController;
 
-        public StateContext(State state, ScriptableData data, PlayerView playerView, IUserInput<Vector3>[] touchInput, 
+        public StateContext(ScriptableData data, PlayerView playerView, IUserInput<Vector3>[] touchInput, 
             IUserInput<float>[] axisInput, PlanetView[] planetViews, GravityView[] gravityViews, Camera camera)
         {
-            _state = state;
+            
             _planetViews = planetViews;
             _gravityViews = gravityViews;
+            _playerView = playerView;
 
             _upAndDownAroundPlanet = new UpAndDownAroundPlanet(data.Planet.engineForce, data.Planet.gravity,
                 playerView.transform, planetViews[_planetIndex], gravityViews[_planetIndex], touchInput);
@@ -37,6 +40,12 @@ namespace DefaultNamespace
             _moveToDirection = new MoveToDirection(data.Planet.rotationSpeedToDirection,
                 data.Planet.moveSpeedToDirection, gravityViews[0], playerView.transform);
             _aimNextPlanet = new AimNextPlanet(touchInput, playerView.transform);
+            _cameraController = new CameraController(camera, data.Camera.startUpDivision, data.Camera.upSpeed,
+                data.Camera.upOffsetFromPlayer, axisInput, data.LastPlanet.center,
+                data.Camera.firstPersonRotationSpeed);
+
+            _state = new AimNextPlanetState();
+            _state.SetContext(this);
         }
 
         public void TransitionTo(State state)
@@ -78,6 +87,7 @@ namespace DefaultNamespace
         
         public void Execute(float deltaTime)
         {
+            _cameraController.FollowPlayer(_playerView.transform, deltaTime);
             _state.Move(deltaTime);
         }
 

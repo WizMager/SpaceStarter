@@ -11,7 +11,7 @@ namespace DefaultNamespace
         
         public override void Move(float deltaTime)
         {
-            if (!_stateContext.FlyToEdgeGravity()) return;
+            if (_stateContext.FlyToEdgeGravity()) return;
             _stateContext.ChangeCurrentPlanet();
             _stateContext.TransitionTo(new FlyAroundPlanetState());
         }

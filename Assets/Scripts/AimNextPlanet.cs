@@ -35,23 +35,23 @@ namespace DefaultNamespace
         {
             _isAimEnded = false;
             var clearPosition = new Vector3(position.x, 0, position.z);
-            _flyDirection = (_playerTransform.position - clearPosition).normalized;
-            _playerTransform.LookAt(_flyDirection);
+            _flyDirection = _playerTransform.position - clearPosition;
         }
 
         private void TouchHold(Vector3 position)
         {
             var clearPosition = new Vector3(position.x, 0, position.z);
-            _flyDirection = (_playerTransform.position - clearPosition).normalized; 
-            _playerTransform.LookAt(_flyDirection);
+            _flyDirection = _playerTransform.position - clearPosition; 
+            _playerTransform.rotation.SetFromToRotation(_playerTransform.forward, _flyDirection);
+            // var rotateAngle = Vector3.Angle(_playerTransform.forward, _flyDirection);
+            // _playerTransform.Rotate(_playerTransform.up, rotateAngle);
         }
 
         private void TouchUp(Vector3 position)
         {
             _isAimEnded = true;
             var clearPosition = new Vector3(position.x, 0, position.z);
-            _flyDirection = (_playerTransform.position - clearPosition).normalized;
-            _playerTransform.LookAt(_flyDirection);
+            _flyDirection = _playerTransform.position - clearPosition;
         }
 
         private void GravityEntered()

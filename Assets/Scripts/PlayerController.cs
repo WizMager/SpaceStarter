@@ -30,35 +30,35 @@ public class PlayerController : IExecute, IClean
     private readonly CameraController _cameraController;
     private readonly TapExplosionController _tapExplosionController;
 
-    public PlayerController(ScriptableData data, 
-        (IUserInput<Vector3> inputTouchDownDown, IUserInput<Vector3> inputTouchUp, IUserInput<Vector3> inputTouchHold) touchInput, 
-        PlayerView playerView, PlanetView[] planetsViews, GravityView[] gravityViews, Camera camera, 
-        (IUserInput<float> InputVertical, IUserInput<float> InputHorizontal) axisInput)
-    {
-        _inputTouchDown = touchInput.inputTouchDownDown;
-        _inputTouchUp = touchInput.inputTouchUp;
-        _inputTouchHold = touchInput.inputTouchHold;
-        _inputTouchDown.OnChange += OnTouchedDown;
-        _inputTouchUp.OnChange += OnTouchedUp;
-        _inputTouchHold.OnChange += OnTouchedHold;
-        _playerView = playerView;
-        _playerTransform = playerView.transform;
-        _planetsViews = planetsViews;
-        _gravityViews = gravityViews;
-        SignetToPlanet(_currentPlanetIndex);
-        _playerEndFlyingAngle = data.Planet.maxAngleFlyAround;
-        _planetsTransforms = SetPlanetsTransform(planetsViews);
-
-        _movementController = new MovementController(data.Planet.engineForce, data.Planet.gravity, 
-            data.Planet.speedRotationAroundPlanet, playerView, data.Planet.rotationSpeedToDirection, 
-            data.Planet.moveSpeedToDirection);
-        _cameraController = new CameraController(camera, data.Camera.startUpDivision, data.Camera.upSpeed, 
-            data.Camera.upOffsetFromPlayer, axisInput, data.LastPlanet.center, data.Camera.firstPersonRotationSpeed);
-        _tapExplosionController = new TapExplosionController(camera, data.LastPlanet.explosionArea,
-            data.LastPlanet.explosionForce, data.LastPlanet.explosionParticle);
-        //TODO: delete last string for start from first stage
-        _cameraController.FirstPersonActivation();
-    }
+    // public PlayerController(ScriptableData data, 
+    //     (IUserInput<Vector3> inputTouchDownDown, IUserInput<Vector3> inputTouchUp, IUserInput<Vector3> inputTouchHold) touchInput, 
+    //     PlayerView playerView, PlanetView[] planetsViews, GravityView[] gravityViews, Camera camera, 
+    //     (IUserInput<float> InputVertical, IUserInput<float> InputHorizontal) axisInput)
+    // {
+    //     _inputTouchDown = touchInput.inputTouchDownDown;
+    //     _inputTouchUp = touchInput.inputTouchUp;
+    //     _inputTouchHold = touchInput.inputTouchHold;
+    //     _inputTouchDown.OnChange += OnTouchedDown;
+    //     _inputTouchUp.OnChange += OnTouchedUp;
+    //     _inputTouchHold.OnChange += OnTouchedHold;
+    //     _playerView = playerView;
+    //     _playerTransform = playerView.transform;
+    //     _planetsViews = planetsViews;
+    //     _gravityViews = gravityViews;
+    //     SignetToPlanet(_currentPlanetIndex);
+    //     _playerEndFlyingAngle = data.Planet.maxAngleFlyAround;
+    //     _planetsTransforms = SetPlanetsTransform(planetsViews);
+    //
+    //     _movementController = new MovementController(data.Planet.engineForce, data.Planet.gravity, 
+    //         data.Planet.speedRotationAroundPlanet, playerView, data.Planet.rotationSpeedToDirection, 
+    //         data.Planet.moveSpeedToDirection);
+    //     _cameraController = new CameraController(camera, data.Camera.startUpDivision, data.Camera.upSpeed, 
+    //         data.Camera.upOffsetFromPlayer, axisInput, data.LastPlanet.center, data.Camera.firstPersonRotationSpeed);
+    //     _tapExplosionController = new TapExplosionController(camera, data.LastPlanet.explosionArea,
+    //         data.LastPlanet.explosionForce, data.LastPlanet.explosionParticle);
+    //     //TODO: delete last string for start from first stage
+    //     _cameraController.FirstPersonActivation();
+    // }
 
     private Transform[] SetPlanetsTransform(PlanetView[] planetViews)
     {

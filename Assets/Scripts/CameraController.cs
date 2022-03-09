@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using Utils;
 
 public class CameraController : IClean
 {
@@ -18,14 +19,14 @@ public class CameraController : IClean
     private bool _isLastPlanet;
 
     public CameraController(Camera camera, float cameraStartUpDivision, float cameraUpSpeed, float cameraUpOffset, 
-        (IUserInput<float> InputVertical, IUserInput<float> InputHorizontal) axisInput, Vector3 lastPlanetCenter, float fpRotationSpeed)
+        IUserInput<float>[] axisInput, Vector3 lastPlanetCenter, float fpRotationSpeed)
     {
         _camera = camera;
         _cameraStartUpDivision = cameraStartUpDivision;
         _cameraUpSpeed = cameraUpSpeed;
         _cameraUpOffset = cameraUpOffset;
-        _vertical = axisInput.InputVertical;
-        _horizontal = axisInput.InputHorizontal;
+        _vertical = axisInput[(int) AxisInput.InputVertical];
+        _horizontal = axisInput[(int) AxisInput.InputHorizontal];
         _lastPlanetCenter = lastPlanetCenter;
         _fpRotationSpeed = fpRotationSpeed;
 
