@@ -15,7 +15,6 @@ namespace View
 
         private void OnTriggerEnter(Collider other)
         {
-            
             if (!other.GetComponent<PlayerView>()) return;
 
             if (number == ObjectNumber.Last)

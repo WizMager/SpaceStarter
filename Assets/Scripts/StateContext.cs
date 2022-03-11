@@ -40,7 +40,7 @@ namespace DefaultNamespace
                 new FlyPlanetAngle(planetViews[_planetIndex].transform, playerView.transform, planetViews[_planetIndex + 1].transform);
             _moveToDirection = new MoveToDirection(data.Planet.rotationSpeedToDirection,
                 data.Planet.moveSpeedToDirection, gravityViews[_planetIndex], playerView.transform);
-            _aimNextPlanet = new AimNextPlanet(touchInput, playerView.transform);
+            _aimNextPlanet = new AimNextPlanet(touchInput, playerView.transform, camera);
             _cameraController = new CameraController(camera, data.Camera.startUpDivision, data.Camera.upSpeed,
                 data.Camera.upOffsetFromPlayer, axisInput, data.LastPlanet.center,
                 data.Camera.firstPersonRotationSpeed);
@@ -88,9 +88,9 @@ namespace DefaultNamespace
             return _moveToDirection.IsFinished();
         }
 
-        public Vector3 AimNextPlanet()
+        public Vector3 AimNextPlanet(float deltaTime)
         {
-            return _aimNextPlanet.Aim();
+            return _aimNextPlanet.Aim(deltaTime);
         }
         
         public void Execute(float deltaTime)

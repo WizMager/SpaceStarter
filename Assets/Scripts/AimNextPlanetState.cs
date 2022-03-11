@@ -10,7 +10,7 @@ namespace DefaultNamespace
         }
         public override void Move(float deltaTime)
         {
-            var direction = _stateContext.AimNextPlanet();
+            var direction = _stateContext.AimNextPlanet(deltaTime);
             if (direction == Vector3.zero) return;
             _stateContext.TransitionTo(new FlyNextPlanetState(direction, _stateContext));
         }
