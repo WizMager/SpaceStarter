@@ -30,18 +30,16 @@ namespace DefaultNamespace
             _touches[(int) TouchInput.InputTouchUp].OnChange += TouchUp;
         }
 
-        public Vector3 Aim(float deltaTime)
+        public bool Aim()
         {
-            if (!_isAimEnded) return Vector3.zero;
-            
-            _playerTransform.rotation.SetLookRotation(_flyDirection);
-            return _flyDirection;
+            if (!_isAimEnded) return false;
+
+            _isAimEnded = false;
+            return true;
         }
         
         private void TouchDown(Vector3 position)
         {
-            // var clearPosition = new Vector3(position.x, 0, position.z);
-            // _flyDirection = _playerTransform.position + clearPosition;
             _isAimEnded = false;
             _isAim = true;
         }
@@ -52,19 +50,19 @@ namespace DefaultNamespace
             
             var ray = _camera.ScreenPointToRay(position);
             var raycastHit = new RaycastHit[1];
-            if (Physics.RaycastNonAlloc(ray, raycastHit, _camera.farClipPlane, GlobalData.LayerForAim) > 0)
-            {
-                Debug.Log(raycastHit[0].point);
-                //_flyDirection = clearPosition - _playerTransform.localPosition;
-            }
+            if (Physics.RaycastNonAlloc(ray, raycastHit, _camera.farClipPlane, GlobalData.LayerForAim) <= 0) return;
+            var castPosition = new Vector3(raycastHit[0].point.x, 0, raycastHit[0].point.z);
+            Debug.DrawLine(_playerTransform.localPosition, castPosition);
+            _flyDirection = _playerTransform.localPosition - castPosition;
+            var offset = new Vector3(0, 180f, 0);
+            _playerTransform.LookAt(castPosition);
+            _playerTransform.Rotate(offset);
         }
 
         private void TouchUp(Vector3 position)
         {
-            var clearPosition = new Vector3(position.x, 0, position.z);
-            _flyDirection = _playerTransform.position + clearPosition;
             _isAim = false;
-            //_isAimEnded = true;
+            _isAimEnded = true;
         }
 
         public void OnDestroy()

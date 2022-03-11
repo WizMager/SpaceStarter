@@ -1,6 +1,4 @@
-﻿using UnityEngine;
-
-namespace DefaultNamespace
+﻿namespace DefaultNamespace
 {
     public class AimNextPlanetState : State
     {
@@ -10,9 +8,9 @@ namespace DefaultNamespace
         }
         public override void Move(float deltaTime)
         {
-            var direction = _stateContext.AimNextPlanet(deltaTime);
-            if (direction == Vector3.zero) return;
-            _stateContext.TransitionTo(new FlyNextPlanetState(direction, _stateContext));
+            if (!_stateContext.AimNextPlanet()) return;
+            
+            _stateContext.TransitionTo(new FlyNextPlanetState(_stateContext));
         }
     }
 }

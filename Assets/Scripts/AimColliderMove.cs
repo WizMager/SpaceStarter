@@ -8,7 +8,8 @@ namespace DefaultNamespace
 
         private void Update()
         {
-            transform.position = _playerTransfrom.position;
+            var transformCollider = transform;
+            transformCollider.position = _playerTransfrom.position;
         }
     }
 }

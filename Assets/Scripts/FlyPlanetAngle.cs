@@ -27,6 +27,7 @@ namespace DefaultNamespace
             _start = _player.position - _planet.position;
             if (_currentAngle >= _fullAngle)
             {
+                _currentAngle = 0;
                 var lookDirection = (_player.position - _planet.position).normalized;
                 return lookDirection;
             }

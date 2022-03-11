@@ -13,8 +13,7 @@ MonoBehaviour:
   m_Name: PlanetData
   m_EditorClassIdentifier: 
   gravity: 3.2
-  speedRotationAroundPlanet: 25
+  speedRotationAroundPlanet: 50
   engineForce: 3.2
-  maxAngleFlyAround: 50
   moveSpeedToDirection: 3
   rotationSpeedToDirection: 1

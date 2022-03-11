@@ -9,7 +9,7 @@ namespace DefaultNamespace
             _stateContext = context;
             _stateContext.SetDirectionToEdge(lookDirection);
         }
-        
+
         public override void Move(float deltaTime)
         {
             if (!_stateContext.FlyToEdgeGravity()) return;

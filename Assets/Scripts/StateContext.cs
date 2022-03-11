@@ -13,16 +13,18 @@ namespace DefaultNamespace
         private readonly GravityView[] _gravityViews;
         private readonly PlayerView _playerView;
         
-
-        private Vector3 _lookDirection;
         private bool _isRightRotation;
+        public bool isLastPlanet;
         
         private RotationAroundPlanet _rotationAroundPlanet;
         private UpAndDownAroundPlanet _upAndDownAroundPlanet;
         private FlyPlanetAngle _flyPlanetAngle;
-        private MoveToDirection _moveToDirection;
+        private FlyToEdgeGravity _flyToEdgeGravity;
         private AimNextPlanet _aimNextPlanet;
-        private CameraController _cameraController;
+        private FlyNextPlanet _flyNextPlanet;
+        private TapExplosionController _tapExplosionController;
+        
+        public CameraController _cameraController;
 
         public StateContext(ScriptableData data, PlayerView playerView, IUserInput<Vector3>[] touchInput, 
             IUserInput<float>[] axisInput, PlanetView[] planetViews, GravityView[] gravityViews, Camera camera)
@@ -32,21 +34,26 @@ namespace DefaultNamespace
             _gravityViews = gravityViews;
             _playerView = playerView;
 
+            var playerTransform = playerView.transform;
             _upAndDownAroundPlanet = new UpAndDownAroundPlanet(data.Planet.engineForce, data.Planet.gravity,
-                playerView.transform, planetViews[_planetIndex], gravityViews[_planetIndex], touchInput);
+                playerTransform, _planetViews[_planetIndex], gravityViews[_planetIndex], touchInput);
             _rotationAroundPlanet = new RotationAroundPlanet(data.Planet.speedRotationAroundPlanet,
-                playerView.transform, planetViews[_planetIndex].transform);
+                playerTransform, _planetViews[_planetIndex].transform);
             _flyPlanetAngle =
-                new FlyPlanetAngle(planetViews[_planetIndex].transform, playerView.transform, planetViews[_planetIndex + 1].transform);
-            _moveToDirection = new MoveToDirection(data.Planet.rotationSpeedToDirection,
-                data.Planet.moveSpeedToDirection, gravityViews[_planetIndex], playerView.transform);
-            _aimNextPlanet = new AimNextPlanet(touchInput, playerView.transform, camera);
+                new FlyPlanetAngle(_planetViews[_planetIndex].transform, playerTransform, _planetViews[_planetIndex + 1].transform);
+            _flyToEdgeGravity = new FlyToEdgeGravity(data.Planet.rotationSpeedToDirection,
+                data.Planet.moveSpeedToDirection, _gravityViews[_planetIndex], playerTransform);
+            _aimNextPlanet = new AimNextPlanet(touchInput, playerTransform, camera);
+            _flyNextPlanet =
+                new FlyNextPlanet(data.Planet.moveSpeedToDirection, _gravityViews[_planetIndex], playerTransform);
+            _tapExplosionController = new TapExplosionController(camera, data.LastPlanet.explosionArea,
+                data.LastPlanet.explosionForce, data.LastPlanet.explosionParticle);
+            
             _cameraController = new CameraController(camera, data.Camera.startUpDivision, data.Camera.upSpeed,
                 data.Camera.upOffsetFromPlayer, axisInput, data.LastPlanet.center,
                 data.Camera.firstPersonRotationSpeed);
 
             _state = new AimNextPlanetState(this);
-            //_state = new FlyNextPlanetState(_planetViews[_planetIndex].transform.position - _playerView.transform.position, this);
         }
 
         public void TransitionTo(State state)
@@ -58,11 +65,28 @@ namespace DefaultNamespace
         public void ChangeCurrentPlanet()
         {
             _planetIndex += 1;
-            _moveToDirection.ChangePlanet(_gravityViews[_planetIndex]);
-            _flyPlanetAngle.ChangePlanet(_planetViews[_planetIndex].transform, _planetViews[_planetIndex + 1].transform);
-            _rotationAroundPlanet.ChangePlanet(_planetViews[_planetIndex].transform);
-            _upAndDownAroundPlanet.ChangePlanet(_planetViews[_planetIndex], _gravityViews[_planetIndex]);
-            _isRightRotation = false;
+            if (_planetIndex == (int)ObjectNumber.Last)
+            {
+                _flyToEdgeGravity.ChangePlanet(_gravityViews[_planetIndex]);
+                _flyNextPlanet.ChangePlanet(_gravityViews[_planetIndex]);
+                
+                _flyPlanetAngle.ChangePlanet(_planetViews[0].transform,
+                    _planetViews[0].transform);
+                _rotationAroundPlanet.ChangePlanet(_planetViews[0].transform);
+                _upAndDownAroundPlanet.ChangePlanet(_planetViews[0], _gravityViews[0]);
+                isLastPlanet = true;
+            }
+            else
+            {
+                _flyToEdgeGravity.ChangePlanet(_gravityViews[_planetIndex]);
+                _flyPlanetAngle.ChangePlanet(_planetViews[_planetIndex].transform,
+                    _planetViews[_planetIndex + 1].transform);
+                _rotationAroundPlanet.ChangePlanet(_planetViews[_planetIndex].transform);
+                _upAndDownAroundPlanet.ChangePlanet(_planetViews[_planetIndex], _gravityViews[_planetIndex]);
+                _flyNextPlanet.ChangePlanet(_gravityViews[_planetIndex]);
+                _isRightRotation = false;
+                isLastPlanet = false; 
+            }
         }
         
         public Vector3 FlyAroundPlanet(float deltaTime)
@@ -80,17 +104,22 @@ namespace DefaultNamespace
 
         public void SetDirectionToEdge(Vector3 lookDirection)
         {
-            _moveToDirection.SetDirection(lookDirection);
+            _flyToEdgeGravity.SetDirection(lookDirection);
         }
         
         public bool FlyToEdgeGravity()
         {
-            return _moveToDirection.IsFinished();
+            return _flyToEdgeGravity.IsFinished();
         }
 
-        public Vector3 AimNextPlanet(float deltaTime)
+        public bool AimNextPlanet()
         {
-            return _aimNextPlanet.Aim(deltaTime);
+            return _aimNextPlanet.Aim();
+        }
+
+        public bool FlyNextPlanet()
+        {
+            return _flyNextPlanet.IsFinished();
         }
         
         public void Execute(float deltaTime)
@@ -102,8 +131,9 @@ namespace DefaultNamespace
         public void Clean()
         {
             _upAndDownAroundPlanet.OnDestroy();
-            _moveToDirection.OnDestroy();
+            _flyToEdgeGravity.OnDestroy();
             _aimNextPlanet.OnDestroy();
+            _flyNextPlanet.OnDestroy();
         }
     }
 }
