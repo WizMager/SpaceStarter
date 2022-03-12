@@ -1,21 +1,28 @@
 ﻿using UnityEngine;
+using Utils;
 
 public class TapExplosionController
 {
+    private IUserInput<Vector3>[] _touch;
     private Camera _camera;
     private float _explosionArea;
     private float _explosionForce;
     private GameObject _particle;
 
-    public TapExplosionController(Camera camera, float explosionArea, float explosionForce, GameObject particle)
+    private bool _isActive;
+
+    public TapExplosionController(IUserInput<Vector3>[] touch, Camera camera, float explosionArea, float explosionForce, GameObject particle)
     {
+        _touch = touch;
         _camera = camera;
         _explosionArea = explosionArea;
         _explosionForce = explosionForce;
         _particle = particle;
+
+        _touch[(int) TouchInput.InputTouchDown].OnChange += TouchDown;
     }
 
-    public void Shoot(Vector3 touchPosition)
+    private void Shoot(Vector3 touchPosition)
     {
         var ray = _camera.ScreenPointToRay(touchPosition);
         var hitRaycast = new RaycastHit[1];
@@ -47,5 +54,22 @@ public class TapExplosionController
                 Object.Instantiate(_particle, hitRaycast[0].point, Quaternion.identity);
             }
         }
+    }
+
+    private void TouchDown(Vector3 touchPosition)
+    {
+        if (!_isActive) return;
+        
+        Shoot(touchPosition);
+    }
+
+    public void SetActive()
+    {
+        _isActive = true;
+    }
+
+    public void OnDestroy()
+    {
+        _touch[(int) TouchInput.InputTouchDown].OnChange -= TouchDown;
     }
 }

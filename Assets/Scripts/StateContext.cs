@@ -8,13 +8,13 @@ namespace DefaultNamespace
     public class StateContext : IExecute, IClean
     {
         private State _state;
-        private int _planetIndex = 1;
+        private int _planetIndex;
         private readonly PlanetView[] _planetViews;
         private readonly GravityView[] _gravityViews;
         private readonly PlayerView _playerView;
         
         private bool _isRightRotation;
-        public bool isLastPlanet;
+        public bool IsLastPlanet;
         
         private RotationAroundPlanet _rotationAroundPlanet;
         private UpAndDownAroundPlanet _upAndDownAroundPlanet;
@@ -24,7 +24,7 @@ namespace DefaultNamespace
         private FlyNextPlanet _flyNextPlanet;
         private TapExplosionController _tapExplosionController;
         
-        public CameraController _cameraController;
+        private CameraController _cameraController;
 
         public StateContext(ScriptableData data, PlayerView playerView, IUserInput<Vector3>[] touchInput, 
             IUserInput<float>[] axisInput, PlanetView[] planetViews, GravityView[] gravityViews, Camera camera)
@@ -46,12 +46,11 @@ namespace DefaultNamespace
             _aimNextPlanet = new AimNextPlanet(touchInput, playerTransform, camera);
             _flyNextPlanet =
                 new FlyNextPlanet(data.Planet.moveSpeedToDirection, _gravityViews[_planetIndex], playerTransform);
-            _tapExplosionController = new TapExplosionController(camera, data.LastPlanet.explosionArea,
+            _tapExplosionController = new TapExplosionController( touchInput, camera, data.LastPlanet.explosionArea,
                 data.LastPlanet.explosionForce, data.LastPlanet.explosionParticle);
-            
             _cameraController = new CameraController(camera, data.Camera.startUpDivision, data.Camera.upSpeed,
                 data.Camera.upOffsetFromPlayer, axisInput, data.LastPlanet.center,
-                data.Camera.firstPersonRotationSpeed);
+                data.Camera.firstPersonRotationSpeed, playerTransform);
 
             _state = new AimNextPlanetState(this);
         }
@@ -62,32 +61,30 @@ namespace DefaultNamespace
             _state.SetContext(this);
         }
 
-        public void ChangeCurrentPlanet()
+        public bool ChangeCurrentPlanet()
         {
             _planetIndex += 1;
             if (_planetIndex == (int)ObjectNumber.Last)
             {
-                _flyToEdgeGravity.ChangePlanet(_gravityViews[_planetIndex]);
                 _flyNextPlanet.ChangePlanet(_gravityViews[_planetIndex]);
                 
-                _flyPlanetAngle.ChangePlanet(_planetViews[0].transform,
-                    _planetViews[0].transform);
-                _rotationAroundPlanet.ChangePlanet(_planetViews[0].transform);
-                _upAndDownAroundPlanet.ChangePlanet(_planetViews[0], _gravityViews[0]);
-                isLastPlanet = true;
-            }
-            else
-            {
                 _flyToEdgeGravity.ChangePlanet(_gravityViews[_planetIndex]);
-                _flyPlanetAngle.ChangePlanet(_planetViews[_planetIndex].transform,
-                    _planetViews[_planetIndex + 1].transform);
-                _rotationAroundPlanet.ChangePlanet(_planetViews[_planetIndex].transform);
-                _upAndDownAroundPlanet.ChangePlanet(_planetViews[_planetIndex], _gravityViews[_planetIndex]);
-                _flyNextPlanet.ChangePlanet(_gravityViews[_planetIndex]);
-                _isRightRotation = false;
-                isLastPlanet = false; 
+                 _flyPlanetAngle.ChangePlanet(_planetViews[0].transform,
+                     _planetViews[0].transform);
+                 _rotationAroundPlanet.ChangePlanet(_planetViews[0].transform);
+                 _upAndDownAroundPlanet.ChangePlanet(_planetViews[0], _gravityViews[0]);
+                return true;
             }
-        }
+
+            _flyToEdgeGravity.ChangePlanet(_gravityViews[_planetIndex]);
+            _flyPlanetAngle.ChangePlanet(_planetViews[_planetIndex].transform,
+                _planetViews[_planetIndex + 1].transform);
+            _rotationAroundPlanet.ChangePlanet(_planetViews[_planetIndex].transform);
+            _upAndDownAroundPlanet.ChangePlanet(_planetViews[_planetIndex], _gravityViews[_planetIndex]);
+            _flyNextPlanet.ChangePlanet(_gravityViews[_planetIndex]);
+            _isRightRotation = false;
+            return false;
+            }
         
         public Vector3 FlyAroundPlanet(float deltaTime)
         {
@@ -117,14 +114,31 @@ namespace DefaultNamespace
             return _aimNextPlanet.Aim();
         }
 
+        public void AimNextPlanetActive(bool isActive)
+        {
+            _aimNextPlanet.SetActive(isActive);
+        }
+
         public bool FlyNextPlanet()
         {
             return _flyNextPlanet.IsFinished();
         }
+
+        public void FlyNextPlanetActive(bool isActive)
+        {
+            _flyNextPlanet.SetActive(isActive);
+        }
+
+        public void LastPlanet()
+        {
+            _tapExplosionController.SetActive();
+            _cameraController.FirstPersonActivation();
+            Object.Destroy(_playerView.gameObject);
+        }
         
         public void Execute(float deltaTime)
         {
-            _cameraController.FollowPlayer(_playerView.transform, deltaTime);
+            _cameraController.FollowPlayer(deltaTime);
             _state.Move(deltaTime);
         }
 
@@ -134,6 +148,7 @@ namespace DefaultNamespace
             _flyToEdgeGravity.OnDestroy();
             _aimNextPlanet.OnDestroy();
             _flyNextPlanet.OnDestroy();
+            _tapExplosionController.OnDestroy();
         }
     }
 }

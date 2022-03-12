@@ -80,7 +80,7 @@ public class PlayerController : IExecute, IClean
     {
         if (_isLastPlanet)
         {
-            _tapExplosionController.Shoot(touchPosition);
+            //_tapExplosionController.Shoot(touchPosition);
         }
         else
         {
@@ -192,14 +192,14 @@ public class PlayerController : IExecute, IClean
         if (_isPathFinished)
         {
             _movementController.MoveToPoint(deltaTime);
-            _cameraController.FollowPlayer(_playerTransform, deltaTime);
+            //_cameraController.FollowPlayer(_playerTransform, deltaTime);
         }
         else
         {
             if (_isRightRotated)
             {
                 _movementController.MoveAroundPlanet(deltaTime, _planetsTransforms[_currentPlanetIndex]);
-                _cameraController.FollowPlayer(_playerTransform, deltaTime);
+                //_cameraController.FollowPlayer(_playerTransform, deltaTime);
                 //_cameraController.RotateAroundPlanet(_playerTransform, _planetsTransforms[_currentPlanetIndex]);
                 FlyingAngle();
             }
@@ -219,7 +219,7 @@ public class PlayerController : IExecute, IClean
         _gravityViews[index].OnPlayerGravityExit += PlayerExitedGravity;
         if (_gravityViews[index].number == ObjectNumber.Last)
         {
-            _gravityViews[index].OnLastPlanetGravityEnter += LastPlanetGravityEntered;
+            //_gravityViews[index].OnLastPlanetGravityEnter += LastPlanetGravityEntered;
         }
     }
 
@@ -232,7 +232,7 @@ public class PlayerController : IExecute, IClean
         _gravityViews[index].OnPlayerGravityExit -= PlayerExitedGravity;
         if (_gravityViews[index].number == ObjectNumber.Last)
         {
-            _gravityViews[index].OnLastPlanetGravityEnter -= LastPlanetGravityEntered;
+            //_gravityViews[index].OnLastPlanetGravityEnter -= LastPlanetGravityEntered;
         }
     }
     

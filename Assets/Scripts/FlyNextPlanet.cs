@@ -10,6 +10,7 @@ namespace DefaultNamespace
             private readonly Transform _playerTransform;
         
             private bool _isInGravity;
+            private bool _isActive;
 
             public FlyNextPlanet(float moveSpeed, GravityView gravityView, Transform playerTransform)
             {
@@ -22,6 +23,8 @@ namespace DefaultNamespace
 
             private void GravityEntered()
             {
+                if (!_isActive) return;
+                
                 _isInGravity = true;
             }
 
@@ -37,6 +40,11 @@ namespace DefaultNamespace
                 return false;
             }
 
+            public void SetActive(bool isActive)
+            {
+                _isActive = isActive;
+            }
+            
             public void ChangePlanet(GravityView currentGravityView)
             {
                 OnDestroy();

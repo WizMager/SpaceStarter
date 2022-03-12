@@ -2,9 +2,10 @@
 {
     public class LastPlanetState : State
     {
-        public LastPlanetState(CameraController cameraController)
+        public LastPlanetState(StateContext context)
         {
-            cameraController.FirstPersonActivation();
+            _stateContext = context;
+            _stateContext.LastPlanet();
         }
         public override void Move(float deltaTime)
         {

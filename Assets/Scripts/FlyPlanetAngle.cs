@@ -23,7 +23,6 @@ namespace DefaultNamespace
         
         public Vector3 FlewAngle()
         {
-            Debug.Log(_currentAngle);
             _start = _player.position - _planet.position;
             if (_currentAngle >= _fullAngle)
             {

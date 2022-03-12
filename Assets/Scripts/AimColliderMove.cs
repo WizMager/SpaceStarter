@@ -8,8 +8,15 @@ namespace DefaultNamespace
 
         private void Update()
         {
-            var transformCollider = transform;
-            transformCollider.position = _playerTransfrom.position;
+            if (_playerTransfrom == null)
+            {
+                Destroy(gameObject);
+            }
+            else
+            {
+                var transformCollider = transform;
+                transformCollider.position = _playerTransfrom.position; 
+            }
         }
     }
 }

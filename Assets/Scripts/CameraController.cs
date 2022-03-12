@@ -11,6 +11,7 @@ public class CameraController : IClean
     private IUserInput<float> _horizontal;
     private readonly Vector3 _lastPlanetCenter;
     private readonly float _fpRotationSpeed;
+    private readonly Transform _player;
 
     // private Vector3 _startVector;
     // private Vector3 _cameraRotationOffset;
@@ -19,7 +20,7 @@ public class CameraController : IClean
     private bool _isLastPlanet;
 
     public CameraController(Camera camera, float cameraStartUpDivision, float cameraUpSpeed, float cameraUpOffset, 
-        IUserInput<float>[] axisInput, Vector3 lastPlanetCenter, float fpRotationSpeed)
+        IUserInput<float>[] axisInput, Vector3 lastPlanetCenter, float fpRotationSpeed, Transform playerTransform)
     {
         _camera = camera;
         _cameraStartUpDivision = cameraStartUpDivision;
@@ -29,6 +30,7 @@ public class CameraController : IClean
         _horizontal = axisInput[(int) AxisInput.InputHorizontal];
         _lastPlanetCenter = lastPlanetCenter;
         _fpRotationSpeed = fpRotationSpeed;
+        _player = playerTransform;
 
         _vertical.OnChange += VerticalChanged;
         _horizontal.OnChange += HorizontalChanged;
@@ -47,24 +49,26 @@ public class CameraController : IClean
     //      _startVector = endVector;
     // }
 
-    public void FollowPlayer(Transform player, float deltaTime)
+    public void FollowPlayer(float deltaTime)
     {
+        if (_isLastPlanet) return;
+        
         if (_distanceToPlayer < _cameraUpOffset)
         {
             if (_distanceToPlayer == 0)
             {
-                _distanceToPlayer = (_camera.transform.position.y - player.position.y) / _cameraStartUpDivision;
+                _distanceToPlayer = (_camera.transform.position.y - _player.position.y) / _cameraStartUpDivision;
             }
             _distanceToPlayer += deltaTime * _cameraUpSpeed;
         }
-        var offsetPosition = player.position;
+        var offsetPosition = _player.position;
         offsetPosition.y += _distanceToPlayer;
         _camera.transform.position = offsetPosition;
     }
 
     public void FirstPersonActivation()
     {
-        var position = new Vector3(-6.8f, 7.6f, 38.8f);
+        var position = new Vector3(-15.43f, 0.86f, 40.65f);
         var rotation = Quaternion.Euler(new Vector3(0, -90f, 0));
         _camera.transform.SetPositionAndRotation(position, rotation);
         _isLastPlanet = true;
