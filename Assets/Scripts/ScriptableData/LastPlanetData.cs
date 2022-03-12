@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Data
+namespace ScriptableData
 {
    [CreateAssetMenu(menuName = "Data/LastPlanetData", fileName = "LastPlanetData")]
    public class LastPlanetData : ScriptableObject

@@ -1,10 +1,9 @@
 ﻿using Controller;
-using Data;
 using UnityEngine;
 
 public class GameStarter : MonoBehaviour
 {
-    [SerializeField] private ScriptableData _data;
+    [SerializeField] private ScriptableData.ScriptableData _data;
     private Controllers _controllers;
 
     private void Start()

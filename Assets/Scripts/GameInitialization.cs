@@ -1,6 +1,5 @@
 ﻿using System;
 using Controller;
-using Data;
 using DefaultNamespace;
 using UnityEngine;
 using Utils;
@@ -12,7 +11,7 @@ public class GameInitialization
    private PlanetView[] _planets;
    private GravityView[] _gravities;
 
-   public GameInitialization(Controllers controllers, ScriptableData data)
+   public GameInitialization(Controllers controllers, ScriptableData.ScriptableData data)
    {
       var player = Object.FindObjectOfType<PlayerView>();
       var camera = Object.FindObjectOfType<Camera>();
@@ -24,7 +23,7 @@ public class GameInitialization
       controllers.Add(new InputController(inputInitialization.GetAllInput()));
       // controllers.Add(new PlayerController(data, inputInitialization.GetTouchAll(), player, _planets, 
       //    _gravities, camera, inputInitialization.GetAxis()));
-      controllers.Add(new StateContext(data, player,
+      controllers.Add(new PlayerController(data, player,
          inputInitialization.GetTouchAll(),
          inputInitialization.GetAxis(), _planets, _gravities, camera));
    }

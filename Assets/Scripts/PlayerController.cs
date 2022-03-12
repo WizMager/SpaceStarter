@@ -1,21 +1,20 @@
-﻿using Data;
+﻿using State;
 using UnityEngine;
 using Utils;
 using View;
 
 namespace DefaultNamespace
 {
-    public class StateContext : IExecute, IClean
+    public class PlayerController : IExecute, IClean
     {
-        private State _state;
+        private PlayerState _playerState;
         private int _planetIndex;
         private readonly PlanetView[] _planetViews;
         private readonly GravityView[] _gravityViews;
         private readonly PlayerView _playerView;
         
         private bool _isRightRotation;
-        public bool IsLastPlanet;
-        
+
         private RotationAroundPlanet _rotationAroundPlanet;
         private UpAndDownAroundPlanet _upAndDownAroundPlanet;
         private FlyPlanetAngle _flyPlanetAngle;
@@ -24,9 +23,9 @@ namespace DefaultNamespace
         private FlyNextPlanet _flyNextPlanet;
         private TapExplosionController _tapExplosionController;
         
-        private CameraController _cameraController;
+        //private CameraController _cameraController;
 
-        public StateContext(ScriptableData data, PlayerView playerView, IUserInput<Vector3>[] touchInput, 
+        public PlayerController(ScriptableData.ScriptableData data, PlayerView playerView, IUserInput<Vector3>[] touchInput, 
             IUserInput<float>[] axisInput, PlanetView[] planetViews, GravityView[] gravityViews, Camera camera)
         {
             
@@ -48,17 +47,19 @@ namespace DefaultNamespace
                 new FlyNextPlanet(data.Planet.moveSpeedToDirection, _gravityViews[_planetIndex], playerTransform);
             _tapExplosionController = new TapExplosionController( touchInput, camera, data.LastPlanet.explosionArea,
                 data.LastPlanet.explosionForce, data.LastPlanet.explosionParticle);
-            _cameraController = new CameraController(camera, data.Camera.startUpDivision, data.Camera.upSpeed,
-                data.Camera.upOffsetFromPlayer, axisInput, data.LastPlanet.center,
-                data.Camera.firstPersonRotationSpeed, playerTransform);
+            // _cameraController = new CameraController(camera, data.Camera.startUpDivision, data.Camera.upSpeed,
+            //     data.Camera.upOffsetFromPlayer, axisInput, data.LastPlanet.center,
+            //     data.Camera.firstPersonRotationSpeed, playerTransform);
 
-            _state = new AimNextPlanetState(this);
+            _playerState = new AimNextPlanetPlayerState(this, new CameraController(camera, data.Camera.startUpDivision, data.Camera.upSpeed,
+                data.Camera.upOffsetFromPlayer, axisInput, data.LastPlanet.center,
+                data.Camera.firstPersonRotationSpeed, playerView, data.Planet.moveSpeedCenterGravity, data.Planet.cameraDownOffset));
         }
 
-        public void TransitionTo(State state)
+        public void TransitionTo(PlayerState playerState)
         {
-            _state = state;
-            _state.SetContext(this);
+            _playerState = playerState;
+            _playerState.SetContext(this);
         }
 
         public bool ChangeCurrentPlanet()
@@ -132,14 +133,14 @@ namespace DefaultNamespace
         public void LastPlanet()
         {
             _tapExplosionController.SetActive();
-            _cameraController.FirstPersonActivation();
+            //_cameraController.FirstPersonActivation();
             Object.Destroy(_playerView.gameObject);
         }
         
         public void Execute(float deltaTime)
         {
-            _cameraController.FollowPlayer(deltaTime);
-            _state.Move(deltaTime);
+            //_cameraController.FollowPlayer(deltaTime);
+            _playerState.Move(deltaTime);
         }
 
         public void Clean()

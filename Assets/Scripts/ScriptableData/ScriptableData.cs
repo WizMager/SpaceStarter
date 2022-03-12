@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace Data
+namespace ScriptableData
 {
     [CreateAssetMenu(menuName = "Data/Data", fileName = "Data")]
     public class ScriptableData : ScriptableObject

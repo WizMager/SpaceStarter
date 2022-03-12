@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Data
+namespace ScriptableData
 {
     [CreateAssetMenu(menuName = "Data/PlanetData", fileName = "PlanetData")]
     public class PlanetData : ScriptableObject
@@ -10,5 +10,7 @@ namespace Data
         public float engineForce;
         public float moveSpeedToDirection;
         public float rotationSpeedToDirection;
+        public float moveSpeedCenterGravity;
+        public float cameraDownOffset;
     }
 }
