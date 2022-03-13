@@ -10,11 +10,10 @@ namespace State
             PlayerController = context;
             _cameraController = cameraController;
             PlayerController.AimNextPlanetActive(true);
-            
-            _cameraController.SetCameraDown(10);
         }
         public override void Move(float deltaTime)
         {
+            _cameraController.FollowPlayer();
             if (!PlayerController.AimNextPlanet()) return;
             PlayerController.AimNextPlanetActive(false);
             var isLastPlanet = PlayerController.ChangeCurrentPlanet();

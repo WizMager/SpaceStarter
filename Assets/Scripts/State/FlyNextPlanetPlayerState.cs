@@ -17,7 +17,9 @@ namespace State
         
         public override void Move(float deltaTime)
         {
+            _cameraController.FollowPlayer();
             if (!PlayerController.FlyNextPlanet()) return;
+            
             PlayerController.FlyNextPlanetActive(false);
             if (_isLastPlanet)
             {
@@ -25,7 +27,7 @@ namespace State
             }
             else
             {
-                PlayerController.TransitionTo(new FlyAroundPlanetPlayerState(PlayerController, _cameraController));  
+                PlayerController.TransitionTo(new FlyCenterGravityPlayerState(PlayerController, _cameraController));  
             }
         }
     }

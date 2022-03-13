@@ -13,6 +13,7 @@ namespace State
         }
         public override void Move(float deltaTime)
         {
+            _cameraController.FollowPlayer();
             var lookDirection = PlayerController.FlyAroundPlanet(deltaTime);
             if (lookDirection == Vector3.zero) return;
             PlayerController.TransitionTo(new FlyToEdgeGravityPlayerState(lookDirection, PlayerController, _cameraController));

@@ -17,3 +17,5 @@ MonoBehaviour:
   engineForce: 3.2
   moveSpeedToDirection: 3
   rotationSpeedToDirection: 1
+  moveSpeedCenterGravity: 0.1
+  cameraDownOffset: 1

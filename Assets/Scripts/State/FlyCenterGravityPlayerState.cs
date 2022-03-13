@@ -10,10 +10,14 @@ namespace State
         {
             PlayerController = context;
             _cameraController = cameraController;
+            PlayerController.FlyCenterGravityActivate();
         }
         public override void Move(float deltaTime)
         {
+            _cameraController.CameraDown(deltaTime);
+            if (!PlayerController.FlyCenterGravity(deltaTime)) return;
             
+            PlayerController.TransitionTo(new FlyAroundPlanetPlayerState(PlayerController, _cameraController));
         }
     }
 }

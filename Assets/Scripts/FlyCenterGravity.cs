@@ -7,44 +7,84 @@ namespace DefaultNamespace
     public class FlyCenterGravity
     {
         private readonly PlayerView _playerView;
-        private readonly float _rotationSpeed;
-        private readonly float _moveSpeed;
-        
+        private readonly float _rotationSpeedGravity;
+        private readonly float _moveSpeedGravity;
+
         private readonly Transform _playerTransform;
+        private Transform _currentPlanet;
         private Vector3 _direction;
         private float _pathCenter;
-        private bool _isRotated;
+        private bool _isFinish;
+        private bool _isMoved;
+        private float _edgeRotationAngle;
         
-        public FlyCenterGravity(PlayerView playerView, float rotationSpeed, float moveSpeed, Transform currentPlanet)
+        public FlyCenterGravity(PlayerView playerView, float rotationSpeedGravity, float moveSpeedGravity, Transform currentPlanet)
         {
             _playerView = playerView;
-            _rotationSpeed = rotationSpeed;
-            _moveSpeed = moveSpeed;
+            _rotationSpeedGravity = rotationSpeedGravity;
+            _moveSpeedGravity = moveSpeedGravity;
 
             _playerTransform = _playerView.transform;
-            _direction = (currentPlanet.position - _playerTransform.position).normalized;
-            _pathCenter = Vector3.Distance(_playerTransform.position, currentPlanet.position) / 2;
+            _currentPlanet = currentPlanet;
         }
 
-        private IEnumerator Rotate()
+        public void Active()
         {
-            for (float i = 0; i < _rotationSpeed; i += Time.deltaTime)
-            {
-                _playerTransform.transform.right = _direction * i / _rotationSpeed;
-                yield return null;
-            }
-
-            _isRotated = true;
-            _playerView.StopCoroutine(Rotate());
+            _isFinish = false;
+            _isMoved = false;
+            var playerPosition = _playerTransform.position;
+            var planetPosition = _currentPlanet.position;
+            _direction = (planetPosition - playerPosition).normalized;
+            //TODO: 1.25 if offset because planet center position minus radius, need calculate it
+            _pathCenter = Vector3.Distance(playerPosition, planetPosition) / 2 - 1.25f;
+            _edgeRotationAngle = Vector3.Angle(_playerTransform.right, _direction);
         }
 
-        private IEnumerator Move()
+        public bool IsFinished(float deltaTime)
         {
-            for (float i = 0; i < _pathCenter; i += Time.deltaTime * _moveSpeed)
+            if (_isMoved)
             {
-                _playerTransform.Translate(_direction * i / _pathCenter);
-                yield return null;
+                Rotate(deltaTime);
             }
+            else
+            {
+                Move(deltaTime);
+            }
+            
+            return _isFinish;
+        }
+        
+        private void Rotate(float deltaTime)
+        {
+            if (_edgeRotationAngle > 0)
+            {
+                var offsetAngle = deltaTime * _rotationSpeedGravity;
+                _playerTransform.Rotate(_playerTransform.up, -offsetAngle);
+                _edgeRotationAngle -= offsetAngle;
+            }
+            else
+            {
+                _isFinish = true;  
+            }
+        }
+
+        private void Move(float deltaTime)
+        {
+            if (_pathCenter >= 0)
+            {
+                var speed = deltaTime * _moveSpeedGravity;
+                _playerTransform.Translate(_direction * speed, Space.World);
+                _pathCenter -= deltaTime;
+            }
+            else
+            {
+                _isMoved = true;
+            }
+        }
+
+        public void ChangePlanet(Transform currentPlanet)
+        {
+            _currentPlanet = currentPlanet;
         }
     }
 }

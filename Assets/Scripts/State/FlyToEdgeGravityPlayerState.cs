@@ -16,6 +16,7 @@ namespace State
 
         public override void Move(float deltaTime)
         {
+            _cameraController.CameraUp(deltaTime);
             if (!PlayerController.FlyToEdgeGravity()) return;
             PlayerController.TransitionTo(new AimNextPlanetPlayerState(PlayerController, _cameraController));
         }

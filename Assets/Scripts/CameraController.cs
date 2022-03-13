@@ -13,18 +13,16 @@ public class CameraController : IClean
     private readonly IUserInput<float> _horizontal;
     private readonly Vector3 _lastPlanetCenter;
     private readonly float _fpRotationSpeed;
-    private readonly PlayerView _playerView;
-    private readonly float _moveSpeedCenter;
-    private readonly float _cameraDown;
-    
+    private readonly float _cameraDownPosition;
+    private readonly float _cameraDownSpeed;
+
     private readonly Transform _playerTransform;
     private float _distanceToPlayer;
     private bool _isLastPlanet;
-    private Vector3 _cameraDownEnd;
-    private float _distnceCenter;
-    
+
     public CameraController(Camera camera, float cameraStartUpDivision, float cameraUpSpeed, float cameraUpOffset, 
-        IUserInput<float>[] axisInput, Vector3 lastPlanetCenter, float fpRotationSpeed, PlayerView playerView, float moveSpeedCenterGravity, float cameraDownOffset)
+        IUserInput<float>[] axisInput, Vector3 lastPlanetCenter, float fpRotationSpeed, PlayerView playerView,
+        float cameraDownPosition, float cameraDownSpeed)
     {
         _camera = camera;
         _cameraStartUpDivision = cameraStartUpDivision;
@@ -34,20 +32,25 @@ public class CameraController : IClean
         _horizontal = axisInput[(int) AxisInput.InputHorizontal];
         _lastPlanetCenter = lastPlanetCenter;
         _fpRotationSpeed = fpRotationSpeed;
-        _playerView = playerView;
-        _moveSpeedCenter = moveSpeedCenterGravity;
-        _cameraDown = cameraDownOffset;
+        _cameraDownPosition = cameraDownPosition;
+        _cameraDownSpeed = cameraDownSpeed;
 
-        _playerTransform = _playerView.transform;
+        _playerTransform = playerView.transform;
         _vertical.OnChange += VerticalChanged;
         _horizontal.OnChange += HorizontalChanged;
     }
     
 
-    public void FollowPlayer(float deltaTime)
+    public void FollowPlayer()
     {
-        if (_isLastPlanet) return;
-        
+        var offsetPosition = _playerTransform.position;
+        var cameraTransform = _camera.transform;
+        offsetPosition.y += cameraTransform.position.y;
+        cameraTransform.position = offsetPosition;
+    }
+
+    public void CameraUp(float deltaTime)
+    {
         if (_distanceToPlayer < _cameraUpOffset)
         {
             if (_distanceToPlayer == 0)
@@ -60,25 +63,24 @@ public class CameraController : IClean
         offsetPosition.y += _distanceToPlayer;
         _camera.transform.position = offsetPosition;
     }
-
-    public void SetCameraDown(float distance)
-    {
-        _cameraDownEnd = new Vector3(_camera.transform.position.x, _cameraDown, _camera.transform.position.z);
-        _distnceCenter = distance;
-        _playerView.StartCoroutine(CameraDown());
-    }
     
-    private IEnumerator CameraDown()
+    public void CameraDown(float deltaTime)
     {
-        //TODO: add calculate time to rotate with cycle for
-        for (float i = 0; i < _distnceCenter; i += Time.deltaTime * _moveSpeedCenter)
+        var offsetY = _camera.transform.position.y;
+        var playerTransformPosition = _playerTransform.position;
+        var offsetX = playerTransformPosition.x;
+        var offsetZ = playerTransformPosition.z;
+        if (_cameraDownPosition <= offsetY)
         {
-            var offset = _camera.transform.position;
-            _camera.transform.position = Vector3.Lerp(offset, _cameraDownEnd, i / _distnceCenter);
-            yield return null;
+            offsetY -= deltaTime * _cameraDownSpeed;
+            var offset = new Vector3(offsetX, offsetY, offsetZ);
+            _camera.transform.position = offset;
         }
-        
-        _playerView.StopCoroutine(CameraDown());
+        else
+        {
+            var offset = new Vector3(offsetX, offsetY, offsetZ);
+            _camera.transform.position = offset;
+        }
     }
     
     public void FirstPersonActivation()
