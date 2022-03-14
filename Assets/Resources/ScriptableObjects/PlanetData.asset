@@ -15,7 +15,8 @@ MonoBehaviour:
   gravity: 3.2
   speedRotationAroundPlanet: 50
   engineForce: 3.2
-  moveSpeedToDirection: 3
-  rotationSpeedToDirection: 1
-  moveSpeedCenterGravity: 0.1
-  cameraDownOffset: 1
+  moveSpeedToEdgeGravity: 1
+  rotationSpeedToEdgeGravity: 1
+  moveSpeedCenterGravity: 1
+  rotationInGravitySpeed: 40
+  moveSpeedToNextPlanet: 5

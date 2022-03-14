@@ -24,6 +24,7 @@ public class TapExplosionController
 
     private void Shoot(Vector3 touchPosition)
     {
+        Debug.Log("Shoot");
         var ray = _camera.ScreenPointToRay(touchPosition);
         var hitRaycast = new RaycastHit[1];
         if (Physics.RaycastNonAlloc(ray, hitRaycast) > 0)

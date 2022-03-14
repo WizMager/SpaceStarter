@@ -15,9 +15,16 @@ namespace State
         {
             _cameraController.FollowPlayer();
             if (!PlayerController.AimNextPlanet()) return;
+            
             PlayerController.AimNextPlanetActive(false);
-            var isLastPlanet = PlayerController.ChangeCurrentPlanet();
-            PlayerController.TransitionTo(new FlyNextPlanetPlayerState(PlayerController, isLastPlanet, _cameraController));
+            if (PlayerController.ChangeCurrentPlanet())
+            {
+                PlayerController.TransitionTo(new LastPlanetFlyPlayerState(PlayerController, _cameraController));
+            }
+            else
+            {
+                PlayerController.TransitionTo(new FlyNextPlanetPlayerState(PlayerController, _cameraController));  
+            }
         }
     }
 }

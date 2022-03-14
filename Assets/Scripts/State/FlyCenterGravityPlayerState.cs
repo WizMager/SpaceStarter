@@ -14,7 +14,7 @@ namespace State
         }
         public override void Move(float deltaTime)
         {
-            _cameraController.CameraDown(deltaTime);
+            _cameraController.CameraDownPlanet(deltaTime);
             if (!PlayerController.FlyCenterGravity(deltaTime)) return;
             
             PlayerController.TransitionTo(new FlyAroundPlanetPlayerState(PlayerController, _cameraController));

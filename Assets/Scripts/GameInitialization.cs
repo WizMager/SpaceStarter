@@ -15,17 +15,16 @@ public class GameInitialization
    {
       var player = Object.FindObjectOfType<PlayerView>();
       var camera = Object.FindObjectOfType<Camera>();
+      var cameraColliderView = Object.FindObjectOfType<CameraColliderView>();
       _planets = Object.FindObjectsOfType<PlanetView>();
       _gravities = Object.FindObjectsOfType<GravityView>();
       SortPlanetObjects();
 
       var inputInitialization = new InputInitialization();
       controllers.Add(new InputController(inputInitialization.GetAllInput()));
-      // controllers.Add(new PlayerController(data, inputInitialization.GetTouchAll(), player, _planets, 
-      //    _gravities, camera, inputInitialization.GetAxis()));
       controllers.Add(new PlayerController(data, player,
          inputInitialization.GetTouchAll(),
-         inputInitialization.GetAxis(), _planets, _gravities, camera));
+         inputInitialization.GetAxis(), _planets, _gravities, camera, cameraColliderView));
    }
 
    private void SortPlanetObjects()

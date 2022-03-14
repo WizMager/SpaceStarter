@@ -6,7 +6,6 @@ namespace ScriptableData
     public class CameraData : ScriptableObject
     {
         [Header("Camera Up")]
-        public float startUpDivision;
         public float upSpeed;
         public float upOffsetFromPlayer;
         [Header("First Person(Last Planet)")]

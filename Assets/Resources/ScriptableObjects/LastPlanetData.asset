@@ -15,4 +15,9 @@ MonoBehaviour:
   explosionArea: 0.5
   explosionForce: 50
   explosionParticle: {fileID: 159918, guid: a0040bf7072bc2f4e82d887d50a9c5e2, type: 3}
+  distanceFromLastPlanetToStop: 3
+  moveSpeedToLastPlanet: 1
   center: {x: -21, y: 0.6, z: 41}
+  moveSpeedToPlanet: 1
+  cameraDownSpeed: 5
+  cameraDownPosition: 0

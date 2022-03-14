@@ -6,7 +6,6 @@ namespace View
 {
     public class GravityView : MonoBehaviour
     {
-        public event Action<Vector3> OnPlayerFirstGravityEnter;
         public event Action OnPlayerGravityEnter;
         public event Action OnPlayerGravityExit;
 
@@ -16,8 +15,6 @@ namespace View
         {
             if (!other.GetComponent<PlayerView>()) return;
             
-            var contact = other.gameObject.transform.position;
-            OnPlayerFirstGravityEnter?.Invoke(contact);
             OnPlayerGravityEnter?.Invoke();
         }
 

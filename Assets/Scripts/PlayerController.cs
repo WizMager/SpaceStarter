@@ -23,11 +23,10 @@ namespace DefaultNamespace
         private FlyNextPlanet _flyNextPlanet;
         private TapExplosionController _tapExplosionController;
         private FlyCenterGravity _flyCenterGravity;
-        
-        //private CameraController _cameraController;
+        private LastPlanet _lastPlanet;
 
         public PlayerController(ScriptableData.ScriptableData data, PlayerView playerView, IUserInput<Vector3>[] touchInput, 
-            IUserInput<float>[] axisInput, PlanetView[] planetViews, GravityView[] gravityViews, Camera camera)
+            IUserInput<float>[] axisInput, PlanetView[] planetViews, GravityView[] gravityViews, Camera camera, CameraColliderView cameraColliderView)
         {
             
             _planetViews = planetViews;
@@ -40,7 +39,8 @@ namespace DefaultNamespace
             _rotationAroundPlanet = new RotationAroundPlanet(data.Planet.speedRotationAroundPlanet,
                 playerTransform, _planetViews[_planetIndex].transform);
             _flyPlanetAngle =
-                new FlyPlanetAngle(_planetViews[_planetIndex].transform, playerTransform, _planetViews[_planetIndex + 1].transform);
+                new FlyPlanetAngle(_planetViews[_planetIndex].transform, playerTransform, 
+                    _planetViews[_planetIndex + 1].transform); 
             _flyToEdgeGravity = new FlyToEdgeGravity(data.Planet.rotationSpeedToEdgeGravity,
                 data.Planet.moveSpeedToEdgeGravity, _gravityViews[_planetIndex], playerTransform);
             _aimNextPlanet = new AimNextPlanet(touchInput, playerTransform, camera);
@@ -50,10 +50,14 @@ namespace DefaultNamespace
                 data.LastPlanet.explosionForce, data.LastPlanet.explosionParticle);
             _flyCenterGravity = new FlyCenterGravity(playerView,
                 data.Planet.rotationInGravitySpeed, data.Planet.moveSpeedCenterGravity, _planetViews[_planetIndex].transform);
+            _lastPlanet = new LastPlanet(playerView, data.LastPlanet.moveSpeedToPlanet, gravityViews[(int)ObjectNumber.Last]);
+            
 
-            _playerState = new AimNextPlanetPlayerState(this, new CameraController(camera, data.Camera.startUpDivision, data.Camera.upSpeed,
-                data.Camera.upOffsetFromPlayer, axisInput, data.LastPlanet.center,
-                data.Camera.firstPersonRotationSpeed, playerView,  data.Camera.cameraDownPosition, data.Camera.cameraDownSpeed));
+            _playerState = new AimNextPlanetPlayerState(this, new CameraController(camera, 
+                data.Camera.upSpeed, data.Camera.upOffsetFromPlayer, axisInput, data.LastPlanet.center,
+                data.Camera.firstPersonRotationSpeed, playerView,  data.Camera.cameraDownPosition, data.Camera.cameraDownSpeed, 
+                cameraColliderView, data.LastPlanet.cameraDownPosition, data.LastPlanet.cameraDownSpeed,
+                data.LastPlanet.distanceFromLastPlanetToStop, data.LastPlanet.moveSpeedToLastPlanet, planetViews[(int)ObjectNumber.Last].transform));
         }
 
         public void TransitionTo(PlayerState playerState)
@@ -134,10 +138,14 @@ namespace DefaultNamespace
             _flyNextPlanet.SetActive(isActive);
         }
 
-        public void LastPlanet()
+        public bool LastPlanet(float deltaTime)
+        {
+            return _lastPlanet.FlyLastPlanet(deltaTime);
+        }
+
+        public void ShootLastPlanet()
         {
             _tapExplosionController.SetActive();
-            Object.Destroy(_playerView.gameObject);
         }
         
         public void Execute(float deltaTime)

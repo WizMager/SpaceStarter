@@ -53,7 +53,6 @@ namespace DefaultNamespace
             var raycastHit = new RaycastHit[1];
             if (Physics.RaycastNonAlloc(ray, raycastHit, _camera.farClipPlane, GlobalData.LayerForAim) <= 0) return;
             var castPosition = new Vector3(raycastHit[0].point.x, 0, raycastHit[0].point.z);
-            Debug.DrawLine(_playerTransform.localPosition, castPosition);
             var offset = new Vector3(0, 180f, 0);
             _playerTransform.LookAt(castPosition);
             _playerTransform.Rotate(offset);
