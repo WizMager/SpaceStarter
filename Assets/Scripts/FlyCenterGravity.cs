@@ -38,7 +38,6 @@ namespace DefaultNamespace
             //TODO: 1.25 if offset because planet center position minus radius, need calculate it
             _pathCenter = Vector3.Distance(playerPosition, planetPosition) / 2 - 1.25f;
             _edgeRotationAngle = Vector3.Angle(_playerTransform.right, _direction);
-            _playerTransform.LookAt(_direction);
         }
 
         public bool IsFinished(float deltaTime)
