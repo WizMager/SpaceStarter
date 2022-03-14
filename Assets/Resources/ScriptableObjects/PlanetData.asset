@@ -17,6 +17,6 @@ MonoBehaviour:
   engineForce: 4.5
   moveSpeedToEdgeGravity: 2.8
   rotationSpeedToEdgeGravity: 0.8
-  moveSpeedCenterGravity: 2
+  moveSpeedCenterGravity: 3
   rotationInGravitySpeed: 175
   moveSpeedToNextPlanet: 7

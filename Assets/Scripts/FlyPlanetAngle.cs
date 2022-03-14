@@ -4,7 +4,8 @@ namespace DefaultNamespace
 {
     public class FlyPlanetAngle
     {
-        private Transform _planet;
+        private Transform _currentPlanet;
+        private Transform _nextPlanet;
         private readonly Transform _player;
 
         private Vector3 _start;
@@ -14,35 +15,40 @@ namespace DefaultNamespace
         
         public FlyPlanetAngle(Transform currentPlanet, Transform player, Transform nextPlanet)
         {
-            _planet = currentPlanet;
+            _currentPlanet = currentPlanet;
+            _nextPlanet = nextPlanet;
             _player = player;
-            _start = _player.position - _planet.position;
+            _start = _player.position - _currentPlanet.position;
             _end = _start;
             _fullAngle = Vector3.Angle(_start, nextPlanet.position - currentPlanet.position) + 360f;
         }
         
         public Vector3 FlewAngle()
         {
-            _start = _player.position - _planet.position;
+            _start = _player.position - _currentPlanet.position;
             if (_currentAngle >= _fullAngle)
             {
                 _currentAngle = 0;
-                var lookDirection = (_player.position - _planet.position).normalized;
+                var lookDirection = (_player.position - _currentPlanet.position).normalized;
                 return lookDirection;
             }
             
             _currentAngle += Vector3.Angle(_start, _end);
             _end = _start;
             return Vector3.zero;
-            
         }
 
+        public void CalculateAngle()
+        {
+            _start = _player.position - _currentPlanet.position;
+            _end = _start;
+            _fullAngle = Vector3.Angle(_start, _nextPlanet.position - _currentPlanet.position) + 360f;
+        }
+        
         public void ChangePlanet(Transform currentPlanet, Transform nextPlanet)
         {
-            _planet = currentPlanet;
-            _start = _player.position - currentPlanet.position;
-            _end = _start;
-            _fullAngle = Vector3.Angle(_start, nextPlanet.position - currentPlanet.position) + 360f;
+            _currentPlanet = currentPlanet;
+            _nextPlanet = nextPlanet;
         }
     }
 }

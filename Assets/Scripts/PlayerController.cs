@@ -138,6 +138,11 @@ namespace DefaultNamespace
             _flyNextPlanet.SetActive(isActive);
         }
 
+        public void CalculateAngle()
+        {
+            _flyPlanetAngle.CalculateAngle();
+        }
+        
         public bool LastPlanet(float deltaTime)
         {
             return _lastPlanet.FlyLastPlanet(deltaTime);

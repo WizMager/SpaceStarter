@@ -17,7 +17,7 @@ namespace State
         {
             _cameraController.FollowPlayer();
             if (!PlayerController.FlyNextPlanet()) return;
-            
+            PlayerController.CalculateAngle();
             PlayerController.FlyNextPlanetActive(false);
             PlayerController.TransitionTo(new FlyCenterGravityPlayerState(PlayerController, _cameraController));
         }

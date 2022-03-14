@@ -1,6 +1,6 @@
-﻿using State;
+﻿using DefaultNamespace;
 
-namespace DefaultNamespace
+namespace State
 {
     public class LastPlanetShootState : PlayerState
     {
