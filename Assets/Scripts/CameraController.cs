@@ -124,6 +124,7 @@ public class CameraController : IClean
     {
         var currentDistance = Vector3.Distance(_camera.transform.position, _lastPlanetTransform.position);
         _distanceFlyFirstPerson = currentDistance - _distanceLastPlanet;
+        _distanceFlyFirstPerson -= 0.1f;
         Object.Destroy(_playerView.gameObject);
         _camera.transform.LookAt(_lastPlanetTransform.position);
         _colliderView.StartCoroutine(StopFly());
@@ -131,14 +132,12 @@ public class CameraController : IClean
 
     private IEnumerator StopFly()
     {
-        
         for (float i = 0; i < _distanceFlyFirstPerson; i += Time.deltaTime)
         {
-            _camera.transform.Translate(_camera.transform.forward * -_moveSpeedLastPlanet * Time.deltaTime, Space.World);
-            _moveSpeedLastPlanet -= Time.deltaTime;
+            var moveSpeed = _moveSpeedLastPlanet - i / _distanceFlyFirstPerson * _moveSpeedLastPlanet;
+            _camera.transform.Translate(_camera.transform.forward * moveSpeed * Time.deltaTime, Space.World);
             yield return null;
         }
-        _camera.transform.LookAt(_lastPlanetTransform.position);
         _cameraStopped = true;
         _colliderView.StopCoroutine(StopFly());
     }
