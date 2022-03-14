@@ -74,7 +74,7 @@ namespace DefaultNamespace
             {
                 var speed = deltaTime * _moveSpeedGravity;
                 _playerTransform.Translate(_direction * speed, Space.World);
-                _pathCenter -= deltaTime;
+                _pathCenter -= speed;
             }
             else
             {
