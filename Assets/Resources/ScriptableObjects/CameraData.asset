@@ -12,9 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 979b64ca403041b3aa08fd44a9cec415, type: 3}
   m_Name: CameraData
   m_EditorClassIdentifier: 
-  startUpDivision: 1
-  upSpeed: 1
-  upOffsetFromPlayer: 10
+  upSpeed: 3.5
+  upOffsetFromPlayer: 13
   firstPersonRotationSpeed: 1
-  cameraDownPosition: 3
-  cameraDownSpeed: 3
+  cameraDownPosition: 5
+  cameraDownSpeed: 8
