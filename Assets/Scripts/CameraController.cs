@@ -66,39 +66,40 @@ public class CameraController : IClean
         cameraTransform.position = offsetPosition;
     }
 
-    public void CameraUp(float deltaTime)
+    public bool CameraUp(float deltaTime)
     {
         var cameraTransform = _camera.transform;
-        if (cameraTransform.position.y >= _cameraUpOffset)  return;
+        if (cameraTransform.position.y >= _cameraUpOffset)  return true;
         
         var offsetPosition = _playerTransform.position;
         offsetPosition.y = cameraTransform.position.y + _cameraUpSpeed * deltaTime;
         cameraTransform.position = offsetPosition;
+        return false;
     }
 
-    public void CameraDownPlanet(float deltaTime)
+    public bool CameraDownPlanet(float deltaTime)
     {
-        CameraDown(deltaTime, _cameraDownSpeed, _cameraDownPosition);
+        return CameraDown(deltaTime, _cameraDownSpeed, _cameraDownPosition);
     }
-    
-    
-    
-    private void CameraDown(float deltaTime, float downSpeed, float cameraDownPosition)
+
+    private bool CameraDown(float deltaTime, float downSpeed, float cameraDownPosition)
     {
-        var offsetY = _camera.transform.position.y;
+        var cameraPositionY = _camera.transform.position.y;
         var playerTransformPosition = _playerTransform.position;
-        var offsetX = playerTransformPosition.x;
-        var offsetZ = playerTransformPosition.z;
-        if (cameraDownPosition <= offsetY)
+        var playerPositionX = playerTransformPosition.x;
+        var playerPositionZ = playerTransformPosition.z;
+        if (cameraDownPosition <= cameraPositionY)
         {
-            offsetY -= deltaTime * downSpeed;
-            var offset = new Vector3(offsetX, offsetY, offsetZ);
+            cameraPositionY -= deltaTime * downSpeed;
+            var offset = new Vector3(playerPositionX, cameraPositionY, playerPositionZ);
             _camera.transform.position = offset;
+            return false;
         }
         else
         {
-            var offset = new Vector3(offsetX, offsetY, offsetZ);
+            var offset = new Vector3(playerPositionX, cameraPositionY, playerPositionZ);
             _camera.transform.position = offset;
+            return true;
         }
     }
     
