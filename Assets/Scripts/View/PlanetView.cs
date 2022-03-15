@@ -8,7 +8,7 @@ namespace View
     {
         public event Action OnPlayerPlanetEnter;
         public event Action OnPlayerPlanetExit;
-        public ObjectNumber number;
+        public PlanetNumber number;
 
         private void OnTriggerEnter(Collider other)
         {

@@ -10,6 +10,7 @@ namespace ScriptableData
         [SerializeField] private LastPlanetData _lastPlanetData;
         [SerializeField] private PlanetData _planetData;
         [SerializeField] private CameraData _cameraData;
+        [SerializeField] private InputData _inputData;
 
         public PlayerData Player
         {
@@ -60,6 +61,19 @@ namespace ScriptableData
                 }
 
                 return _cameraData;
+            }
+        }
+
+        public InputData Input
+        {
+            get
+            {
+                if (_inputData == null)
+                {
+                    throw new NullReferenceException("You don't create or set InputData scriptable object");
+                }
+
+                return _inputData;
             }
         }
     }

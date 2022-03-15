@@ -9,7 +9,7 @@ namespace View
         public event Action OnPlayerGravityEnter;
         public event Action OnPlayerGravityExit;
 
-        public ObjectNumber number;
+        public PlanetNumber number;
 
         private void OnTriggerEnter(Collider other)
         {

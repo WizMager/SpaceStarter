@@ -37,19 +37,19 @@ public class GameInitialization
       {
          switch (planet.number)
          {
-            case ObjectNumber.NotPlanet:
+            case PlanetNumber.NotPlanet:
                sortedPlanets[0] = planet;
                break;
-            case ObjectNumber.First:
+            case PlanetNumber.First:
                sortedPlanets[1] = planet;
                break;
-            case ObjectNumber.Second:
+            case PlanetNumber.Second:
                sortedPlanets[2] = planet;
                break;
-            case ObjectNumber.Third:
+            case PlanetNumber.Third:
                sortedPlanets[3] = planet;
                break;
-            case ObjectNumber.Last:
+            case PlanetNumber.Last:
                sortedPlanets[4] = planet;
                break;
             default:
@@ -61,19 +61,19 @@ public class GameInitialization
       {
          switch (gravity.number)
          {
-            case ObjectNumber.NotPlanet:
+            case PlanetNumber.NotPlanet:
                sortedGravities[0] = gravity;
                break;
-            case ObjectNumber.First:
+            case PlanetNumber.First:
                sortedGravities[1] = gravity;
                break;
-            case ObjectNumber.Second:
+            case PlanetNumber.Second:
                sortedGravities[2] = gravity;
                break;
-            case ObjectNumber.Third:
+            case PlanetNumber.Third:
                sortedGravities[3]= gravity;
                break;
-            case ObjectNumber.Last:
+            case PlanetNumber.Last:
                sortedGravities[4] = gravity;
                break;
             default:

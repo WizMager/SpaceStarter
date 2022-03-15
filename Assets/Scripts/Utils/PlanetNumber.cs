@@ -1,6 +1,6 @@
 ﻿namespace Utils
 {
-    public enum ObjectNumber
+    public enum PlanetNumber
     {
         NotPlanet,
         First,

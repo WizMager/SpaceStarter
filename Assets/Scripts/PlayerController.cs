@@ -50,14 +50,14 @@ namespace DefaultNamespace
                 data.LastPlanet.explosionForce, data.LastPlanet.explosionParticle);
             _flyCenterGravity = new FlyCenterGravity(playerView,
                 data.Planet.rotationInGravitySpeed, data.Planet.moveSpeedCenterGravity, _planetViews[_planetIndex].transform);
-            _lastPlanet = new LastPlanet(playerView, data.LastPlanet.moveSpeedToPlanet, gravityViews[(int)ObjectNumber.Last]);
+            _lastPlanet = new LastPlanet(playerView, data.LastPlanet.moveSpeedToPlanet, gravityViews[(int)PlanetNumber.Last]);
             
 
             _playerState = new AimNextPlanetPlayerState(this, new CameraController(camera, 
                 data.Camera.upSpeed, data.Camera.upOffsetFromPlayer, axisInput, data.LastPlanet.center,
                 data.Camera.firstPersonRotationSpeed, playerView,  data.Camera.cameraDownPosition, data.Camera.cameraDownSpeed, 
                 cameraColliderView, data.LastPlanet.cameraDownPosition, data.LastPlanet.cameraDownSpeed,
-                data.LastPlanet.distanceFromLastPlanetToStop, data.LastPlanet.moveSpeedToLastPlanet, planetViews[(int)ObjectNumber.Last].transform));
+                data.LastPlanet.distanceFromLastPlanetToStop, data.LastPlanet.moveSpeedToLastPlanet, planetViews[(int)PlanetNumber.Last].transform));
         }
 
         public void TransitionTo(PlayerState playerState)
@@ -69,7 +69,7 @@ namespace DefaultNamespace
         public bool ChangeCurrentPlanet()
         {
             _planetIndex += 1;
-            if (_planetIndex == (int)ObjectNumber.Last)
+            if (_planetIndex == (int)PlanetNumber.Last)
             {
                 _flyNextPlanet.ChangePlanet(_gravityViews[_planetIndex]);
                 
