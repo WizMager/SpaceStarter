@@ -9,14 +9,16 @@ namespace InputClasses
         private IUserInput<Vector3> _inputTouchDown;
         private IUserInput<Vector3> _inputTouchUp;
         private IUserInput<Vector3> _inputTouchHold;
+        private IUserInput<SwipeData> _inputSwipe;
 
-        public InputInitialization()
+        public InputInitialization(float minimalDistanceToSwipe)
         {
             _inputVertical = new InputVertical();
             _inputHorizontal = new InputHorizontal();
             _inputTouchDown = new InputTouchDown();
             _inputTouchUp = new InputTouchUp();
             _inputTouchHold = new InputTouchHold();
+            _inputSwipe = new InputSwipe(minimalDistanceToSwipe);
         }
 
         public (IUserInput<float> inputVertical, IUserInput<float> inputHorizontal, IUserInput<Vector3> inputTouchDown, 
@@ -27,7 +29,12 @@ namespace InputClasses
                     (_inputVertical, _inputHorizontal, _inputTouchDown, _inputTouchHold,_inputTouchUp);
             return result;
         }
-    
+
+        public IUserInput<SwipeData> GetSwipe()
+        {
+            return _inputSwipe;
+        }
+
         public IUserInput<float>[] GetAxis()
         {
             var result = new[] {_inputVertical, _inputHorizontal};

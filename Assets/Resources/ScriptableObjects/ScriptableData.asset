@@ -16,3 +16,4 @@ MonoBehaviour:
   _lastPlanetData: {fileID: 11400000, guid: 007deee80969c494cb99d210a7f267f7, type: 2}
   _planetData: {fileID: 11400000, guid: 54a166172da6f1a4ab9275695b367dde, type: 2}
   _cameraData: {fileID: 11400000, guid: defd4d2e33de5bc44bafd69bf3b0e4bb, type: 2}
+  _inputData: {fileID: 11400000, guid: 1b963a50ca3462946b814abf481e44b2, type: 2}

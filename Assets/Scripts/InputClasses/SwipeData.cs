@@ -2,7 +2,7 @@
 {
     public struct SwipeData
     {
-        public SwipeDirection direction;
-        public float value;
+        public SwipeDirection Direction;
+        public float Value;
     }
 }

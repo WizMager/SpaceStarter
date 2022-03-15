@@ -21,11 +21,11 @@ public class GameInitialization
       _gravities = Object.FindObjectsOfType<GravityView>();
       SortPlanetObjects();
 
-      var inputInitialization = new InputInitialization();
-      controllers.Add(new InputController(inputInitialization.GetAllInput()));
+      var inputInitialization = new InputInitialization(data.Input.minimalDistanceForSwipe);
+      controllers.Add(new InputController(inputInitialization.GetAllInput(), inputInitialization.GetSwipe()));
       controllers.Add(new PlayerController(data, player,
          inputInitialization.GetTouchAll(),
-         inputInitialization.GetAxis(), _planets, _gravities, camera, cameraColliderView));
+         inputInitialization.GetSwipe(), _planets, _gravities, camera, cameraColliderView));
    }
 
    private void SortPlanetObjects()

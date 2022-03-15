@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87195d1a758d451a8d60fb1c05dca4bf, type: 3}
   m_Name: InputData
   m_EditorClassIdentifier: 
-  minimalDistanceForSwipe: 20
+  minimalDistanceForSwipe: 30

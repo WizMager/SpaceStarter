@@ -1,17 +1,18 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
+using InputClasses;
 using UnityEngine;
-using Utils;
 using View;
+using Object = UnityEngine.Object;
 
 public class CameraController : IClean
 {
     private readonly Camera _camera;
     private readonly float _cameraUpSpeed;
     private readonly float _cameraUpOffset;
-    private readonly IUserInput<float> _vertical;
-    private readonly IUserInput<float> _horizontal;
+    private readonly IUserInput<SwipeData> _swipeInput;
     private readonly Vector3 _lastPlanetCenter;
-    private readonly float _fpRotationSpeed;
+    private readonly float _firstPersonRotationSpeed;
     private readonly PlayerView _playerView;
     private readonly float _cameraDownPosition;
     private readonly float _cameraDownSpeed;
@@ -19,17 +20,16 @@ public class CameraController : IClean
     private readonly float _cameraDownPositionLastPlanet;
     private readonly float _cameraDownSpeedLastPlanet;
     private readonly float _distanceLastPlanet;
-    private float _moveSpeedLastPlanet;
+    private readonly float _moveSpeedLastPlanet;
     private readonly Transform _lastPlanetTransform;
 
     private readonly Transform _playerTransform;
-    private float _distanceToPlayer;
     private bool _cameraStopped;
     private bool _cameraColliderEntered;
     private float _distanceFlyFirstPerson;
 
     public CameraController(Camera camera, float cameraUpSpeed, float cameraUpOffset, 
-        IUserInput<float>[] axisInput, Vector3 lastPlanetCenter, float fpRotationSpeed, PlayerView playerView,
+        IUserInput<SwipeData> swipeInput, Vector3 lastPlanetCenter, float firstPersonRotationSpeed, PlayerView playerView,
         float cameraDownPosition, float cameraDownSpeed, CameraColliderView cameraColliderView, 
         float cameraDownPositionLastPlanet, float cameraDownSpeedLastPlanet, float distanceLastPlanet, float moveSpeedLastPlanet,
         Transform lastPlanetTransform)
@@ -37,10 +37,9 @@ public class CameraController : IClean
         _camera = camera;
         _cameraUpSpeed = cameraUpSpeed;
         _cameraUpOffset = cameraUpOffset;
-        _vertical = axisInput[(int) AxisInput.InputVertical];
-        _horizontal = axisInput[(int) AxisInput.InputHorizontal];
+        _swipeInput = swipeInput;
         _lastPlanetCenter = lastPlanetCenter;
-        _fpRotationSpeed = fpRotationSpeed;
+        _firstPersonRotationSpeed = firstPersonRotationSpeed;
         _playerView = playerView;
         _cameraDownPosition = cameraDownPosition;
         _cameraDownSpeed = cameraDownSpeed;
@@ -52,8 +51,7 @@ public class CameraController : IClean
         _lastPlanetTransform = lastPlanetTransform;
 
         _playerTransform = playerView.transform;
-        _vertical.OnChange += VerticalChanged;
-        _horizontal.OnChange += HorizontalChanged;
+        _swipeInput.OnChange += CameraSwipeRotate;
         _colliderView.OnPlayerEnter += PlayerEntered;
     }
     
@@ -102,8 +100,7 @@ public class CameraController : IClean
             return true;
         }
     }
-    
-    
+
     public void FlyLastPlanet(float deltaTime)
     {
         if (_cameraColliderEntered)
@@ -147,23 +144,33 @@ public class CameraController : IClean
     {
         return _cameraStopped;
     }
+
+    private void CameraSwipeRotate(SwipeData swipeData)
+    {
+        if (!_cameraStopped) return;
+        
+        switch(swipeData.Direction)
+        {
+            case SwipeDirection.Left:
+                _camera.transform.RotateAround(_lastPlanetCenter, Vector3.up, swipeData.Value * _firstPersonRotationSpeed);
+                break;
+            case SwipeDirection.Right:
+                _camera.transform.RotateAround(_lastPlanetCenter, Vector3.up, -swipeData.Value * _firstPersonRotationSpeed);
+                break;
+            case SwipeDirection.Up:
+                _camera.transform.RotateAround(_lastPlanetCenter, Vector3.forward, swipeData.Value * _firstPersonRotationSpeed);
+                break;
+            case SwipeDirection.Down:
+                _camera.transform.RotateAround(_lastPlanetCenter, Vector3.forward, -swipeData.Value * _firstPersonRotationSpeed);
+                break;
+            default:
+                throw new ArgumentOutOfRangeException();
+        }
+    }
     
-    private void VerticalChanged(float value)
-    {
-        if (!_cameraStopped) return;
-        _camera.transform.RotateAround(_lastPlanetCenter, Vector3.forward, value * _fpRotationSpeed);
-    }
-
-    private void HorizontalChanged(float value)
-    {
-        if (!_cameraStopped) return;
-        _camera.transform.RotateAround(_lastPlanetCenter, Vector3.up, -value * _fpRotationSpeed);
-    }
-
-
     public void Clean()
     {
-        _vertical.OnChange -= VerticalChanged;
-        _horizontal.OnChange -= HorizontalChanged;
+        _swipeInput.OnChange += CameraSwipeRotate;
+        _colliderView.OnPlayerEnter += PlayerEntered; 
     }
 }

@@ -1,9 +1,11 @@
-﻿using State;
+﻿using DefaultNamespace;
+using InputClasses;
+using State;
 using UnityEngine;
 using Utils;
 using View;
 
-namespace DefaultNamespace
+namespace Controller
 {
     public class PlayerController : IExecute, IClean
     {
@@ -12,21 +14,19 @@ namespace DefaultNamespace
         private readonly PlanetView[] _planetViews;
         private readonly GravityView[] _gravityViews;
         private readonly PlayerView _playerView;
-        
-        private bool _isRightRotation;
 
-        private RotationAroundPlanet _rotationAroundPlanet;
-        private UpAndDownAroundPlanet _upAndDownAroundPlanet;
-        private FlyPlanetAngle _flyPlanetAngle;
-        private FlyToEdgeGravity _flyToEdgeGravity;
-        private AimNextPlanet _aimNextPlanet;
-        private FlyNextPlanet _flyNextPlanet;
-        private TapExplosionController _tapExplosionController;
-        private FlyCenterGravity _flyCenterGravity;
-        private LastPlanet _lastPlanet;
+        private readonly RotationAroundPlanet _rotationAroundPlanet;
+        private readonly UpAndDownAroundPlanet _upAndDownAroundPlanet;
+        private readonly FlyPlanetAngle _flyPlanetAngle;
+        private readonly FlyToEdgeGravity _flyToEdgeGravity;
+        private readonly AimNextPlanet _aimNextPlanet;
+        private readonly FlyNextPlanet _flyNextPlanet;
+        private readonly TapExplosionController _tapExplosionController;
+        private readonly FlyCenterGravity _flyCenterGravity;
+        private readonly LastPlanet _lastPlanet;
 
         public PlayerController(ScriptableData.ScriptableData data, PlayerView playerView, IUserInput<Vector3>[] touchInput, 
-            IUserInput<float>[] axisInput, PlanetView[] planetViews, GravityView[] gravityViews, Camera camera, CameraColliderView cameraColliderView)
+            IUserInput<SwipeData> swipeInput, PlanetView[] planetViews, GravityView[] gravityViews, Camera camera, CameraColliderView cameraColliderView)
         {
             
             _planetViews = planetViews;
@@ -54,7 +54,7 @@ namespace DefaultNamespace
             
 
             _playerState = new AimNextPlanetPlayerState(this, new CameraController(camera, 
-                data.Camera.upSpeed, data.Camera.upOffsetFromPlayer, axisInput, data.LastPlanet.center,
+                data.Camera.upSpeed, data.Camera.upOffsetFromPlayer, swipeInput, data.LastPlanet.center,
                 data.Camera.firstPersonRotationSpeed, playerView,  data.Camera.cameraDownPosition, data.Camera.cameraDownSpeed, 
                 cameraColliderView, data.LastPlanet.cameraDownPosition, data.LastPlanet.cameraDownSpeed,
                 data.LastPlanet.distanceFromLastPlanetToStop, data.LastPlanet.moveSpeedToLastPlanet, planetViews[(int)PlanetNumber.Last].transform));
