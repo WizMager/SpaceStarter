@@ -22,9 +22,9 @@ public class GameInitialization
       SortPlanetObjects();
 
       var inputInitialization = new InputInitialization(data.Input.minimalDistanceForSwipe);
-      controllers.Add(new InputController(inputInitialization.GetAllInput(), inputInitialization.GetSwipe()));
+      controllers.Add(new InputController(inputInitialization.GetAllTouch(), inputInitialization.GetSwipe()));
       controllers.Add(new PlayerController(data, player,
-         inputInitialization.GetTouchAll(),
+         inputInitialization.GetAllTouch(),
          inputInitialization.GetSwipe(), _planets, _gravities, camera, cameraColliderView));
    }
 
