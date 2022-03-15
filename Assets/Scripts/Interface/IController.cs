@@ -1,3 +1,6 @@
-﻿public interface IController
+﻿namespace Interface
 {
+    public interface IController
+    {
+    }
 }

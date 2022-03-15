@@ -1,4 +1,7 @@
-﻿public interface IExecute : IController
+﻿namespace Interface
 {
-        void Execute(float deltaTime);
+        public interface IExecute : IController
+        {
+                void Execute(float deltaTime);
+        }
 }

@@ -1,54 +1,51 @@
 ﻿using UnityEngine;
 
-namespace DefaultNamespace
+public class FlyPlanetAngle
 {
-    public class FlyPlanetAngle
+    private Transform _currentPlanet;
+    private Transform _nextPlanet;
+    private readonly Transform _player;
+
+    private Vector3 _start;
+    private Vector3 _end;
+    private float _fullAngle;
+    private float _currentAngle;
+        
+    public FlyPlanetAngle(Transform currentPlanet, Transform player, Transform nextPlanet)
     {
-        private Transform _currentPlanet;
-        private Transform _nextPlanet;
-        private readonly Transform _player;
-
-        private Vector3 _start;
-        private Vector3 _end;
-        private float _fullAngle;
-        private float _currentAngle;
+        _currentPlanet = currentPlanet;
+        _nextPlanet = nextPlanet;
+        _player = player;
+        _start = _player.position - _currentPlanet.position;
+        _end = _start;
+        _fullAngle = Vector3.Angle(_start, nextPlanet.position - currentPlanet.position) + 360f;
+    }
         
-        public FlyPlanetAngle(Transform currentPlanet, Transform player, Transform nextPlanet)
+    public Vector3 FlewAngle()
+    {
+        _start = _player.position - _currentPlanet.position;
+        if (_currentAngle >= _fullAngle)
         {
-            _currentPlanet = currentPlanet;
-            _nextPlanet = nextPlanet;
-            _player = player;
-            _start = _player.position - _currentPlanet.position;
-            _end = _start;
-            _fullAngle = Vector3.Angle(_start, nextPlanet.position - currentPlanet.position) + 360f;
+            _currentAngle = 0;
+            var lookDirection = (_player.position - _currentPlanet.position).normalized;
+            return lookDirection;
         }
-        
-        public Vector3 FlewAngle()
-        {
-            _start = _player.position - _currentPlanet.position;
-            if (_currentAngle >= _fullAngle)
-            {
-                _currentAngle = 0;
-                var lookDirection = (_player.position - _currentPlanet.position).normalized;
-                return lookDirection;
-            }
             
-            _currentAngle += Vector3.Angle(_start, _end);
-            _end = _start;
-            return Vector3.zero;
-        }
+        _currentAngle += Vector3.Angle(_start, _end);
+        _end = _start;
+        return Vector3.zero;
+    }
 
-        public void CalculateAngle()
-        {
-            _start = _player.position - _currentPlanet.position;
-            _end = _start;
-            _fullAngle = Vector3.Angle(_start, _nextPlanet.position - _currentPlanet.position) + 360f;
-        }
+    public void CalculateAngle()
+    {
+        _start = _player.position - _currentPlanet.position;
+        _end = _start;
+        _fullAngle = Vector3.Angle(_start, _nextPlanet.position - _currentPlanet.position) + 360f;
+    }
         
-        public void ChangePlanet(Transform currentPlanet, Transform nextPlanet)
-        {
-            _currentPlanet = currentPlanet;
-            _nextPlanet = nextPlanet;
-        }
+    public void ChangePlanet(Transform currentPlanet, Transform nextPlanet)
+    {
+        _currentPlanet = currentPlanet;
+        _nextPlanet = nextPlanet;
     }
 }

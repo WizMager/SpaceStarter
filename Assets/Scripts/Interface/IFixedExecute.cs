@@ -1,4 +1,7 @@
-﻿public interface IFixedExecute
+﻿namespace Interface
 {
-        void FixedExecute(float fixedDeltaTime);
+        public interface IFixedExecute
+        {
+                void FixedExecute(float fixedDeltaTime);
+        }
 }

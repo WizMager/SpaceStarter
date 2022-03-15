@@ -1,6 +1,5 @@
 ﻿using System;
 using Controller;
-using DefaultNamespace;
 using InputClasses;
 using UnityEngine;
 using Utils;

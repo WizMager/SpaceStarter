@@ -1,4 +1,5 @@
 ﻿using System;
+using Interface;
 using UnityEngine;
 
 namespace InputClasses
@@ -18,9 +19,9 @@ namespace InputClasses
         
         public void GetInput()
         {
-            if (Input.touchCount != 1) return;
+            if (Input.touchCount < 1) return;
             
-            var touch = Input.touches[0];
+            var touch = Input.GetTouch(0);
             switch (touch.phase)
             {
                 case TouchPhase.Began:

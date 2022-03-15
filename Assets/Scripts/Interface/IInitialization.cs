@@ -1,4 +1,7 @@
-﻿public interface IInitialization
+﻿namespace Interface
 {
-       void Initialization();
+       public interface IInitialization
+       {
+              void Initialization();
+       }
 }

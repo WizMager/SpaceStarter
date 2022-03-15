@@ -1,4 +1,7 @@
-﻿public interface IClean
+﻿namespace Interface
 {
-     void Clean();
+     public interface IClean
+     {
+          void Clean();
+     }
 }

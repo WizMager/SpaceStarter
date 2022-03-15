@@ -1,4 +1,5 @@
 ﻿using System;
+using Interface;
 using UnityEngine;
 
 namespace InputClasses

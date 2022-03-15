@@ -1,15 +1,17 @@
-﻿using UnityEngine;
+﻿using Interface;
+using UnityEngine;
 using Utils;
 
 public class TapExplosionController
 {
-    private IUserInput<Vector3>[] _touch;
-    private Camera _camera;
-    private float _explosionArea;
-    private float _explosionForce;
-    private GameObject _particle;
+    private readonly IUserInput<Vector3>[] _touch;
+    private readonly Camera _camera;
+    private readonly float _explosionArea;
+    private readonly float _explosionForce;
+    private readonly GameObject _particle;
 
     private bool _isActive;
+    private Vector3 _touchDownPosition;
 
     public TapExplosionController(IUserInput<Vector3>[] touch, Camera camera, float explosionArea, float explosionForce, GameObject particle)
     {
@@ -20,6 +22,7 @@ public class TapExplosionController
         _particle = particle;
 
         _touch[(int) TouchInput.InputTouchDown].OnChange += TouchDown;
+        _touch[(int) TouchInput.InputTouchUp].OnChange += TouchUp;
     }
 
     private void Shoot(Vector3 touchPosition)
@@ -57,11 +60,20 @@ public class TapExplosionController
         }
     }
 
-    private void TouchDown(Vector3 touchPosition)
+    private void TouchDown(Vector3 position)
     {
         if (!_isActive) return;
+
+        _touchDownPosition = position;
+    }
+
+    private void TouchUp(Vector3 position)
+    {
+        if (!_isActive) return;
+
+        if (_touchDownPosition != position) return;
         
-        Shoot(touchPosition);
+        Shoot(position);
     }
 
     public void SetActive()

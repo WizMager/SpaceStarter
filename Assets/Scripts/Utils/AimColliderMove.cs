@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace DefaultNamespace
+namespace Utils
 {
     public class AimColliderMove : MonoBehaviour
     {

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Interface;
+using UnityEngine;
 
 namespace InputClasses
 {

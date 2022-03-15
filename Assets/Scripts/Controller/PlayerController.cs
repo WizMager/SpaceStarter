@@ -1,5 +1,5 @@
-﻿using DefaultNamespace;
-using InputClasses;
+﻿using InputClasses;
+using Interface;
 using State;
 using UnityEngine;
 using Utils;
@@ -13,7 +13,6 @@ namespace Controller
         private int _planetIndex;
         private readonly PlanetView[] _planetViews;
         private readonly GravityView[] _gravityViews;
-        private readonly PlayerView _playerView;
 
         private readonly RotationAroundPlanet _rotationAroundPlanet;
         private readonly UpAndDownAroundPlanet _upAndDownAroundPlanet;
@@ -31,7 +30,6 @@ namespace Controller
             
             _planetViews = planetViews;
             _gravityViews = gravityViews;
-            _playerView = playerView;
 
             var playerTransform = playerView.transform;
             _upAndDownAroundPlanet = new UpAndDownAroundPlanet(data.Planet.engineForce, data.Planet.gravity,

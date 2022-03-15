@@ -1,9 +1,12 @@
 ﻿using UnityEngine;
 
-public class ParticleDestroyer : MonoBehaviour
+namespace Utils
 {
-    private void Start()
+    public class ParticleDestroyer : MonoBehaviour
     {
-        Destroy(gameObject, 1f);
+        private void Start()
+        {
+            Destroy(gameObject, 1f);
+        }
     }
 }

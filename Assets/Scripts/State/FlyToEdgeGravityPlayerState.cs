@@ -1,5 +1,4 @@
 ﻿using Controller;
-using DefaultNamespace;
 using UnityEngine;
 
 namespace State

@@ -1,4 +1,7 @@
-﻿public static class GlobalData
+﻿namespace Utils
 {
-     public const int LayerForAim = 1 << 10;
+     public static class GlobalData
+     {
+          public const int LayerForAim = 1 << 10;
+     }
 }

@@ -1,11 +1,10 @@
 ﻿using Controller;
-using DefaultNamespace;
 
 namespace State
 {
     public class LastPlanetShootState : PlayerState
     {
-        private CameraController _cameraController;
+        private readonly CameraController _cameraController;
         private bool _isActivated;
 
         public LastPlanetShootState(PlayerController context, CameraController cameraController)
