@@ -1,5 +1,6 @@
 ﻿using InputClasses;
 using Interface;
+using Model;
 using State;
 using UnityEngine;
 using Utils;
@@ -13,6 +14,8 @@ namespace Controller
         private int _planetIndex;
         private readonly PlanetView[] _planetViews;
         private readonly GravityView[] _gravityViews;
+        private readonly PlayerModel _playerModel;
+        private readonly DeadScreenView _deadScreenView;
 
         private readonly RotationAroundPlanet _rotationAroundPlanet;
         private readonly UpAndDownAroundPlanet _upAndDownAroundPlanet;
@@ -25,11 +28,14 @@ namespace Controller
         private readonly LastPlanet _lastPlanet;
 
         public PlayerController(ScriptableData.ScriptableData data, PlayerView playerView, IUserInput<Vector3>[] touchInput, 
-            IUserInput<SwipeData> swipeInput, PlanetView[] planetViews, GravityView[] gravityViews, Camera camera, CameraColliderView cameraColliderView)
+            IUserInput<SwipeData> swipeInput, PlanetView[] planetViews, GravityView[] gravityViews, Camera camera, 
+            CameraColliderView cameraColliderView, PlayerModel playerModel, DeadScreenView deadScreenView)
         {
             
             _planetViews = planetViews;
             _gravityViews = gravityViews;
+            _playerModel = playerModel;
+            _deadScreenView = deadScreenView;
 
             var playerTransform = playerView.transform;
             _upAndDownAroundPlanet = new UpAndDownAroundPlanet(data.Planet.engineForce, data.Planet.gravity,
@@ -56,6 +62,8 @@ namespace Controller
                 data.Camera.firstPersonRotationSpeed, playerView,  data.Camera.cameraDownPosition, data.Camera.cameraDownSpeed, 
                 cameraColliderView, data.LastPlanet.cameraDownPosition, data.LastPlanet.cameraDownSpeed,
                 data.LastPlanet.distanceFromLastPlanetToStop, data.LastPlanet.moveSpeedToLastPlanet, planetViews[(int)PlanetNumber.Last].transform));
+
+            _playerModel.OnZeroHealth += ChangeDeadState;
         }
 
         public void TransitionTo(PlayerState playerState)
@@ -64,6 +72,17 @@ namespace Controller
             _playerState.SetContext(this);
         }
 
+        private void ChangeDeadState()
+        {
+            _deadScreenView.OnDead();
+            TransitionTo(new DeadState());
+        }
+
+        public void IsDead()
+        {
+            _deadScreenView.OnDead();
+        }
+        
         public bool ChangeCurrentPlanet()
         {
             _planetIndex += 1;

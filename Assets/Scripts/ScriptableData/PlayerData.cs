@@ -6,5 +6,6 @@ namespace ScriptableData
      public class PlayerData : ScriptableObject
      {
           public int missileCount;
+          public int startHealth;
      }
 }
