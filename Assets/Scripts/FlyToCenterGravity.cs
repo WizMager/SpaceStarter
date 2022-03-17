@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using View;
 
-public class FlyCenterGravity
+public class FlyToCenterGravity
 {
     private readonly float _rotationSpeedGravity;
     private readonly float _moveSpeedGravity;
@@ -14,7 +14,7 @@ public class FlyCenterGravity
     private bool _isMoved;
     private float _edgeRotationAngle;
         
-    public FlyCenterGravity(PlayerView playerView, float rotationSpeedGravity, float moveSpeedGravity, Transform currentPlanet)
+    public FlyToCenterGravity(PlayerView playerView, float rotationSpeedGravity, float moveSpeedGravity, Transform currentPlanet)
     {
         _rotationSpeedGravity = rotationSpeedGravity;
         _moveSpeedGravity = moveSpeedGravity;

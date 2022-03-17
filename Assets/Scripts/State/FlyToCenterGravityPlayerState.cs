@@ -2,11 +2,11 @@
 
 namespace State
 {
-    public class FlyCenterGravityPlayerState : PlayerState
+    public class FlyToCenterGravityPlayerState : PlayerState
     {
         private readonly CameraController _cameraController;
         
-        public FlyCenterGravityPlayerState(PlayerController context, CameraController cameraController)
+        public FlyToCenterGravityPlayerState(PlayerController context, CameraController cameraController)
         {
             PlayerController = context;
             _cameraController = cameraController;

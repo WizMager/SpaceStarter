@@ -20,6 +20,7 @@ public class GameInitialization
       var playerIndicatorView = Object.FindObjectOfType<PlayerIndicatorView>();
       var bonusViews = Object.FindObjectsOfType<BonusView>();
       var deadView = Object.FindObjectOfType<DeadScreenView>();
+      var asteroids = Object.FindObjectsOfType<AsteroidView>();
       _planets = Object.FindObjectsOfType<PlanetView>();
       _gravities = Object.FindObjectsOfType<GravityView>();
       SortPlanetObjects();
@@ -29,7 +30,8 @@ public class GameInitialization
       var inputInitialization = new InputInitialization(data.Input.minimalDistanceForSwipe);
       controllers.Add(new InputController(inputInitialization.GetAllTouch(), inputInitialization.GetSwipe()));
       controllers.Add(new PlayerController(data, player, inputInitialization.GetAllTouch(),
-         inputInitialization.GetSwipe(), _planets, _gravities, camera, cameraColliderView, playerModel, deadView));
+         inputInitialization.GetSwipe(), _planets, _gravities, camera, cameraColliderView, playerModel, deadView,
+         asteroids));
       controllers.Add(new BonusController(playerModel, playerIndicatorView, bonusViews, BonusTypeValue(data)));
    }
 

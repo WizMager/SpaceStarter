@@ -2,11 +2,11 @@
 
 namespace State
 {
-    public class FlyNextPlanetPlayerState : PlayerState
+    public class FlyToNextPlanetPlayerState : PlayerState
     {
         private readonly CameraController _cameraController;
 
-        public FlyNextPlanetPlayerState(PlayerController context, CameraController cameraController)
+        public FlyToNextPlanetPlayerState(PlayerController context, CameraController cameraController)
         {
             PlayerController = context;
             _cameraController = cameraController;
@@ -19,7 +19,7 @@ namespace State
             if (!PlayerController.FlyNextPlanet()) return;
             PlayerController.CalculateAngle();
             PlayerController.FlyNextPlanetActive(false);
-            PlayerController.TransitionTo(new FlyCenterGravityPlayerState(PlayerController, _cameraController));
+            PlayerController.TransitionTo(new FlyToCenterGravityPlayerState(PlayerController, _cameraController));
         }
     }
 }

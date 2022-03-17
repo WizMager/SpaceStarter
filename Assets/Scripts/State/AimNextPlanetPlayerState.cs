@@ -23,7 +23,7 @@ namespace State
             }
             else
             {
-                PlayerController.TransitionTo(new FlyNextPlanetPlayerState(PlayerController, _cameraController));  
+                PlayerController.TransitionTo(new FlyToNextPlanetPlayerState(PlayerController, _cameraController));  
             }
         }
     }
