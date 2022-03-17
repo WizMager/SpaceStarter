@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: BonusData
   m_EditorClassIdentifier: 
   goodBonus: 1
-  badBonus: 101
+  badBonus: 1

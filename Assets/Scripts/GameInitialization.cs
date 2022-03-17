@@ -17,22 +17,20 @@ public class GameInitialization
       var player = Object.FindObjectOfType<PlayerView>();
       var camera = Object.FindObjectOfType<Camera>();
       var cameraColliderView = Object.FindObjectOfType<CameraColliderView>();
-      var playerHealthView = Object.FindObjectOfType<PlayerHealthView>();
-      var playerBonusView = Object.FindObjectOfType<PlayerBonusView>();
+      var playerIndicatorView = Object.FindObjectOfType<PlayerIndicatorView>();
       var bonusViews = Object.FindObjectsOfType<BonusView>();
       var deadView = Object.FindObjectOfType<DeadScreenView>();
       _planets = Object.FindObjectsOfType<PlanetView>();
       _gravities = Object.FindObjectsOfType<GravityView>();
       SortPlanetObjects();
-      var playerModel = new PlayerModel(data.Player.startHealth, data.Player.missileCount,
-         BonusTypeValue(data));
+      var playerModel = new PlayerModel(data.Player.startHealth, data.Player.missileCount);
       
 
       var inputInitialization = new InputInitialization(data.Input.minimalDistanceForSwipe);
       controllers.Add(new InputController(inputInitialization.GetAllTouch(), inputInitialization.GetSwipe()));
       controllers.Add(new PlayerController(data, player, inputInitialization.GetAllTouch(),
          inputInitialization.GetSwipe(), _planets, _gravities, camera, cameraColliderView, playerModel, deadView));
-      controllers.Add(new BonusController(playerModel, playerHealthView, playerBonusView, bonusViews));
+      controllers.Add(new BonusController(playerModel, playerIndicatorView, bonusViews, BonusTypeValue(data)));
    }
 
    private int[] BonusTypeValue(ScriptableData.ScriptableData data)
