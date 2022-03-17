@@ -1,22 +1,20 @@
 ﻿using System;
-using UnityEngine;
+using DefaultNamespace;
 using View;
 
 public class LastPlanet : IDisposable
 {
-    private readonly Transform _playerTransform;
-    private readonly float _moveSpeed;
     private readonly GravityView _gravityView;
 
     private bool _inGravity;
+    private readonly TrajectoryCalculate _trajectory;
 
-    public LastPlanet(PlayerView playerView, float moveSpeedLastPlanet, GravityView gravityView)
+    public LastPlanet(GravityView gravityView, TrajectoryCalculate trajectoryCalculate)
     {
-        _playerTransform = playerView.transform;
-        _moveSpeed = moveSpeedLastPlanet;
         _gravityView = gravityView;
 
         _gravityView.OnPlayerGravityEnter += GravityEntered;
+        _trajectory = trajectoryCalculate;
     }
 
     public bool FlyLastPlanet(float deltaTime)
@@ -29,15 +27,14 @@ public class LastPlanet : IDisposable
 
     private void PlayerTranslate(float deltaTime)
     {
-        _playerTransform.Translate(_playerTransform.forward * deltaTime * _moveSpeed, Space.World);  
+        _trajectory.Move(deltaTime);
     }
         
     private void GravityEntered()
     {
         _inGravity = true;
     }
-
-
+    
     public void Dispose()
     {
         _gravityView.OnPlayerGravityEnter -= GravityEntered;

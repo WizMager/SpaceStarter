@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using DefaultNamespace;
 using InputClasses;
 using Interface;
 using Model;
@@ -28,6 +29,7 @@ namespace Controller
         private readonly TapExplosionController _tapExplosionController;
         private readonly FlyToCenterGravity _flyToCenterGravity;
         private readonly LastPlanet _lastPlanet;
+        private readonly TrajectoryCalculate _trajectoryCalculate;
 
         public PlayerController(ScriptableData.ScriptableData data, PlayerView playerView, IUserInput<Vector3>[] touchInput, 
             IUserInput<SwipeData> swipeInput, PlanetView[] planetViews, GravityView[] gravityViews, Camera camera, 
@@ -42,6 +44,7 @@ namespace Controller
             _asteroidBeltList = asteroidViewList;
 
             var playerTransform = playerView.transform;
+            _trajectoryCalculate = new TrajectoryCalculate(playerTransform, data.Planet.moveSpeedToNextPlanet);
             _upAndDownAroundPlanet = new UpAndDownAroundPlanet(data.Planet.engineForce, data.Planet.gravity,
                 playerTransform, _planetViews[_planetIndex], gravityViews[_planetIndex], touchInput);
             _rotationAroundPlanet = new RotationAroundPlanet(data.Planet.speedRotationAroundPlanet,
@@ -53,12 +56,12 @@ namespace Controller
                 data.Planet.moveSpeedToEdgeGravity, _gravityViews[_planetIndex], playerTransform);
             _aimNextPlanet = new AimNextPlanet(touchInput, playerTransform, camera);
             _flyNextToPlanet =
-                new FlyNextToPlanet(data.Planet.moveSpeedToNextPlanet, _gravityViews[_planetIndex], playerTransform);
+                new FlyNextToPlanet(_gravityViews[_planetIndex], _trajectoryCalculate);
             _tapExplosionController = new TapExplosionController( touchInput, camera, data.LastPlanet.explosionArea,
                 data.LastPlanet.explosionForce, data.LastPlanet.explosionParticle);
             _flyToCenterGravity = new FlyToCenterGravity(playerView,
                 data.Planet.rotationInGravitySpeed, data.Planet.moveSpeedCenterGravity, _planetViews[_planetIndex].transform);
-            _lastPlanet = new LastPlanet(playerView, data.LastPlanet.moveSpeedToPlanet, gravityViews[(int)PlanetNumber.Last]);
+            _lastPlanet = new LastPlanet(gravityViews[(int)PlanetNumber.Last], _trajectoryCalculate);
             
 
             _playerState = new AimNextPlanetPlayerState(this, new CameraController(camera, 
@@ -92,7 +95,8 @@ namespace Controller
             _planetIndex += 1;
             if (_planetIndex == (int)PlanetNumber.Last)
             {
-                _flyNextToPlanet.ChangePlanet(_gravityViews[_planetIndex], _asteroidBeltList[_planetIndex - 1]);
+                _trajectoryCalculate.ChangePlanet(_asteroidBeltList[_planetIndex - 1]);
+                _flyNextToPlanet.ChangePlanet(_gravityViews[_planetIndex]);
                 
                 _flyToEdgeGravity.ChangePlanet(_gravityViews[_planetIndex]);
                  _flyPlanetAngle.ChangePlanet(_planetViews[0].transform,
@@ -102,12 +106,13 @@ namespace Controller
                 return true;
             }
 
+            _trajectoryCalculate.ChangePlanet(_asteroidBeltList[_planetIndex - 1]);
             _flyToEdgeGravity.ChangePlanet(_gravityViews[_planetIndex]);
             _flyPlanetAngle.ChangePlanet(_planetViews[_planetIndex].transform,
                 _planetViews[_planetIndex + 1].transform);
             _rotationAroundPlanet.ChangePlanet(_planetViews[_planetIndex].transform);
             _upAndDownAroundPlanet.ChangePlanet(_planetViews[_planetIndex], _gravityViews[_planetIndex]);
-            _flyNextToPlanet.ChangePlanet(_gravityViews[_planetIndex], _asteroidBeltList[_planetIndex - 1]);
+            _flyNextToPlanet.ChangePlanet(_gravityViews[_planetIndex]);
             _flyToCenterGravity.ChangePlanet(_planetViews[_planetIndex].transform);
             return false;
             }

@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using DefaultNamespace;
-using UnityEngine;
+﻿using DefaultNamespace;
 using View;
 
 public class FlyNextToPlanet
@@ -12,11 +10,11 @@ public class FlyNextToPlanet
     private bool _isInGravity;
     private bool _isActive;
 
-    public FlyNextToPlanet(float moveSpeed, GravityView gravityView, Transform playerTransform)
+    public FlyNextToPlanet(GravityView gravityView, TrajectoryCalculate trajectoryCalculate)
     {
         _gravityView = gravityView;
 
-        _trajectoryCalculate = new TrajectoryCalculate(playerTransform, moveSpeed);
+        _trajectoryCalculate = trajectoryCalculate;
         _gravityView.OnPlayerGravityEnter += GravityEntered;
     }
 
@@ -45,12 +43,11 @@ public class FlyNextToPlanet
         _isActive = isActive;
     }
 
-    public void ChangePlanet(GravityView currentGravityView, List<AsteroidView> asteroidViewsList)
+    public void ChangePlanet(GravityView currentGravityView)
     {
         OnDestroy();
         _gravityView = currentGravityView;
         _gravityView.OnPlayerGravityEnter += GravityEntered;
-        _trajectoryCalculate.ChangePlanet(asteroidViewsList);
     }
 
     public void OnDestroy()
