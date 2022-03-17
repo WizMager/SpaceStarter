@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 using View;
 
@@ -6,7 +7,7 @@ namespace DefaultNamespace
 {
     public class TrajectoryCalculate
     {
-        private AsteroidView[] _asteroidViews;
+        private List<AsteroidView> _asteroidViews;
         private readonly Transform _playerTransform;
         private readonly float _moveSpeed;
         
@@ -14,13 +15,10 @@ namespace DefaultNamespace
         private bool _colliderEntered;
         private Vector3 _reflectVector;
 
-        public TrajectoryCalculate(AsteroidView[] asteroidViews, Transform playerTransform, float moveSpeed)
+        public TrajectoryCalculate(Transform playerTransform, float moveSpeed)
         {
-            _asteroidViews = asteroidViews;
             _playerTransform = playerTransform;
             _moveSpeed = moveSpeed;
-            
-            SubscribeToAsteroids();
         }
 
         private void SubscribeToAsteroids()
@@ -64,7 +62,7 @@ namespace DefaultNamespace
         
         public void Move(float deltaTime)
         {
-            _playerTransform.Translate(_playerTransform.forward * Time.deltaTime * _moveSpeed, Space.World);
+            _playerTransform.Translate(_playerTransform.forward * deltaTime * _moveSpeed, Space.World);
 
             if (_isAngleCalculated) return;
         
@@ -80,6 +78,8 @@ namespace DefaultNamespace
 
         private void UnSubscribeToAsteroids()
         {
+            if (_asteroidViews == null) return;
+            
             foreach (var asteroidView in _asteroidViews)
             {
                 asteroidView.OnColliderEnter -= ColliderEntered;
@@ -87,7 +87,7 @@ namespace DefaultNamespace
             }
         }
 
-        public void ChangePlanet(AsteroidView[] asteroidViews)
+        public void ChangePlanet(List<AsteroidView> asteroidViews)
         {
             UnSubscribeToAsteroids();
             _asteroidViews = asteroidViews;
