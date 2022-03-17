@@ -16,7 +16,7 @@ namespace State
         public override void Move(float deltaTime)
         {
             _cameraController.FollowPlayer();
-            if (!PlayerController.FlyNextPlanet()) return;
+            if (!PlayerController.FlyNextPlanet(deltaTime)) return;
             PlayerController.CalculateAngle();
             PlayerController.FlyNextPlanetActive(false);
             PlayerController.TransitionTo(new FlyToCenterGravityPlayerState(PlayerController, _cameraController));

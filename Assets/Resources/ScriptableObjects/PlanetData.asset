@@ -19,4 +19,4 @@ MonoBehaviour:
   rotationSpeedToEdgeGravity: 0.8
   moveSpeedCenterGravity: 3
   rotationInGravitySpeed: 175
-  moveSpeedToNextPlanet: 7
+  moveSpeedToNextPlanet: 1

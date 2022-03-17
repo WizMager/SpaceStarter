@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using Utils;
 
 namespace View
 {
@@ -7,15 +8,16 @@ namespace View
     {
         public event Action OnColliderEnter;
         public event Action OnColliderExit;
+        public NumberAsteroidBelt numberBelt;
 
-        private void OnCollisionEnter(Collision collision)
+        private void OnTriggerEnter(Collider other)
         {
-            if (!collision.gameObject.GetComponent<PlayerView>()) return;
+            if (!other.gameObject.GetComponent<PlayerView>()) return;
             
             OnColliderEnter?.Invoke();
         }
 
-        private void OnCollisionExit(Collision other)
+        private void OnTriggerExit(Collider other)
         {
             if (!other.gameObject.GetComponent<PlayerView>()) return;
             

@@ -6,7 +6,6 @@ TagManager:
   tags:
   - HealthIndicator
   - BonusIndicator
-  - FirstAsteroidBelt
   layers:
   - Default
   - TransparentFX

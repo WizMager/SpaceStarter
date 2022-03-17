@@ -88,7 +88,7 @@ namespace Controller
             _planetIndex += 1;
             if (_planetIndex == (int)PlanetNumber.Last)
             {
-                _flyNextToPlanet.ChangePlanet(_gravityViews[_planetIndex]);
+                //_flyNextToPlanet.ChangePlanet(_gravityViews[_planetIndex]);
                 
                 _flyToEdgeGravity.ChangePlanet(_gravityViews[_planetIndex]);
                  _flyPlanetAngle.ChangePlanet(_planetViews[0].transform,
@@ -103,7 +103,7 @@ namespace Controller
                 _planetViews[_planetIndex + 1].transform);
             _rotationAroundPlanet.ChangePlanet(_planetViews[_planetIndex].transform);
             _upAndDownAroundPlanet.ChangePlanet(_planetViews[_planetIndex], _gravityViews[_planetIndex]);
-            _flyNextToPlanet.ChangePlanet(_gravityViews[_planetIndex]);
+            //_flyNextToPlanet.ChangePlanet(_gravityViews[_planetIndex]);
             _flyToCenterGravity.ChangePlanet(_planetViews[_planetIndex].transform);
             return false;
             }
@@ -145,9 +145,9 @@ namespace Controller
             _aimNextPlanet.SetActive(isActive);
         }
 
-        public bool FlyNextPlanet()
+        public bool FlyNextPlanet(float deltaTime)
         {
-            return _flyNextToPlanet.IsFinished();
+            return _flyNextToPlanet.IsFinished(deltaTime);
         }
 
         public void FlyNextPlanetActive(bool isActive)
