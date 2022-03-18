@@ -12,7 +12,7 @@ namespace DefaultNamespace
         private readonly GameObject _trailPlayer;
         private readonly LineRenderer _lineRenderer;
 
-        private bool _isDirectionCalculated;
+        private bool _isCalculated;
         private Vector3 _reflectVector;
         private float _distance = 10f;
 
@@ -33,61 +33,73 @@ namespace DefaultNamespace
             _trailPlayer.transform.rotation = playerTransform.rotation;
             var reflectVector = Vector3.zero;
             var distance = 10f;
-            var isDirectionCalculated = false;
+            var isCalculated = false;
             _lineRenderer.positionCount = _iterations;
 
             for (int i = 0; i < _iterations; i++)
             {
-                
-                    if (!isDirectionCalculated)
+                if (!isCalculated)
+                {
+                    var ray = new Ray(_trailPlayer.transform.position, _trailPlayer.transform.forward);
+                    var raycastHit = new RaycastHit[1];
+                    if (Physics.RaycastNonAlloc(ray, raycastHit) > 0)
                     {
-                        var ray = new Ray(_trailPlayer.transform.position, _trailPlayer.transform.forward);
-                        var raycastHit = new RaycastHit[1];
-                        if (Physics.RaycastNonAlloc(ray, raycastHit) > 0)
+                        switch (raycastHit[0].collider.tag)
                         {
-                            if (raycastHit[0].collider.tag == "Asteroid")
-                            {
+                            case "Asteroid":
                                 var currentDirection = _trailPlayer.transform.forward.normalized;
                                 var normal = raycastHit[0].normal;
                                 reflectVector = raycastHit[0].point + Vector3.Reflect(currentDirection, normal);
                                 distance = Vector3.Distance(_trailPlayer.transform.position, raycastHit[0].point);
-                                isDirectionCalculated = true;
-                            }
-                        }
-                        else
-                        {
-                            distance = 10f; 
+                                isCalculated = true;
+                                break;
+                            default:
+                                Debug.Log($"Raycast to something not in list {raycastHit[0].collider.tag}");
+                                _distance = 10f; 
+                                break;
                         }
                     }
-
-                    _trailPlayer.transform.Translate(_trailPlayer.transform.forward * _oneStepTime, Space.World);
-                    distance -= _oneStepTime;
-                    if (distance <= 0)
+                    else
                     {
-                        _trailPlayer.transform.LookAt(reflectVector);
-                       isDirectionCalculated = false;
+                        distance = 10f;
                     }
-                    
-                    _lineRenderer.SetPosition(i, _trailPlayer.transform.position);
+                }
+
+                _trailPlayer.transform.Translate(_trailPlayer.transform.forward * _oneStepTime, Space.World);
+                distance -= _oneStepTime;
+                if (distance <= 0)
+                {
+                    _trailPlayer.transform.LookAt(reflectVector);
+                    isCalculated = false;
+                }
+
+                _lineRenderer.SetPosition(i, _trailPlayer.transform.position);
             }
         }
         
         public void Move(float deltaTime)
         {
-            if (!_isDirectionCalculated)
+            if (!_isCalculated)
             {
                 var ray = new Ray(_playerTransform.position, _playerTransform.forward);
                 var raycastHit = new RaycastHit[1];
                 if (Physics.RaycastNonAlloc(ray, raycastHit) > 0)
                 {
-                    if (raycastHit[0].collider.tag == "Asteroid")
+                    switch (raycastHit[0].collider.tag)
                     {
-                        var currentDirection = _playerTransform.forward.normalized;
-                        var normal = raycastHit[0].normal;
-                        _reflectVector = raycastHit[0].point + Vector3.Reflect(currentDirection, normal);
-                        _distance = Vector3.Distance(_playerTransform.position, raycastHit[0].point);
-                        _isDirectionCalculated = true;
+                        case "Asteroid":
+                            var currentDirection = _playerTransform.forward.normalized;
+                            var normal = raycastHit[0].normal;
+                            _reflectVector = raycastHit[0].point + Vector3.Reflect(currentDirection, normal);
+                            _distance = Vector3.Distance(_playerTransform.position, raycastHit[0].point);
+                            _isCalculated = true;
+                            break;
+                        default:
+                            Debug.Log($"Raycast to something not in list {raycastHit[0].collider.tag}");
+                            _distance = 10f; 
+                            break;
                     }
+                    
                 }
                 else
                 {
@@ -101,7 +113,7 @@ namespace DefaultNamespace
             
             if (_distance > 0) return;
             _playerTransform.LookAt(_reflectVector);
-            _isDirectionCalculated = false;
+            _isCalculated = false;
         }
 
         public void ClearLine()
