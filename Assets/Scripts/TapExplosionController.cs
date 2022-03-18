@@ -27,12 +27,12 @@ public class TapExplosionController
 
     private void Shoot(Vector3 touchPosition)
     {
-        Debug.Log("Shoot");
         var ray = _camera.ScreenPointToRay(touchPosition);
         var hitRaycast = new RaycastHit[1];
-        if (Physics.RaycastNonAlloc(ray, hitRaycast) > 0)
+        if (Physics.RaycastNonAlloc(ray, hitRaycast, _camera.farClipPlane, GlobalData.LayerForAim) > 0)
         {
             var hitsSphereCast = Physics.SphereCastAll(hitRaycast[0].point, _explosionArea, ray.direction);
+            Debug.Log(hitsSphereCast.Length);
             var hitSphereExplosion = hitsSphereCast[0];
             foreach (var hitSphereCast in hitsSphereCast)
             {
@@ -58,6 +58,7 @@ public class TapExplosionController
                 Object.Instantiate(_particle, hitRaycast[0].point, Quaternion.identity);
             }
         }
+        Debug.Log(hitRaycast[0].transform.gameObject.name);
     }
 
     private void TouchDown(Vector3 position)
@@ -84,5 +85,6 @@ public class TapExplosionController
     public void OnDestroy()
     {
         _touch[(int) TouchInput.InputTouchDown].OnChange -= TouchDown;
+        _touch[(int) TouchInput.InputTouchUp].OnChange -= TouchUp;
     }
 }

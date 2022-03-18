@@ -8,7 +8,6 @@ namespace DefaultNamespace
         private readonly float _moveSpeed;
         private readonly int _iterations;
         private readonly float _oneStepTime;
-        
         private readonly GameObject _trailPlayer;
         private readonly LineRenderer _lineRenderer;
 
@@ -41,20 +40,23 @@ namespace DefaultNamespace
                 if (!isCalculated)
                 {
                     var ray = new Ray(_trailPlayer.transform.position, _trailPlayer.transform.forward);
+                    var rcHit = new RaycastHit[1];
+                    Physics.RaycastNonAlloc(ray, rcHit);
                     var raycastHit = new RaycastHit[1];
-                    if (Physics.RaycastNonAlloc(ray, raycastHit) > 0)
+                    if (Physics.BoxCastNonAlloc( _trailPlayer.transform.position, _trailPlayer.transform.localScale, 
+                            _trailPlayer.transform.forward, raycastHit, _trailPlayer.transform.rotation, rcHit[0].distance + 0.1f) > 0)
                     {
                         switch (raycastHit[0].collider.tag)
                         {
                             case "Asteroid":
                                 var currentDirection = _trailPlayer.transform.forward.normalized;
-                                var normal = raycastHit[0].normal;
-                                reflectVector = raycastHit[0].point + Vector3.Reflect(currentDirection, normal);
-                                distance = Vector3.Distance(_trailPlayer.transform.position, raycastHit[0].point);
+                                var normal = rcHit[0].normal;
+                                reflectVector = rcHit[0].point + Vector3.Reflect(currentDirection, normal);
+                                distance = Vector3.Distance(_trailPlayer.transform.position, rcHit[0].point);
                                 isCalculated = true;
                                 break;
                             default:
-                                Debug.Log($"Raycast to something not in list {raycastHit[0].collider.tag}");
+                                //Debug.Log($"Raycast to something not in list {raycastHit[0].collider.tag}");
                                 _distance = 10f; 
                                 break;
                         }
@@ -64,7 +66,6 @@ namespace DefaultNamespace
                         distance = 10f;
                     }
                 }
-
                 _trailPlayer.transform.Translate(_trailPlayer.transform.forward * _oneStepTime, Space.World);
                 distance -= _oneStepTime;
                 if (distance <= 0)
@@ -72,7 +73,6 @@ namespace DefaultNamespace
                     _trailPlayer.transform.LookAt(reflectVector);
                     isCalculated = false;
                 }
-
                 _lineRenderer.SetPosition(i, _trailPlayer.transform.position);
             }
         }
@@ -82,31 +82,32 @@ namespace DefaultNamespace
             if (!_isCalculated)
             {
                 var ray = new Ray(_playerTransform.position, _playerTransform.forward);
+                var rcHit = new RaycastHit[1];
+                Physics.RaycastNonAlloc(ray, rcHit);
                 var raycastHit = new RaycastHit[1];
-                if (Physics.RaycastNonAlloc(ray, raycastHit) > 0)
+                if (Physics.BoxCastNonAlloc( _playerTransform.transform.position, _playerTransform.transform.localScale, 
+                        _playerTransform.transform.forward, raycastHit, _playerTransform.transform.rotation, rcHit[0].distance + 0.1f) > 0)
                 {
                     switch (raycastHit[0].collider.tag)
                     {
                         case "Asteroid":
                             var currentDirection = _playerTransform.forward.normalized;
-                            var normal = raycastHit[0].normal;
-                            _reflectVector = raycastHit[0].point + Vector3.Reflect(currentDirection, normal);
-                            _distance = Vector3.Distance(_playerTransform.position, raycastHit[0].point);
+                            var normal = rcHit[0].normal;
+                            _reflectVector = rcHit[0].point + Vector3.Reflect(currentDirection, normal);
+                            _distance = Vector3.Distance(_playerTransform.position, rcHit[0].point);
                             _isCalculated = true;
                             break;
                         default:
-                            Debug.Log($"Raycast to something not in list {raycastHit[0].collider.tag}");
+                            //Debug.Log($"Raycast to something not in list {raycastHit[0].collider.tag}");
                             _distance = 10f; 
                             break;
                     }
-                    
                 }
                 else
                 {
                     _distance = 10f; 
                 }
             }
-            
             var moveDistance = deltaTime * _moveSpeed;
             _playerTransform.Translate(_playerTransform.forward * moveDistance, Space.World);
             _distance -= moveDistance;

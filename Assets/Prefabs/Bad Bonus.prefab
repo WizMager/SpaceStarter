@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 5662878845461749380}
   - component: {fileID: 8758020507537342010}
   - component: {fileID: 8638635546032586207}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Bad Bonus
   m_TagString: Untagged
   m_Icon: {fileID: 0}

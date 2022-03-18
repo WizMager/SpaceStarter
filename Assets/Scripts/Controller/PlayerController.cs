@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using DefaultNamespace;
+﻿using DefaultNamespace;
 using InputClasses;
 using Interface;
 using Model;
@@ -60,7 +59,6 @@ namespace Controller
                 data.Planet.rotationInGravitySpeed, data.Planet.moveSpeedCenterGravity, _planetViews[_planetIndex].transform);
             _lastPlanet = new LastPlanet(gravityViews[(int)PlanetNumber.Last], trajectoryCalculate);
             
-
             _playerState = new AimNextPlanetPlayerState(this, new CameraController(camera, 
                 data.Camera.upSpeed, data.Camera.upOffsetFromPlayer, swipeInput, data.LastPlanet.center,
                 data.Camera.firstPersonRotationSpeed, playerView,  data.Camera.cameraDownPosition, data.Camera.cameraDownSpeed, 

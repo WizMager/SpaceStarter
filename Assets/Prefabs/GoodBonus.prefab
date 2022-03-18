@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 5101185974414818871}
   - component: {fileID: 1768892853932084840}
   - component: {fileID: 659246307396334237}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: GoodBonus
   m_TagString: Untagged
   m_Icon: {fileID: 0}
