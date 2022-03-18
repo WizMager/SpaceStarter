@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using Controller;
 using InputClasses;
 using Model;
@@ -21,7 +20,6 @@ public class GameInitialization
       var playerIndicatorView = Object.FindObjectOfType<PlayerIndicatorView>();
       var bonusViews = Object.FindObjectsOfType<BonusView>();
       var deadView = Object.FindObjectOfType<DeadScreenView>();
-      var asteroids = Object.FindObjectsOfType<AsteroidView>();
       _planets = Object.FindObjectsOfType<PlanetView>();
       _gravities = Object.FindObjectsOfType<GravityView>();
       SortPlanetObjects();
@@ -31,8 +29,7 @@ public class GameInitialization
       var inputInitialization = new InputInitialization(data.Input.minimalDistanceForSwipe);
       controllers.Add(new InputController(inputInitialization.GetAllTouch(), inputInitialization.GetSwipe()));
       controllers.Add(new PlayerController(data, player, inputInitialization.GetAllTouch(),
-         inputInitialization.GetSwipe(), _planets, _gravities, camera, cameraColliderView, playerModel, deadView,
-         SortAsteroidBelt(asteroids)));
+         inputInitialization.GetSwipe(), _planets, _gravities, camera, cameraColliderView, playerModel, deadView));
       controllers.Add(new BonusController(playerModel, playerIndicatorView, bonusViews, BonusTypeValue(data)));
    }
 
@@ -41,42 +38,6 @@ public class GameInitialization
       return new [] {data.Bonus.goodBonus, data.Bonus.badBonus};
    }
 
-   private List<List<AsteroidView>> SortAsteroidBelt(AsteroidView[] asteroidViews)
-   {
-      var asteroidViewsList = new List<List<AsteroidView>>();
-      var firstBelt = new List<AsteroidView>();
-      var secondBelt = new List<AsteroidView>();
-      var thirdBelt = new List<AsteroidView>();
-      var fourthBelt = new List<AsteroidView>();
-
-      foreach (var asteroidView in asteroidViews)
-      {
-         switch (asteroidView.numberBelt)
-         {
-            case NumberAsteroidBelt.First:
-               firstBelt.Add(asteroidView);
-               break;
-            case NumberAsteroidBelt.Second:
-               secondBelt.Add(asteroidView);
-               break;
-            case NumberAsteroidBelt.Third:
-               thirdBelt.Add(asteroidView);
-               break;
-            case NumberAsteroidBelt.Fourth:
-               fourthBelt.Add(asteroidView);
-               break;
-            default:
-               throw new ArgumentOutOfRangeException();
-         }
-      }
-      asteroidViewsList.Add(firstBelt);
-      asteroidViewsList.Add(secondBelt);
-      asteroidViewsList.Add(thirdBelt);
-      asteroidViewsList.Add(fourthBelt);
-      
-      return asteroidViewsList;
-   }
-   
    private void SortPlanetObjects()
    {
       var sortedPlanets = new PlanetView[_planets.Length];

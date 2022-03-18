@@ -18,33 +18,30 @@ namespace Controller
         private readonly GravityView[] _gravityViews;
         private readonly PlayerModel _playerModel;
         private readonly DeadScreenView _deadScreenView;
-        private readonly List<List<AsteroidView>> _asteroidBeltList;
 
         private readonly RotationAroundPlanet _rotationAroundPlanet;
         private readonly UpAndDownAroundPlanet _upAndDownAroundPlanet;
         private readonly FlyPlanetAngle _flyPlanetAngle;
         private readonly FlyToEdgeGravity _flyToEdgeGravity;
         private readonly AimNextPlanet _aimNextPlanet;
-        private readonly FlyNextToPlanet _flyNextToPlanet;
+        private readonly FlyToNextPlanet _flyToNextPlanet;
         private readonly TapExplosionController _tapExplosionController;
         private readonly FlyToCenterGravity _flyToCenterGravity;
         private readonly LastPlanet _lastPlanet;
-        private readonly TrajectoryCalculate _trajectoryCalculate;
 
         public PlayerController(ScriptableData.ScriptableData data, PlayerView playerView, IUserInput<Vector3>[] touchInput, 
             IUserInput<SwipeData> swipeInput, PlanetView[] planetViews, GravityView[] gravityViews, Camera camera, 
-            CameraColliderView cameraColliderView, PlayerModel playerModel, DeadScreenView deadScreenView, 
-            List<List<AsteroidView>> asteroidViewList)
+            CameraColliderView cameraColliderView, PlayerModel playerModel, DeadScreenView deadScreenView)
         {
             
             _planetViews = planetViews;
             _gravityViews = gravityViews;
             _playerModel = playerModel;
             _deadScreenView = deadScreenView;
-            _asteroidBeltList = asteroidViewList;
 
             var playerTransform = playerView.transform;
-            _trajectoryCalculate = new TrajectoryCalculate(playerTransform, data.Planet.moveSpeedToNextPlanet);
+            var trajectoryCalculate = new TrajectoryCalculate(playerTransform, data.Planet.moveSpeedToNextPlanet, 
+                data.Planet.iterationsCount, data.Planet.oneStepTimeIteration);
             _upAndDownAroundPlanet = new UpAndDownAroundPlanet(data.Planet.engineForce, data.Planet.gravity,
                 playerTransform, _planetViews[_planetIndex], gravityViews[_planetIndex], touchInput);
             _rotationAroundPlanet = new RotationAroundPlanet(data.Planet.speedRotationAroundPlanet,
@@ -54,14 +51,14 @@ namespace Controller
                     _planetViews[_planetIndex + 1].transform); 
             _flyToEdgeGravity = new FlyToEdgeGravity(data.Planet.rotationSpeedToEdgeGravity,
                 data.Planet.moveSpeedToEdgeGravity, _gravityViews[_planetIndex], playerTransform);
-            _aimNextPlanet = new AimNextPlanet(touchInput, playerTransform, camera);
-            _flyNextToPlanet =
-                new FlyNextToPlanet(_gravityViews[_planetIndex], _trajectoryCalculate);
+            _aimNextPlanet = new AimNextPlanet(touchInput, playerView, camera, trajectoryCalculate);
+            _flyToNextPlanet =
+                new FlyToNextPlanet(_gravityViews[_planetIndex], trajectoryCalculate);
             _tapExplosionController = new TapExplosionController( touchInput, camera, data.LastPlanet.explosionArea,
                 data.LastPlanet.explosionForce, data.LastPlanet.explosionParticle);
             _flyToCenterGravity = new FlyToCenterGravity(playerView,
                 data.Planet.rotationInGravitySpeed, data.Planet.moveSpeedCenterGravity, _planetViews[_planetIndex].transform);
-            _lastPlanet = new LastPlanet(gravityViews[(int)PlanetNumber.Last], _trajectoryCalculate);
+            _lastPlanet = new LastPlanet(gravityViews[(int)PlanetNumber.Last], trajectoryCalculate);
             
 
             _playerState = new AimNextPlanetPlayerState(this, new CameraController(camera, 
@@ -85,18 +82,12 @@ namespace Controller
             TransitionTo(new DeadState());
         }
 
-        public void IsDead()
-        {
-            _deadScreenView.OnDead();
-        }
-        
         public bool ChangeCurrentPlanet()
         {
             _planetIndex += 1;
             if (_planetIndex == (int)PlanetNumber.Last)
             {
-                _trajectoryCalculate.ChangePlanet(_asteroidBeltList[_planetIndex - 1]);
-                _flyNextToPlanet.ChangePlanet(_gravityViews[_planetIndex]);
+                _flyToNextPlanet.ChangePlanet(_gravityViews[_planetIndex]);
                 
                 _flyToEdgeGravity.ChangePlanet(_gravityViews[_planetIndex]);
                  _flyPlanetAngle.ChangePlanet(_planetViews[0].transform,
@@ -105,14 +96,13 @@ namespace Controller
                  _upAndDownAroundPlanet.ChangePlanet(_planetViews[0], _gravityViews[0]);
                 return true;
             }
-
-            _trajectoryCalculate.ChangePlanet(_asteroidBeltList[_planetIndex - 1]);
+            
             _flyToEdgeGravity.ChangePlanet(_gravityViews[_planetIndex]);
             _flyPlanetAngle.ChangePlanet(_planetViews[_planetIndex].transform,
                 _planetViews[_planetIndex + 1].transform);
             _rotationAroundPlanet.ChangePlanet(_planetViews[_planetIndex].transform);
             _upAndDownAroundPlanet.ChangePlanet(_planetViews[_planetIndex], _gravityViews[_planetIndex]);
-            _flyNextToPlanet.ChangePlanet(_gravityViews[_planetIndex]);
+            _flyToNextPlanet.ChangePlanet(_gravityViews[_planetIndex]);
             _flyToCenterGravity.ChangePlanet(_planetViews[_planetIndex].transform);
             return false;
             }
@@ -156,12 +146,12 @@ namespace Controller
 
         public bool FlyNextPlanet(float deltaTime)
         {
-            return _flyNextToPlanet.IsFinished(deltaTime);
+            return _flyToNextPlanet.IsFinished(deltaTime);
         }
 
         public void FlyNextPlanetActive(bool isActive)
         {
-            _flyNextToPlanet.SetActive(isActive);
+            _flyToNextPlanet.SetActive(isActive);
         }
 
         public void CalculateAngle()
@@ -189,8 +179,9 @@ namespace Controller
             _upAndDownAroundPlanet.OnDestroy();
             _flyToEdgeGravity.OnDestroy();
             _aimNextPlanet.OnDestroy();
-            _flyNextToPlanet.OnDestroy();
+            _flyToNextPlanet.OnDestroy();
             _tapExplosionController.OnDestroy();
+            _playerModel.OnZeroHealth -= ChangeDeadState;
         }
     }
 }

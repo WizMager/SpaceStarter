@@ -17,5 +17,8 @@ namespace ScriptableData
         public float rotationInGravitySpeed;
         [Header("Fly To Next Planet")] 
         public float moveSpeedToNextPlanet;
+        [Header("Aim To Asteroid Belt")] 
+        public int iterationsCount;
+        public float oneStepTimeIteration;
     }
 }

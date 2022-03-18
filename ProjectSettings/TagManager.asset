@@ -6,6 +6,7 @@ TagManager:
   tags:
   - HealthIndicator
   - BonusIndicator
+  - Asteroid
   layers:
   - Default
   - TransparentFX
