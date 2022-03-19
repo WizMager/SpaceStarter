@@ -12,13 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a2adc827b714141943a1f1f7943bf73, type: 3}
   m_Name: PlanetData
   m_EditorClassIdentifier: 
-  gravity: 4.5
-  speedRotationAroundPlanet: 60
-  engineForce: 4.5
+  gravity: 7.5
+  speedRotationAroundPlanet: 22
+  engineForce: 7.5
   moveSpeedToEdgeGravity: 2.8
   rotationSpeedToEdgeGravity: 0.8
   moveSpeedCenterGravity: 3
   rotationInGravitySpeed: 175
-  moveSpeedToNextPlanet: 6
+  moveSpeedToNextPlanet: 6.5
   iterationsCount: 100
   oneStepTimeIteration: 0.1
