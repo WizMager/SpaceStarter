@@ -28,37 +28,18 @@ public class TapExplosionController
     private void Shoot(Vector3 touchPosition)
     {
         var ray = _camera.ScreenPointToRay(touchPosition);
-        var hitRaycast = new RaycastHit[1];
-        if (Physics.RaycastNonAlloc(ray, hitRaycast, _camera.farClipPlane, GlobalData.LayerForAim) > 0)
+        var raycastHit = new RaycastHit[1];
+        Physics.RaycastNonAlloc(ray, raycastHit, _camera.farClipPlane, GlobalData.LayerForAim);
+        var hitsSphereCast = Physics.SphereCastAll(ray.origin, _explosionArea, ray.direction, _camera.farClipPlane, GlobalData.LayerForAim);
+        Object.Instantiate(_particle, raycastHit[0].point, Quaternion.identity);
+        foreach (var hitSphereCast in hitsSphereCast)
         {
-            var hitsSphereCast = Physics.SphereCastAll(hitRaycast[0].point, _explosionArea, ray.direction);
-            Debug.Log(hitsSphereCast.Length);
-            var hitSphereExplosion = hitsSphereCast[0];
-            foreach (var hitSphereCast in hitsSphereCast)
+            if (hitSphereCast.rigidbody.isKinematic)
             {
-                if (hitSphereCast.rigidbody.isKinematic)
-                {
-                    hitSphereCast.rigidbody.isKinematic = false;
-                }
-                
-                if (hitSphereCast.distance > hitSphereExplosion.distance)
-                {
-                    hitSphereExplosion = hitSphereCast;
-                }
+                hitSphereCast.rigidbody.isKinematic = false;
             }
-            
-            if (hitsSphereCast.Length > 1)
-            {
-                hitSphereExplosion.rigidbody.AddForce(hitsSphereCast[0].normal * _explosionForce, ForceMode.Impulse);
-                Object.Instantiate(_particle, hitRaycast[0].point, Quaternion.identity);
-            }
-            else
-            {
-                hitsSphereCast[0].rigidbody.AddForce(ray.direction * _explosionForce, ForceMode.Impulse);
-                Object.Instantiate(_particle, hitRaycast[0].point, Quaternion.identity);
-            }
+            hitSphereCast.rigidbody.AddForce(-ray.direction * _explosionForce, ForceMode.Impulse);
         }
-        Debug.Log(hitRaycast[0].transform.gameObject.name);
     }
 
     private void TouchDown(Vector3 position)

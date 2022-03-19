@@ -44,6 +44,7 @@ public class AimNextPlanet
     {
         if (!_isActive) return;
         
+        _trajectory.Calculate(_playerTransform.transform);
         _isAimEnded = false;
         _isAim = true;
     }

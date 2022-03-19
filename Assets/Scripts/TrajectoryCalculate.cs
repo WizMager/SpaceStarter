@@ -43,7 +43,7 @@ namespace DefaultNamespace
                     var rcHit = new RaycastHit[1];
                     Physics.RaycastNonAlloc(ray, rcHit);
                     var raycastHit = new RaycastHit[1];
-                    if (Physics.BoxCastNonAlloc( _trailPlayer.transform.position, _trailPlayer.transform.localScale, 
+                    if (Physics.BoxCastNonAlloc( _trailPlayer.transform.position, new Vector3(0.25f, 0.25f, 0.5f), 
                             _trailPlayer.transform.forward, raycastHit, _trailPlayer.transform.rotation, rcHit[0].distance + 0.1f) > 0)
                     {
                         switch (raycastHit[0].collider.tag)
@@ -85,7 +85,7 @@ namespace DefaultNamespace
                 var rcHit = new RaycastHit[1];
                 Physics.RaycastNonAlloc(ray, rcHit);
                 var raycastHit = new RaycastHit[1];
-                if (Physics.BoxCastNonAlloc( _playerTransform.transform.position, _playerTransform.transform.localScale, 
+                if (Physics.BoxCastNonAlloc( _playerTransform.transform.position, new Vector3(0.25f, 0.25f, 0.5f), 
                         _playerTransform.transform.forward, raycastHit, _playerTransform.transform.rotation, rcHit[0].distance + 0.1f) > 0)
                 {
                     switch (raycastHit[0].collider.tag)
@@ -112,9 +112,11 @@ namespace DefaultNamespace
             _playerTransform.Translate(_playerTransform.forward * moveDistance, Space.World);
             _distance -= moveDistance;
             
-            if (_distance > 0) return;
-            _playerTransform.LookAt(_reflectVector);
-            _isCalculated = false;
+            if (_distance <= 0)
+            {
+                _playerTransform.LookAt(_reflectVector);
+                _isCalculated = false;
+            }
         }
 
         public void ClearLine()
