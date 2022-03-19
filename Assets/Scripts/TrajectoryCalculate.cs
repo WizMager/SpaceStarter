@@ -43,7 +43,7 @@ namespace DefaultNamespace
                     var rcHit = new RaycastHit[1];
                     Physics.RaycastNonAlloc(ray, rcHit);
                     var raycastHit = new RaycastHit[1];
-                    if (Physics.BoxCastNonAlloc( _trailPlayer.transform.position, new Vector3(0.25f, 0.25f, 0.5f), 
+                    if (Physics.BoxCastNonAlloc( _trailPlayer.transform.position, _trailPlayer.transform.localScale, 
                             _trailPlayer.transform.forward, raycastHit, _trailPlayer.transform.rotation, rcHit[0].distance + 0.1f) > 0)
                     {
                         switch (raycastHit[0].collider.tag)
@@ -85,7 +85,7 @@ namespace DefaultNamespace
                 var rcHit = new RaycastHit[1];
                 Physics.RaycastNonAlloc(ray, rcHit);
                 var raycastHit = new RaycastHit[1];
-                if (Physics.BoxCastNonAlloc( _playerTransform.transform.position, new Vector3(0.25f, 0.25f, 0.5f), 
+                if (Physics.BoxCastNonAlloc( _playerTransform.transform.position, _trailPlayer.transform.localScale, 
                         _playerTransform.transform.forward, raycastHit, _playerTransform.transform.rotation, rcHit[0].distance + 0.1f) > 0)
                 {
                     switch (raycastHit[0].collider.tag)
