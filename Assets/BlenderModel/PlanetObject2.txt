@@ -1,0 +1,2 @@
+Planet - radius 10m
+Gravity - radius 18.8m(h = 0.1m)

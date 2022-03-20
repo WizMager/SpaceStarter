@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a2adc827b714141943a1f1f7943bf73, type: 3}
+  m_Name: PlanetData
+  m_EditorClassIdentifier: 
+  gravity: 7.5
+  speedRotationAroundPlanet: 22
+  engineForce: 7.5
+  moveSpeedToEdgeGravity: 2.8
+  rotationSpeedToEdgeGravity: 0.8
+  moveSpeedCenterGravity: 3
+  rotationInGravitySpeed: 175
+  moveSpeedToNextPlanet: 6.5
+  iterationsCount: 200
+  oneStepTimeIteration: 0.1
