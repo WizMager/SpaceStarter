@@ -51,9 +51,7 @@ public class AimNextPlanet
 
     private void TouchHold(Vector3 position)
     {
-        
         if (!_isActive) return;
-            
         if (!_isAim) return;
         
         if (_previousPosition != position)

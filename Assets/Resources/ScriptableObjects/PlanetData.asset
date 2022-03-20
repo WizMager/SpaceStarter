@@ -20,5 +20,5 @@ MonoBehaviour:
   moveSpeedCenterGravity: 3
   rotationInGravitySpeed: 175
   moveSpeedToNextPlanet: 6.5
-  iterationsCount: 100
+  iterationsCount: 200
   oneStepTimeIteration: 0.1
