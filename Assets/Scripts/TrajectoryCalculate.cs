@@ -28,7 +28,7 @@ namespace DefaultNamespace
             _lineRenderer = _trailPlayer.GetComponent<LineRenderer>();
         }
 
-        public void Calculate(Transform playerTransform)
+        public void CalculateTrajectory(Transform playerTransform)
         {
             _trailPlayer.transform.position = playerTransform.position;
             _trailPlayer.transform.rotation = playerTransform.rotation;
@@ -72,44 +72,108 @@ namespace DefaultNamespace
                     var raycastHitCenter = new RaycastHit[1];
                     var raycastHitRight = new RaycastHit[1];
                     var raycastHitLeft = new RaycastHit[1];
-                    if (Physics.RaycastNonAlloc(rayRight, raycastHitRight) > 0 &&
-                        Physics.RaycastNonAlloc(rayLeft, raycastHitLeft) > 0 &&
-                        Physics.RaycastNonAlloc(rayCenter, raycastHitCenter) > 0)
+                    var raycastCountRight = Physics.RaycastNonAlloc(rayRight, raycastHitRight);
+                    var raycastCountCenter = Physics.RaycastNonAlloc(rayCenter, raycastHitCenter);
+                    var raycastCountLeft = Physics.RaycastNonAlloc(rayLeft, raycastHitLeft);
+                    var raycastSum = raycastCountLeft + raycastCountCenter + raycastCountRight;
+
+                    
+                    var raycastHitForCalculate = new RaycastHit[1];
+                    var rayForCalculate = new Ray();
+                    var distanceForCalculate = 0f;
+                    
+                    var rightDistance = raycastHitRight[0].distance;
+                    var centerDistance = raycastHitCenter[0].distance;
+                    var leftDistance = raycastHitLeft[0].distance;
+                    
+                    switch (raycastSum)
                     {
-                        var rightDistance = raycastHitRight[0].distance;
-                        var centerDistance = raycastHitCenter[0].distance;
-                        var leftDistance = raycastHitLeft[0].distance;
+                        case 0:
+                            distance = 10f;
+                            break;
+                        case 1:
+                            Debug.Log($"in 1: {raycastCountRight}, {raycastCountCenter}, {raycastCountLeft}");
+                            if (raycastCountRight == 1)
+                            {
+                                raycastHitForCalculate = raycastHitRight;
+                                rayForCalculate = rayRight;
+                                distanceForCalculate = rightDistance;
+                            }
+                            else
+                            {
+                                raycastHitForCalculate = raycastHitLeft;
+                                rayForCalculate = rayLeft;
+                                distanceForCalculate = leftDistance;
+                            }
+                            break;
+                        case 2:
+                            Debug.Log($"in 2: {raycastCountRight}, {raycastCountCenter}, {raycastCountLeft}");
+                            if (raycastCountRight == 1 && raycastCountCenter == 1)
+                            {
+                                if (rightDistance < centerDistance)
+                                {
+                                    raycastHitForCalculate = raycastHitRight;
+                                    rayForCalculate = rayRight;
+                                    distanceForCalculate = rightDistance;
+                                    break;
+                                }
 
-                        RaycastHit[] raycastHitForCalculate;
-                        Ray rayForCalculate;
-                        float distanceForCalculate;
+                                raycastHitForCalculate = raycastHitCenter;
+                                rayForCalculate = rayCenter;
+                                distanceForCalculate = centerDistance;
+                                break;
+                            }
 
-                        if (centerDistance < leftDistance && centerDistance < rightDistance)
-                        {
-                            raycastHitForCalculate = raycastHitCenter;
-                            rayForCalculate = rayCenter;
-                            distanceForCalculate = centerDistance;
-                        }
-                        else if (rightDistance < leftDistance)
-                        {
-                            raycastHitForCalculate = raycastHitRight;
-                            rayForCalculate = rayRight;
-                            distanceForCalculate = rightDistance;
-                        }
-                        else
-                        {
+                            if (raycastCountLeft == 1 && raycastCountCenter == 1)
+                            {
+                                if (leftDistance < centerDistance)
+                                {
+                                    raycastHitForCalculate = raycastHitLeft;
+                                    rayForCalculate = rayLeft;
+                                    distanceForCalculate = leftDistance;
+                                    break;
+                                }
+
+                                raycastHitForCalculate = raycastHitCenter;
+                                rayForCalculate = rayCenter;
+                                distanceForCalculate = centerDistance;
+                            }
+                            break;
+                        case 3:
+                            Debug.Log($"in 3: {raycastCountRight}, {raycastCountCenter}, {raycastCountLeft}");
+                            if (rightDistance < centerDistance && rightDistance < leftDistance)
+                            {
+                                raycastHitForCalculate = raycastHitRight;
+                                rayForCalculate = rayRight;
+                                distanceForCalculate = rightDistance;
+                                break;
+                            }
+
+                            if (centerDistance < rightDistance && centerDistance < leftDistance)
+                            {
+                                raycastHitForCalculate = raycastHitCenter;
+                                rayForCalculate = rayCenter;
+                                distanceForCalculate = centerDistance;
+                                break;
+                            }
+
                             raycastHitForCalculate = raycastHitLeft;
                             rayForCalculate = rayLeft;
                             distanceForCalculate = leftDistance;
-                        }
+                            break;
+                        default:
+                            throw new ArgumentOutOfRangeException("Too much hit points from Raycast");
+                            
+                    }
 
+                    if (raycastSum > 0)
+                    {
                         switch (raycastHitForCalculate[0].collider.tag)
                         {
                             case "Asteroid":
                                 var currentDirection = rayForCalculate.direction;
                                 var normal = raycastHitForCalculate[0].normal;
-                                reflectVector = raycastHitForCalculate[0].point +
-                                                Vector3.Reflect(currentDirection, normal);
+                                reflectVector = Vector3.Reflect(currentDirection, normal);
                                 distance = distanceForCalculate;
                                 isCalculated = true;
                                 break;
@@ -118,10 +182,7 @@ namespace DefaultNamespace
                                 break;
                         }
                     }
-                    else
-                    {
-                        distance = 10f;
-                    }
+                    
                 }
 
                 _trailPlayer.transform.Translate(_trailPlayer.transform.forward * _oneStepTime, Space.World);
@@ -208,8 +269,7 @@ namespace DefaultNamespace
                         case "Asteroid":
                             var currentDirection = rayForCalculate.direction;
                             var normal = raycastHitForCalculate[0].normal;
-                            _reflectVector = raycastHitForCalculate[0].point +
-                                             Vector3.Reflect(currentDirection, normal);
+                            _reflectVector = Vector3.Reflect(currentDirection, normal);
                             _distance = distanceForCalculate;
                             _isCalculated = true;
                             break;
