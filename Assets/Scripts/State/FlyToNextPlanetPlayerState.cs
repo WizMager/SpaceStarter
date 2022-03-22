@@ -10,15 +10,15 @@ namespace State
         {
             PlayerController = context;
             _cameraController = cameraController;
-            PlayerController.FlyNextPlanetActive(true);
+            PlayerController.FlyToNextPlanetActive(true);
         }
         
         public override void Move(float deltaTime)
         {
             _cameraController.FollowPlayer();
-            if (!PlayerController.FlyNextPlanet(deltaTime)) return;
+            if (!PlayerController.FlyToNextPlanet(deltaTime)) return;
             PlayerController.CalculateAngle();
-            PlayerController.FlyNextPlanetActive(false);
+            PlayerController.FlyToNextPlanetActive(false);
             PlayerController.TransitionTo(new FlyToCenterGravityPlayerState(PlayerController, _cameraController));
         }
     }

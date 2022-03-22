@@ -1,4 +1,5 @@
 ﻿using DefaultNamespace;
+using UnityEngine;
 using View;
 
 public class FlyToNextPlanet
@@ -29,10 +30,10 @@ public class FlyToNextPlanet
     {
         if (_isInGravity)
         {
+            Debug.Log("In gravity");
             _isInGravity = false;
             return true;
         }
-        
         _trajectoryCalculate.Move(deltaTime);
 
         return false;
@@ -47,6 +48,7 @@ public class FlyToNextPlanet
     {
         OnDestroy();
         _gravityView = currentGravityView;
+        Debug.Log(_gravityView.number);
         _gravityView.OnPlayerGravityEnter += GravityEntered;
     }
 

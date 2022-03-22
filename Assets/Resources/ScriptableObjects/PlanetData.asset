@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: PlanetData
   m_EditorClassIdentifier: 
   gravity: 7.5
-  speedRotationAroundPlanet: 22
+  speedRotationAroundPlanet: 200
   engineForce: 7.5
   moveSpeedToEdgeGravity: 2.8
   rotationSpeedToEdgeGravity: 0.8

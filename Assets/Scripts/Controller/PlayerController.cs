@@ -110,7 +110,7 @@ namespace Controller
             _flyToCenterGravity.Active();
         }
         
-        public bool FlyCenterGravity(float deltaTime)
+        public bool FlyToCenterGravity(float deltaTime)
         {
             return _flyToCenterGravity.IsFinished(deltaTime);
         }
@@ -142,12 +142,12 @@ namespace Controller
             _aimNextPlanet.SetActive(isActive);
         }
 
-        public bool FlyNextPlanet(float deltaTime)
+        public bool FlyToNextPlanet(float deltaTime)
         {
             return _flyToNextPlanet.IsFinished(deltaTime);
         }
 
-        public void FlyNextPlanetActive(bool isActive)
+        public void FlyToNextPlanetActive(bool isActive)
         {
             _flyToNextPlanet.SetActive(isActive);
         }
