@@ -106,7 +106,7 @@ public class CameraController : IClean
         }
     }
 
-    public void FlyLastPlanet(float deltaTime)
+    public void FlyToLastPlanet(float deltaTime)
     {
         if (_cameraColliderEntered)
         {

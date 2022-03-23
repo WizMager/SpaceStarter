@@ -22,7 +22,7 @@ public class FlyToNextPlanet
     private void GravityEntered()
     {
         if (!_isActive) return;
-                
+        
         _isInGravity = true;
     }
 
@@ -30,7 +30,6 @@ public class FlyToNextPlanet
     {
         if (_isInGravity)
         {
-            Debug.Log("In gravity");
             _isInGravity = false;
             return true;
         }
@@ -48,7 +47,6 @@ public class FlyToNextPlanet
     {
         OnDestroy();
         _gravityView = currentGravityView;
-        Debug.Log(_gravityView.number);
         _gravityView.OnPlayerGravityEnter += GravityEntered;
     }
 

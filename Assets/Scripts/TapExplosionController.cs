@@ -30,8 +30,8 @@ public class TapExplosionController
         var ray = _camera.ScreenPointToRay(touchPosition);
         var raycastHit = new RaycastHit[1];
         Physics.RaycastNonAlloc(ray, raycastHit, _camera.farClipPlane, GlobalData.LayerForAim);
-        var hitsSphereCast = Physics.SphereCastAll(ray.origin, _explosionArea, ray.direction, _camera.farClipPlane, GlobalData.LayerForAim);
         Object.Instantiate(_particle, raycastHit[0].point, Quaternion.identity);
+        var hitsSphereCast = Physics.SphereCastAll(ray.origin, _explosionArea, ray.direction, _camera.farClipPlane, GlobalData.LayerForAim);
         foreach (var hitSphereCast in hitsSphereCast)
         {
             if (hitSphereCast.rigidbody.isKinematic)
