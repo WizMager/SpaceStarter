@@ -1,4 +1,5 @@
 ﻿using DefaultNamespace;
+using UnityEngine;
 using View;
 
 public class FlyToNextPlanet
@@ -21,7 +22,7 @@ public class FlyToNextPlanet
     private void GravityEntered()
     {
         if (!_isActive) return;
-                
+        
         _isInGravity = true;
     }
 
@@ -32,7 +33,6 @@ public class FlyToNextPlanet
             _isInGravity = false;
             return true;
         }
-        
         _trajectoryCalculate.Move(deltaTime);
 
         return false;

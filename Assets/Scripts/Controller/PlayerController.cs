@@ -57,10 +57,10 @@ namespace Controller
                 data.LastPlanet.explosionForce, data.LastPlanet.explosionParticle);
             _flyToCenterGravity = new FlyToCenterGravity(playerView,
                 data.Planet.rotationInGravitySpeed, data.Planet.moveSpeedCenterGravity, _planetViews[_planetIndex].transform);
-            _lastPlanet = new LastPlanet(gravityViews[(int)PlanetNumber.Last], trajectoryCalculate);
+            _lastPlanet = new LastPlanet(gravityViews[(int)PlanetNumber.Last], trajectoryCalculate, data.LastPlanet.moveSpeedToPlanet);
             
             _playerState = new AimNextPlanetPlayerState(this, new CameraController(camera, 
-                data.Camera.upSpeed, data.Camera.upOffsetFromPlayer, swipeInput, data.LastPlanet.center,
+                data.Camera.upSpeed, data.Camera.upOffsetFromPlayer, swipeInput, _planetViews[(int) PlanetNumber.Last].transform.position,
                 data.Camera.firstPersonRotationSpeed, playerView,  data.Camera.cameraDownPosition, data.Camera.cameraDownSpeed, 
                 cameraColliderView, data.LastPlanet.cameraDownPosition, data.LastPlanet.cameraDownSpeed,
                 data.LastPlanet.distanceFromLastPlanetToStop, data.LastPlanet.moveSpeedToLastPlanet, planetViews[(int)PlanetNumber.Last].transform));
@@ -86,7 +86,6 @@ namespace Controller
             if (_planetIndex == (int)PlanetNumber.Last)
             {
                 _flyToNextPlanet.ChangePlanet(_gravityViews[_planetIndex]);
-                
                 _flyToEdgeGravity.ChangePlanet(_gravityViews[_planetIndex]);
                  _flyPlanetAngle.ChangePlanet(_planetViews[0].transform,
                      _planetViews[0].transform);
@@ -110,7 +109,7 @@ namespace Controller
             _flyToCenterGravity.Active();
         }
         
-        public bool FlyCenterGravity(float deltaTime)
+        public bool FlyToCenterGravity(float deltaTime)
         {
             return _flyToCenterGravity.IsFinished(deltaTime);
         }
@@ -142,12 +141,12 @@ namespace Controller
             _aimNextPlanet.SetActive(isActive);
         }
 
-        public bool FlyNextPlanet(float deltaTime)
+        public bool FlyToNextPlanet(float deltaTime)
         {
             return _flyToNextPlanet.IsFinished(deltaTime);
         }
 
-        public void FlyNextPlanetActive(bool isActive)
+        public void FlyToNextPlanetActive(bool isActive)
         {
             _flyToNextPlanet.SetActive(isActive);
         }

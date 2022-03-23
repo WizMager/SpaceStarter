@@ -1,6 +1,4 @@
-﻿using System;
-using UnityEngine;
-using Object = UnityEngine.Object;
+﻿using UnityEngine;
 
 namespace DefaultNamespace
 {
@@ -28,7 +26,7 @@ namespace DefaultNamespace
             _lineRenderer = _trailPlayer.GetComponent<LineRenderer>();
         }
 
-        public void Calculate(Transform playerTransform)
+        public void CalculateTrajectory(Transform playerTransform)
         {
             _trailPlayer.transform.position = playerTransform.position;
             _trailPlayer.transform.rotation = playerTransform.rotation;
@@ -41,80 +39,22 @@ namespace DefaultNamespace
             {
                 if (!isCalculated)
                 {
-                    var childrenTransforms = _trailPlayer.GetComponentsInChildren<Transform>();
-                    Transform rightRayPoint = null;
-                    Transform leftRayPoint = null;
-                    Transform centerRayPoint = null;
-                    foreach (var transform in childrenTransforms)
+                    var ray = new Ray(_trailPlayer.transform.position, _trailPlayer.transform.forward);
+                    var hit = new RaycastHit[1];
+                    var countRaycast = Physics.RaycastNonAlloc(ray, hit);
+                    if (countRaycast > 0)
                     {
-                        switch (transform.tag)
-                        {
-                            case "RightRayPoint":
-                                rightRayPoint = transform;
-                                break;
-                            case "LeftRayPoint":
-                                leftRayPoint = transform;
-                                break;
-                            case "CenterRayPoint":
-                                centerRayPoint = transform;
-                                break;
-                        }
-                    }
-
-                    if (rightRayPoint == null && leftRayPoint == null && centerRayPoint == null)
-                    {
-                        throw new NullReferenceException("right left or center ray point is null");
-                    }
-
-                    var rayCenter = new Ray(centerRayPoint.position, centerRayPoint.forward);
-                    var rayRight = new Ray(rightRayPoint.position, rightRayPoint.forward);
-                    var rayLeft = new Ray(leftRayPoint.position, leftRayPoint.forward);
-                    var raycastHitCenter = new RaycastHit[1];
-                    var raycastHitRight = new RaycastHit[1];
-                    var raycastHitLeft = new RaycastHit[1];
-                    if (Physics.RaycastNonAlloc(rayRight, raycastHitRight) > 0 &&
-                        Physics.RaycastNonAlloc(rayLeft, raycastHitLeft) > 0 &&
-                        Physics.RaycastNonAlloc(rayCenter, raycastHitCenter) > 0)
-                    {
-                        var rightDistance = raycastHitRight[0].distance;
-                        var centerDistance = raycastHitCenter[0].distance;
-                        var leftDistance = raycastHitLeft[0].distance;
-
-                        RaycastHit[] raycastHitForCalculate;
-                        Ray rayForCalculate;
-                        float distanceForCalculate;
-
-                        if (centerDistance < leftDistance && centerDistance < rightDistance)
-                        {
-                            raycastHitForCalculate = raycastHitCenter;
-                            rayForCalculate = rayCenter;
-                            distanceForCalculate = centerDistance;
-                        }
-                        else if (rightDistance < leftDistance)
-                        {
-                            raycastHitForCalculate = raycastHitRight;
-                            rayForCalculate = rayRight;
-                            distanceForCalculate = rightDistance;
-                        }
-                        else
-                        {
-                            raycastHitForCalculate = raycastHitLeft;
-                            rayForCalculate = rayLeft;
-                            distanceForCalculate = leftDistance;
-                        }
-
-                        switch (raycastHitForCalculate[0].collider.tag)
+                        switch (hit[0].collider.tag)
                         {
                             case "Asteroid":
-                                var currentDirection = rayForCalculate.direction;
-                                var normal = raycastHitForCalculate[0].normal;
-                                reflectVector = raycastHitForCalculate[0].point +
-                                                Vector3.Reflect(currentDirection, normal);
-                                distance = distanceForCalculate;
+                                var currentDirection = ray.direction.normalized;
+                                var normal = hit[0].normal.normalized;
+                                reflectVector = hit[0].point + Vector3.Reflect(currentDirection, normal);
+                                distance = hit[0].distance;
                                 isCalculated = true;
                                 break;
                             default:
-                                _distance = 10f;
+                                distance = 10f;
                                 break;
                         }
                     }
@@ -141,76 +81,19 @@ namespace DefaultNamespace
         {
             if (!_isCalculated)
             {
-                var childrenTransforms = _playerTransform.gameObject.GetComponentsInChildren<Transform>();
-                Transform rightRayPoint = null;
-                Transform leftRayPoint = null;
-                Transform centerRayPoint = null;
-                foreach (var transform in childrenTransforms)
+                var ray = new Ray(_playerTransform.position, _playerTransform.forward);
+                var hit = new RaycastHit[1];
+                var countRaycast = Physics.RaycastNonAlloc(ray, hit);
+
+                if (countRaycast > 0)
                 {
-                    switch (transform.tag)
-                    {
-                        case "RightRayPoint":
-                            rightRayPoint = transform;
-                            break;
-                        case "LeftRayPoint":
-                            leftRayPoint = transform;
-                            break;
-                        case "CenterRayPoint":
-                            centerRayPoint = transform;
-                            break;
-                    }
-                }
-
-                if (rightRayPoint == null && leftRayPoint == null && centerRayPoint == null)
-                {
-                    throw new NullReferenceException("right left or center ray point is null");
-                }
-
-                var rayCenter = new Ray(centerRayPoint.position, centerRayPoint.forward);
-                var rayRight = new Ray(rightRayPoint.position, rightRayPoint.forward);
-                var rayLeft = new Ray(leftRayPoint.position, leftRayPoint.forward);
-                var raycastHitCenter = new RaycastHit[1];
-                var raycastHitRight = new RaycastHit[1];
-                var raycastHitLeft = new RaycastHit[1];
-                if (Physics.RaycastNonAlloc(rayRight, raycastHitRight) > 0 &&
-                    Physics.RaycastNonAlloc(rayLeft, raycastHitLeft) > 0 &&
-                    Physics.RaycastNonAlloc(rayCenter, raycastHitCenter) > 0)
-                {
-                    var rightDistance = raycastHitRight[0].distance;
-                    var centerDistance = raycastHitCenter[0].distance;
-                    var leftDistance = raycastHitLeft[0].distance;
-
-                    RaycastHit[] raycastHitForCalculate;
-                    Ray rayForCalculate;
-                    float distanceForCalculate;
-
-                    if (centerDistance < leftDistance && centerDistance < rightDistance)
-                    {
-                        raycastHitForCalculate = raycastHitCenter;
-                        rayForCalculate = rayCenter;
-                        distanceForCalculate = centerDistance;
-                    }
-                    else if (rightDistance < leftDistance)
-                    {
-                        raycastHitForCalculate = raycastHitRight;
-                        rayForCalculate = rayRight;
-                        distanceForCalculate = rightDistance;
-                    }
-                    else
-                    {
-                        raycastHitForCalculate = raycastHitLeft;
-                        rayForCalculate = rayLeft;
-                        distanceForCalculate = leftDistance;
-                    }
-
-                    switch (raycastHitForCalculate[0].collider.tag)
+                    switch (hit[0].collider.tag)
                     {
                         case "Asteroid":
-                            var currentDirection = rayForCalculate.direction;
-                            var normal = raycastHitForCalculate[0].normal;
-                            _reflectVector = raycastHitForCalculate[0].point +
-                                             Vector3.Reflect(currentDirection, normal);
-                            _distance = distanceForCalculate;
+                            var currentDirection = ray.direction;
+                            var normal = hit[0].normal;
+                            _reflectVector = hit[0].point + Vector3.Reflect(currentDirection, normal);
+                            _distance = hit[0].distance;
                             _isCalculated = true;
                             break;
                         default:
@@ -223,7 +106,7 @@ namespace DefaultNamespace
                     _distance = 10f;
                 }
             }
-
+            
             var moveDistance = deltaTime * _moveSpeed;
             _playerTransform.Translate(_playerTransform.forward * moveDistance, Space.World);
             _distance -= moveDistance;
@@ -234,10 +117,52 @@ namespace DefaultNamespace
                 _isCalculated = false;
             }
         }
+        
+        public void Move(float deltaTime, float speed)
+        {
+            if (!_isCalculated)
+            {
+                var ray = new Ray(_playerTransform.position, _playerTransform.forward);
+                var hit = new RaycastHit[1];
+                var countRaycast = Physics.RaycastNonAlloc(ray, hit);
 
+                if (countRaycast > 0)
+                {
+                    switch (hit[0].collider.tag)
+                    {
+                        case "Asteroid":
+                            var currentDirection = ray.direction;
+                            var normal = hit[0].normal;
+                            _reflectVector = hit[0].point + Vector3.Reflect(currentDirection, normal);
+                            _distance = hit[0].distance;
+                            _isCalculated = true;
+                            break;
+                        default:
+                            _distance = 10f;
+                            break;
+                    }
+                }
+                else
+                {
+                    _distance = 10f;
+                }
+            }
+            
+            var moveDistance = deltaTime * speed;
+            _playerTransform.Translate(_playerTransform.forward * moveDistance, Space.World);
+            _distance -= moveDistance;
+
+            if (_distance <= 0)
+            {
+                _playerTransform.LookAt(_reflectVector);
+                _isCalculated = false;
+            }
+        }
+        
         public void ClearLine()
         {
             _lineRenderer.positionCount = 0;
+            _distance = 10f;
         }
     }
 }

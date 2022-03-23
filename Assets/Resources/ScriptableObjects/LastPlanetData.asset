@@ -18,6 +18,6 @@ MonoBehaviour:
   distanceFromLastPlanetToStop: 3
   moveSpeedToLastPlanet: 1
   center: {x: -21, y: 0.6, z: 41}
-  moveSpeedToPlanet: 3
+  moveSpeedToPlanet: 4
   cameraDownSpeed: 8
   cameraDownPosition: 0

@@ -61,18 +61,22 @@ public class CameraController : IClean
     {
         var offsetPosition = _playerTransform.position;
         var cameraTransform = _camera.transform;
-        offsetPosition.y += cameraTransform.position.y;
+        offsetPosition.y = cameraTransform.position.y;
         cameraTransform.position = offsetPosition;
     }
 
     public bool CameraUp(float deltaTime)
     {
         var cameraTransform = _camera.transform;
-        if (cameraTransform.position.y >= _cameraUpOffset)  return true;
-        
-        var offsetPosition = _playerTransform.position;
-        offsetPosition.y = cameraTransform.position.y + _cameraUpSpeed * deltaTime;
-        cameraTransform.position = offsetPosition;
+        var playerPosition = _playerTransform.position;
+        if (cameraTransform.position.y >= _cameraUpOffset)
+        {
+            playerPosition.y = cameraTransform.position.y;
+            cameraTransform.position = playerPosition;
+            return true;
+        }
+        playerPosition.y = cameraTransform.position.y + _cameraUpSpeed * deltaTime;
+        cameraTransform.position = playerPosition;
         return false;
     }
 
@@ -102,7 +106,7 @@ public class CameraController : IClean
         }
     }
 
-    public void FlyLastPlanet(float deltaTime)
+    public void FlyToLastPlanet(float deltaTime)
     {
         if (_cameraColliderEntered)
         {

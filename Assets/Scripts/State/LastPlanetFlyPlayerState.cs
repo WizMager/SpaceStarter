@@ -20,7 +20,7 @@ namespace State
             }
             else
             {
-                _cameraController.FlyLastPlanet(deltaTime);
+                _cameraController.FlyToLastPlanet(deltaTime);
                 if (!PlayerController.LastPlanet(deltaTime)) return;
                 
                 _flyEnd = true;

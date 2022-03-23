@@ -5,13 +5,15 @@ using View;
 public class LastPlanet : IDisposable
 {
     private readonly GravityView _gravityView;
+    private readonly float _moveSpeed;
 
     private bool _inGravity;
     private readonly TrajectoryCalculate _trajectory;
 
-    public LastPlanet(GravityView gravityView, TrajectoryCalculate trajectoryCalculate)
+    public LastPlanet(GravityView gravityView, TrajectoryCalculate trajectoryCalculate, float moveSpeed)
     {
         _gravityView = gravityView;
+        _moveSpeed = moveSpeed;
 
         _gravityView.OnPlayerGravityEnter += GravityEntered;
         _trajectory = trajectoryCalculate;
@@ -27,7 +29,7 @@ public class LastPlanet : IDisposable
 
     private void PlayerTranslate(float deltaTime)
     {
-        _trajectory.Move(deltaTime);
+        _trajectory.Move(deltaTime, _moveSpeed);
     }
         
     private void GravityEntered()

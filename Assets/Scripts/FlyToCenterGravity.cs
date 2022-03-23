@@ -13,6 +13,7 @@ public class FlyToCenterGravity
     private bool _isFinish;
     private bool _isMoved;
     private float _edgeRotationAngle;
+    private SphereCollider _planetCollider;
         
     public FlyToCenterGravity(PlayerView playerView, float rotationSpeedGravity, float moveSpeedGravity, Transform currentPlanet)
     {
@@ -21,6 +22,7 @@ public class FlyToCenterGravity
 
         _playerTransform = playerView.transform;
         _currentPlanet = currentPlanet;
+        _planetCollider = _currentPlanet.GetComponent<SphereCollider>();
     }
 
     public void Active()
@@ -30,8 +32,8 @@ public class FlyToCenterGravity
         var playerPosition = _playerTransform.position;
         var planetPosition = _currentPlanet.position;
         _direction = (planetPosition - playerPosition).normalized;
-        //TODO: 1.25 if offset because planet center position minus radius, need calculate it
-        _pathCenter = Vector3.Distance(playerPosition, planetPosition) / 2 - 1.25f;
+        //TODO : need to add plus offset planet collider 
+        _pathCenter = (Vector3.Distance(playerPosition, planetPosition) - _planetCollider.radius) / 2;
         _edgeRotationAngle = Vector3.Angle(_playerTransform.right, _direction);
     }
 
@@ -80,5 +82,6 @@ public class FlyToCenterGravity
     public void ChangePlanet(Transform currentPlanet)
     {
         _currentPlanet = currentPlanet;
+        _planetCollider = _currentPlanet.GetComponent<SphereCollider>();
     }
 }

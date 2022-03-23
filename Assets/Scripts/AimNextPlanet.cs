@@ -44,7 +44,9 @@ public class AimNextPlanet
     {
         if (!_isActive) return;
         
-        _trajectory.Calculate(_playerTransform.transform);
+        _trajectory.CalculateTrajectory(_playerTransform.transform);
+        _previousPosition = position;
+        
         _isAimEnded = false;
         _isAim = true;
     }
@@ -56,7 +58,7 @@ public class AimNextPlanet
         
         if (_previousPosition != position)
         {
-            _trajectory.Calculate(_playerTransform.transform);
+            _trajectory.CalculateTrajectory(_playerTransform.transform);
             _previousPosition = position;
         }
         
