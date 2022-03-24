@@ -11,6 +11,7 @@ public class GameInitialization
 {
    private PlanetView[] _planets;
    private GravityView[] _gravities;
+   private GravityEnterView[] _gravityEnters;
 
    public GameInitialization(Controllers controllers, ScriptableData.ScriptableData data)
    {
@@ -22,6 +23,7 @@ public class GameInitialization
       var deadView = Object.FindObjectOfType<DeadScreenView>();
       _planets = Object.FindObjectsOfType<PlanetView>();
       _gravities = Object.FindObjectsOfType<GravityView>();
+      _gravityEnters = Object.FindObjectsOfType<GravityEnterView>();
       SortPlanetObjects();
       var playerModel = new PlayerModel(data.Player.startHealth, data.Player.missileCount);
       
@@ -29,7 +31,7 @@ public class GameInitialization
       var inputInitialization = new InputInitialization(data.Input.minimalDistanceForSwipe);
       controllers.Add(new InputController(inputInitialization.GetAllTouch(), inputInitialization.GetSwipe()));
       controllers.Add(new PlayerController(data, player, inputInitialization.GetAllTouch(),
-         inputInitialization.GetSwipe(), _planets, _gravities, camera, cameraColliderView, playerModel, deadView));
+         inputInitialization.GetSwipe(), _planets, _gravities, _gravityEnters, camera, cameraColliderView, playerModel, deadView));
       controllers.Add(new BonusController(playerModel, playerIndicatorView, bonusViews, BonusTypeValue(data)));
    }
 
@@ -42,7 +44,8 @@ public class GameInitialization
    {
       var sortedPlanets = new PlanetView[_planets.Length];
       var sortedGravities = new GravityView[_gravities.Length];
-      
+      var sortedGravityEnters = new GravityEnterView[_gravityEnters.Length];
+
       foreach (var planet in _planets)
       {
          switch (planet.number)
@@ -90,8 +93,33 @@ public class GameInitialization
                throw new ArgumentOutOfRangeException($"Too much gravities!");
          }
       }
+      
+      foreach (var gravityEnter in _gravityEnters)
+      {
+         switch (gravityEnter.number)
+         {
+            case PlanetNumber.NotPlanet:
+               sortedGravityEnters[0] = gravityEnter;
+               break;
+            case PlanetNumber.First:
+               sortedGravityEnters[1] = gravityEnter;
+               break;
+            case PlanetNumber.Second:
+               sortedGravityEnters[2] = gravityEnter;
+               break;
+            case PlanetNumber.Third:
+               sortedGravityEnters[3] = gravityEnter;
+               break;
+            case PlanetNumber.Last:
+               sortedGravityEnters[4] = gravityEnter;
+               break;
+            default:
+               throw new ArgumentOutOfRangeException($"Too much gravityEnters!");
+         }
+      }
 
       _planets = sortedPlanets;
       _gravities = sortedGravities;
+      _gravityEnters = sortedGravityEnters;
    }
 }

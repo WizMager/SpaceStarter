@@ -38,7 +38,7 @@ public class TapExplosionController
             {
                 hitSphereCast.rigidbody.isKinematic = false;
             }
-            hitSphereCast.rigidbody.AddForce(-ray.direction * _explosionForce, ForceMode.Impulse);
+            hitSphereCast.rigidbody.AddForce(hitSphereCast.normal * _explosionForce, ForceMode.Impulse);
         }
     }
 

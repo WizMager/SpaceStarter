@@ -15,6 +15,7 @@ namespace Controller
         private int _planetIndex;
         private readonly PlanetView[] _planetViews;
         private readonly GravityView[] _gravityViews;
+        private readonly GravityEnterView[] _gravityEnterViews;
         private readonly PlayerModel _playerModel;
         private readonly DeadScreenView _deadScreenView;
 
@@ -29,12 +30,13 @@ namespace Controller
         private readonly LastPlanet _lastPlanet;
 
         public PlayerController(ScriptableData.ScriptableData data, PlayerView playerView, IUserInput<Vector3>[] touchInput, 
-            IUserInput<SwipeData> swipeInput, PlanetView[] planetViews, GravityView[] gravityViews, Camera camera, 
-            CameraColliderView cameraColliderView, PlayerModel playerModel, DeadScreenView deadScreenView)
+            IUserInput<SwipeData> swipeInput, PlanetView[] planetViews, GravityView[] gravityViews, GravityEnterView[] gravityEnterViews,
+            Camera camera, CameraColliderView cameraColliderView, PlayerModel playerModel, DeadScreenView deadScreenView)
         {
             
             _planetViews = planetViews;
             _gravityViews = gravityViews;
+            _gravityEnterViews = gravityEnterViews;
             _playerModel = playerModel;
             _deadScreenView = deadScreenView;
 
@@ -49,10 +51,10 @@ namespace Controller
                 new FlyPlanetAngle(_planetViews[_planetIndex].transform, playerTransform, 
                     _planetViews[_planetIndex + 1].transform); 
             _flyToEdgeGravity = new FlyToEdgeGravity(data.Planet.rotationSpeedToEdgeGravity,
-                data.Planet.moveSpeedToEdgeGravity, _gravityViews[_planetIndex], playerTransform);
+                data.Planet.moveSpeedToEdgeGravity, _gravityEnterViews[_planetIndex], playerTransform);
             _aimNextPlanet = new AimNextPlanet(touchInput, playerView, camera, trajectoryCalculate);
             _flyToNextPlanet =
-                new FlyToNextPlanet(_gravityViews[_planetIndex], trajectoryCalculate);
+                new FlyToNextPlanet(_gravityEnterViews[_planetIndex], trajectoryCalculate);
             _tapExplosionController = new TapExplosionController( touchInput, camera, data.LastPlanet.explosionArea,
                 data.LastPlanet.explosionForce, data.LastPlanet.explosionParticle);
             _flyToCenterGravity = new FlyToCenterGravity(playerView,
@@ -85,8 +87,9 @@ namespace Controller
             _planetIndex += 1;
             if (_planetIndex == (int)PlanetNumber.Last)
             {
-                _flyToNextPlanet.ChangePlanet(_gravityViews[_planetIndex]);
-                _flyToEdgeGravity.ChangePlanet(_gravityViews[_planetIndex]);
+                _flyToNextPlanet.ChangePlanet(_gravityEnterViews[_planetIndex]);
+                _flyToEdgeGravity.ChangePlanet(_gravityEnterViews[_planetIndex]);
+                
                  _flyPlanetAngle.ChangePlanet(_planetViews[0].transform,
                      _planetViews[0].transform);
                  _rotationAroundPlanet.ChangePlanet(_planetViews[0].transform);
@@ -94,12 +97,12 @@ namespace Controller
                 return true;
             }
             
-            _flyToEdgeGravity.ChangePlanet(_gravityViews[_planetIndex]);
+            _flyToEdgeGravity.ChangePlanet(_gravityEnterViews[_planetIndex]);
             _flyPlanetAngle.ChangePlanet(_planetViews[_planetIndex].transform,
                 _planetViews[_planetIndex + 1].transform);
             _rotationAroundPlanet.ChangePlanet(_planetViews[_planetIndex].transform);
             _upAndDownAroundPlanet.ChangePlanet(_planetViews[_planetIndex], _gravityViews[_planetIndex]);
-            _flyToNextPlanet.ChangePlanet(_gravityViews[_planetIndex]);
+            _flyToNextPlanet.ChangePlanet(_gravityEnterViews[_planetIndex]);
             _flyToCenterGravity.ChangePlanet(_planetViews[_planetIndex].transform);
             return false;
             }

@@ -4,14 +4,14 @@ using View;
 
 public class FlyToNextPlanet
 {
-    private GravityView _gravityView;
+    private GravityEnterView _gravityView;
 
     private readonly TrajectoryCalculate _trajectoryCalculate;
     
     private bool _isInGravity;
     private bool _isActive;
 
-    public FlyToNextPlanet(GravityView gravityView, TrajectoryCalculate trajectoryCalculate)
+    public FlyToNextPlanet(GravityEnterView gravityView, TrajectoryCalculate trajectoryCalculate)
     {
         _gravityView = gravityView;
 
@@ -43,7 +43,7 @@ public class FlyToNextPlanet
         _isActive = isActive;
     }
 
-    public void ChangePlanet(GravityView currentGravityView)
+    public void ChangePlanet(GravityEnterView currentGravityView)
     {
         OnDestroy();
         _gravityView = currentGravityView;
