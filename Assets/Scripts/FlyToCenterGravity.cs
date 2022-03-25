@@ -1,8 +1,11 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using View;
 
 public class FlyToCenterGravity
 {
+    public event Action<float> OnPathToCenterCalculated; 
+
     private readonly float _rotationSpeedGravity;
     private readonly float _moveSpeedGravity;
 
@@ -34,6 +37,7 @@ public class FlyToCenterGravity
         _direction = (planetPosition - playerPosition).normalized;
         //TODO : need to add plus offset planet collider 
         _pathCenter = (Vector3.Distance(playerPosition, planetPosition) - _planetCollider.radius) / 2;
+        OnPathToCenterCalculated?.Invoke(_pathCenter);
         _edgeRotationAngle = Vector3.Angle(_playerTransform.right, _direction);
     }
 

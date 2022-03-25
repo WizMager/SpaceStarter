@@ -13,5 +13,7 @@ namespace ScriptableData
         [Header("Camera Down")]
         public float cameraDownPosition;
         public float cameraDownSpeed;
+        [Header("Rotate Around Planet")] 
+        public float cameraOffsetBeforeRotation;
     }
 }

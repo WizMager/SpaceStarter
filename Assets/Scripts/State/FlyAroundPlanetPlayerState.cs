@@ -1,22 +1,20 @@
 ﻿using Controller;
 using UnityEngine;
+using Utils;
 
 namespace State
 {
     public class FlyAroundPlanetPlayerState : PlayerState
     {
-        private readonly CameraController _cameraController;
-        public FlyAroundPlanetPlayerState(PlayerController context, CameraController cameraController)
+        public FlyAroundPlanetPlayerState(PlayerController context)
         {
             PlayerController = context;
-            _cameraController = cameraController;
         }
         public override void Move(float deltaTime)
         {
-            _cameraController.FollowPlayer();
             var lookDirection = PlayerController.FlyAroundPlanet(deltaTime);
             if (lookDirection == Vector3.zero) return;
-            PlayerController.TransitionTo(new FlyToEdgeGravityPlayerState(lookDirection, PlayerController, _cameraController));
+            PlayerController.TransitionTo(new FlyToEdgeGravityPlayerState(lookDirection, PlayerController));
         }
     }
 }

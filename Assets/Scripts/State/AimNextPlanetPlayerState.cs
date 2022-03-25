@@ -1,29 +1,28 @@
 ﻿using Controller;
+using Utils;
 
 namespace State
 {
     public class AimNextPlanetPlayerState : PlayerState
     {
-        private readonly CameraController _cameraController;
-        public AimNextPlanetPlayerState(PlayerController context, CameraController cameraController)
+        public AimNextPlanetPlayerState(PlayerController context)
         {
             PlayerController = context;
-            _cameraController = cameraController;
             PlayerController.AimNextPlanetActive(true);
         }
         public override void Move(float deltaTime)
         {
-            _cameraController.FollowPlayer();
+            PlayerController.CameraState(CameraState.Follow, deltaTime);
             if (!PlayerController.AimNextPlanet()) return;
             
             PlayerController.AimNextPlanetActive(false);
             if (PlayerController.ChangeCurrentPlanet())
             {
-                PlayerController.TransitionTo(new LastPlanetFlyPlayerState(PlayerController, _cameraController));
+                PlayerController.TransitionTo(new LastPlanetFlyPlayerState(PlayerController));
             }
             else
             {
-                PlayerController.TransitionTo(new FlyToNextPlanetPlayerState(PlayerController, _cameraController));  
+                PlayerController.TransitionTo(new FlyToNextPlanetPlayerState(PlayerController));  
             }
         }
     }

@@ -1,6 +1,4 @@
-﻿using Controller;
-using UnityEngine;
-
+﻿
 namespace State
 {
     public class DeadState : PlayerState

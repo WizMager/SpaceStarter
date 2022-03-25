@@ -6,7 +6,7 @@ using UnityEngine;
 using View;
 using Object = UnityEngine.Object;
 
-public class CameraController : IClean
+public class CameraMove
 {
     private readonly Camera _camera;
     private readonly float _cameraUpSpeed;
@@ -23,17 +23,21 @@ public class CameraController : IClean
     private readonly float _distanceLastPlanet;
     private readonly float _moveSpeedLastPlanet;
     private readonly Transform _lastPlanetTransform;
+    private Transform _currentPlanet;
+    private readonly FlyPlanetAngle _flyPlanetAngle;
+    private readonly FlyToCenterGravity _flyToCenterGravity;
 
     private readonly Transform _playerTransform;
     private bool _cameraStopped;
     private bool _cameraColliderEntered;
     private float _distanceFlyFirstPerson;
+    private float _pathToCenter;
 
-    public CameraController(Camera camera, float cameraUpSpeed, float cameraUpOffset, 
+    public CameraMove(Camera camera, float cameraUpSpeed, float cameraUpOffset, 
         IUserInput<SwipeData> swipeInput, Vector3 lastPlanetCenter, float firstPersonRotationSpeed, PlayerView playerView,
         float cameraDownPosition, float cameraDownSpeed, CameraColliderView cameraColliderView, 
         float cameraDownPositionLastPlanet, float cameraDownSpeedLastPlanet, float distanceLastPlanet, float moveSpeedLastPlanet,
-        Transform lastPlanetTransform)
+        Transform lastPlanetTransform, Transform currentPlanet, FlyPlanetAngle flyPlanetAngle, FlyToCenterGravity flyToCenterGravity)
     {
         _camera = camera;
         _cameraUpSpeed = cameraUpSpeed;
@@ -50,13 +54,27 @@ public class CameraController : IClean
         _distanceLastPlanet = distanceLastPlanet;
         _moveSpeedLastPlanet = moveSpeedLastPlanet;
         _lastPlanetTransform = lastPlanetTransform;
+        _currentPlanet = currentPlanet;
+        _flyPlanetAngle = flyPlanetAngle;
+        _flyToCenterGravity = flyToCenterGravity;
 
         _playerTransform = playerView.transform;
         _swipeInput.OnChange += CameraSwipeRotate;
-        _colliderView.OnPlayerEnter += PlayerEntered;
+        _colliderView.OnPlayerEnter += PlayerCameraColliderEntered;
+        _flyPlanetAngle.OnRotateCalculated += RotateAroundPlanet;
+        _flyToCenterGravity.OnPathToCenterCalculated += SetPathToCenter;
     }
     
+    public void RotateAroundPlanet(float angle)
+    {
+        _camera.transform.RotateAround(_currentPlanet.position, _currentPlanet.forward, angle);
+    }
 
+    private void SetPathToCenter(float value)
+    {
+        _pathToCenter = value;
+    }
+    
     public void FollowPlayer()
     {
         var offsetPosition = _playerTransform.position;
@@ -118,7 +136,7 @@ public class CameraController : IClean
         }
     }
     
-    private void PlayerEntered()
+    private void PlayerCameraColliderEntered()
     {
         _cameraColliderEntered = true;
     }
@@ -145,7 +163,7 @@ public class CameraController : IClean
         _colliderView.StopCoroutine(StopFly());
     }
 
-    public bool CameraStopped()
+    public bool CameraFlyStopped()
     {
         return _cameraStopped;
     }
@@ -172,10 +190,15 @@ public class CameraController : IClean
                 throw new ArgumentOutOfRangeException();
         }
     }
+
+    public void ChangePlanet(Transform currentPlanet)
+    {
+        _currentPlanet = currentPlanet;
+    }
     
-    public void Clean()
+    public void OnDestroy()
     {
         _swipeInput.OnChange += CameraSwipeRotate;
-        _colliderView.OnPlayerEnter += PlayerEntered; 
+        _colliderView.OnPlayerEnter += PlayerCameraColliderEntered; 
     }
 }

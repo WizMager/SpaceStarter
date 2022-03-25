@@ -17,3 +17,4 @@ MonoBehaviour:
   firstPersonRotationSpeed: 0.3
   cameraDownPosition: 14
   cameraDownSpeed: 10
+  cameraOffsetBeforeRotation: 8
