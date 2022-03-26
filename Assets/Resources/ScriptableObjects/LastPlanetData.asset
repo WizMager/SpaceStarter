@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b21636f000f4b29a88471c4b40dcb3a, type: 3}
   m_Name: LastPlanetData
   m_EditorClassIdentifier: 
-  explosionArea: 0.25
-  explosionForce: 50
+  explosionArea: 1
+  explosionForce: 10
   explosionParticle: {fileID: 159918, guid: a0040bf7072bc2f4e82d887d50a9c5e2, type: 3}
   distanceFromLastPlanetToStop: 3
   moveSpeedToLastPlanet: 1
