@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   upSpeed: 10
   upOffsetFromPlayer: 25
-  moveSpeed: 5
+  moveSpeed: 7
   firstPersonRotationSpeed: 0.3
   cameraDownPosition: 14
   cameraDownSpeed: 10
