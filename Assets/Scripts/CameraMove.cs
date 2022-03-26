@@ -2,11 +2,12 @@
 using System.Collections;
 using InputClasses;
 using Interface;
+using Unity.Mathematics;
 using UnityEngine;
 using View;
 using Object = UnityEngine.Object;
 
-public class CameraController : IClean
+public class CameraMove
 {
     private readonly Camera _camera;
     private readonly float _cameraUpSpeed;
@@ -23,17 +24,24 @@ public class CameraController : IClean
     private readonly float _distanceLastPlanet;
     private readonly float _moveSpeedLastPlanet;
     private readonly Transform _lastPlanetTransform;
+    private Transform _currentPlanet;
+    private readonly FlyPlanetAngle _flyPlanetAngle;
+    private  readonly float _apeedToCenterBetween;
+    private readonly float _angleAdvanceRotateAround;
 
     private readonly Transform _playerTransform;
     private bool _cameraStopped;
     private bool _cameraColliderEntered;
     private float _distanceFlyFirstPerson;
+    private float _pathToCenter;
+    private bool _firstTimeLook;
 
-    public CameraController(Camera camera, float cameraUpSpeed, float cameraUpOffset, 
+    public CameraMove(Camera camera, float cameraUpSpeed, float cameraUpOffset, 
         IUserInput<SwipeData> swipeInput, Vector3 lastPlanetCenter, float firstPersonRotationSpeed, PlayerView playerView,
         float cameraDownPosition, float cameraDownSpeed, CameraColliderView cameraColliderView, 
         float cameraDownPositionLastPlanet, float cameraDownSpeedLastPlanet, float distanceLastPlanet, float moveSpeedLastPlanet,
-        Transform lastPlanetTransform)
+        Transform lastPlanetTransform, Transform currentPlanet, FlyPlanetAngle flyPlanetAngle, float apeedToCenterBetween, 
+        float angleAdvanceRotateAround)
     {
         _camera = camera;
         _cameraUpSpeed = cameraUpSpeed;
@@ -50,12 +58,22 @@ public class CameraController : IClean
         _distanceLastPlanet = distanceLastPlanet;
         _moveSpeedLastPlanet = moveSpeedLastPlanet;
         _lastPlanetTransform = lastPlanetTransform;
+        _currentPlanet = currentPlanet;
+        _flyPlanetAngle = flyPlanetAngle;
+        _apeedToCenterBetween = apeedToCenterBetween;
+        _angleAdvanceRotateAround = angleAdvanceRotateAround;
 
         _playerTransform = playerView.transform;
         _swipeInput.OnChange += CameraSwipeRotate;
-        _colliderView.OnPlayerEnter += PlayerEntered;
+        _colliderView.OnPlayerEnter += PlayerCameraColliderEntered;
+        _flyPlanetAngle.OnRotateCalculated += RotateAroundPlanet;
+        _flyPlanetAngle.OnPathBetweenPlanets += SetCenterBetweenPlanets;
     }
     
+    public void RotateAroundPlanet(float angle)
+    {
+        _camera.transform.RotateAround(_currentPlanet.position, _currentPlanet.forward, angle);
+    }
 
     public void FollowPlayer()
     {
@@ -68,18 +86,36 @@ public class CameraController : IClean
     public bool CameraUp(float deltaTime)
     {
         var cameraTransform = _camera.transform;
-        var playerPosition = _playerTransform.position;
-        if (cameraTransform.position.y >= _cameraUpOffset)
+        if (cameraTransform.position.y >= _cameraUpOffset && _pathToCenter <= 0)
         {
-            playerPosition.y = cameraTransform.position.y;
-            cameraTransform.position = playerPosition;
             return true;
         }
-        playerPosition.y = cameraTransform.position.y + _cameraUpSpeed * deltaTime;
-        cameraTransform.position = playerPosition;
+
+        if (cameraTransform.position.y < _cameraUpOffset)
+        {
+            var move = deltaTime * _cameraUpSpeed;
+            cameraTransform.position += new Vector3(0, move, 0);
+        }
+
+        if (_pathToCenter > 0)
+        {
+            var move = deltaTime * _apeedToCenterBetween;
+            cameraTransform.Translate(cameraTransform.forward * move);
+            _pathToCenter -= move;
+        }
+        
         return false;
     }
 
+    private void SetCenterBetweenPlanets(float halfPath)
+    {
+        RotateAroundPlanet(-_angleAdvanceRotateAround);
+        var planetPositionUp = _currentPlanet.position;
+        planetPositionUp.y = _camera.transform.position.y;
+        var currentPathFromPlanet = Vector3.Distance(planetPositionUp, _camera.transform.position);
+        _pathToCenter = halfPath - currentPathFromPlanet;
+    }
+    
     public bool CameraDownPlanet(float deltaTime)
     {
         return CameraDown(deltaTime, _cameraDownSpeed, _cameraDownPosition);
@@ -91,11 +127,21 @@ public class CameraController : IClean
         var playerTransformPosition = _playerTransform.position;
         var playerPositionX = playerTransformPosition.x;
         var playerPositionZ = playerTransformPosition.z;
+        var planetForLook = _currentPlanet.position;
+        planetForLook.y = _camera.transform.position.y;
+
         if (cameraDownPosition <= cameraPositionY)
         {
             cameraPositionY -= deltaTime * downSpeed;
             var offset = new Vector3(playerPositionX, cameraPositionY, playerPositionZ);
             _camera.transform.position = offset;
+            if (!_firstTimeLook)
+            {
+                _camera.transform.LookAt(planetForLook, _camera.transform.forward);
+                _camera.transform.LookAt(_playerTransform.position, _camera.transform.forward);
+                _firstTimeLook = true;
+            }
+            
             return false;
         }
         else
@@ -118,7 +164,7 @@ public class CameraController : IClean
         }
     }
     
-    private void PlayerEntered()
+    private void PlayerCameraColliderEntered()
     {
         _cameraColliderEntered = true;
     }
@@ -145,7 +191,7 @@ public class CameraController : IClean
         _colliderView.StopCoroutine(StopFly());
     }
 
-    public bool CameraStopped()
+    public bool CameraFlyStopped()
     {
         return _cameraStopped;
     }
@@ -172,10 +218,16 @@ public class CameraController : IClean
                 throw new ArgumentOutOfRangeException();
         }
     }
+
+    public void ChangePlanet(Transform currentPlanet)
+    {
+        _currentPlanet = currentPlanet;
+        _firstTimeLook = false;
+    }
     
-    public void Clean()
+    public void OnDestroy()
     {
         _swipeInput.OnChange += CameraSwipeRotate;
-        _colliderView.OnPlayerEnter += PlayerEntered; 
+        _colliderView.OnPlayerEnter += PlayerCameraColliderEntered; 
     }
 }

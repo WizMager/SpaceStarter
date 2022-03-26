@@ -1,24 +1,23 @@
 ﻿using Controller;
+using Utils;
 
 namespace State
 {
     public class LastPlanetShootState : PlayerState
     {
-        private readonly CameraController _cameraController;
         private bool _isActivated;
 
-        public LastPlanetShootState(PlayerController context, CameraController cameraController)
+        public LastPlanetShootState(PlayerController context)
         {
             PlayerController = context;
-            _cameraController = cameraController;
-            _cameraController.FirstPersonActivation();
+            PlayerController.FirstPersonActivation();
         }
         
         public override void Move(float deltaTime)
         {
             if (_isActivated) return;
             
-            if (!_cameraController.CameraStopped()) return;
+            if (!PlayerController.CameraState(CameraState.LastPlanetFirstPerson, deltaTime)) return;
             
             PlayerController.ShootLastPlanet();
             _isActivated = true;

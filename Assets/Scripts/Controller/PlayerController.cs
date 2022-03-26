@@ -1,4 +1,5 @@
-﻿using DefaultNamespace;
+﻿using System;
+using DefaultNamespace;
 using InputClasses;
 using Interface;
 using Model;
@@ -6,6 +7,7 @@ using State;
 using UnityEngine;
 using Utils;
 using View;
+using CameraState = Utils.CameraState;
 
 namespace Controller
 {
@@ -15,8 +17,10 @@ namespace Controller
         private int _planetIndex;
         private readonly PlanetView[] _planetViews;
         private readonly GravityView[] _gravityViews;
+        private readonly GravityEnterView[] _gravityEnterViews;
         private readonly PlayerModel _playerModel;
         private readonly DeadScreenView _deadScreenView;
+        private readonly float _cameraBeforeRotateOffset;
 
         private readonly RotationAroundPlanet _rotationAroundPlanet;
         private readonly UpAndDownAroundPlanet _upAndDownAroundPlanet;
@@ -27,16 +31,19 @@ namespace Controller
         private readonly TapExplosionController _tapExplosionController;
         private readonly FlyToCenterGravity _flyToCenterGravity;
         private readonly LastPlanet _lastPlanet;
+        private readonly CameraMove _cameraMove;
 
         public PlayerController(ScriptableData.ScriptableData data, PlayerView playerView, IUserInput<Vector3>[] touchInput, 
-            IUserInput<SwipeData> swipeInput, PlanetView[] planetViews, GravityView[] gravityViews, Camera camera, 
-            CameraColliderView cameraColliderView, PlayerModel playerModel, DeadScreenView deadScreenView)
+            IUserInput<SwipeData> swipeInput, PlanetView[] planetViews, GravityView[] gravityViews, GravityEnterView[] gravityEnterViews,
+            Camera camera, CameraColliderView cameraColliderView, PlayerModel playerModel, DeadScreenView deadScreenView)
         {
             
             _planetViews = planetViews;
             _gravityViews = gravityViews;
+            _gravityEnterViews = gravityEnterViews;
             _playerModel = playerModel;
             _deadScreenView = deadScreenView;
+            _cameraBeforeRotateOffset = data.Camera.cameraOffsetBeforeRotation;
 
             var playerTransform = playerView.transform;
             var trajectoryCalculate = new TrajectoryCalculate(playerTransform, data.Planet.moveSpeedToNextPlanet, 
@@ -49,21 +56,26 @@ namespace Controller
                 new FlyPlanetAngle(_planetViews[_planetIndex].transform, playerTransform, 
                     _planetViews[_planetIndex + 1].transform); 
             _flyToEdgeGravity = new FlyToEdgeGravity(data.Planet.rotationSpeedToEdgeGravity,
-                data.Planet.moveSpeedToEdgeGravity, _gravityViews[_planetIndex], playerTransform);
+                data.Planet.moveSpeedToEdgeGravity, _gravityEnterViews[_planetIndex], playerTransform);
             _aimNextPlanet = new AimNextPlanet(touchInput, playerView, camera, trajectoryCalculate);
             _flyToNextPlanet =
-                new FlyToNextPlanet(_gravityViews[_planetIndex], trajectoryCalculate);
+                new FlyToNextPlanet(_gravityEnterViews[_planetIndex], trajectoryCalculate);
             _tapExplosionController = new TapExplosionController( touchInput, camera, data.LastPlanet.explosionArea,
                 data.LastPlanet.explosionForce, data.LastPlanet.explosionParticle);
             _flyToCenterGravity = new FlyToCenterGravity(playerView,
                 data.Planet.rotationInGravitySpeed, data.Planet.moveSpeedCenterGravity, _planetViews[_planetIndex].transform);
             _lastPlanet = new LastPlanet(gravityViews[(int)PlanetNumber.Last], trajectoryCalculate, data.LastPlanet.moveSpeedToPlanet);
-            
-            _playerState = new AimNextPlanetPlayerState(this, new CameraController(camera, 
-                data.Camera.upSpeed, data.Camera.upOffsetFromPlayer, swipeInput, _planetViews[(int) PlanetNumber.Last].transform.position,
-                data.Camera.firstPersonRotationSpeed, playerView,  data.Camera.cameraDownPosition, data.Camera.cameraDownSpeed, 
+            _cameraMove = new CameraMove(camera,
+                data.Camera.upSpeed, data.Camera.upOffsetFromPlayer, swipeInput,
+                _planetViews[(int) PlanetNumber.Last].transform.position,
+                data.Camera.firstPersonRotationSpeed, playerView, data.Camera.cameraDownPosition,
+                data.Camera.cameraDownSpeed,
                 cameraColliderView, data.LastPlanet.cameraDownPosition, data.LastPlanet.cameraDownSpeed,
-                data.LastPlanet.distanceFromLastPlanetToStop, data.LastPlanet.moveSpeedToLastPlanet, planetViews[(int)PlanetNumber.Last].transform));
+                data.LastPlanet.distanceFromLastPlanetToStop, data.LastPlanet.moveSpeedToLastPlanet,
+                planetViews[(int) PlanetNumber.Last].transform, _planetViews[_planetIndex].transform, _flyPlanetAngle, 
+                data.Camera.moveSpeed, data.Camera.cameraOffsetBeforeRotation);
+            
+            _playerState = new AimNextPlanetPlayerState(this);
 
             _playerModel.OnZeroHealth += ChangeDeadState;
         }
@@ -74,6 +86,35 @@ namespace Controller
             _playerState.SetContext(this);
         }
 
+        public bool CameraState(CameraState state, float deltaTime)
+        {
+            switch (state)
+            {
+                case Utils.CameraState.Follow:
+                    _cameraMove.FollowPlayer();
+                    return true;
+                case Utils.CameraState.CameraUp:
+                    return _cameraMove.CameraUp(deltaTime);
+                case Utils.CameraState.CameraDown:
+                    return _cameraMove.CameraDownPlanet(deltaTime);
+                case Utils.CameraState.FlyToLastPlanet:
+                    _cameraMove.FlyToLastPlanet(deltaTime);
+                    return true;
+                case Utils.CameraState.RotateAroundPlanet:
+                    _cameraMove.RotateAroundPlanet(_cameraBeforeRotateOffset);
+                    return true;
+                case Utils.CameraState.LastPlanetFirstPerson:
+                    return _cameraMove.CameraFlyStopped();
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(state), state, null);
+            }
+        }
+
+        public void FirstPersonActivation()
+        {
+            _cameraMove.FirstPersonActivation();
+        }
+        
         private void ChangeDeadState()
         {
             _deadScreenView.OnDead();
@@ -85,8 +126,9 @@ namespace Controller
             _planetIndex += 1;
             if (_planetIndex == (int)PlanetNumber.Last)
             {
-                _flyToNextPlanet.ChangePlanet(_gravityViews[_planetIndex]);
-                _flyToEdgeGravity.ChangePlanet(_gravityViews[_planetIndex]);
+                _flyToNextPlanet.ChangePlanet(_gravityEnterViews[_planetIndex]);
+                _flyToEdgeGravity.ChangePlanet(_gravityEnterViews[_planetIndex]);
+                
                  _flyPlanetAngle.ChangePlanet(_planetViews[0].transform,
                      _planetViews[0].transform);
                  _rotationAroundPlanet.ChangePlanet(_planetViews[0].transform);
@@ -94,13 +136,14 @@ namespace Controller
                 return true;
             }
             
-            _flyToEdgeGravity.ChangePlanet(_gravityViews[_planetIndex]);
+            _flyToEdgeGravity.ChangePlanet(_gravityEnterViews[_planetIndex]);
             _flyPlanetAngle.ChangePlanet(_planetViews[_planetIndex].transform,
                 _planetViews[_planetIndex + 1].transform);
             _rotationAroundPlanet.ChangePlanet(_planetViews[_planetIndex].transform);
             _upAndDownAroundPlanet.ChangePlanet(_planetViews[_planetIndex], _gravityViews[_planetIndex]);
-            _flyToNextPlanet.ChangePlanet(_gravityViews[_planetIndex]);
+            _flyToNextPlanet.ChangePlanet(_gravityEnterViews[_planetIndex]);
             _flyToCenterGravity.ChangePlanet(_planetViews[_planetIndex].transform);
+            _cameraMove.ChangePlanet(_planetViews[_planetIndex].transform);
             return false;
             }
 
@@ -178,6 +221,7 @@ namespace Controller
             _aimNextPlanet.OnDestroy();
             _flyToNextPlanet.OnDestroy();
             _tapExplosionController.OnDestroy();
+            _cameraMove.OnDestroy();
             _playerModel.OnZeroHealth -= ChangeDeadState;
         }
     }

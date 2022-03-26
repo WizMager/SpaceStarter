@@ -1,24 +1,23 @@
 ﻿using Controller;
+using Utils;
 
 namespace State
 {
     public class FlyToCenterGravityPlayerState : PlayerState
     {
-        private readonly CameraController _cameraController;
-        
-        public FlyToCenterGravityPlayerState(PlayerController context, CameraController cameraController)
+        public FlyToCenterGravityPlayerState(PlayerController context)
         {
             PlayerController = context;
-            _cameraController = cameraController;
             PlayerController.FlyCenterGravityActivate();
         }
         public override void Move(float deltaTime)
         {
-            var finishDown = _cameraController.CameraDownPlanet(deltaTime);
+            var finishDown = PlayerController.CameraState(CameraState.CameraDown, deltaTime);
             if (!PlayerController.FlyToCenterGravity(deltaTime)) return;
             if (!finishDown) return;
             
-            PlayerController.TransitionTo(new FlyAroundPlanetPlayerState(PlayerController, _cameraController));
+            PlayerController.CameraState(CameraState.RotateAroundPlanet, deltaTime);
+            PlayerController.TransitionTo(new FlyAroundPlanetPlayerState(PlayerController));
         }
     }
 }

@@ -7,11 +7,6 @@ TagManager:
   - HealthIndicator
   - BonusIndicator
   - Asteroid
-  - LeftRayPoint
-  - RightRayPoint
-  - CenterRayPoint
-  - CenterRightRayPoint
-  - CenterLeftRayPoint
   layers:
   - Default
   - TransparentFX

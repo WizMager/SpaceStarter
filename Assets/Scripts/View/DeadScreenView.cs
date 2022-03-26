@@ -21,7 +21,7 @@ namespace View
         {
             _image.sprite = _sprite;
             _image.color = new Color(255, 255, 255, 255);
-            _text.text = "Your rocket is crashed! Aw, I'm sorry.";
+            _text.text = "Your rocket is crashed!";
         }
     }
 }

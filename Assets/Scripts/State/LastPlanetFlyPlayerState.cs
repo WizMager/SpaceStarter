@@ -1,26 +1,25 @@
 ﻿using Controller;
+using Utils;
 
 namespace State
 {
     public class LastPlanetFlyPlayerState : PlayerState
     {
-        private readonly CameraController _cameraController;
         private bool _flyEnd;
         
-        public LastPlanetFlyPlayerState(PlayerController context, CameraController cameraController)
+        public LastPlanetFlyPlayerState(PlayerController context)
         {
             PlayerController = context;
-            _cameraController = cameraController;
         }
         public override void Move(float deltaTime)
         {
             if (_flyEnd)
             {
-                PlayerController.TransitionTo(new LastPlanetShootState(PlayerController, _cameraController));
+                PlayerController.TransitionTo(new LastPlanetShootState(PlayerController));
             }
             else
             {
-                _cameraController.FlyToLastPlanet(deltaTime);
+                PlayerController.CameraState(CameraState.FlyToLastPlanet, deltaTime);
                 if (!PlayerController.LastPlanet(deltaTime)) return;
                 
                 _flyEnd = true;

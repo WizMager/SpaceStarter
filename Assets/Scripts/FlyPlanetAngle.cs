@@ -1,7 +1,11 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public class FlyPlanetAngle
 {
+    public event Action<float> OnRotateCalculated;
+    public event Action<float> OnPathBetweenPlanets; 
+
     private Transform _currentPlanet;
     private Transform _nextPlanet;
     private readonly Transform _player;
@@ -28,10 +32,14 @@ public class FlyPlanetAngle
         {
             _currentAngle = 0;
             var lookDirection = (_player.position - _currentPlanet.position).normalized;
+            var halfPathBetweenPlanets = Vector3.Distance(_currentPlanet.position, _nextPlanet.position) / 2;
+            OnPathBetweenPlanets?.Invoke(halfPathBetweenPlanets);
             return lookDirection;
         }
-            
-        _currentAngle += Vector3.Angle(_start, _end);
+
+        var angle = Vector3.Angle(_start, _end);
+        OnRotateCalculated?.Invoke(angle);
+        _currentAngle += angle;
         _end = _start;
         return Vector3.zero;
     }
