@@ -1,5 +1,4 @@
 ﻿using System;
-using Cinemachine;
 using DefaultNamespace;
 using InputClasses;
 using Interface;
@@ -73,7 +72,8 @@ namespace Controller
                 data.Camera.cameraDownSpeed,
                 cameraColliderView, data.LastPlanet.cameraDownPosition, data.LastPlanet.cameraDownSpeed,
                 data.LastPlanet.distanceFromLastPlanetToStop, data.LastPlanet.moveSpeedToLastPlanet,
-                planetViews[(int) PlanetNumber.Last].transform, _planetViews[_planetIndex].transform, _flyPlanetAngle);
+                planetViews[(int) PlanetNumber.Last].transform, _planetViews[_planetIndex].transform, _flyPlanetAngle, 
+                data.Camera.moveSpeed, data.Camera.cameraOffsetBeforeRotation);
             
             _playerState = new AimNextPlanetPlayerState(this);
 
@@ -221,6 +221,7 @@ namespace Controller
             _aimNextPlanet.OnDestroy();
             _flyToNextPlanet.OnDestroy();
             _tapExplosionController.OnDestroy();
+            _cameraMove.OnDestroy();
             _playerModel.OnZeroHealth -= ChangeDeadState;
         }
     }
