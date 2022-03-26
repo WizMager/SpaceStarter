@@ -1,5 +1,4 @@
 ﻿using Controller;
-using Utils;
 
 namespace State
 {
@@ -12,7 +11,6 @@ namespace State
         }
         public override void Move(float deltaTime)
         {
-            //PlayerController.CameraState(CameraState.Follow, deltaTime);
             if (!PlayerController.AimNextPlanet()) return;
             
             PlayerController.AimNextPlanetActive(false);
