@@ -73,7 +73,7 @@ namespace Controller
                 data.Camera.cameraDownSpeed,
                 cameraColliderView, data.LastPlanet.cameraDownPosition, data.LastPlanet.cameraDownSpeed,
                 data.LastPlanet.distanceFromLastPlanetToStop, data.LastPlanet.moveSpeedToLastPlanet,
-                planetViews[(int) PlanetNumber.Last].transform, _planetViews[_planetIndex].transform, _flyPlanetAngle, _flyToCenterGravity);
+                planetViews[(int) PlanetNumber.Last].transform, _planetViews[_planetIndex].transform, _flyPlanetAngle);
             
             _playerState = new AimNextPlanetPlayerState(this);
 

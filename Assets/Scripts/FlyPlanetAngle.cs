@@ -3,7 +3,8 @@ using UnityEngine;
 
 public class FlyPlanetAngle
 {
-    public event Action<float> OnRotateCalculated; 
+    public event Action<float> OnRotateCalculated;
+    public event Action<float> OnPathBetweenPlanets; 
 
     private Transform _currentPlanet;
     private Transform _nextPlanet;
@@ -31,6 +32,8 @@ public class FlyPlanetAngle
         {
             _currentAngle = 0;
             var lookDirection = (_player.position - _currentPlanet.position).normalized;
+            var halfPathBetweenPlanets = Vector3.Distance(_currentPlanet.position, _nextPlanet.position) / 2;
+            OnPathBetweenPlanets?.Invoke(halfPathBetweenPlanets);
             return lookDirection;
         }
 
