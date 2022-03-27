@@ -8,7 +8,7 @@ using Object = UnityEngine.Object;
 
 public class CameraMove
 {
-    private readonly Camera _camera;
+    private readonly Transform _cameraTransform;
     private readonly float _cameraUpSpeed;
     private readonly float _cameraUpOffset;
     private readonly IUserInput<SwipeData> _swipeInput;
@@ -44,7 +44,7 @@ public class CameraMove
         Transform lastPlanetTransform, Transform currentPlanet, FlyPlanetAngle flyPlanetAngle, float speedToCenterBetween, 
         float angleAdvanceRotateAround)
     {
-        _camera = camera;
+        _cameraTransform = camera.transform;
         _cameraUpSpeed = cameraUpSpeed;
         _cameraUpOffset = cameraUpOffset;
         _swipeInput = swipeInput;
@@ -73,29 +73,27 @@ public class CameraMove
     
     public void RotateAroundPlanet(float angle)
     {
-        _camera.transform.RotateAround(_currentPlanet.position, _currentPlanet.forward, angle);
+        _cameraTransform.RotateAround(_currentPlanet.position, _currentPlanet.forward, angle);
     }
 
     public void FollowPlayer()
     {
         var offsetPosition = _playerTransform.position;
-        var cameraTransform = _camera.transform;
-        offsetPosition.y = cameraTransform.position.y;
-        cameraTransform.position = offsetPosition;
+        offsetPosition.y = _cameraTransform.position.y;
+        _cameraTransform.position = offsetPosition;
     }
 
     public bool CameraUp(float deltaTime)
     {
-        var cameraTransform = _camera.transform;
-        if (cameraTransform.position.y >= _cameraUpOffset && _pathToCenter <= 0)
+        if (_cameraTransform.position.y >= _cameraUpOffset && _pathToCenter <= 0)
         {
             return true;
         }
 
-        if (cameraTransform.position.y < _cameraUpOffset)
+        if (_cameraTransform.position.y < _cameraUpOffset)
         {
             var move = deltaTime * _cameraUpSpeed;
-            cameraTransform.position += new Vector3(0, move, 0);
+            _cameraTransform.position += new Vector3(0, move, 0);
         }
 
         if (_pathToCenter > 0)
@@ -103,11 +101,11 @@ public class CameraMove
             var move = deltaTime * _speedToCenterBetween;
             if (_planetIndex % 2 == 0)
             {
-                cameraTransform.Translate(cameraTransform.forward * move);
+                _cameraTransform.Translate(_cameraTransform.forward * move);
             }
             else
             {
-                cameraTransform.Translate(cameraTransform.forward * -move);
+                _cameraTransform.Translate(_cameraTransform.forward * -move);
             }
             
             _pathToCenter -= move;
@@ -121,13 +119,13 @@ public class CameraMove
         RotateAroundPlanet(-_angleAdvanceRotateAround);
         if (_firstTimeOffsetBeforeEdge)
         {
-            _camera.transform.position += new Vector3(0, 0, -2f);
-            _camera.transform.Rotate(_camera.transform.up, -6f);
+            _cameraTransform.position += new Vector3(0, 0, -2f);
+            _cameraTransform.Rotate(_cameraTransform.up, -6f);
             _firstTimeOffsetBeforeEdge = false;
         }
         var planetPositionUp = _currentPlanet.position;
-        planetPositionUp.y = _camera.transform.position.y;
-        var currentPathFromPlanet = Vector3.Distance(planetPositionUp, _camera.transform.position);
+        planetPositionUp.y = _cameraTransform.position.y;
+        var currentPathFromPlanet = Vector3.Distance(planetPositionUp, _cameraTransform.position);
         _pathToCenter = halfPath - currentPathFromPlanet;
     }
 
@@ -138,22 +136,22 @@ public class CameraMove
 
     private bool CameraDown(float deltaTime, float downSpeed, float cameraDownPosition)
     {
-        var cameraPositionY = _camera.transform.position.y;
+        var cameraPositionY = _cameraTransform.position.y;
         var playerTransformPosition = _playerTransform.position;
         var playerPositionX = playerTransformPosition.x;
         var playerPositionZ = playerTransformPosition.z;
         var planetForLook = _currentPlanet.position;
-        planetForLook.y = _camera.transform.position.y;
+        planetForLook.y = _cameraTransform.position.y;
 
         if (cameraDownPosition <= cameraPositionY)
         {
             cameraPositionY -= deltaTime * downSpeed;
             var offset = new Vector3(playerPositionX, cameraPositionY, playerPositionZ);
-            _camera.transform.position = offset;
+            _cameraTransform.position = offset;
             if (!_firstTimeLook)
             {
-                _camera.transform.rotation.SetFromToRotation(_camera.transform.rotation.eulerAngles, _camera.transform.position - planetForLook);
-                _camera.transform.LookAt(_playerTransform.position, _camera.transform.up);
+                _cameraTransform.rotation.SetFromToRotation(_cameraTransform.rotation.eulerAngles, _cameraTransform.position - planetForLook);
+                _cameraTransform.LookAt(_playerTransform.position, _cameraTransform.up);
                 _firstTimeLook = false;
             }
             
@@ -162,7 +160,7 @@ public class CameraMove
         else
         {
             var offset = new Vector3(playerPositionX, cameraPositionY, playerPositionZ);
-            _camera.transform.position = offset;
+            _cameraTransform.position = offset;
             return true;
         }
     }
@@ -186,11 +184,11 @@ public class CameraMove
     
     public void FirstPersonActivation()
     {
-        var currentDistance = Vector3.Distance(_camera.transform.position, _lastPlanetTransform.position);
+        var currentDistance = Vector3.Distance(_cameraTransform.position, _lastPlanetTransform.position);
         _distanceFlyFirstPerson = currentDistance - _distanceLastPlanet;
         _distanceFlyFirstPerson -= 0.1f;
         Object.Destroy(_playerView.gameObject);
-        _camera.transform.LookAt(_lastPlanetTransform.position);
+        _cameraTransform.LookAt(_lastPlanetTransform.position);
         _colliderView.StartCoroutine(StopFly());
     }
 
@@ -199,7 +197,7 @@ public class CameraMove
         for (float i = 0; i < _distanceFlyFirstPerson; i += Time.deltaTime)
         {
             var moveSpeed = _moveSpeedLastPlanet - i / _distanceFlyFirstPerson * _moveSpeedLastPlanet;
-            _camera.transform.Translate(_camera.transform.forward * moveSpeed * Time.deltaTime, Space.World);
+            _cameraTransform.transform.Translate(_cameraTransform.forward * moveSpeed * Time.deltaTime, Space.World);
             yield return null;
         }
         _cameraStopped = true;
@@ -218,16 +216,16 @@ public class CameraMove
         switch(swipeData.Direction)
         {
             case SwipeDirection.Left:
-                _camera.transform.RotateAround(_lastPlanetCenter, Vector3.up, swipeData.Value * _firstPersonRotationSpeed);
+                _cameraTransform.RotateAround(_lastPlanetCenter, Vector3.up, swipeData.Value * _firstPersonRotationSpeed);
                 break;
             case SwipeDirection.Right:
-                _camera.transform.RotateAround(_lastPlanetCenter, Vector3.up, -swipeData.Value * _firstPersonRotationSpeed);
+                _cameraTransform.RotateAround(_lastPlanetCenter, Vector3.up, -swipeData.Value * _firstPersonRotationSpeed);
                 break;
             case SwipeDirection.Up:
-                _camera.transform.RotateAround(_lastPlanetCenter, Vector3.forward, swipeData.Value * _firstPersonRotationSpeed);
+                _cameraTransform.RotateAround(_lastPlanetCenter, Vector3.forward, swipeData.Value * _firstPersonRotationSpeed);
                 break;
             case SwipeDirection.Down:
-                _camera.transform.RotateAround(_lastPlanetCenter, Vector3.forward, -swipeData.Value * _firstPersonRotationSpeed);
+                _cameraTransform.RotateAround(_lastPlanetCenter, Vector3.forward, -swipeData.Value * _firstPersonRotationSpeed);
                 break;
             default:
                 throw new ArgumentOutOfRangeException();
