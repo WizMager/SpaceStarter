@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: LastPlanetData
   m_EditorClassIdentifier: 
   explosionArea: 1
-  explosionForce: 10
+  explosionForce: 7
   explosionParticle: {fileID: 159918, guid: a0040bf7072bc2f4e82d887d50a9c5e2, type: 3}
   distanceFromLastPlanetToStop: 3
   moveSpeedToLastPlanet: 1
