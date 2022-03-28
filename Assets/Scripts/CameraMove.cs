@@ -17,7 +17,7 @@ public class CameraMove
     private readonly PlayerView _playerView;
     private readonly float _cameraDownPosition;
     private readonly float _cameraDownSpeed;
-    private readonly CameraColliderView _colliderView;
+    private readonly CameraColliderView _cameraColliderView;
     private readonly float _cameraDownPositionLastPlanet;
     private readonly float _cameraDownSpeedLastPlanet;
     private readonly float _distanceLastPlanet;
@@ -28,6 +28,7 @@ public class CameraMove
     private  readonly float _speedToCenterBetween;
     private readonly float _angleLeadRotateAround;
     private readonly FlyToCenterGravity _flyToCenterGravity;
+    private readonly int _minimalPercentMoveSpeed;
 
     private readonly Transform _playerTransform;
     private bool _cameraStopped;
@@ -38,10 +39,10 @@ public class CameraMove
 
     public CameraMove(Camera camera, float cameraUpSpeed, float cameraUpOffset, 
         IUserInput<SwipeData> swipeInput, Vector3 lastPlanetCenter, float firstPersonRotationSpeed, PlayerView playerView,
-        float cameraDownPosition, float cameraDownSpeed, CameraColliderView cameraColliderView, 
+        float cameraDownPosition, float cameraDownSpeed, CameraColliderView cameraCameraColliderView, 
         float cameraDownPositionLastPlanet, float cameraDownSpeedLastPlanet, float distanceLastPlanet, float moveSpeedLastPlanet,
         Transform lastPlanetTransform, Transform currentPlanet, FlyPlanetAngle flyPlanetAngle, float speedToCenterBetween, 
-        float angleLeadRotateAround, FlyToCenterGravity flyToCenterGravity)
+        float angleLeadRotateAround, FlyToCenterGravity flyToCenterGravity, int minimalPercentMoveSpeedFirstPerson)
     {
         _cameraTransform = camera.transform;
         _cameraUpSpeed = cameraUpSpeed;
@@ -52,7 +53,7 @@ public class CameraMove
         _playerView = playerView;
         _cameraDownPosition = cameraDownPosition;
         _cameraDownSpeed = cameraDownSpeed;
-        _colliderView = cameraColliderView;
+        _cameraColliderView = cameraCameraColliderView;
         _cameraDownPositionLastPlanet = cameraDownPositionLastPlanet;
         _cameraDownSpeedLastPlanet = cameraDownSpeedLastPlanet;
         _distanceLastPlanet = distanceLastPlanet;
@@ -63,10 +64,11 @@ public class CameraMove
         _speedToCenterBetween = speedToCenterBetween;
         _angleLeadRotateAround = angleLeadRotateAround;
         _flyToCenterGravity = flyToCenterGravity;
+        _minimalPercentMoveSpeed = minimalPercentMoveSpeedFirstPerson;
 
         _playerTransform = playerView.transform;
         _swipeInput.OnChange += CameraSwipeRotate;
-        _colliderView.OnPlayerEnter += PlayerCameraColliderEntered;
+        _cameraColliderView.OnPlayerEnter += PlayerCameraCameraColliderEntered;
         _flyPlanetAngle.OnRotateCalculated += RotateAroundPlanet;
         _flyPlanetAngle.OnPathBetweenPlanets += SetCenterBetweenPlanets;
         _flyToCenterGravity.OnDirectionCalculated += RotatedToPlanet;
@@ -188,7 +190,7 @@ public class CameraMove
         }
     }
     
-    private void PlayerCameraColliderEntered()
+    private void PlayerCameraCameraColliderEntered()
     {
         _cameraColliderEntered = true;
     }
@@ -197,22 +199,28 @@ public class CameraMove
     {
         var currentDistance = Vector3.Distance(_cameraTransform.position, _lastPlanetTransform.position);
         _distanceFlyFirstPerson = currentDistance - _distanceLastPlanet;
-        _distanceFlyFirstPerson -= 0.1f;
         Object.Destroy(_playerView.gameObject);
         _cameraTransform.LookAt(_lastPlanetTransform.position);
-        _colliderView.StartCoroutine(StopFly());
+        _cameraColliderView.StartCoroutine(StopFly());
     }
 
     private IEnumerator StopFly()
     {
-        for (float i = 0; i < _distanceFlyFirstPerson; i += Time.deltaTime)
+        float moveSpeed;
+        var moveSpeedMinimal = _moveSpeedLastPlanet / 100 * _minimalPercentMoveSpeed;
+        for (float i = 0; i <= _distanceFlyFirstPerson; i += Time.deltaTime * moveSpeed)
         {
-            var moveSpeed = _moveSpeedLastPlanet - i / _distanceFlyFirstPerson * _moveSpeedLastPlanet;
-            _cameraTransform.transform.Translate(_cameraTransform.forward * moveSpeed * Time.deltaTime, Space.World);
+            moveSpeed = _moveSpeedLastPlanet - i / _distanceFlyFirstPerson * _moveSpeedLastPlanet;
+            if (moveSpeed < moveSpeedMinimal)
+            {
+                moveSpeed = moveSpeedMinimal;
+            }
+            var moveDistance = Time.deltaTime * moveSpeed;
+            _cameraTransform.transform.Translate(_cameraTransform.forward * moveDistance, Space.World);
             yield return null;
         }
         _cameraStopped = true;
-        _colliderView.StopCoroutine(StopFly());
+        _cameraColliderView.StopCoroutine(StopFly());
     }
 
     public bool CameraFlyStopped()
@@ -252,7 +260,7 @@ public class CameraMove
     public void OnDestroy()
     {
         _swipeInput.OnChange -= CameraSwipeRotate;
-        _colliderView.OnPlayerEnter -= PlayerCameraColliderEntered; 
+        _cameraColliderView.OnPlayerEnter -= PlayerCameraCameraColliderEntered; 
         _flyPlanetAngle.OnRotateCalculated -= RotateAroundPlanet;
         _flyPlanetAngle.OnPathBetweenPlanets -= SetCenterBetweenPlanets;
         _flyToCenterGravity.OnDirectionCalculated -= RotatedToPlanet;

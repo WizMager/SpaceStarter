@@ -64,16 +64,17 @@ namespace Controller
                 data.LastPlanet.explosionForce, data.LastPlanet.explosionParticle);
             _flyToCenterGravity = new FlyToCenterGravity(playerView,
                 data.Planet.rotationInGravitySpeed, data.Planet.moveSpeedCenterGravity, _planetViews[_planetIndex].transform);
-            _lastPlanet = new LastPlanet(gravityViews[(int)PlanetNumber.Last], trajectoryCalculate, data.LastPlanet.moveSpeedToPlanet);
+            _lastPlanet = new LastPlanet(gravityViews[(int)PlanetNumber.Last], trajectoryCalculate, data.LastPlanet.moveSpeedFromAbove);
             _cameraMove = new CameraMove(camera,
                 data.Camera.upSpeed, data.Camera.upOffsetFromPlayer, swipeInput,
                 _planetViews[(int) PlanetNumber.Last].transform.position,
                 data.Camera.firstPersonRotationSpeed, playerView, data.Camera.cameraDownPosition,
                 data.Camera.cameraDownSpeed,
                 cameraColliderView, data.LastPlanet.cameraDownPosition, data.LastPlanet.cameraDownSpeed,
-                data.LastPlanet.distanceFromLastPlanetToStop, data.LastPlanet.moveSpeedToLastPlanet,
+                data.LastPlanet.distanceFromLastPlanetToStop, data.LastPlanet.moveSpeedFirstPerson,
                 planetViews[(int) PlanetNumber.Last].transform, _planetViews[_planetIndex].transform, _flyPlanetAngle, 
-                data.Camera.moveSpeed, data.Camera.cameraOffsetBeforeRotation, _flyToCenterGravity);
+                data.Camera.moveSpeed, data.Camera.cameraOffsetBeforeRotation, _flyToCenterGravity,
+                data.LastPlanet.minimalPercentMoveSpeedFirstPerson);
             
             _playerState = new AimNextPlanetPlayerState(this);
 
