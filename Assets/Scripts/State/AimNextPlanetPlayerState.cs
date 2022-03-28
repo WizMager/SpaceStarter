@@ -4,9 +4,11 @@ namespace State
 {
     public class AimNextPlanetPlayerState : PlayerState
     {
-        public AimNextPlanetPlayerState(PlayerController context)
+        private readonly bool _restart;
+        public AimNextPlanetPlayerState(PlayerController context, bool restart)
         {
             PlayerController = context;
+            _restart = restart;
             PlayerController.AimNextPlanetActive(true);
         }
         public override void Move(float deltaTime)
@@ -14,13 +16,28 @@ namespace State
             if (!PlayerController.AimNextPlanet()) return;
             
             PlayerController.AimNextPlanetActive(false);
-            if (PlayerController.ChangeCurrentPlanet())
+            
+            if (_restart)
             {
-                PlayerController.TransitionTo(new LastPlanetFlyPlayerState(PlayerController));
+                if (PlayerController.LastPlanetIndexCheck())
+                {
+                    PlayerController.TransitionTo(new LastPlanetFlyPlayerState(PlayerController));
+                }
+                else
+                {
+                    PlayerController.TransitionTo(new FlyToNextPlanetPlayerState(PlayerController)); 
+                }
             }
             else
             {
-                PlayerController.TransitionTo(new FlyToNextPlanetPlayerState(PlayerController));  
+                if (PlayerController.ChangeCurrentPlanet())
+                {
+                    PlayerController.TransitionTo(new LastPlanetFlyPlayerState(PlayerController));
+                }
+                else
+                {
+                    PlayerController.TransitionTo(new FlyToNextPlanetPlayerState(PlayerController));  
+                }
             }
         }
     }

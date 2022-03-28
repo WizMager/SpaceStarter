@@ -35,9 +35,9 @@ namespace Controller
 
         public PlayerController(ScriptableData.ScriptableData data, PlayerView playerView, IUserInput<Vector3>[] touchInput, 
             IUserInput<SwipeData> swipeInput, PlanetView[] planetViews, GravityView[] gravityViews, GravityEnterView[] gravityEnterViews,
-            Camera camera, CameraColliderView cameraColliderView, PlayerModel playerModel, DeadScreenView deadScreenView)
+            Camera camera, CameraColliderView cameraColliderView, PlayerModel playerModel, DeadScreenView deadScreenView,
+            DeadZoneView[] deadZoneViews)
         {
-            
             _planetViews = planetViews;
             _gravityViews = gravityViews;
             _gravityEnterViews = gravityEnterViews;
@@ -59,7 +59,7 @@ namespace Controller
                 data.Planet.moveSpeedToEdgeGravity, _gravityEnterViews[_planetIndex], playerTransform);
             _aimNextPlanet = new AimNextPlanet(touchInput, playerView, camera, trajectoryCalculate);
             _flyToNextPlanet =
-                new FlyToNextPlanet(_gravityEnterViews[_planetIndex], trajectoryCalculate);
+                new FlyToNextPlanet(_gravityEnterViews[_planetIndex], trajectoryCalculate, playerTransform, deadZoneViews);
             _tapExplosionController = new TapExplosionController( touchInput, camera, data.LastPlanet.explosionArea,
                 data.LastPlanet.explosionForce, data.LastPlanet.explosionParticle);
             _flyToCenterGravity = new FlyToCenterGravity(playerView,
@@ -76,7 +76,7 @@ namespace Controller
                 data.Camera.moveSpeed, data.Camera.cameraOffsetBeforeRotation, _flyToCenterGravity,
                 data.LastPlanet.minimalPercentMoveSpeedFirstPerson);
             
-            _playerState = new AimNextPlanetPlayerState(this);
+            _playerState = new AimNextPlanetPlayerState(this, false);
 
             _playerModel.OnZeroHealth += ChangeDeadState;
         }
@@ -111,11 +111,6 @@ namespace Controller
             }
         }
 
-        public void FirstPersonActivation()
-        {
-            _cameraMove.FirstPersonActivation();
-        }
-        
         private void ChangeDeadState()
         {
             _deadScreenView.OnDead();
@@ -125,6 +120,7 @@ namespace Controller
         public bool ChangeCurrentPlanet()
         {
             _planetIndex += 1;
+            
             if (_planetIndex == (int)PlanetNumber.Last)
             {
                 _flyToNextPlanet.ChangePlanet(_gravityEnterViews[_planetIndex]);
@@ -190,6 +186,11 @@ namespace Controller
             return _flyToNextPlanet.IsFinished(deltaTime);
         }
 
+        public bool DeadZoneEnter()
+        {
+            return _flyToNextPlanet.IsInDeadZone();
+        }
+
         public void FlyToNextPlanetActive(bool isActive)
         {
             _flyToNextPlanet.SetActive(isActive);
@@ -202,9 +203,19 @@ namespace Controller
         
         public bool LastPlanet(float deltaTime)
         {
-            return _lastPlanet.FlyLastPlanet(deltaTime);
+            return _lastPlanet.FlyToLastPlanet(deltaTime);
         }
 
+        public bool LastPlanetIndexCheck()
+        {
+            return _planetIndex == (int)PlanetNumber.Last;
+        }
+        
+        public void FirstPersonActivation()
+        {
+            _cameraMove.FirstPersonActivation();
+        }
+        
         public void ShootLastPlanet()
         {
             _tapExplosionController.SetActive();

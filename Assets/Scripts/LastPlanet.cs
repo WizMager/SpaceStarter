@@ -19,7 +19,7 @@ public class LastPlanet : IDisposable
         _trajectory = trajectoryCalculate;
     }
 
-    public bool FlyLastPlanet(float deltaTime)
+    public bool FlyToLastPlanet(float deltaTime)
     {
         if (_inGravity) return true;
             

@@ -186,7 +186,7 @@ public class CameraMove
         }
         else
         {
-            FollowPlayer();
+            //FollowPlayer();
         }
     }
     
