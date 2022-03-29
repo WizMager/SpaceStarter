@@ -9,11 +9,12 @@ namespace ScriptableData
       public float explosionArea;
       public float explosionForce;
       public GameObject explosionParticle;
+      [Header("Fly Phase First Person")]
       public float distanceFromLastPlanetToStop;
-      public float moveSpeedToLastPlanet;
-      [Header("Fly Phase")]
-      public Vector3 center;
-      public float moveSpeedToPlanet;
+      public float moveSpeedFirstPerson;
+      public int minimalPercentMoveSpeedFirstPerson;
+      [Header("Fly Phase 3D")]
+      public float moveSpeedFromAbove;
       public float cameraDownSpeed;
       public float cameraDownPosition;
    }

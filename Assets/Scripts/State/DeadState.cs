@@ -1,5 +1,4 @@
-﻿
-namespace State
+﻿namespace State
 {
     public class DeadState : PlayerState
     {

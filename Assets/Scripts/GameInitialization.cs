@@ -17,21 +17,24 @@ public class GameInitialization
    {
       var player = Object.FindObjectOfType<PlayerView>();
       var camera = Object.FindObjectOfType<Camera>();
+      var missilePosition = camera.transform.Find("MissilePosition");
       var cameraColliderView = Object.FindObjectOfType<CameraColliderView>();
       var playerIndicatorView = Object.FindObjectOfType<PlayerIndicatorView>();
       var bonusViews = Object.FindObjectsOfType<BonusView>();
       var deadView = Object.FindObjectOfType<DeadScreenView>();
+      var deadZoneViews = Object.FindObjectsOfType<DeadZoneView>();
       _planets = Object.FindObjectsOfType<PlanetView>();
       _gravities = Object.FindObjectsOfType<GravityView>();
       _gravityEnters = Object.FindObjectsOfType<GravityEnterView>();
-      SortPlanetObjects();
+      SortAll();
       var playerModel = new PlayerModel(data.Player.startHealth, data.Player.missileCount);
       
 
       var inputInitialization = new InputInitialization(data.Input.minimalDistanceForSwipe);
       controllers.Add(new InputController(inputInitialization.GetAllTouch(), inputInitialization.GetSwipe()));
       controllers.Add(new PlayerController(data, player, inputInitialization.GetAllTouch(),
-         inputInitialization.GetSwipe(), _planets, _gravities, _gravityEnters, camera, cameraColliderView, playerModel, deadView));
+         inputInitialization.GetSwipe(), _planets, _gravities, _gravityEnters, camera, cameraColliderView, playerModel, deadView, 
+         deadZoneViews, missilePosition));
       controllers.Add(new BonusController(playerModel, playerIndicatorView, bonusViews, BonusTypeValue(data)));
    }
 
@@ -40,12 +43,17 @@ public class GameInitialization
       return new [] {data.Bonus.goodBonus, data.Bonus.badBonus};
    }
 
-   private void SortPlanetObjects()
+   private void SortAll()
+   {
+      SortPlanetViews();
+      SortGravityViews();
+      SortGravityEnterViews();
+   }
+   
+   private void SortPlanetViews()
    {
       var sortedPlanets = new PlanetView[_planets.Length];
-      var sortedGravities = new GravityView[_gravities.Length];
-      var sortedGravityEnters = new GravityEnterView[_gravityEnters.Length];
-
+      
       foreach (var planet in _planets)
       {
          switch (planet.number)
@@ -70,6 +78,13 @@ public class GameInitialization
          }
       }
 
+      _planets = sortedPlanets;
+   }
+
+   private void SortGravityViews()
+   {
+      var sortedGravities = new GravityView[_gravities.Length];
+      
       foreach (var gravity in _gravities)
       {
          switch (gravity.number)
@@ -94,6 +109,13 @@ public class GameInitialization
          }
       }
       
+      _gravities = sortedGravities;
+   }
+
+   private void SortGravityEnterViews()
+   {
+      var sortedGravityEnters = new GravityEnterView[_gravityEnters.Length];
+      
       foreach (var gravityEnter in _gravityEnters)
       {
          switch (gravityEnter.number)
@@ -117,9 +139,7 @@ public class GameInitialization
                throw new ArgumentOutOfRangeException($"Too much gravityEnters!");
          }
       }
-
-      _planets = sortedPlanets;
-      _gravities = sortedGravities;
+      
       _gravityEnters = sortedGravityEnters;
    }
 }
