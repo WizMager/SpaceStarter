@@ -18,6 +18,6 @@ MonoBehaviour:
   distanceFromLastPlanetToStop: 12
   moveSpeedFirstPerson: 4
   minimalPercentMoveSpeedFirstPerson: 20
-  moveSpeedFromAbove: 4
-  cameraDownSpeed: 15
-  cameraDownPosition: 0
+  moveSpeedFromAbove: 6
+  cameraDownSpeed: 12
+  cameraDownPosition: 1
