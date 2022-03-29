@@ -15,7 +15,7 @@ MonoBehaviour:
   startGravity: 7.5
   gravityAcceleration: 5
   maxGravity: 15
-  startSpeedRotationAroundPlanet: 20
+  startSpeedRotationAroundPlanet: 200
   startEngineForce: 7.5
   engineAcceleration: 5
   maxEngineForce: 15

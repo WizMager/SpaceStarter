@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace ScriptableData
 {
-    [CreateAssetMenu(menuName = "Data/MissleData", fileName = "MissleData")]
+    [CreateAssetMenu(menuName = "Data/MissileData", fileName = "MissileData")]
     public class MissileData : ScriptableObject
     {
         public GameObject missile;

@@ -1,6 +1,7 @@
 ﻿using Interface;
 using UnityEngine;
 using Utils;
+using View;
 
 public class TapExplosionController
 {
@@ -30,17 +31,6 @@ public class TapExplosionController
         var ray = _camera.ScreenPointToRay(touchPosition);
         var raycastHit = new RaycastHit[1];
         Physics.RaycastNonAlloc(ray, raycastHit, _camera.farClipPlane, GlobalData.LayerForAim);
-        //Object.Instantiate(_particle, raycastHit[0].point, Quaternion.identity);
-        //var hitsSphereCast = Physics.SphereCastAll(ray.origin, _explosionArea, ray.direction, _camera.farClipPlane, GlobalData.LayerForAim);
-        //foreach (var hitSphereCast in hitsSphereCast)
-        //{
-        //    if (hitSphereCast.rigidbody.isKinematic)
-        //    {
-        //        hitSphereCast.rigidbody.isKinematic = false;
-        //    }
-        //    hitSphereCast.rigidbody.AddForce(hitSphereCast.normal * _explosionForce, ForceMode.Impulse);
-        //}
-        
         var cameraTransform = _camera.transform; 
         var missile = Object.Instantiate(_missile, _missileStartPosition.position, cameraTransform.rotation);
         var missileView = missile.GetComponent<MissileView>();
