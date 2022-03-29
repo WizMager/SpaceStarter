@@ -6,9 +6,13 @@ namespace ScriptableData
     public class PlanetData : ScriptableObject
     {
         [Header("Fly Around Planet")]
-        public float gravity;
-        public float speedRotationAroundPlanet;
-        public float engineForce;
+        public float startGravity;
+        public float gravityAcceleration;
+        public float maxGravity;
+        public float startSpeedRotationAroundPlanet;
+        public float startEngineForce;
+        public float engineAcceleration;
+        public float maxEngineForce;
         [Header("Fly To Edge Gravity")]
         public float moveSpeedToEdgeGravity;
         public float rotationSpeedToEdgeGravity;

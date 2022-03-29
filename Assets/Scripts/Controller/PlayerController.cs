@@ -48,9 +48,11 @@ namespace Controller
             var playerTransform = playerView.transform;
             var trajectoryCalculate = new TrajectoryCalculate(playerTransform, data.Planet.moveSpeedToNextPlanet, 
                 data.Planet.iterationsCount, data.Planet.oneStepTimeIteration);
-            _upAndDownAroundPlanet = new UpAndDownAroundPlanet(data.Planet.engineForce, data.Planet.gravity,
-                playerTransform, _planetViews[_planetIndex], gravityViews[_planetIndex], touchInput);
-            _rotationAroundPlanet = new RotationAroundPlanet(data.Planet.speedRotationAroundPlanet,
+            _upAndDownAroundPlanet = new UpAndDownAroundPlanet(data.Planet.startEngineForce, data.Planet.startGravity,
+                playerTransform, _planetViews[_planetIndex], gravityViews[_planetIndex], touchInput, 
+                data.Planet.maxGravity, data.Planet.maxEngineForce, data.Planet.gravityAcceleration, 
+                data.Planet.engineAcceleration);
+            _rotationAroundPlanet = new RotationAroundPlanet(data.Planet.startSpeedRotationAroundPlanet,
                 playerTransform, _planetViews[_planetIndex].transform);
             _flyPlanetAngle =
                 new FlyPlanetAngle(_planetViews[_planetIndex].transform, playerTransform, 
