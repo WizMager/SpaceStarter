@@ -1,4 +1,5 @@
 ﻿using System;
+using Cinemachine;
 using DefaultNamespace;
 using InputClasses;
 using Interface;
@@ -36,8 +37,9 @@ namespace Controller
         public PlayerController(ScriptableData.ScriptableData data, PlayerView playerView, IUserInput<Vector3>[] touchInput, 
             IUserInput<SwipeData> swipeInput, PlanetView[] planetViews, GravityView[] gravityViews, GravityEnterView[] gravityEnterViews,
             Camera camera, CameraColliderView cameraColliderView, PlayerModel playerModel, DeadScreenView deadScreenView,
-            DeadZoneView[] deadZoneViews)
+            DeadZoneView[] deadZoneViews, Transform missilePosition)
         {
+            
             _planetViews = planetViews;
             _gravityViews = gravityViews;
             _gravityEnterViews = gravityEnterViews;
@@ -62,8 +64,7 @@ namespace Controller
             _aimNextPlanet = new AimNextPlanet(touchInput, playerView, camera, trajectoryCalculate);
             _flyToNextPlanet =
                 new FlyToNextPlanet(_gravityEnterViews[_planetIndex], trajectoryCalculate, playerTransform, deadZoneViews);
-            _tapExplosionController = new TapExplosionController( touchInput, camera, data.LastPlanet.explosionArea,
-                data.LastPlanet.explosionForce, data.LastPlanet.explosionParticle);
+            _tapExplosionController = new TapExplosionController( touchInput, camera, data, missilePosition);
             _flyToCenterGravity = new FlyToCenterGravity(playerView,
                 data.Planet.rotationInGravitySpeed, data.Planet.moveSpeedCenterGravity, _planetViews[_planetIndex].transform);
             _lastPlanet = new LastPlanet(gravityViews[(int)PlanetNumber.Last], trajectoryCalculate, data.LastPlanet.moveSpeedFromAbove);

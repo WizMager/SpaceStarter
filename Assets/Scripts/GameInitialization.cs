@@ -17,6 +17,7 @@ public class GameInitialization
    {
       var player = Object.FindObjectOfType<PlayerView>();
       var camera = Object.FindObjectOfType<Camera>();
+      var missilePosition = camera.transform.Find("MissilePosition");
       var cameraColliderView = Object.FindObjectOfType<CameraColliderView>();
       var playerIndicatorView = Object.FindObjectOfType<PlayerIndicatorView>();
       var bonusViews = Object.FindObjectsOfType<BonusView>();
@@ -32,8 +33,8 @@ public class GameInitialization
       var inputInitialization = new InputInitialization(data.Input.minimalDistanceForSwipe);
       controllers.Add(new InputController(inputInitialization.GetAllTouch(), inputInitialization.GetSwipe()));
       controllers.Add(new PlayerController(data, player, inputInitialization.GetAllTouch(),
-         inputInitialization.GetSwipe(), _planets, _gravities, _gravityEnters, camera, cameraColliderView, playerModel, 
-         deadView, deadZoneViews));
+         inputInitialization.GetSwipe(), _planets, _gravities, _gravityEnters, camera, cameraColliderView, playerModel, deadView, 
+         deadZoneViews, missilePosition));
       controllers.Add(new BonusController(playerModel, playerIndicatorView, bonusViews, BonusTypeValue(data)));
    }
 
