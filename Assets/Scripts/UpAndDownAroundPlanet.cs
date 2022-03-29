@@ -55,7 +55,7 @@ public class UpAndDownAroundPlanet
         switch (_state)
         {
             case UpAndDownState.Engine:
-                shipPositionAxisX.x = -_currentEngineForce;
+                shipPositionAxisX.x = -_startEngineForce;
                 _playerTransform.Translate(shipPositionAxisX * deltaTime);
                 break;
             case UpAndDownState.EngineAccelerate:
@@ -67,7 +67,7 @@ public class UpAndDownAroundPlanet
                 _playerTransform.Translate(shipPositionAxisX * deltaTime);
                 break;
             case UpAndDownState.Gravity:
-                shipPositionAxisX.x = _currentGravityForce;
+                shipPositionAxisX.x = _startGravityForce;
                 _playerTransform.Translate(shipPositionAxisX * deltaTime);
                 break;
             case UpAndDownState.GravityAccelerate:
