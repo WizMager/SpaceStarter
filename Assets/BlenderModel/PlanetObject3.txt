@@ -1,2 +1,0 @@
-planet 13m
-gravity 26.3m(0.1)
