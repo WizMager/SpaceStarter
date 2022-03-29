@@ -12,6 +12,7 @@ namespace ScriptableData
         [SerializeField] private CameraData _cameraData;
         [SerializeField] private InputData _inputData;
         [SerializeField] private BonusData _bonusData;
+        [SerializeField] private MissileData _missleData;
 
         public PlayerData Player
         {
@@ -90,5 +91,18 @@ namespace ScriptableData
                 return _bonusData;
             }
         }
+        
+        public MissileData Missile
+        {
+            get
+            {
+                if (_missleData == null)
+                {
+                    throw new NullReferenceException("You don't create or set MissleData scriptable object");
+                }
+
+                return _missleData;
+            }
+        }        
     }
 }
