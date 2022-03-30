@@ -51,12 +51,21 @@ namespace View
                         _explosionArea, GlobalData.LayerForAim);
                     foreach (var hitSphereCast in hitsSphereCast)
                     {
-                        if (hitSphereCast.rigidbody.isKinematic)
+                        if (hitSphereCast.rigidbody)
                         {
-                            hitSphereCast.rigidbody.isKinematic = false;
+                            if (hitSphereCast.rigidbody.isKinematic)
+                            {
+                                hitSphereCast.rigidbody.isKinematic = false;
+                            }
+                            
+                            hitSphereCast.rigidbody.AddForce(hitSphereCast.normal * _explosionForce, ForceMode.Impulse);
                         }
-
-                        hitSphereCast.rigidbody.AddForce(hitSphereCast.normal * _explosionForce, ForceMode.Impulse);
+                        
+                        if (hitSphereCast.transform.CompareTag("Chelik"))
+                        {
+                            var chelikMoveScript = hitSphereCast.collider.GetComponent<ChelikMove>();
+                            chelikMoveScript.DeactivateChelikMove();
+                        }
                     }
                     Destroy(gameObject);
                 }
@@ -84,7 +93,6 @@ namespace View
                 _timeBeforeEngineStop -= Time.deltaTime;
             }
             else{
-                //_rb.transform.forward = _rb.velocity.normalized;
                 engineParticleSystem.Stop();
             }
 
