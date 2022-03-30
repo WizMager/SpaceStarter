@@ -53,15 +53,24 @@ namespace View
                         _explosionArea, GlobalData.LayerForAim);
                     foreach (var hitSphereCast in hitsSphereCast)
                     {
-                        if (hitSphereCast.rigidbody.isKinematic)
+                        if (hitSphereCast.rigidbody)
                         {
-                            hitSphereCast.rigidbody.isKinematic = false;
+                            if (hitSphereCast.rigidbody.isKinematic)
+                            {
+                                hitSphereCast.rigidbody.isKinematic = false;
+                            }
+                            
+                            var localScale = hitSphereCast.transform.localScale;
+                            hitSphereCast.transform.localScale = new Vector3(localScale.x * _scaleModifier, localScale.y * _scaleModifier, localScale.z * _scaleModifier);
+                            
+                            hitSphereCast.rigidbody.AddForce(hitSphereCast.normal * _explosionForce, ForceMode.Impulse);
                         }
                         
-                        var localScale = hitSphereCast.transform.localScale;
-                        hitSphereCast.transform.localScale = new Vector3(localScale.x * _scaleModifier, localScale.y * _scaleModifier, localScale.z * _scaleModifier);
-                            
-                        hitSphereCast.rigidbody.AddForce(hitSphereCast.normal * _explosionForce, ForceMode.Impulse);
+                        if (hitSphereCast.transform.CompareTag("Chelik"))
+                        {
+                            var chelikMoveScript = hitSphereCast.collider.GetComponent<ChelikMove>();
+                            chelikMoveScript.DeactivateChelikMove();
+                        }
                     }
                     Destroy(gameObject);
                 }
