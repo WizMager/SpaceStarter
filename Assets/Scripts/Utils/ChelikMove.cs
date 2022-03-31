@@ -23,6 +23,7 @@ namespace Utils
         private Vector3 _centerPlanet;
         private float _lastTimeForRotate;
         private bool _isActive = true;
+        private bool _onGround = true;
         private BoxCollider _collider;
         
         private void Start()
@@ -35,14 +36,31 @@ namespace Utils
             }
             else
             {
-                throw new ArgumentException("Wrong Vector3 in when FindCenter in ChelikView");
+                throw new ArgumentException($"Wrong Vector3 in when FindCenter in {typeof(ChelikMove)}");
             }
         }
 
         private void Update()
         {
+            // if (!_isActive) return;
+            //
+            // var deltaTime = Time.deltaTime;
+            // transform.RotateAround(_centerPlanet, transform.right, deltaTime * _moveSpeed);
+            //
+            // if (_lastTimeForRotate < _cooldownRotate)
+            // {
+            //     _lastTimeForRotate += deltaTime;
+            // }
+            // else
+            // {
+            //     StartCoroutine(Rotate());
+            // }
+        }
+
+        private void OnTriggerStay(Collider other)
+        {
             if (!_isActive) return;
-            
+
             var deltaTime = Time.deltaTime;
             transform.RotateAround(_centerPlanet, transform.right, deltaTime * _moveSpeed);
             

@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.051441513, g: 0.1500552, b: 0.19368404, a: 1}
+  m_IndirectSpecularColor: {r: 0.052786306, g: 0.15031967, b: 0.1943556, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -2348,7 +2348,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 912191228474295844, guid: 7795086a4aec3734dbf5dcf94482f48e, type: 3}
       propertyPath: _cooldownRotate
-      value: 1
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 912191228474295844, guid: 7795086a4aec3734dbf5dcf94482f48e, type: 3}
       propertyPath: _speedIntoSpace
@@ -2360,7 +2360,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 912191228474295844, guid: 7795086a4aec3734dbf5dcf94482f48e, type: 3}
       propertyPath: _maxAngleToOneRotate
-      value: 15
+      value: 90
       objectReference: {fileID: 0}
     - target: {fileID: 1570739316058364673, guid: 7795086a4aec3734dbf5dcf94482f48e, type: 3}
       propertyPath: _moveSpeed
@@ -2409,6 +2409,10 @@ PrefabInstance:
     - target: {fileID: 8188460256541391138, guid: 7795086a4aec3734dbf5dcf94482f48e, type: 3}
       propertyPath: m_Name
       value: Chelik (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8188460256541391138, guid: 7795086a4aec3734dbf5dcf94482f48e, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8188460256541391138, guid: 7795086a4aec3734dbf5dcf94482f48e, type: 3}
       propertyPath: m_TagString
@@ -7921,7 +7925,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 912191228474295844, guid: 7795086a4aec3734dbf5dcf94482f48e, type: 3}
       propertyPath: _cooldownRotate
-      value: 1
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 912191228474295844, guid: 7795086a4aec3734dbf5dcf94482f48e, type: 3}
       propertyPath: _speedIntoSpace
@@ -7933,7 +7937,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 912191228474295844, guid: 7795086a4aec3734dbf5dcf94482f48e, type: 3}
       propertyPath: _maxAngleToOneRotate
-      value: 15
+      value: 90
       objectReference: {fileID: 0}
     - target: {fileID: 1570739316058364673, guid: 7795086a4aec3734dbf5dcf94482f48e, type: 3}
       propertyPath: _moveSpeed
@@ -7982,6 +7986,10 @@ PrefabInstance:
     - target: {fileID: 8188460256541391138, guid: 7795086a4aec3734dbf5dcf94482f48e, type: 3}
       propertyPath: m_Name
       value: Chelik (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8188460256541391138, guid: 7795086a4aec3734dbf5dcf94482f48e, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8188460256541391138, guid: 7795086a4aec3734dbf5dcf94482f48e, type: 3}
       propertyPath: m_TagString
@@ -8318,7 +8326,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 912191228474295844, guid: 7795086a4aec3734dbf5dcf94482f48e, type: 3}
       propertyPath: _cooldownRotate
-      value: 1
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 912191228474295844, guid: 7795086a4aec3734dbf5dcf94482f48e, type: 3}
       propertyPath: _speedIntoSpace
@@ -8330,7 +8338,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 912191228474295844, guid: 7795086a4aec3734dbf5dcf94482f48e, type: 3}
       propertyPath: _maxAngleToOneRotate
-      value: 15
+      value: 90
       objectReference: {fileID: 0}
     - target: {fileID: 1570739316058364673, guid: 7795086a4aec3734dbf5dcf94482f48e, type: 3}
       propertyPath: _moveSpeed
@@ -8807,7 +8815,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 912191228474295844, guid: 7795086a4aec3734dbf5dcf94482f48e, type: 3}
       propertyPath: _cooldownRotate
-      value: 1
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 912191228474295844, guid: 7795086a4aec3734dbf5dcf94482f48e, type: 3}
       propertyPath: _speedIntoSpace
@@ -8819,7 +8827,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 912191228474295844, guid: 7795086a4aec3734dbf5dcf94482f48e, type: 3}
       propertyPath: _maxAngleToOneRotate
-      value: 15
+      value: 90
       objectReference: {fileID: 0}
     - target: {fileID: 1570739316058364673, guid: 7795086a4aec3734dbf5dcf94482f48e, type: 3}
       propertyPath: _moveSpeed
@@ -8868,6 +8876,10 @@ PrefabInstance:
     - target: {fileID: 8188460256541391138, guid: 7795086a4aec3734dbf5dcf94482f48e, type: 3}
       propertyPath: m_Name
       value: Chelik (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8188460256541391138, guid: 7795086a4aec3734dbf5dcf94482f48e, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8188460256541391138, guid: 7795086a4aec3734dbf5dcf94482f48e, type: 3}
       propertyPath: m_TagString
