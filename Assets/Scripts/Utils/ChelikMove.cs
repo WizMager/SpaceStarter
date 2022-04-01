@@ -19,15 +19,17 @@ namespace Utils
         [SerializeField] private GameObject _rayCastPoint;
         [SerializeField] private GameObject _body;
         [SerializeField] private GameObject _upPoint;
-        
+        [SerializeField] private GameObject _downPosition;
+
+        private HouseView[] _houseViews;
         private Vector3 _centerPlanet;
         private float _lastTimeForRotate;
         private bool _isActive = true;
-        private bool _onGround = true;
         private BoxCollider _collider;
         
         private void Start()
         {
+            _houseViews = FindObjectsOfType<HouseView>();
             _collider = GetComponent<BoxCollider>();
             var centerLastPlanet = CenterPlanet();
             if (centerLastPlanet != Vector3.zero)
@@ -38,27 +40,19 @@ namespace Utils
             {
                 throw new ArgumentException($"Wrong Vector3 in when FindCenter in {typeof(ChelikMove)}");
             }
+            SubscribeHouse();
         }
+
 
         private void Update()
         {
-            // if (!_isActive) return;
-            //
-            // var deltaTime = Time.deltaTime;
-            // transform.RotateAround(_centerPlanet, transform.right, deltaTime * _moveSpeed);
-            //
-            // if (_lastTimeForRotate < _cooldownRotate)
-            // {
-            //     _lastTimeForRotate += deltaTime;
-            // }
-            // else
-            // {
-            //     StartCoroutine(Rotate());
-            // }
-        }
-
-        private void OnTriggerStay(Collider other)
-        {
+            var groundRay = new Ray(_downPosition.transform.position, _downPosition.transform.forward);
+            var raycastHit = new RaycastHit[1];
+            if (Physics.RaycastNonAlloc(groundRay, raycastHit, 0.3f) < 1)
+            {
+                DeactivateChelikMove();
+            }
+            
             if (!_isActive) return;
 
             var deltaTime = Time.deltaTime;
@@ -71,6 +65,28 @@ namespace Utils
             else
             {
                 StartCoroutine(Rotate());
+            }
+        }
+
+        private void HouseColliderEntered()
+        {
+            var rotationAxis = transform.position - _centerPlanet;
+            transform.RotateAround(_centerPlanet, rotationAxis, 180f);
+        }
+        
+        private void SubscribeHouse()
+        {
+            foreach (var houseView in _houseViews)
+            {
+                houseView.OnHouseColliderEnter += HouseColliderEntered;
+            }
+        }
+
+        private void UnSubscribeHouse()
+        {
+            foreach (var houseView in _houseViews)
+            {
+                houseView.OnHouseColliderEnter -= HouseColliderEntered;
             }
         }
 
@@ -100,7 +116,7 @@ namespace Utils
             {
                 var ray = new Ray(_rayCastPoint.transform.position, _rayCastPoint.transform.forward);
                 var rayCastHit = new RaycastHit[1];
-                Physics.RaycastNonAlloc(ray, rayCastHit, 0.2f);
+                Physics.RaycastNonAlloc(ray, rayCastHit, 0.6f);
                 if (rayCastHit[0].collider == null)
                 {
                     forwardEmptySpace = true;
@@ -148,6 +164,11 @@ namespace Utils
                 }
             }
             return Vector3.zero;
+        }
+
+        private void OnDestroy()
+        {
+            UnSubscribeHouse();
         }
     }
 }

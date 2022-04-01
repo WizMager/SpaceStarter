@@ -16,6 +16,6 @@ MonoBehaviour:
   upOffsetFromPlayer: 25
   moveSpeed: 7
   firstPersonRotationSpeed: 0.3
-  cameraDownPosition: 14
-  cameraDownSpeed: 10
+  cameraDownPosition: 30
+  cameraDownSpeed: 20
   cameraOffsetBeforeRotation: 7

@@ -97,10 +97,11 @@ public class CameraMove
         {
             var offset = new Vector3(playerPositionX, cameraPositionY, playerPositionZ);
             _cameraTransform.position = offset;
+            
             return true;
         }
     }
-    
+
     private void RotatedToPlanet()
     {
         var playerPositionUp = _playerTransform.position;
