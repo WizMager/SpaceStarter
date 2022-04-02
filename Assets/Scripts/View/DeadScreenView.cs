@@ -1,6 +1,4 @@
-﻿using System;
-using Controller;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 namespace View
