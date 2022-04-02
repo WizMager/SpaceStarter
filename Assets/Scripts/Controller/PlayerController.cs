@@ -1,5 +1,4 @@
 ﻿using System;
-using DefaultNamespace;
 using InputClasses;
 using Interface;
 using Model;
@@ -26,11 +25,8 @@ namespace Controller
         private readonly UpAndDownAroundPlanet _upAndDownAroundPlanet;
         private readonly FlyPlanetAngle _flyPlanetAngle;
         private readonly FlyToEdgeGravity _flyToEdgeGravity;
-        private readonly AimNextPlanet _aimNextPlanet;
-        private readonly FlyToNextPlanet _flyToNextPlanet;
         private readonly TapExplosionController _tapExplosionController;
         private readonly FlyToCenterGravity _flyToCenterGravity;
-        private readonly LastPlanet _lastPlanet;
         private readonly CameraMove _cameraMove;
 
         public PlayerController(ScriptableData.ScriptableData data, PlayerView playerView, IUserInput<Vector3>[] touchInput, 
@@ -47,8 +43,6 @@ namespace Controller
             _cameraBeforeRotateOffset = data.Camera.cameraOffsetBeforeRotation;
 
             var playerTransform = playerView.transform;
-            var trajectoryCalculate = new TrajectoryCalculate(playerTransform, data.Planet.moveSpeedToNextPlanet, 
-                data.Planet.iterationsCount, data.Planet.oneStepTimeIteration);
             _upAndDownAroundPlanet = new UpAndDownAroundPlanet(data.Planet.startEngineForce, data.Planet.startGravity,
                 playerTransform, _planetViews[_planetIndex], gravityViews[_planetIndex], touchInput, 
                 data.Planet.maxGravity, data.Planet.maxEngineForce, data.Planet.gravityAcceleration, 
@@ -60,13 +54,9 @@ namespace Controller
                     _planetViews[_planetIndex + 1].transform); 
             _flyToEdgeGravity = new FlyToEdgeGravity(data.Planet.rotationSpeedToEdgeGravity,
                 data.Planet.moveSpeedToEdgeGravity, _gravityEnterViews[_planetIndex], playerTransform);
-            _aimNextPlanet = new AimNextPlanet(touchInput, playerView, camera, trajectoryCalculate);
-            _flyToNextPlanet =
-                new FlyToNextPlanet(_gravityEnterViews[_planetIndex], trajectoryCalculate, playerTransform, deadZoneViews);
             _tapExplosionController = new TapExplosionController( touchInput, camera, data, missilePosition);
             _flyToCenterGravity = new FlyToCenterGravity(playerView,
                 data.Planet.rotationInGravitySpeed, data.Planet.moveSpeedCenterGravity, _planetViews[_planetIndex].transform);
-            _lastPlanet = new LastPlanet(gravityViews[(int)PlanetNumber.Last], trajectoryCalculate, data.LastPlanet.moveSpeedFromAbove);
             _cameraMove = new CameraMove(camera,
                 data.Camera.upSpeed, data.Camera.upOffsetFromPlayer, swipeInput,
                 _planetViews[(int) PlanetNumber.Last].transform.position,
@@ -78,7 +68,6 @@ namespace Controller
                 data.Camera.moveSpeed, data.Camera.cameraOffsetBeforeRotation, _flyToCenterGravity,
                 data.LastPlanet.minimalPercentMoveSpeedFirstPerson);
             
-            _playerState = new AimNextPlanetPlayerState(this, false);
 
             _playerModel.OnZeroHealth += ChangeDeadState;
         }
@@ -125,7 +114,6 @@ namespace Controller
             
             if (_planetIndex == (int)PlanetNumber.Last)
             {
-                _flyToNextPlanet.ChangePlanet(_gravityEnterViews[_planetIndex]);
                 _flyToEdgeGravity.ChangePlanet(_gravityEnterViews[_planetIndex]);
                 
                  _flyPlanetAngle.ChangePlanet(_planetViews[0].transform,
@@ -140,7 +128,6 @@ namespace Controller
                 _planetViews[_planetIndex + 1].transform);
             _rotationAroundPlanet.ChangePlanet(_planetViews[_planetIndex].transform);
             _upAndDownAroundPlanet.ChangePlanet(_planetViews[_planetIndex], _gravityViews[_planetIndex]);
-            _flyToNextPlanet.ChangePlanet(_gravityEnterViews[_planetIndex]);
             _flyToCenterGravity.ChangePlanet(_planetViews[_planetIndex].transform);
             _cameraMove.ChangePlanet(_planetViews[_planetIndex].transform);
             return false;
@@ -172,41 +159,14 @@ namespace Controller
         {
             return _flyToEdgeGravity.IsFinished();
         }
-
-        public bool AimNextPlanet()
-        {
-            return _aimNextPlanet.Aim();
-        }
-
-        public void AimNextPlanetActive(bool isActive)
-        {
-            _aimNextPlanet.SetActive(isActive);
-        }
-
-        public bool FlyToNextPlanet(float deltaTime)
-        {
-            return _flyToNextPlanet.IsFinished(deltaTime);
-        }
-
-        public bool DeadZoneEnter()
-        {
-            return _flyToNextPlanet.IsInDeadZone();
-        }
-
-        public void FlyToNextPlanetActive(bool isActive)
-        {
-            _flyToNextPlanet.SetActive(isActive);
-        }
+        
 
         public void CalculateAngle()
         {
             _flyPlanetAngle.CalculateAngle();
         }
         
-        public bool LastPlanet(float deltaTime)
-        {
-            return _lastPlanet.FlyToLastPlanet(deltaTime);
-        }
+    
 
         public bool LastPlanetIndexCheck()
         {
@@ -232,8 +192,6 @@ namespace Controller
         {
             _upAndDownAroundPlanet.OnDestroy();
             _flyToEdgeGravity.OnDestroy();
-            _aimNextPlanet.OnDestroy();
-            _flyToNextPlanet.OnDestroy();
             _tapExplosionController.OnDestroy();
             _cameraMove.OnDestroy();
             _playerModel.OnZeroHealth -= ChangeDeadState;
