@@ -5,7 +5,7 @@ namespace ScriptableData
     [CreateAssetMenu(menuName = "Data/MissileData", fileName = "MissileData")]
     public class MissileData : ScriptableObject
     {
-        public GameObject missilePrefab;
+        public GameObject missile;
         [Header("Missile engine")]
         public float timeBeforeStartEngine;
         public float timeBeforeEngineStop;

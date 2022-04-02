@@ -98,6 +98,7 @@ namespace View
                 _timeBeforeEngineStop -= Time.deltaTime;
             }
             else{
+                //_rb.transform.forward = _rb.velocity.normalized;
                 engineParticleSystem.Stop();
             }
 
