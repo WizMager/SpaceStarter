@@ -7,20 +7,21 @@ namespace View
     {
         public GameObject body;
         public ParticleSystem engineParticleSystem;
-    
+        
+        private GameObject _explosionParticleSystem;
+        private Rigidbody _rb;
         private Vector3 _target;
         private float _timeBeforeStartEngine;
         private float _timeBeforeEngineStop;
         private float _initialImpulse;
         private float _engineAcceleration;
         private float _rotationSpeed;
-        private Rigidbody _rb;
         private float _explosionArea;
         private float _explosionForce;
         private float _explosionDelay;
+        private float _scaleModifier;
         private bool _isCollision;
         private const float ExplosionDestroy = 2f;
-        private GameObject _explosionParticleSystem;
 
         public void SetParams(ScriptableData.ScriptableData data, Vector3 target)
         {
@@ -34,6 +35,7 @@ namespace View
             _explosionForce = data.Missile.explosionForce;
             _explosionDelay = data.Missile.explosionDelay;
             _explosionParticleSystem = data.Missile.explosionParticleSystem;
+            _scaleModifier = data.Missile.scaleModifier;
         }
     
         private void Start()
@@ -51,12 +53,24 @@ namespace View
                         _explosionArea, GlobalData.LayerForAim);
                     foreach (var hitSphereCast in hitsSphereCast)
                     {
-                        if (hitSphereCast.rigidbody.isKinematic)
+                        if (hitSphereCast.rigidbody)
                         {
-                            hitSphereCast.rigidbody.isKinematic = false;
+                            if (hitSphereCast.rigidbody.isKinematic)
+                            {
+                                hitSphereCast.rigidbody.isKinematic = false;
+                            }
+                            
+                            var localScale = hitSphereCast.transform.localScale;
+                            hitSphereCast.transform.localScale = new Vector3(localScale.x * _scaleModifier, localScale.y * _scaleModifier, localScale.z * _scaleModifier);
+                            
+                            hitSphereCast.rigidbody.AddForce(hitSphereCast.normal * _explosionForce, ForceMode.Impulse);
                         }
-
-                        hitSphereCast.rigidbody.AddForce(hitSphereCast.normal * _explosionForce, ForceMode.Impulse);
+                        
+                        if (hitSphereCast.transform.CompareTag("Chelik"))
+                        {
+                            var chelikMoveScript = hitSphereCast.collider.GetComponent<ChelikMove>();
+                            chelikMoveScript.DeactivateChelikMove();
+                        }
                     }
                     Destroy(gameObject);
                 }
@@ -84,7 +98,6 @@ namespace View
                 _timeBeforeEngineStop -= Time.deltaTime;
             }
             else{
-                //_rb.transform.forward = _rb.velocity.normalized;
                 engineParticleSystem.Stop();
             }
 

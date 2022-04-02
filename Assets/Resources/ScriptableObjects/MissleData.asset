@@ -22,3 +22,4 @@ MonoBehaviour:
   explosionArea: 1
   explosionForce: 20
   explosionDelay: 0.3
+  scaleModifier: 0.9

@@ -16,7 +16,7 @@ MonoBehaviour:
   explosionForce: 7
   explosionParticle: {fileID: 159918, guid: a0040bf7072bc2f4e82d887d50a9c5e2, type: 3}
   distanceFromLastPlanetToStop: 12
-  moveSpeedFirstPerson: 4
+  moveSpeedFirstPerson: 40
   minimalPercentMoveSpeedFirstPerson: 20
   moveSpeedFromAbove: 6
   cameraDownSpeed: 12

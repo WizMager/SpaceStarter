@@ -19,7 +19,7 @@ public class TapExplosionController
         _touch = touch;
         _camera = camera;
         _data = data;
-        _missile = data.Missile.missile;
+        _missile = data.Missile.missilePrefab;
         _missileStartPosition = missileStartPosition;
 
         _touch[(int) TouchInput.InputTouchDown].OnChange += TouchDown;
