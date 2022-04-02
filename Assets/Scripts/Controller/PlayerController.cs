@@ -74,8 +74,9 @@ namespace Controller
                 data.LastPlanet.distanceFromLastPlanetToStop, data.LastPlanet.moveSpeedToLastPlanet,
                 planetViews[(int) PlanetNumber.Last].transform, _planetViews[_planetIndex].transform, _flyPlanetAngle, 
                 data.Camera.moveSpeed, data.Camera.cameraOffsetBeforeRotation);
-            
-            _playerState = new AimNextPlanetPlayerState(this);
+
+            //_playerState = new AimNextPlanetPlayerState(this);
+            _playerState = new LastPlanetShootState(this); // Перенос камеры к последней планете
 
             _playerModel.OnZeroHealth += ChangeDeadState;
         }
@@ -86,7 +87,7 @@ namespace Controller
             _playerState.SetContext(this);
         }
 
-        public bool CameraState(CameraState state, float deltaTime)
+        public bool CameraState(CameraState state, float deltaTime) 
         {
             switch (state)
             {
