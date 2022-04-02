@@ -1,5 +1,4 @@
 ﻿using System;
-using Cinemachine;
 using DefaultNamespace;
 using InputClasses;
 using Interface;
