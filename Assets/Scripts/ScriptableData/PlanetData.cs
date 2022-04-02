@@ -5,7 +5,8 @@ namespace ScriptableData
     [CreateAssetMenu(menuName = "Data/PlanetData", fileName = "PlanetData")]
     public class PlanetData : ScriptableObject
     {
-        [Header("Fly Around Planet")]
+        [Header("Fly Around Planet")] 
+        public float flyAngle;
         public float startGravity;
         public float gravityAcceleration;
         public float maxGravity;

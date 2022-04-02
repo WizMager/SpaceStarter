@@ -1,14 +1,14 @@
-﻿using Controller;
+﻿using Controllers;
 using UnityEngine;
 
 public class GameStarter : MonoBehaviour
 {
-    [SerializeField] private ScriptableData.ScriptableData _data;
-    private Controllers _controllers;
+    [SerializeField] private ScriptableData.AllData _data;
+    private AllControllers _controllers;
 
     private void Start()
     {
-        _controllers = new Controllers();
+        _controllers = new AllControllers();
         new GameInitialization(_controllers, _data);
         _controllers.Initialization();
     }

@@ -15,7 +15,6 @@ namespace Utils
         [SerializeField] private float _intoSpaceTime;
         [SerializeField] private float _speedIntoSpace;
         [SerializeField] private float _rotateIntoSpace;
-        [SerializeField] private PlanetNumber _planetNumber;
         [SerializeField] private GameObject _rayCastPoint;
         [SerializeField] private GameObject _body;
         [SerializeField] private GameObject _upPoint;
@@ -155,15 +154,9 @@ namespace Utils
         
         private Vector3 CenterPlanet()
         {
-            var planetViews = FindObjectsOfType<PlanetView>();
-            foreach (var planetView in planetViews)
-            {
-                if (planetView.number == _planetNumber)
-                {
-                    return planetView.gameObject.transform.position;
-                }
-            }
-            return Vector3.zero;
+            var planetView = FindObjectOfType<PlanetView>();
+
+            return planetView.gameObject.transform.position;
         }
 
         private void OnDestroy()

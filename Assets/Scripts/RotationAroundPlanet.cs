@@ -4,7 +4,7 @@ public class RotationAroundPlanet
 {
     private readonly float _speedRotation;
     private readonly Transform _playerTransform;
-    private Transform _currentPlanet;
+    private readonly Transform _currentPlanet;
 
     public RotationAroundPlanet(float speedRotation, Transform playerTransform, Transform currentPlanet)
     {
@@ -15,11 +15,6 @@ public class RotationAroundPlanet
         
     public void Move(float deltaTime)
     {
-        _playerTransform.RotateAround(_currentPlanet.position, _currentPlanet.forward, _speedRotation * deltaTime);
-    }
-
-    public void ChangePlanet(Transform currentPlanet)
-    {
-        _currentPlanet = currentPlanet;
+        _playerTransform.RotateAround(_currentPlanet.position, _currentPlanet.up, _speedRotation * deltaTime);
     }
 }

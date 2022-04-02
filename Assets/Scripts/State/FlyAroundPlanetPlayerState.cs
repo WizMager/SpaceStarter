@@ -1,4 +1,4 @@
-﻿using Controller;
+﻿using Controllers;
 using UnityEngine;
 
 namespace State
@@ -11,9 +11,9 @@ namespace State
         }
         public override void Move(float deltaTime)
         {
-            var lookDirection = PlayerController.FlyAroundPlanet(deltaTime);
-            if (lookDirection == Vector3.zero) return;
-            PlayerController.TransitionTo(new FlyToEdgeGravityPlayerState(lookDirection, PlayerController));
+            //var lookDirection = PlayerController.FlyAroundPlanet(deltaTime);
+            //if (lookDirection == Vector3.zero) return;
+           // PlayerController.TransitionTo(new FlyToEdgeGravityPlayerState(lookDirection, PlayerController));
         }
     }
 }

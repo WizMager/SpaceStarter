@@ -1,46 +1,59 @@
 ﻿using System;
+using Controllers;
+using Interface;
 using UnityEngine;
-using View;
+using Utils;
 
 public class FlyToCenterGravity
 {
-    public event Action OnDirectionCalculated; 
+    public event Action OnFinish;
 
     private readonly float _rotationSpeedGravity;
     private readonly float _moveSpeedGravity;
-
     private readonly Transform _playerTransform;
-    private Transform _currentPlanet;
+    private Transform _planet;
+    private readonly StateController _stateController;
+    
     private Vector3 _direction;
     private float _pathCenter;
-    private bool _isFinish;
     private bool _isMoved;
     private float _edgeRotationAngle;
     private SphereCollider _planetCollider;
+    private bool _isActive;
+    
         
-    public FlyToCenterGravity(PlayerView playerView, float rotationSpeedGravity, float moveSpeedGravity, Transform currentPlanet)
+    public FlyToCenterGravity(Transform playerTransform, float rotationSpeedGravity, float moveSpeedGravity, 
+        Transform planet, StateController stateController)
     {
         _rotationSpeedGravity = rotationSpeedGravity;
         _moveSpeedGravity = moveSpeedGravity;
+        _playerTransform = playerTransform;
+        _planet = planet;
+        _stateController = stateController;
+        _planetCollider = _planet.GetComponent<SphereCollider>();
 
-        _playerTransform = playerView.transform;
-        _currentPlanet = currentPlanet;
-        _planetCollider = _currentPlanet.GetComponent<SphereCollider>();
+        _stateController.OnStateChange += StateChange;
     }
 
-    public void Active()
+    private void StateChange(States state)
     {
-        _isFinish = false;
-        _isMoved = false;
-        var playerPosition = _playerTransform.position;
-        var planetPosition = _currentPlanet.position;
-        _direction = (planetPosition - playerPosition).normalized;
-        OnDirectionCalculated?.Invoke();
-        _pathCenter = (Vector3.Distance(playerPosition, planetPosition) - _planetCollider.radius) / 2;
-        _edgeRotationAngle = Vector3.Angle(_playerTransform.right, _direction);
+        if (state == States.ToCenterGravity)
+        {
+            _isActive = true;
+            _isMoved = false;
+            var playerPosition = _playerTransform.position;
+            var planetPosition = _planet.position;
+            _direction = (planetPosition - playerPosition).normalized;
+            _pathCenter = (Vector3.Distance(playerPosition, planetPosition) - _planetCollider.radius) / 2;
+            _edgeRotationAngle = Vector3.Angle(_playerTransform.right, _direction);
+        }
+        else
+        {
+            _isActive = false;
+        }
     }
 
-    public bool IsFinished(float deltaTime)
+    private void MoveAndRotate(float deltaTime)
     {
         if (_isMoved)
         {
@@ -50,8 +63,6 @@ public class FlyToCenterGravity
         {
             Move(deltaTime);
         }
-            
-        return _isFinish;
     }
         
     private void Rotate(float deltaTime)
@@ -64,7 +75,7 @@ public class FlyToCenterGravity
         }
         else
         {
-            _isFinish = true;  
+            OnFinish?.Invoke();
         }
     }
 
@@ -82,9 +93,9 @@ public class FlyToCenterGravity
         }
     }
 
-    public void ChangePlanet(Transform currentPlanet)
+    public void FlyToCenter(float deltaTime)
     {
-        _currentPlanet = currentPlanet;
-        _planetCollider = _currentPlanet.GetComponent<SphereCollider>();
+        if (!_isActive) return;
+        MoveAndRotate(deltaTime);
     }
 }

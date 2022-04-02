@@ -4,7 +4,7 @@ using UnityEngine;
 namespace ScriptableData
 {
     [CreateAssetMenu(menuName = "Data/Data", fileName = "Data")]
-    public class ScriptableData : ScriptableObject
+    public class AllData : ScriptableObject
     {
         [SerializeField] private PlayerData _playerData;
         [SerializeField] private LastPlanetData _lastPlanetData;

@@ -23,7 +23,7 @@ namespace View
         private bool _isCollision;
         private const float ExplosionDestroy = 2f;
 
-        public void SetParams(ScriptableData.ScriptableData data, Vector3 target)
+        public void SetParams(ScriptableData.AllData data, Vector3 target)
         {
             _target = target;
             _timeBeforeStartEngine = data.Missile.timeBeforeStartEngine;

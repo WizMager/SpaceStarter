@@ -1,4 +1,4 @@
-﻿using Controller;
+﻿using Controllers;
 using UnityEngine;
 using Utils;
 
@@ -18,7 +18,7 @@ namespace State
             if (!PlayerController.FlyToEdgeGravity()) return;
             if (!finishUp) return;
             
-                //PlayerController.TransitionTo(new AimNextPlanetPlayerState(PlayerController, false));
+            //PlayerController.TransitionTo(new AimNextPlanetPlayerState(PlayerController, false));
         }
     }
 }

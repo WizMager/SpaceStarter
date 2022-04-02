@@ -1,4 +1,4 @@
-﻿using Controller;
+﻿using Controllers;
 using Utils;
 
 namespace State
@@ -13,7 +13,7 @@ namespace State
         public override void Move(float deltaTime)
         {
             var finishDown = PlayerController.CameraState(CameraState.CameraDown, deltaTime);
-            if (!PlayerController.FlyToCenterGravity(deltaTime)) return;
+            //if (!PlayerController.FlyToCenterGravity(deltaTime)) return;
             if (!finishDown) return;
             
             PlayerController.CameraState(CameraState.RotateAroundPlanet, deltaTime);

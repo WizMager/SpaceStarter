@@ -4,7 +4,7 @@ using Interface;
 using UnityEngine;
 using Utils;
 
-namespace Controller
+namespace Controllers
 {
     public class InputController : IExecute
     {

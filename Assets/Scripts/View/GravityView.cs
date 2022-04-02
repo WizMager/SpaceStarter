@@ -1,6 +1,5 @@
-﻿using System;
+using System;
 using UnityEngine;
-using Utils;
 
 namespace View
 {
@@ -8,8 +7,6 @@ namespace View
     {
         public event Action OnPlayerGravityEnter;
         public event Action OnPlayerGravityExit;
-
-        public PlanetNumber number;
 
         private void OnTriggerEnter(Collider other)
         {

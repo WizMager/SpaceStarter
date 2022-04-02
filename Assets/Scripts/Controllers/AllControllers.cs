@@ -1,16 +1,16 @@
 ﻿using System.Collections.Generic;
 using Interface;
 
-namespace Controller
+namespace Controllers
 {
-    public class Controllers: IInitialization, IExecute, IClean
+    public class AllControllers: IInitialization, IExecute, IClean
     {
         private readonly List<IInitialization> _initializationControllers;
         private readonly List<IExecute> _executeControllers;
         private readonly List<IFixedExecute> _fixedExecuteControllers;
         private readonly List<IClean> _cleanControllers;
 
-        public Controllers()
+        public AllControllers()
         {
             _initializationControllers = new List<IInitialization>();
             _executeControllers = new List<IExecute>();
@@ -18,7 +18,7 @@ namespace Controller
             _cleanControllers = new List<IClean>();
         }
 
-        public Controllers Add(IController controller)
+        public AllControllers Add(IController controller)
         {
             if (controller is IInitialization initializationController)
             {

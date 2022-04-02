@@ -6,21 +6,21 @@ public class FlyToEdgeGravity
 {
     private readonly float _rotationSpeed;
     private readonly float _moveSpeed;
-    private GravityEnterView _gravityView;
+    private GravityOutColliderView _gravityColliderView;
     private readonly Transform _playerTransform;
         
     private bool _isInGravity;
     private bool _isRotated;
     private Quaternion _lookRotation;
 
-    public FlyToEdgeGravity(float rotationSpeed, float moveSpeed, GravityEnterView gravityView, Transform playerTransform)
+    public FlyToEdgeGravity(float rotationSpeed, float moveSpeed, GravityOutColliderView gravityColliderView, Transform playerTransform)
     {
         _rotationSpeed = rotationSpeed;
         _moveSpeed = moveSpeed;
-        _gravityView = gravityView;
+        _gravityColliderView = gravityColliderView;
         _playerTransform = playerTransform;
 
-        _gravityView.OnPlayerGravityExit += GravityExited;
+        _gravityColliderView.OnPlayerGravityExit += GravityColliderExited;
     }
 
     public void SetDirection(Vector3 lookDirection)
@@ -28,7 +28,7 @@ public class FlyToEdgeGravity
         _isInGravity = true;
         _isRotated = false;
         _lookRotation = Quaternion.LookRotation(new Vector3(lookDirection.x, 0, lookDirection.z));
-        _gravityView.StartCoroutine(Rotate());
+        _gravityColliderView.StartCoroutine(Rotate());
     }
 
     private IEnumerator Rotate()
@@ -41,10 +41,10 @@ public class FlyToEdgeGravity
         }
 
         _isRotated = true;
-        _gravityView.StopCoroutine(Rotate());
+        _gravityColliderView.StopCoroutine(Rotate());
     }
 
-    private void GravityExited()
+    private void GravityColliderExited()
     {
         _isInGravity = false;
     }
@@ -63,16 +63,10 @@ public class FlyToEdgeGravity
                 
         return false;
     }
-
-    public void ChangePlanet(GravityEnterView currentGravityView)
-    {
-        OnDestroy();
-        _gravityView = currentGravityView;
-        _gravityView.OnPlayerGravityExit += GravityExited;
-    }
+    
             
     public void OnDestroy()
     {
-        _gravityView.OnPlayerGravityExit -= GravityExited;
+        _gravityColliderView.OnPlayerGravityExit -= GravityColliderExited;
     }
 }

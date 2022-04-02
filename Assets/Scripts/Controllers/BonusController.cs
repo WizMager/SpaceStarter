@@ -4,7 +4,7 @@ using Model;
 using Utils;
 using View;
 
-namespace Controller
+namespace Controllers
 {
     public class BonusController : IClean, IController
     {

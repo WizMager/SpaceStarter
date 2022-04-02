@@ -17,14 +17,13 @@ public class CameraMove
     private readonly PlayerView _playerView;
     private readonly float _cameraDownPosition;
     private readonly float _cameraDownSpeed;
-    private readonly CameraColliderView _cameraColliderView;
     private readonly float _cameraDownPositionLastPlanet;
     private readonly float _cameraDownSpeedLastPlanet;
     private readonly float _distanceLastPlanet;
     private readonly float _moveSpeedLastPlanet;
     private readonly Transform _lastPlanetTransform;
     private Transform _currentPlanet;
-    private readonly FlyPlanetAngle _flyPlanetAngle;
+    //private readonly FlyPlanetAngle _flyPlanetAngle;
     private  readonly float _speedToCenterBetween;
     private readonly float _angleLeadRotateAround;
     private readonly FlyToCenterGravity _flyToCenterGravity;
@@ -39,9 +38,9 @@ public class CameraMove
 
     public CameraMove(Camera camera, float cameraUpSpeed, float cameraUpOffset, 
         IUserInput<SwipeData> swipeInput, Vector3 lastPlanetCenter, float firstPersonRotationSpeed, PlayerView playerView,
-        float cameraDownPosition, float cameraDownSpeed, CameraColliderView cameraCameraColliderView, 
+        float cameraDownPosition, float cameraDownSpeed, 
         float cameraDownPositionLastPlanet, float cameraDownSpeedLastPlanet, float distanceLastPlanet, float moveSpeedLastPlanet,
-        Transform lastPlanetTransform, Transform currentPlanet, FlyPlanetAngle flyPlanetAngle, float speedToCenterBetween, 
+        Transform lastPlanetTransform, Transform currentPlanet, float speedToCenterBetween, 
         float angleLeadRotateAround, FlyToCenterGravity flyToCenterGravity, int minimalPercentMoveSpeedFirstPerson)
     {
         _cameraTransform = camera.transform;
@@ -53,14 +52,13 @@ public class CameraMove
         _playerView = playerView;
         _cameraDownPosition = cameraDownPosition;
         _cameraDownSpeed = cameraDownSpeed;
-        _cameraColliderView = cameraCameraColliderView;
         _cameraDownPositionLastPlanet = cameraDownPositionLastPlanet;
         _cameraDownSpeedLastPlanet = cameraDownSpeedLastPlanet;
         _distanceLastPlanet = distanceLastPlanet;
         _moveSpeedLastPlanet = moveSpeedLastPlanet;
         _lastPlanetTransform = lastPlanetTransform;
         _currentPlanet = currentPlanet;
-        _flyPlanetAngle = flyPlanetAngle;
+        //_flyPlanetAngle = flyPlanetAngle;
         _speedToCenterBetween = speedToCenterBetween;
         _angleLeadRotateAround = angleLeadRotateAround;
         _flyToCenterGravity = flyToCenterGravity;
@@ -68,10 +66,9 @@ public class CameraMove
 
         _playerTransform = playerView.transform;
         _swipeInput.OnChange += CameraSwipeRotate;
-        _cameraColliderView.OnPlayerEnter += PlayerCameraCameraColliderEntered;
-        _flyPlanetAngle.OnRotateCalculated += RotateAroundPlanet;
-        _flyPlanetAngle.OnPathBetweenPlanets += SetCenterBetweenPlanets;
-        _flyToCenterGravity.OnDirectionCalculated += RotatedToPlanet;
+        //_flyPlanetAngle.OnRotateCalculated += RotateAroundPlanet;
+        //_flyPlanetAngle.OnPathBetweenPlanets += SetCenterBetweenPlanets;
+        //_flyToCenterGravityController.OnDirectionCalculated += RotatedToPlanet;
     }
 
     public bool CameraDownPlanet(float deltaTime)
@@ -202,7 +199,6 @@ public class CameraMove
         _distanceFlyFirstPerson = currentDistance - _distanceLastPlanet;
         Object.Destroy(_playerView.gameObject);
         _cameraTransform.LookAt(_lastPlanetTransform.position);
-        _cameraColliderView.StartCoroutine(StopFly());
     }
 
     private IEnumerator StopFly()
@@ -221,7 +217,6 @@ public class CameraMove
             yield return null;
         }
         _cameraStopped = true;
-        _cameraColliderView.StopCoroutine(StopFly());
     }
 
     public bool CameraFlyStopped()
@@ -264,9 +259,8 @@ public class CameraMove
     public void OnDestroy()
     {
         _swipeInput.OnChange -= CameraSwipeRotate;
-        _cameraColliderView.OnPlayerEnter -= PlayerCameraCameraColliderEntered; 
-        _flyPlanetAngle.OnRotateCalculated -= RotateAroundPlanet;
-        _flyPlanetAngle.OnPathBetweenPlanets -= SetCenterBetweenPlanets;
-        _flyToCenterGravity.OnDirectionCalculated -= RotatedToPlanet;
+        //_flyPlanetAngle.OnRotateCalculated -= RotateAroundPlanet;
+        //_flyPlanetAngle.OnPathBetweenPlanets -= SetCenterBetweenPlanets;
+        //_flyToCenterGravityController.OnDirectionCalculated -= RotatedToPlanet;
     }
 }

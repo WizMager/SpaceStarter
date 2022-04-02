@@ -4,7 +4,7 @@ using UnityEngine;
 using Utils;
 using View;
 
-public class UpAndDownAroundPlanet
+public class UpAndDownAroundPlanet : IDisposable
 {
     private readonly float _startEngineForce;
     private readonly float _startGravityForce;
@@ -21,16 +21,17 @@ public class UpAndDownAroundPlanet
     private float _currentGravityForce;
     private bool _engineOn;
     private UpAndDownState _state;
+    private bool _isActive;
 
     public UpAndDownAroundPlanet(float startEngineForce, float startGravityForce, Transform playerTransform, 
-        PlanetView currentPlanet, GravityView currentGravity, IUserInput<Vector3>[] touch, float maxGravityForce,
+        PlanetView planetView, GravityView gravityView, IUserInput<Vector3>[] touch, float maxGravityForce,
         float maxEngineForce, float gravityAcceleration, float engineAcceleration)
     {
         _startEngineForce = startEngineForce;
         _startGravityForce = startGravityForce;
         _playerTransform = playerTransform;
-        _planetView = currentPlanet;
-        _gravityView = currentGravity;
+        _planetView = planetView;
+        _gravityView = gravityView;
         _touch = touch;
         _maxGravityForce = maxGravityForce;
         _maxEngineForce = maxEngineForce;
@@ -48,7 +49,12 @@ public class UpAndDownAroundPlanet
         _touch[(int) TouchInput.InputTouchDown].OnChange += TouchedDown;
         _touch[(int) TouchInput.InputTouchUp].OnChange += TouchedUp;
     }
-        
+
+    public void Active(bool value)
+    {
+        _isActive = value;
+    }
+    
     public void Move(float deltaTime)
     {
         var shipPositionAxisX = Vector3.zero;
@@ -85,26 +91,31 @@ public class UpAndDownAroundPlanet
         
     private void PlanetEntered()
     {
+        if (!_isActive) return;
         _state = _engineOn ? UpAndDownState.EngineAccelerate : UpAndDownState.Engine;
     }
         
     private void PlanetExited()
     {
+        if (!_isActive) return;
         _state = _engineOn ? UpAndDownState.EngineAccelerate : UpAndDownState.GravityAccelerate;
     }
         
     private void GravityEntered()
     {
+        if (!_isActive) return;
         _state = _engineOn ? UpAndDownState.EngineAccelerate : UpAndDownState.GravityAccelerate;
     }
         
     private void GravityExited()
     {
+        if (!_isActive) return;
         _state = _engineOn ? UpAndDownState.Gravity : UpAndDownState.GravityAccelerate;
     }
 
     private void TouchedDown(Vector3 value)
     {
+        if (!_isActive) return;
         _engineOn = true;
         _currentGravityForce = _startGravityForce;
         _state = UpAndDownState.EngineAccelerate;
@@ -112,30 +123,13 @@ public class UpAndDownAroundPlanet
 
     private void TouchedUp(Vector3 value)
     {
+        if (!_isActive) return;
         _engineOn = false;
         _currentEngineForce = _startEngineForce;
         _state = UpAndDownState.GravityAccelerate;
     }
-
-    public void ChangePlanet(PlanetView currentPlanet, GravityView currentGravity)
-    {
-        _state = UpAndDownState.GravityAccelerate;
-        
-        _planetView.OnPlayerPlanetEnter -= PlanetEntered;
-        _planetView.OnPlayerPlanetExit -= PlanetExited;
-        _gravityView.OnPlayerGravityEnter -= GravityEntered;
-        _gravityView.OnPlayerGravityExit -= GravityExited;
-
-        _planetView = currentPlanet;
-        _gravityView = currentGravity;
-            
-        _planetView.OnPlayerPlanetEnter += PlanetEntered;
-        _planetView.OnPlayerPlanetExit += PlanetExited;
-        _gravityView.OnPlayerGravityEnter += GravityEntered;
-        _gravityView.OnPlayerGravityExit += GravityExited;
-    }
-        
-    public void OnDestroy()
+    
+    public void Dispose()
     {
         _planetView.OnPlayerPlanetEnter -= PlanetEntered;
         _planetView.OnPlayerPlanetExit -= PlanetExited;

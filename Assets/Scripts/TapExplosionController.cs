@@ -8,13 +8,13 @@ public class TapExplosionController
     private readonly IUserInput<Vector3>[] _touch;
     private readonly Camera _camera;
     private readonly Transform _missileStartPosition;
-    private readonly ScriptableData.ScriptableData _data;
+    private readonly ScriptableData.AllData _data;
     private readonly GameObject _missile;
 
     private bool _isActive;
     private Vector3 _touchDownPosition;
 
-    public TapExplosionController(IUserInput<Vector3>[] touch, Camera camera, ScriptableData.ScriptableData data, Transform missileStartPosition)
+    public TapExplosionController(IUserInput<Vector3>[] touch, Camera camera, ScriptableData.AllData data, Transform missileStartPosition)
     {
         _touch = touch;
         _camera = camera;
