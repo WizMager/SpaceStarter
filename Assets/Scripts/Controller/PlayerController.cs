@@ -45,7 +45,7 @@ namespace Controller
             _playerModel = playerModel;
             _deadScreenView = deadScreenView;
             _cameraBeforeRotateOffset = data.Camera.cameraOffsetBeforeRotation;
-
+            
             var playerTransform = playerView.transform;
             var trajectoryCalculate = new TrajectoryCalculate(playerTransform, data.Planet.moveSpeedToNextPlanet, 
                 data.Planet.iterationsCount, data.Planet.oneStepTimeIteration);
@@ -77,7 +77,6 @@ namespace Controller
                 planetViews[(int) PlanetNumber.Last].transform, _planetViews[_planetIndex].transform, _flyPlanetAngle, 
                 data.Camera.moveSpeed, data.Camera.cameraOffsetBeforeRotation, _flyToCenterGravity,
                 data.LastPlanet.minimalPercentMoveSpeedFirstPerson);
-            
             _playerState = new AimNextPlanetPlayerState(this, false);
 
             _playerModel.OnZeroHealth += ChangeDeadState;

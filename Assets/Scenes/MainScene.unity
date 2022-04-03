@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.052786306, g: 0.15031967, b: 0.1943556, a: 1}
+  m_IndirectSpecularColor: {r: 0.051441513, g: 0.1500552, b: 0.19368404, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -197,7 +197,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18ef862454bd4028a1507bce6feabd8e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  number: 0
+  number: 1
 --- !u!64 &16775561
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -263,7 +263,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 72caa901644440a4a68a792beadaf1f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  number: 0
+  number: 3
 --- !u!135 &19158901
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -4022,7 +4022,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 72caa901644440a4a68a792beadaf1f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  number: 0
+  number: 1
 --- !u!1001 &838512850
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4932,7 +4932,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 72caa901644440a4a68a792beadaf1f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  number: 0
+  number: 2
 --- !u!135 &991371496
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -6997,7 +6997,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18ef862454bd4028a1507bce6feabd8e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  number: 0
+  number: 3
 --- !u!64 &1517132969
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -7793,7 +7793,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18ef862454bd4028a1507bce6feabd8e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  number: 0
+  number: 4
 --- !u!1001 &1770877213
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9140,7 +9140,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18ef862454bd4028a1507bce6feabd8e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  number: 0
+  number: 2
 --- !u!64 &1983453906
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -22164,7 +22164,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 72caa901644440a4a68a792beadaf1f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  number: 0
+  number: 4
 --- !u!33 &6508232738838105516
 MeshFilter:
   m_ObjectHideFlags: 0
