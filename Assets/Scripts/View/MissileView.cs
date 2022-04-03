@@ -17,6 +17,7 @@ namespace View
         private float _engineAcceleration;
         private float _rotationSpeed;
         private float _explosionArea;
+        private float _explosionAreaExt;
         private float _explosionForce;
         private float _explosionDelay;
         private float _scaleModifier;
@@ -32,6 +33,7 @@ namespace View
             _engineAcceleration = data.Missile.engineAcceleration;
             _rotationSpeed = data.Missile.rotationSpeed;
             _explosionArea = data.Missile.explosionArea;
+            _explosionAreaExt = data.Missile.explosionAreaExt;
             _explosionForce = data.Missile.explosionForce;
             _explosionDelay = data.Missile.explosionDelay;
             _explosionParticleSystem = data.Missile.explosionParticleSystem;
@@ -49,29 +51,33 @@ namespace View
             {
                 if (_explosionDelay <= 0)
                 {
-                    var hitsSphereCast = Physics.SphereCastAll(transform.position, _explosionArea, transform.forward,
-                        _explosionArea, GlobalData.LayerForAim);
-                    foreach (var hitSphereCast in hitsSphereCast)
+                    var collaiders = Physics.OverlapSphere(transform.position, _explosionAreaExt);
+                    foreach (var col in collaiders)
                     {
-                        if (hitSphereCast.rigidbody)
+                        var heading = col.transform.position - transform.position;
+                        float distance = heading.magnitude;
+                        var rb = col.GetComponent<Rigidbody>();
+
+                        if ((col.transform.CompareTag("PlanetSubobject") && distance <= _explosionArea && rb)||
+                            (col.transform.CompareTag("Building") && rb))
                         {
-                            if (hitSphereCast.rigidbody.isKinematic)
+                            if (rb.isKinematic)
                             {
-                                hitSphereCast.rigidbody.isKinematic = false;
+                                rb.isKinematic = false;
                             }
-                            
-                            var localScale = hitSphereCast.transform.localScale;
-                            hitSphereCast.transform.localScale = new Vector3(localScale.x * _scaleModifier, localScale.y * _scaleModifier, localScale.z * _scaleModifier);
-                            
-                            hitSphereCast.rigidbody.AddForce(hitSphereCast.normal * _explosionForce, ForceMode.Impulse);
-                        }
-                        
-                        if (hitSphereCast.transform.CompareTag("Chelik"))
+
+                            var localScale = col.transform.localScale;
+                            col.transform.localScale = new Vector3(localScale.x * _scaleModifier,
+                                localScale.y * _scaleModifier, localScale.z * _scaleModifier);
+
+                            rb.AddForce(heading * _explosionForce, ForceMode.Impulse);
+                        }else if (col.transform.CompareTag("Chelik")) 
                         {
-                            var chelikMoveScript = hitSphereCast.collider.GetComponent<ChelikMove>();
+                            var chelikMoveScript = col.GetComponent<ChelikMove>();
                             chelikMoveScript.DeactivateChelikMove();
                         }
                     }
+                    
                     Destroy(gameObject);
                 }
                 else
