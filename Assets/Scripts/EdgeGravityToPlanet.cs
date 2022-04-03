@@ -4,21 +4,23 @@ using UnityEngine;
 using Utils;
 using View;
 
-public class FlyToGravity
+public class EdgeGravityToPlanet
 {
     public event Action OnFinish;
     
      private readonly Transform _playerTransform;
-     private GravityLittleView _gravityView;
+     private GravityView _gravityView;
      private readonly StateController _stateController;
+     private float _moveSpeed;
 
      private bool _isActive = true;
      
-     public FlyToGravity(Transform playerTransform, GravityLittleView gravityView, StateController stateController)
+     public EdgeGravityToPlanet(Transform playerTransform, GravityView gravityView, StateController stateController, float moveSpeed)
      {
           _playerTransform = playerTransform;
           _gravityView = gravityView;
           _stateController = stateController;
+          _moveSpeed = moveSpeed;
 
           _gravityView.OnPlayerGravityEnter += OnGravityEnter;
           _stateController.OnStateChange += ChangeState;
@@ -38,6 +40,6 @@ public class FlyToGravity
      public void Move(float deltaTime)
      {
          if (!_isActive) return;
-         _playerTransform.Translate(_playerTransform.forward * deltaTime * 10f, Space.World); 
+         _playerTransform.Translate(_playerTransform.forward * deltaTime * _moveSpeed, Space.World); 
      }
 }

@@ -17,16 +17,16 @@ public class GameInitialization
       var deadView = Object.FindObjectOfType<DeadScreenView>();
       var planetView = Object.FindObjectOfType<PlanetView>();
       var gravityView = Object.FindObjectOfType<GravityView>();
-      var gravityOutView = Object.FindObjectOfType<GravityLittleView>();
+      var gravityLittleView = Object.FindObjectOfType<GravityLittleView>();
       var playerModel = new PlayerModel(data.Player.startHealth, data.Player.missileCount);
       
 
       var inputInitialization = new InputInitialization(data.Input.minimalDistanceForSwipe);
-      var stateController = new StateController(planetView, playerView, data, gravityOutView);
+      var stateController = new StateController(planetView, playerView, data, gravityView, gravityLittleView);
       controllers.Add(new InputController(inputInitialization.GetAllTouch(), inputInitialization.GetSwipe()));
-      controllers.Add(new CameraController(playerView.transform, camera.transform));
+      controllers.Add(new CameraController(stateController, playerView.transform, camera.transform, planetView.transform));
       controllers.Add(new PlayerMoveController(playerView, data, inputInitialization.GetAllTouch(), planetView,
-         gravityView, stateController));
+         gravityLittleView, stateController));
       controllers.Add(new BonusController(playerModel, playerIndicatorView, bonusViews, BonusTypeValue(data)));
       controllers.Add(stateController);
    }

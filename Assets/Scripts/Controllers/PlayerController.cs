@@ -22,7 +22,7 @@ namespace Controllers
         private readonly RotationAroundPlanet _rotationAroundPlanet;
         private readonly UpAndDownAroundPlanet _upAndDownAroundPlanet;
         //private readonly FlyPlanetAngle _flyPlanetAngle;
-        private readonly FlyToEdgeGravity _flyToEdgeGravity;
+        private readonly EdgeGravityFromPlanet _edgeGravityFromPlanet;
         private readonly TapExplosionController _tapExplosionController;
         private readonly FlyToCenterGravity _flyToCenterGravity;
         private readonly CameraMove _cameraMove;
@@ -47,8 +47,8 @@ namespace Controllers
             // _flyPlanetAngle =
             //     new FlyPlanetAngle(_planetViews[_planetIndex].transform, playerTransform, 
             //         _planetViews[_planetIndex + 1].transform); 
-            _flyToEdgeGravity = new FlyToEdgeGravity(data.Planet.rotationSpeedToEdgeGravity,
-                data.Planet.moveSpeedToEdgeGravity, gravityViews, playerTransform);
+            // _flyToEdgeGravity = new FlyToEdgeGravity(data.Planet.rotationSpeedToEdgeGravity,
+            //     data.Planet.moveSpeedToEdgeGravity, gravityViews, playerTransform);
             _tapExplosionController = new TapExplosionController( touchInput, camera, data, missilePosition);
             // _flyToCenterGravityController = new FlyToCenterGravityController(playerView,
             //     data.Planet.rotationInGravitySpeed, data.Planet.moveSpeedCenterGravity, _planetViews[_planetIndex].transform);
@@ -111,15 +111,15 @@ namespace Controllers
         //     return _flyPlanetAngle.FlewAngle();
         // }
 
-        public void SetDirectionToEdge(Vector3 lookDirection)
-        {
-            _flyToEdgeGravity.SetDirection(lookDirection);
-        }
+        // public void SetDirectionToEdge(Vector3 lookDirection)
+        // {
+        //     _flyToEdgeGravity.SetDirection(lookDirection);
+        // }
         
-        public bool FlyToEdgeGravity()
-        {
-            return _flyToEdgeGravity.IsFinished();
-        }
+        // public bool FlyToEdgeGravity()
+        // {
+        //     return _flyToEdgeGravity.IsFinished();
+        // }
         
 
         // public void CalculateAngle()
@@ -145,7 +145,7 @@ namespace Controllers
 
         public void Clean()
         {
-            _flyToEdgeGravity.OnDestroy();
+            //_flyToEdgeGravity.OnDestroy();
             _tapExplosionController.OnDestroy();
             _cameraMove.OnDestroy();
             _playerModel.OnZeroHealth -= ChangeDeadState;

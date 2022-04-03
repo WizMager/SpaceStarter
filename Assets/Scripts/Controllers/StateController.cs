@@ -11,27 +11,49 @@ namespace Controllers
     {
         public event Action<States> OnStateChange;
 
-        private readonly AroundPlanetAngleCounter _flewAngle;
+        private readonly FlewAngleCounter _flewAngle;
         private readonly FlyToCenterGravity _toCenterGravity;
-        private readonly FlyToGravity _flyToGravity;
+        private readonly EdgeGravityToPlanet _edgeGravityToPlanet;
+        private readonly EdgeGravityFromPlanet _edgeGravityFromPlanet;
+        private readonly LookToPlanet _lookToPlanet;
 
-        public StateController(PlanetView planetView, PlayerView playerView, AllData data, GravityLittleView gravityLittle)
+        public StateController(PlanetView planetView, PlayerView playerView, AllData data, GravityView gravityView, 
+            GravityLittleView gravityLittleView)
         {
             var playerTransform = playerView.transform;
             var planetTransform = planetView.transform;
             
-            _flewAngle = new AroundPlanetAngleCounter(planetTransform, playerTransform, data.Planet.flyAngle, 
+            _flewAngle = new FlewAngleCounter(planetTransform, playerTransform, data.Planet.flyAngle, 
                 this);
             _toCenterGravity = new FlyToCenterGravity(playerTransform, data.Planet.rotationInGravitySpeed,
                 data.Planet.moveSpeedCenterGravity, planetTransform, this);
-            _flyToGravity = new FlyToGravity(playerTransform, gravityLittle, this);
+            _edgeGravityToPlanet = new EdgeGravityToPlanet(playerTransform, gravityView, this, 
+                data.Planet.moveSpeedToPlanet);
+            _edgeGravityFromPlanet = new EdgeGravityFromPlanet(data.Planet.rotationTimeToEdgeGravity,
+                data.Planet.moveSpeedToEdgeGravity, gravityLittleView, playerTransform, 
+                this, planetTransform);
+            _lookToPlanet = new LookToPlanet(playerTransform, planetTransform, data.Planet.rotationSpeedLookPlanet, this);
 
             _flewAngle.OnFinish += EndRotateAround;
             _toCenterGravity.OnFinish += EndToCenterGravity;
-            _flyToGravity.OnFinish += EndFlyToGravityToPlanet;
+            _edgeGravityToPlanet.OnFinish += EndEdgeGravityToPlanetToPlanet;
+            _edgeGravityFromPlanet.OnFinished += EndGravityFromPlanetFromPlanet;
+            _lookToPlanet.OnFinish += EndLookToPlanet;
         }
 
-        private void EndFlyToGravityToPlanet()
+        private void EndLookToPlanet()
+        {
+            OnStateChange?.Invoke(States.ShootPlanet);
+            Debug.Log(States.ShootPlanet);
+        }
+
+        private void EndGravityFromPlanetFromPlanet()
+        {
+            OnStateChange?.Invoke(States.LookToPlanet);
+            Debug.Log(States.LookToPlanet);
+        }
+
+        private void EndEdgeGravityToPlanetToPlanet()
         {
             OnStateChange?.Invoke(States.ToCenterGravity);
             Debug.Log(States.ToCenterGravity);
@@ -53,14 +75,16 @@ namespace Controllers
         {
             _flewAngle.FlewAngle();
             _toCenterGravity.FlyToCenter(deltaTime);
-            _flyToGravity.Move(deltaTime);
+            _edgeGravityToPlanet.Move(deltaTime);
+            _edgeGravityFromPlanet.Move();
+            _lookToPlanet.Rotate(deltaTime);
         }
         
         public void Clean()
         {
             _flewAngle.OnFinish -= EndRotateAround;
             _toCenterGravity.OnFinish -= EndToCenterGravity;
-            _flyToGravity.OnFinish -= EndFlyToGravityToPlanet;
+            _edgeGravityToPlanet.OnFinish -= EndEdgeGravityToPlanetToPlanet;
         }
     }
 }

@@ -9,7 +9,7 @@ public class UpAndDownAroundPlanet : IDisposable
     private readonly float _startEngineForce;
     private readonly float _startGravityForce;
     private readonly Transform _playerTransform;
-    private GravityView _gravityView;
+    private GravityLittleView _gravityView;
     private PlanetView _planetView;
     private readonly IUserInput<Vector3>[] _touch;
     private readonly float _maxGravityForce;
@@ -24,7 +24,7 @@ public class UpAndDownAroundPlanet : IDisposable
     private bool _isActive;
 
     public UpAndDownAroundPlanet(float startEngineForce, float startGravityForce, Transform playerTransform, 
-        PlanetView planetView, GravityView gravityView, IUserInput<Vector3>[] touch, float maxGravityForce,
+        PlanetView planetView, GravityLittleView gravityView, IUserInput<Vector3>[] touch, float maxGravityForce,
         float maxEngineForce, float gravityAcceleration, float engineAcceleration)
     {
         _startEngineForce = startEngineForce;

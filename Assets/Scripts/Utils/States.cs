@@ -7,6 +7,7 @@ namespace Utils
         FlyAroundPlanet,
         EdgeGravityFromPlanet,
         LookToPlanet,
+        ShootPlanet,
         FlyIntoSunset
     }
 }

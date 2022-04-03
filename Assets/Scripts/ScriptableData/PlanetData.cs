@@ -14,16 +14,15 @@ namespace ScriptableData
         public float startEngineForce;
         public float engineAcceleration;
         public float maxEngineForce;
-        [Header("Fly To Edge Gravity")]
+        [Header("Edge Gravity From Planet")]
         public float moveSpeedToEdgeGravity;
-        public float rotationSpeedToEdgeGravity;
+        public float rotationTimeToEdgeGravity;
         [Header("Fly To Center Gravity")]
         public float moveSpeedCenterGravity;
         public float rotationInGravitySpeed;
-        [Header("Fly To Next Planet")] 
-        public float moveSpeedToNextPlanet;
-        [Header("Aim To Asteroid Belt")] 
-        public int iterationsCount;
-        public float oneStepTimeIteration;
+        [Header("Edge Gravity To Planet")] 
+        public float moveSpeedToPlanet;
+        [Header("Look To Planet")] 
+        public float rotationSpeedLookPlanet;
     }
 }

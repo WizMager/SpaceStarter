@@ -3,7 +3,7 @@ using Controllers;
 using UnityEngine;
 using Utils;
 
-public class AroundPlanetAngleCounter
+public class FlewAngleCounter
 {
     public event Action OnFinish;
     
@@ -17,7 +17,7 @@ public class AroundPlanetAngleCounter
     private float _currentAngle;
     private bool _isActive;
         
-    public AroundPlanetAngleCounter(Transform planet, Transform player, float flyAngle, StateController stateController)
+    public FlewAngleCounter(Transform planet, Transform player, float flyAngle, StateController stateController)
     {
         _planet = planet;
         _flyAngle = flyAngle;

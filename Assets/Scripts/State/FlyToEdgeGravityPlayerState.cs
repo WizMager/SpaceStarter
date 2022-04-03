@@ -9,13 +9,13 @@ namespace State
         public FlyToEdgeGravityPlayerState(Vector3 lookDirection, PlayerController context)
         {
             PlayerController = context;
-            PlayerController.SetDirectionToEdge(lookDirection);
+            //PlayerController.SetDirectionToEdge(lookDirection);
         }
 
         public override void Move(float deltaTime)
         {
             var finishUp = PlayerController.CameraState(CameraState.CameraUp, deltaTime);
-            if (!PlayerController.FlyToEdgeGravity()) return;
+           // if (!PlayerController.FlyToEdgeGravity()) return;
             if (!finishUp) return;
             
             //PlayerController.TransitionTo(new AimNextPlanetPlayerState(PlayerController, false));

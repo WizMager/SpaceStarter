@@ -15,7 +15,7 @@ namespace Controllers
         private bool _isActive;
         
         public PlayerMoveController(PlayerView playerView, AllData data, IUserInput<Vector3>[] touchInput, 
-            PlanetView planetView, GravityView gravityView, StateController stateController)
+            PlanetView planetView, GravityLittleView gravityView, StateController stateController)
         {
              var playerTransform = playerView.transform;
              var planetTransform = planetView.transform;
