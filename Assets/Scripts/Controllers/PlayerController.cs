@@ -28,7 +28,7 @@ namespace Controllers
         private readonly CameraMove _cameraMove;
 
         public PlayerController(ScriptableData.AllData data, PlayerView playerView, IUserInput<Vector3>[] touchInput, 
-            IUserInput<SwipeData> swipeInput, PlanetView[] planetViews, GravityOutColliderView gravityViews, GravityOutColliderView gravityEnterColliderViews,
+            IUserInput<SwipeData> swipeInput, PlanetView[] planetViews, GravityLittleView gravityViews, GravityLittleView gravityEnterColliderViews,
             Camera camera, PlayerModel playerModel, DeadScreenView deadScreenView, Transform missilePosition)
         {
             

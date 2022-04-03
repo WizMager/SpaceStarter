@@ -1,6 +1,7 @@
 using System;
 using Interface;
 using ScriptableData;
+using UnityEngine;
 using Utils;
 using View;
 
@@ -14,7 +15,7 @@ namespace Controllers
         private readonly FlyToCenterGravity _toCenterGravity;
         private readonly FlyToGravity _flyToGravity;
 
-        public StateController(PlanetView planetView, PlayerView playerView, AllData data, GravityOutColliderView gravityLittle)
+        public StateController(PlanetView planetView, PlayerView playerView, AllData data, GravityLittleView gravityLittle)
         {
             var playerTransform = playerView.transform;
             var planetTransform = planetView.transform;
@@ -33,16 +34,19 @@ namespace Controllers
         private void EndFlyToGravityToPlanet()
         {
             OnStateChange?.Invoke(States.ToCenterGravity);
+            Debug.Log(States.ToCenterGravity);
         }
 
         private void EndToCenterGravity()
         {
             OnStateChange?.Invoke(States.FlyAroundPlanet);
+            Debug.Log(States.FlyAroundPlanet);
         }
 
         private void EndRotateAround()
         {
             OnStateChange?.Invoke(States.EdgeGravityFromPlanet);
+            Debug.Log(States.EdgeGravityFromPlanet);
         }
 
         public void Execute(float deltaTime)

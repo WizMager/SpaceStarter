@@ -9,12 +9,12 @@ public class FlyToGravity
     public event Action OnFinish;
     
      private readonly Transform _playerTransform;
-     private GravityOutColliderView _gravityView;
+     private GravityLittleView _gravityView;
      private readonly StateController _stateController;
 
      private bool _isActive = true;
      
-     public FlyToGravity(Transform playerTransform, GravityOutColliderView gravityView, StateController stateController)
+     public FlyToGravity(Transform playerTransform, GravityLittleView gravityView, StateController stateController)
      {
           _playerTransform = playerTransform;
           _gravityView = gravityView;
@@ -31,6 +31,7 @@ public class FlyToGravity
 
      private void OnGravityEnter()
      {
+         if (!_isActive) return;
          OnFinish?.Invoke();
      }
 

@@ -6,14 +6,14 @@ public class FlyToEdgeGravity
 {
     private readonly float _rotationSpeed;
     private readonly float _moveSpeed;
-    private GravityOutColliderView _gravityColliderView;
+    private GravityLittleView _gravityColliderView;
     private readonly Transform _playerTransform;
         
     private bool _isInGravity;
     private bool _isRotated;
     private Quaternion _lookRotation;
 
-    public FlyToEdgeGravity(float rotationSpeed, float moveSpeed, GravityOutColliderView gravityColliderView, Transform playerTransform)
+    public FlyToEdgeGravity(float rotationSpeed, float moveSpeed, GravityLittleView gravityColliderView, Transform playerTransform)
     {
         _rotationSpeed = rotationSpeed;
         _moveSpeed = moveSpeed;

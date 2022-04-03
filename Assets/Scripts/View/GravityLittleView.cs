@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace View
 {
-    public class GravityOutColliderView : MonoBehaviour
+    public class GravityLittleView : MonoBehaviour
     {
         public event Action OnPlayerGravityEnter;
         public event Action OnPlayerGravityExit;

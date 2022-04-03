@@ -17,7 +17,7 @@ public class GameInitialization
       var deadView = Object.FindObjectOfType<DeadScreenView>();
       var planetView = Object.FindObjectOfType<PlanetView>();
       var gravityView = Object.FindObjectOfType<GravityView>();
-      var gravityOutView = Object.FindObjectOfType<GravityOutColliderView>();
+      var gravityOutView = Object.FindObjectOfType<GravityLittleView>();
       var playerModel = new PlayerModel(data.Player.startHealth, data.Player.missileCount);
       
 

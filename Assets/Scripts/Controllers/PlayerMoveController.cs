@@ -20,7 +20,7 @@ namespace Controllers
              var playerTransform = playerView.transform;
              var planetTransform = planetView.transform;
              
-             _rotationAroundPlanet = new RotationAroundPlanet(data.Planet.rotationInGravitySpeed, playerTransform, planetTransform);
+             _rotationAroundPlanet = new RotationAroundPlanet(data.Planet.startSpeedRotationAroundPlanet, playerTransform, planetTransform);
             _upAndDownAroundPlanet = new UpAndDownAroundPlanet(data.Planet.startEngineForce, data.Planet.startGravity,
                 playerTransform, planetView, gravityView, touchInput, data.Planet.maxGravity,
                 data.Planet.maxEngineForce, data.Planet.gravityAcceleration, data.Planet.engineAcceleration);
