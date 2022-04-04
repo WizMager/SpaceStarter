@@ -15,7 +15,6 @@ namespace Controllers
         private readonly FlyToCenterGravity _toCenterGravity;
         private readonly EdgeGravityToPlanet _edgeGravityToPlanet;
         private readonly EdgeGravityFromPlanet _edgeGravityFromPlanet;
-        private readonly LookToPlanet _lookToPlanet;
 
         public StateController(PlanetView planetView, PlayerView playerView, AllData data, GravityView gravityView, 
             GravityLittleView gravityLittleView)
@@ -32,19 +31,11 @@ namespace Controllers
             _edgeGravityFromPlanet = new EdgeGravityFromPlanet(data.Planet.rotationTimeToEdgeGravity,
                 data.Planet.moveSpeedToEdgeGravity, gravityLittleView, playerTransform, 
                 this, planetTransform);
-            _lookToPlanet = new LookToPlanet(playerTransform, planetTransform, data.Planet.rotationSpeedLookPlanet, this);
 
             _flewAngle.OnFinish += EndRotateAround;
             _toCenterGravity.OnFinish += EndToCenterGravity;
             _edgeGravityToPlanet.OnFinish += EndEdgeGravityToPlanetToPlanet;
             _edgeGravityFromPlanet.OnFinished += EndGravityFromPlanetFromPlanet;
-            _lookToPlanet.OnFinish += EndLookToPlanet;
-        }
-
-        private void EndLookToPlanet()
-        {
-            OnStateChange?.Invoke(States.ShootPlanet);
-            Debug.Log(States.ShootPlanet);
         }
 
         private void EndGravityFromPlanetFromPlanet()
@@ -77,7 +68,6 @@ namespace Controllers
             _toCenterGravity.FlyToCenter(deltaTime);
             _edgeGravityToPlanet.Move(deltaTime);
             _edgeGravityFromPlanet.Move();
-            _lookToPlanet.Rotate(deltaTime);
         }
         
         public void Clean()
