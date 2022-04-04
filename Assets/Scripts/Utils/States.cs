@@ -6,8 +6,9 @@ namespace Utils
         ToCenterGravity,
         FlyAroundPlanet,
         EdgeGravityFromPlanet,
-        LookToPlanet,
+        ArcFlyFromPlanet,
+        ArcFlyCameraDown,
+        ArcFlyFirstPerson,
         ShootPlanet,
-        FlyIntoSunset
     }
 }

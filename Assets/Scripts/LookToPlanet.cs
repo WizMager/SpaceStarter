@@ -26,15 +26,15 @@ public class LookToPlanet : IDisposable
 
        private void StateChange(States state)
        {
-              if (state == States.LookToPlanet)
-              {
-                     _isActive = true;
-                     _angle = Vector3.Angle(_playerTransform.forward, _planetTransform.position - _playerTransform.position);
-              }
-              else
-              {
-                     _isActive = false;
-              }
+              // if (state == States.LookToPlanet)
+              // {
+              //        _isActive = true;
+              //        _angle = Vector3.Angle(_playerTransform.forward, _planetTransform.position - _playerTransform.position);
+              // }
+              // else
+              // {
+              //        _isActive = false;
+              // }
        }
 
        public void Rotate(float deltaTime)

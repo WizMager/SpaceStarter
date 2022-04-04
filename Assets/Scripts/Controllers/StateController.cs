@@ -49,8 +49,8 @@ namespace Controllers
 
         private void EndGravityFromPlanetFromPlanet()
         {
-            OnStateChange?.Invoke(States.LookToPlanet);
-            Debug.Log(States.LookToPlanet);
+            OnStateChange?.Invoke(States.ArcFlyFromPlanet);
+            Debug.Log(States.ArcFlyFromPlanet);
         }
 
         private void EndEdgeGravityToPlanetToPlanet()

@@ -59,13 +59,13 @@ namespace Controllers
                 case States.EdgeGravityFromPlanet:
                     FollowPlayer();
                     break;
-                case States.LookToPlanet:
-                    FollowPlayer();
+                case States.ArcFlyFromPlanet:
+                    break;
+                case States.ArcFlyCameraDown:
+                    break;
+                case States.ArcFlyFirstPerson:
                     break;
                 case States.ShootPlanet:
-                    FirstPerson();
-                    break;
-                case States.FlyIntoSunset:
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
