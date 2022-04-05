@@ -22,7 +22,12 @@ namespace ScriptableData
         public float rotationInGravitySpeed;
         [Header("Edge Gravity To Planet")] 
         public float moveSpeedToPlanet;
-        [Header("Look To Planet")] 
-        public float rotationSpeedLookPlanet;
+        [Header("Arc From Planet (Yellow)")] 
+        public float rotationSpeedArcFromPlanet;
+        public float moveSpeedArcFromPlanet;
+        public float radiusArc;
+        public float distanceToCenterRadiusArc;
+        public float rotationSpeedRadius;
+
     }
 }

@@ -15,6 +15,7 @@ namespace Controllers
         private readonly FlyToCenterGravity _toCenterGravity;
         private readonly EdgeGravityToPlanet _edgeGravityToPlanet;
         private readonly EdgeGravityFromPlanet _edgeGravityFromPlanet;
+        private readonly ArcFromPlanet _arcFromPlanet;
 
         public StateController(PlanetView planetView, PlayerView playerView, AllData data, GravityView gravityView, 
             GravityLittleView gravityLittleView)
@@ -31,11 +32,21 @@ namespace Controllers
             _edgeGravityFromPlanet = new EdgeGravityFromPlanet(data.Planet.rotationTimeToEdgeGravity,
                 data.Planet.moveSpeedToEdgeGravity, gravityLittleView, playerTransform, 
                 this, planetTransform);
+            _arcFromPlanet = new ArcFromPlanet(this, playerTransform, data.Planet.distanceToCenterRadiusArc,
+                data.Planet.radiusArc, data.Planet.moveSpeedArcFromPlanet, data.Planet.rotationSpeedArcFromPlanet, 
+                data.Planet.rotationSpeedRadius);
 
             _flewAngle.OnFinish += EndRotateAround;
             _toCenterGravity.OnFinish += EndToCenterGravity;
             _edgeGravityToPlanet.OnFinish += EndEdgeGravityToPlanetToPlanet;
             _edgeGravityFromPlanet.OnFinished += EndGravityFromPlanetFromPlanet;
+            _arcFromPlanet.OnFinish += EndArcFlyFromPlanet;
+        }
+
+        private void EndArcFlyFromPlanet()
+        {
+            OnStateChange?.Invoke(States.ArcFlyCameraDown);
+            Debug.Log(States.ArcFlyCameraDown);
         }
 
         private void EndGravityFromPlanetFromPlanet()
@@ -68,6 +79,7 @@ namespace Controllers
             _toCenterGravity.FlyToCenter(deltaTime);
             _edgeGravityToPlanet.Move(deltaTime);
             _edgeGravityFromPlanet.Move();
+            _arcFromPlanet.Move(deltaTime);
         }
         
         public void Clean()

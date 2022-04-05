@@ -25,4 +25,8 @@ MonoBehaviour:
   moveSpeedCenterGravity: 3
   rotationInGravitySpeed: 175
   moveSpeedToPlanet: 7
-  rotationSpeedLookPlanet: 40
+  rotationSpeedArcFromPlanet: 15
+  moveSpeedArcFromPlanet: 10
+  radiusArc: 3
+  distanceToCenterRadiusArc: 5
+  rotationSpeedRadius: 50
