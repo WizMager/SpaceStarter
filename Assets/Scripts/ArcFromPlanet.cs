@@ -38,9 +38,9 @@ public class ArcFromPlanet : IDisposable
           _stateController.OnStateChange += ChangeState;
      }
 
-     private void ChangeState(States state)
+     private void ChangeState(GameState gameState)
      {
-          if (state == States.ArcFlyFromPlanet)
+          if (gameState == GameState.ArcFlyFromPlanet)
           {
                _isActive = true;
                SetupAndCalculate();

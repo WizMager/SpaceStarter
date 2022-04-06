@@ -9,7 +9,7 @@ namespace Controllers
     public class CameraController : IExecute
     {
         private readonly StateController _stateController;
-        private States _state;
+        private GameState _gameState;
         private readonly Transform _player;
         private readonly Transform _camera;
         private readonly Transform _planet;
@@ -25,9 +25,9 @@ namespace Controllers
             _stateController.OnStateChange += ChangeState;
         }
 
-        private void ChangeState(States state)
+        private void ChangeState(GameState gameState)
         {
-            _state = state;
+            _gameState = gameState;
         }
 
         private void FollowPlayer()
@@ -45,27 +45,27 @@ namespace Controllers
         
         public void Execute(float deltaTime)
         {
-            switch (_state)
+            switch (_gameState)
             {
-                case States.EdgeGravityToPlanet:
+                case GameState.EdgeGravityToPlanet:
                     FollowPlayer();
                     break;
-                case States.ToCenterGravity:
+                case GameState.ToCenterGravity:
                     FollowPlayer();
                     break;
-                case States.FlyAroundPlanet:
+                case GameState.FlyAroundPlanet:
                     FollowPlayer();
                     break;
-                case States.EdgeGravityFromPlanet:
+                case GameState.EdgeGravityFromPlanet:
                     FollowPlayer();
                     break;
-                case States.ArcFlyFromPlanet:
+                case GameState.ArcFlyFromPlanet:
                     break;
-                case States.ArcFlyCameraDown:
+                case GameState.ArcFlyCameraDown:
                     break;
-                case States.ArcFlyFirstPerson:
+                case GameState.ArcFlyFirstPerson:
                     break;
-                case States.ShootPlanet:
+                case GameState.ShootPlanet:
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();

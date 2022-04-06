@@ -1,6 +1,6 @@
 namespace Utils
 {
-    public enum States
+    public enum GameState
     {
         EdgeGravityToPlanet,
         ToCenterGravity,

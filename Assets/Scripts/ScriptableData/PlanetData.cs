@@ -28,6 +28,10 @@ namespace ScriptableData
         public float radiusArc;
         public float distanceToCenterRadiusArc;
         public float rotationSpeedRadius;
-
+        [Header("Arc Other")] 
+        public float stopDistanceFromPlanetSurface;
+        [Range(1, 99)] public int percentOfCameraDownPath;
+        public float moveSpeedArcCameraDown;
+        public float moveSpeedArcFirstPerson;
     }
 }

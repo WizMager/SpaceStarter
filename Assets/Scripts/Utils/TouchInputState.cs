@@ -1,6 +1,6 @@
 ﻿namespace Utils
 {
-    public enum TouchInput
+    public enum TouchInputState
     {
         InputTouchDown,
         InputTouchHold,

@@ -28,5 +28,9 @@ MonoBehaviour:
   rotationSpeedArcFromPlanet: 15
   moveSpeedArcFromPlanet: 10
   radiusArc: 3
-  distanceToCenterRadiusArc: 5
+  distanceToCenterRadiusArc: 15
   rotationSpeedRadius: 50
+  stopDistanceFromPlanetSurface: 10
+  percentOfCameraDownPath: 30
+  moveSpeedArcCameraDown: 10
+  moveSpeedArcFirstPerson: 7

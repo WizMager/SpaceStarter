@@ -29,9 +29,9 @@ public class FlewAngleCounter
         _stateController.OnStateChange += StateChange;
     }
 
-    private void StateChange(States state)
+    private void StateChange(GameState gameState)
     {
-        _isActive = state == States.FlyAroundPlanet;
+        _isActive = gameState == GameState.FlyAroundPlanet;
     }
 
     public void FlewAngle()

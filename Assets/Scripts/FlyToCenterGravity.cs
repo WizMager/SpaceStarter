@@ -35,9 +35,9 @@ public class FlyToCenterGravity
         _stateController.OnStateChange += StateChange;
     }
 
-    private void StateChange(States state)
+    private void StateChange(GameState gameState)
     {
-        if (state == States.ToCenterGravity)
+        if (gameState == GameState.ToCenterGravity)
         {
             _isActive = true;
             _isMoved = false;

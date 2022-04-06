@@ -29,9 +29,9 @@ namespace Controllers
             _stateController.OnStateChange += StateChange;
         }
 
-        private void StateChange(States state)
+        private void StateChange(GameState gameState)
         {
-            if (state == States.FlyAroundPlanet)
+            if (gameState == GameState.FlyAroundPlanet)
             {
                 _isActive = true;
                 _upAndDownAroundPlanet.Active(true);

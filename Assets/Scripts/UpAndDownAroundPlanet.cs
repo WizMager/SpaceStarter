@@ -46,8 +46,8 @@ public class UpAndDownAroundPlanet : IDisposable
         _planetView.OnPlayerPlanetExit += PlanetExited;
         _gravityView.OnPlayerGravityEnter += GravityEntered;
         _gravityView.OnPlayerGravityExit += GravityExited;
-        _touch[(int) TouchInput.InputTouchDown].OnChange += TouchedDown;
-        _touch[(int) TouchInput.InputTouchUp].OnChange += TouchedUp;
+        _touch[(int) TouchInputState.InputTouchDown].OnChange += TouchedDown;
+        _touch[(int) TouchInputState.InputTouchUp].OnChange += TouchedUp;
     }
 
     public void Active(bool value)
@@ -135,7 +135,7 @@ public class UpAndDownAroundPlanet : IDisposable
         _planetView.OnPlayerPlanetExit -= PlanetExited;
         _gravityView.OnPlayerGravityEnter -= GravityEntered;
         _gravityView.OnPlayerGravityExit -= GravityExited;
-        _touch[(int) TouchInput.InputTouchDown].OnChange -= TouchedDown;
-        _touch[(int) TouchInput.InputTouchUp].OnChange -= TouchedUp;
+        _touch[(int) TouchInputState.InputTouchDown].OnChange -= TouchedDown;
+        _touch[(int) TouchInputState.InputTouchUp].OnChange -= TouchedUp;
     }
 }

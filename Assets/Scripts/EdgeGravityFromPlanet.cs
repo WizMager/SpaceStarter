@@ -34,9 +34,9 @@ public class EdgeGravityFromPlanet : IDisposable
         _stateController.OnStateChange += ChangeState;
     }
 
-    private void ChangeState(States state)
+    private void ChangeState(GameState gameState)
     {
-        if (state == States.EdgeGravityFromPlanet)
+        if (gameState == GameState.EdgeGravityFromPlanet)
         {
             _isActive = true;
             _isInGravity = true;

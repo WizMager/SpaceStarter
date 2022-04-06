@@ -16,9 +16,9 @@ namespace Controllers
         public InputController(IReadOnlyList<IUserInput<Vector3>> touchInput, 
             IUserInput<SwipeData> inputSwipe)
         {
-            _inputTouchDown = touchInput[(int) TouchInput.InputTouchDown];
-            _inputTouchUp = touchInput[(int) TouchInput.InputTouchUp];
-            _inputTouchHold = touchInput[(int) TouchInput.InputTouchHold];
+            _inputTouchDown = touchInput[(int) TouchInputState.InputTouchDown];
+            _inputTouchUp = touchInput[(int) TouchInputState.InputTouchUp];
+            _inputTouchHold = touchInput[(int) TouchInputState.InputTouchHold];
             _inputSwipe = inputSwipe;
         }
         public void Execute(float deltaTime)

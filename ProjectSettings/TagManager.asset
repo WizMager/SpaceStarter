@@ -6,7 +6,6 @@ TagManager:
   tags:
   - HealthIndicator
   - BonusIndicator
-  - Asteroid
   layers:
   - Default
   - TransparentFX
@@ -18,7 +17,7 @@ TagManager:
   - 
   - 
   - 
-  - AimPositionCollider
+  - RaycastLayer
   - 
   - 
   - 

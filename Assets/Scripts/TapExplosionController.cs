@@ -22,8 +22,8 @@ public class TapExplosionController
         _missile = data.Missile.missilePrefab;
         _missileStartPosition = missileStartPosition;
 
-        _touch[(int) TouchInput.InputTouchDown].OnChange += TouchDown;
-        _touch[(int) TouchInput.InputTouchUp].OnChange += TouchUp;
+        _touch[(int) TouchInputState.InputTouchDown].OnChange += TouchDown;
+        _touch[(int) TouchInputState.InputTouchUp].OnChange += TouchUp;
     }
 
     private void Shoot(Vector3 touchPosition)
@@ -60,7 +60,7 @@ public class TapExplosionController
 
     public void OnDestroy()
     {
-        _touch[(int) TouchInput.InputTouchDown].OnChange -= TouchDown;
-        _touch[(int) TouchInput.InputTouchUp].OnChange -= TouchUp;
+        _touch[(int) TouchInputState.InputTouchDown].OnChange -= TouchDown;
+        _touch[(int) TouchInputState.InputTouchUp].OnChange -= TouchUp;
     }
 }

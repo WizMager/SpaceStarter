@@ -26,9 +26,9 @@ public class EdgeGravityToPlanet
           _stateController.OnStateChange += ChangeState;
      }
 
-     private void ChangeState(States state)
+     private void ChangeState(GameState gameState)
      {
-         _isActive = state == States.EdgeGravityToPlanet;
+         _isActive = gameState == GameState.EdgeGravityToPlanet;
      }
 
      private void OnGravityEnter()
