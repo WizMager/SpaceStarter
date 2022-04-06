@@ -22,7 +22,7 @@ public class GameInitialization
       
 
       var inputInitialization = new InputInitialization(data.Input.minimalDistanceForSwipe);
-      var stateController = new StateController(planetView, playerView, data, gravityView, gravityLittleView);
+      var stateController = new StateController(planetView, playerView, data, gravityView, gravityLittleView, inputInitialization.GetAllTouch(), camera);
       controllers.Add(new InputController(inputInitialization.GetAllTouch(), inputInitialization.GetSwipe()));
       controllers.Add(new CameraController(stateController, playerView.transform, camera.transform, planetView.transform));
       controllers.Add(new PlayerMoveController(playerView, data, inputInitialization.GetAllTouch(), planetView,

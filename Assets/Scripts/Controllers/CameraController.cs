@@ -60,12 +60,19 @@ namespace Controllers
                     FollowPlayer();
                     break;
                 case GameState.ArcFlyFromPlanet:
+                    FollowPlayer();
                     break;
                 case GameState.ArcFlyCameraDown:
+                    FollowPlayer();
                     break;
                 case GameState.ArcFlyFirstPerson:
+                    FirstPerson();
                     break;
                 case GameState.ShootPlanet:
+                    FirstPerson();
+                    break;
+                case GameState.FlyAway:
+                    FollowPlayer();
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();

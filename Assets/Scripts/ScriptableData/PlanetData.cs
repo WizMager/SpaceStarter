@@ -33,5 +33,9 @@ namespace ScriptableData
         [Range(1, 99)] public int percentOfCameraDownPath;
         public float moveSpeedArcCameraDown;
         public float moveSpeedArcFirstPerson;
+        [Header("Fly Away")] 
+        public float moveSpeedFlyAway;
+        public float rotationSpeedFlyAway;
+        public float distanceFlyAway;
     }
 }
