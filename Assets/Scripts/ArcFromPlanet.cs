@@ -23,7 +23,6 @@ public class ArcFromPlanet : IDisposable
      private float _flewDistance;
      private float _rotatedDistance;
      private float _currentAngleRotated;
-     private Vector3 _directionFromPlanet;
 
      public ArcFromPlanet(StateController stateController,Transform playerTransform, float distanceToCenterCircle, 
           float radius, float moveSpeed, float rotationSpeedArc, float rotationSpeed)
@@ -79,6 +78,11 @@ public class ArcFromPlanet : IDisposable
                {
                     if (_rotatedDistance < 180f)
                     {
+                         if (_rotatedDistance == 0)
+                         {
+                              _playerTransform.LookAt(_centerCircle);  
+                              _playerTransform.Rotate(_playerTransform.up, -90f);
+                         }
                          var rotation = deltaTime * _rotationSpeed;
                          _playerTransform.RotateAround(_centerCircle, Vector3.up, rotation);
                          _rotatedDistance += rotation;
@@ -96,7 +100,6 @@ public class ArcFromPlanet : IDisposable
                     var angle = _rotationSpeedArc * deltaTime;
                     _playerTransform.Rotate(_playerTransform.up, -angle);
                     _currentAngleRotated += angle;
-                    Debug.Log($"{_currentAngleRotated}, {_angleRotateToSurface}");
                }
                else
                {
