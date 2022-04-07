@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c97cc8174f0d10d40bcba03e615491f2, type: 3}
-  m_Name: MissleData
+  m_Name: MissileData
   m_EditorClassIdentifier: 
-  missile: {fileID: 1961994478963943998, guid: 64a19c176d3501b44b347c5de8dd6e75, type: 3}
+  missilePrefab: {fileID: 1961994478963943998, guid: 64a19c176d3501b44b347c5de8dd6e75, type: 3}
   timeBeforeStartEngine: 1
   timeBeforeEngineStop: 2
   initialImpulse: 250
@@ -23,3 +23,4 @@ MonoBehaviour:
   explosionForce: 20
   explosionDelay: 0.3
   scaleModifier: 0.9
+  explosionDestroy: 2

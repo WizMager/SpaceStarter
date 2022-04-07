@@ -62,6 +62,9 @@ namespace Controllers
                 case GameState.ArcFlyFromPlanet:
                     FollowPlayer();
                     break;
+                case GameState.ArcFlyRadius:
+                    FollowPlayer();
+                    break;
                 case GameState.ArcFlyCameraDown:
                     FollowPlayer();
                     break;
