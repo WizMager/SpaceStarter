@@ -18,6 +18,7 @@ namespace ScriptableData
         public float explosionForce;
         public float explosionDelay;
         public float scaleModifier;
+        public float explosionDestroy;
     }
     
 }

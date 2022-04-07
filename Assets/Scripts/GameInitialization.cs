@@ -11,7 +11,7 @@ public class GameInitialization
    {
       var playerView = Object.FindObjectOfType<PlayerView>();
       var camera = Object.FindObjectOfType<Camera>();
-      var missilePosition = camera.transform.Find("MissilePosition");
+      var missilePosition = camera.GetComponentInChildren<Transform>();
       var playerIndicatorView = Object.FindObjectOfType<PlayerIndicatorView>();
       var bonusViews = Object.FindObjectsOfType<BonusView>();
       var deadView = Object.FindObjectOfType<DeadScreenView>();

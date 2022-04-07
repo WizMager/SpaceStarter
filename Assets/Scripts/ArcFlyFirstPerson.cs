@@ -64,6 +64,7 @@ public class ArcFlyFirstPerson : IDisposable
           }
           else
           {
+              _playerTransform.gameObject.SetActive(false);
               OnFinish?.Invoke();
           }
       }

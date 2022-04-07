@@ -2,6 +2,7 @@ using System;
 using Controllers;
 using UnityEngine;
 using Utils;
+using View;
 
 public class FlyAway
 {
@@ -13,6 +14,7 @@ public class FlyAway
     private readonly float _distanceFlyAway;
     private readonly float _moveSpeed;
     private readonly float _rotationSpeed;
+    private readonly GameObject _gravityView;
 
     private bool _isActive;
     private bool _isRotated;
@@ -21,7 +23,7 @@ public class FlyAway
     private float _angleRotated;
 
     public FlyAway(StateController stateController, Transform playerTransform, Transform planetTransform, float distanceFlyAway, 
-        float moveSpeed, float rotationSpeed)
+        float moveSpeed, float rotationSpeed, GameObject gravityView)
     {
         _stateController = stateController;
         _playerTransform = playerTransform;
@@ -29,6 +31,7 @@ public class FlyAway
         _distanceFlyAway = distanceFlyAway;
         _moveSpeed = moveSpeed;
         _rotationSpeed = rotationSpeed;
+        _gravityView = gravityView;
 
         _stateController.OnStateChange += ChangeState;
     }
@@ -48,6 +51,8 @@ public class FlyAway
 
     private void SetupAndCalculate()
     {
+        _playerTransform.gameObject.SetActive(true);
+        _gravityView.SetActive(true);
         _angleToRotate = Vector3.Angle(_playerTransform.forward, _playerTransform.position - _planetTransform.position);
         Debug.Log(_angleToRotate);
         _isRotated = false;
@@ -73,6 +78,7 @@ public class FlyAway
         }
         else
         {
+            Debug.Log(_angleRotated);
             if (_angleRotated < _angleToRotate)
             {
                 var rotation = _rotationSpeed * deltaTime;

@@ -16,6 +16,7 @@ namespace Controllers
         private readonly EdgeGravityToPlanet _edgeGravityToPlanet;
         private readonly EdgeGravityFromPlanet _edgeGravityFromPlanet;
         private readonly ArcFromPlanet _arcFromPlanet;
+        private readonly ArcFlyRadius _arcFlyRadius;
         private readonly ArcCameraDown _arcCameraDown;
         private readonly ArcFlyFirstPerson _arcFlyFirstPerson;
         private readonly ShootPlanet _shootPlanet;
@@ -37,8 +38,10 @@ namespace Controllers
                 data.Planet.moveSpeedToEdgeGravity, gravityLittleView, playerTransform, 
                 this, planetTransform);
             _arcFromPlanet = new ArcFromPlanet(this, playerTransform, data.Planet.distanceToCenterRadiusArc,
-                data.Planet.radiusArc, data.Planet.moveSpeedArcFromPlanet, data.Planet.rotationSpeedArcFromPlanet, 
-                data.Planet.rotationSpeedRadius);
+                data.Planet.radiusArc, data.Planet.moveSpeedArcFromPlanet, data.Planet.rotationSpeedArcFromPlanet);
+            _arcFlyRadius = new ArcFlyRadius(this, playerTransform, data.Planet.rotationSpeedRadius, 
+                gravityView.gameObject, gravityLittleView.gameObject, planetTransform.GetComponent<SphereCollider>(),
+                _arcFromPlanet);
             _arcCameraDown = new ArcCameraDown(this, playerTransform, planetView,
                 data.Planet.stopDistanceFromPlanetSurface, data.Planet.percentOfCameraDownPath, 
                 data.Planet.moveSpeedArcCameraDown, data.Planet.rotationSpeedArcFromPlanet);
@@ -47,13 +50,14 @@ namespace Controllers
                 data.Planet.percentOfCameraDownPath, data.Planet.moveSpeedArcFirstPerson);
             _shootPlanet = new ShootPlanet(touch, camera, data, playerTransform, this);
             _flyAway = new FlyAway(this, playerTransform, planetTransform, data.Planet.distanceFlyAway,
-                data.Planet.moveSpeedFlyAway, data.Planet.rotationSpeedFlyAway);
+                data.Planet.moveSpeedFlyAway, data.Planet.rotationSpeedFlyAway, gravityView.gameObject);
 
             _flewAngle.OnFinish += EndRotateAround;
             _toCenterGravity.OnFinish += EndToCenterGravity;
             _edgeGravityToPlanet.OnFinish += EndEdgeGravityToPlanetToPlanet;
             _edgeGravityFromPlanet.OnFinished += EndGravityFromPlanetFromPlanet;
             _arcFromPlanet.OnFinish += EndArcFlyFromPlanet;
+            _arcFlyRadius.OnFinish += EndFlyRadius;
             _arcCameraDown.OnFinish += EndArcCameraDown;
             _arcFlyFirstPerson.OnFinish += EndArcFlyFirstPerson;
             _shootPlanet.OnFinish += EndShoot;
@@ -83,10 +87,16 @@ namespace Controllers
             Debug.Log(GameState.ArcFlyFirstPerson);
         }
 
-        private void EndArcFlyFromPlanet()
+        private void EndFlyRadius()
         {
             OnStateChange?.Invoke(GameState.ArcFlyCameraDown);
             Debug.Log(GameState.ArcFlyCameraDown);
+        }
+        
+        private void EndArcFlyFromPlanet()
+        {
+            OnStateChange?.Invoke(GameState.ArcFlyRadius);
+            Debug.Log(GameState.ArcFlyRadius);
         }
 
         private void EndGravityFromPlanetFromPlanet()
@@ -120,6 +130,7 @@ namespace Controllers
             _edgeGravityToPlanet.Move(deltaTime);
             _edgeGravityFromPlanet.Move();
             _arcFromPlanet.Move(deltaTime);
+            _arcFlyRadius.Move(deltaTime);
             _arcCameraDown.Move(deltaTime);
             _arcFlyFirstPerson.Move(deltaTime);
             _flyAway.Move(deltaTime);

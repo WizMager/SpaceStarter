@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using UnityEngine;
 using View;
@@ -30,15 +29,7 @@ namespace Utils
         {
             _houseViews = FindObjectsOfType<HouseView>();
             _collider = GetComponent<BoxCollider>();
-            var centerLastPlanet = CenterPlanet();
-            if (centerLastPlanet != Vector3.zero)
-            {
-                _centerPlanet = CenterPlanet();
-            }
-            else
-            {
-                throw new ArgumentException($"Wrong Vector3 in when FindCenter in {typeof(ChelikMove)}");
-            }
+            _centerPlanet = CenterPlanet();
             SubscribeHouse();
         }
 

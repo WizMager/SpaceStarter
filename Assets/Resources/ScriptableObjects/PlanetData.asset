@@ -34,3 +34,6 @@ MonoBehaviour:
   percentOfCameraDownPath: 30
   moveSpeedArcCameraDown: 10
   moveSpeedArcFirstPerson: 7
+  moveSpeedFlyAway: 10
+  rotationSpeedFlyAway: 25
+  distanceFlyAway: 10

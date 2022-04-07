@@ -7,6 +7,7 @@ namespace Utils
         FlyAroundPlanet,
         EdgeGravityFromPlanet,
         ArcFlyFromPlanet,
+        ArcFlyRadius,
         ArcFlyCameraDown,
         ArcFlyFirstPerson,
         ShootPlanet,
