@@ -16,5 +16,11 @@ namespace ScriptableData
         public float cameraDownSpeed;
         [Header("Rotate Around Planet")] 
         public float cameraOffsetBeforeRotation;
+        [Header("Fly from planet")]
+        public float rotationSpeedFlyFromPlanet;
+        public float moveSpeedFlyFromPlanet;
+        public float offsetBackFromPlayer;
+        public float offsetUpFromPlayer;
+        public float offsetAroundPlanet;
     }
 }
