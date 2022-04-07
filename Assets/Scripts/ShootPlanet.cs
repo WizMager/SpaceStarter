@@ -47,7 +47,7 @@ public class ShootPlanet : IDisposable
         var missile = Object.Instantiate(_missile, _missileStartPosition.position, cameraTransform.rotation);
         missile.GetComponent<MissileView>().SetTargetPoint(raycastHit[0].point);
         _testShootCounter--;
-        Debug.Log($"Shoots last: {_testShootCounter}");
+        Debug.Log($"Shoots left: {_testShootCounter}");
         if (_testShootCounter <= 0)
         {
             OnFinish?.Invoke();
