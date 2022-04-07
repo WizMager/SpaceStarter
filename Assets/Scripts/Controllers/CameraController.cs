@@ -15,12 +15,26 @@ namespace Controllers
         private readonly Transform _camera;
         private readonly Transform _planet;
 
-        private readonly float _rotationSpeedFlyFromPlanet;
+        private readonly float _rotationSpeedFlyRadius;
+        private readonly float _moveSpeedFlyRadius;
+        private readonly float _offsetBackFlyRadius;
+        private readonly float _offsetUpFlyRadius;
+        
         private readonly float _moveSpeedFlyFromPlanet;
-        private readonly float _offsetBackFromPlayer;
-        private readonly float _offsetUpFromPlayer;
-        private readonly float _offsetAroundPlanet;        
+        private readonly float _offsetBackFlyFromPlayer;
+        private readonly float _offsetUpFlyFromPlayer;
+        
+        private readonly float _rotationSpeedFlyCameraDown;
+        private readonly float _moveSpeedFlyCameraDown;
+        private readonly float _offsetBackFlyCameraDown;
+        private readonly float _offsetUpFlyCameraDown;
 
+        private readonly float _rotationSpeedFlyFirstPerson;
+        private readonly float _moveSpeedFlyFirstPerson;
+        private readonly float _offsetBackFlyFirstPerson;
+        private readonly float _offsetUpFlyFirstPerson;
+        
+        
         public CameraController(StateController stateController, Transform playerTransform, Transform cameraTransform,
             Transform planet, AllData data)
         {
@@ -28,12 +42,25 @@ namespace Controllers
             _player = playerTransform;
             _camera = cameraTransform;
             _planet = planet;
-
-            _rotationSpeedFlyFromPlanet = data.Camera.rotationSpeedFlyFromPlanet;
+            
+            _rotationSpeedFlyRadius = data.Camera.rotationSpeedFlyRadius;
             _moveSpeedFlyFromPlanet = data.Camera.moveSpeedFlyFromPlanet;
-            _offsetBackFromPlayer = data.Camera.offsetBackFromPlayer;
-            _offsetUpFromPlayer = data.Camera.offsetUpFromPlayer;
-            _offsetAroundPlanet = data.Camera.offsetAroundPlanet;
+            _offsetBackFlyFromPlayer = data.Camera.offsetBackFlyFromPlayer;
+            _offsetUpFlyFromPlayer = data.Camera.offsetUpFlyFromPlayer;
+            
+            _moveSpeedFlyRadius = data.Camera.moveSpeedFlyRadius;
+            _offsetBackFlyRadius = data.Camera.offsetBackFlyRadius;
+            _offsetUpFlyRadius = data.Camera.offsetUpFlyRadius;
+            
+            _rotationSpeedFlyCameraDown = data.Camera.rotationSpeedFlyCameraDown;
+            _moveSpeedFlyCameraDown = data.Camera.moveSpeedFlyCameraDown;
+            _offsetBackFlyCameraDown = data.Camera.offsetBackFlyCameraDown;
+            _offsetUpFlyCameraDown = data.Camera.offsetUpFlyCameraDown;
+            
+            _rotationSpeedFlyFirstPerson = data.Camera.rotationSpeedFlyFirstPerson;
+            _moveSpeedFlyFirstPerson = data.Camera.moveSpeedFlyFirstPerson;
+            _offsetBackFlyFirstPerson = data.Camera.offsetBackFlyFirstPerson;
+            _offsetUpFlyFirstPerson = data.Camera.offsetUpFlyFirstPerson;
             
             _stateController.OnStateChange += ChangeState;
         }
@@ -55,17 +82,43 @@ namespace Controllers
             _camera.position = _player.position;
             _camera.LookAt(_planet.position);
         }
-        
-        private void FreeFly()
+
+        private void FlyFromPlanet()
+        {
+            Vector3 dirNorm = (_player.position - _planet.position).normalized;
+            Vector3 target = _player.position + dirNorm * _offsetBackFlyFromPlayer + Vector3.up * _offsetUpFlyFromPlayer;
+            _camera.position = Vector3.Lerp(_camera.position, target,  Time.deltaTime * _moveSpeedFlyFromPlanet);
+        }
+        private void FlyRadius()
         {
             var look = Quaternion.LookRotation(_planet.position - _camera.position);
-            _camera.rotation = Quaternion.Lerp(_camera.rotation, look, _rotationSpeedFlyFromPlanet * Time.deltaTime);
+            _camera.rotation = Quaternion.Lerp(_camera.rotation, look, _rotationSpeedFlyRadius * Time.deltaTime);
                         
             Vector3 dirNorm = (_player.position - _planet.position).normalized;
-            Vector3 target = _player.position + dirNorm * _offsetBackFromPlayer + Vector3.up * _offsetUpFromPlayer;
-            _camera.position = Vector3.Lerp(_camera.position, target,  Time.deltaTime * _moveSpeedFlyFromPlanet);
-            //_camera.transform.RotateAround(_planet.position, _planet.up, _offsetAroundPlanet);
-        } 
+            Vector3 target = _player.position + dirNorm * _offsetBackFlyRadius + Vector3.up * _offsetUpFlyRadius;
+            _camera.position = Vector3.Lerp(_camera.position, target,  Time.deltaTime * _moveSpeedFlyRadius);
+        }
+
+        private void FlyCameraDown()
+        {
+            var look = Quaternion.LookRotation(_planet.position - _camera.position);
+            _camera.rotation = Quaternion.Lerp(_camera.rotation, look, _rotationSpeedFlyCameraDown * Time.deltaTime);
+                        
+            Vector3 dirNorm = (_player.position - _planet.position).normalized;
+            Vector3 target = _player.position + dirNorm * _offsetBackFlyCameraDown + Vector3.up * _offsetUpFlyCameraDown;
+            _camera.position = Vector3.Lerp(_camera.position, target,  Time.deltaTime * _moveSpeedFlyCameraDown);
+        }
+        
+        private void ToFirstPerson()
+        {
+            var look = Quaternion.LookRotation(_planet.position - _camera.position);
+            _camera.rotation = Quaternion.Lerp(_camera.rotation, look, _rotationSpeedFlyFirstPerson * Time.deltaTime);
+                        
+            Vector3 dirNorm = (_player.position - _planet.position).normalized;
+            Vector3 target = _player.position + dirNorm * _offsetBackFlyFirstPerson + Vector3.up * _offsetUpFlyFirstPerson;
+            _camera.position = Vector3.Lerp(_camera.position, target,  Time.deltaTime * _moveSpeedFlyFirstPerson);
+        }
+        
         
         public void Execute(float deltaTime)
         {
@@ -84,16 +137,16 @@ namespace Controllers
                     FollowPlayer();
                     break;
                 case GameState.ArcFlyFromPlanet:
-                    FreeFly();
+                    FlyFromPlanet();
                     break;
                 case GameState.ArcFlyRadius:
-                    FollowPlayer();
+                    FlyRadius();
                     break;
                 case GameState.ArcFlyCameraDown:
-                    FollowPlayer();
+                    FlyCameraDown();
                     break;
                 case GameState.ArcFlyFirstPerson:
-                    FirstPerson();
+                    ToFirstPerson();
                     break;
                 case GameState.ShootPlanet:
                     FirstPerson();
