@@ -32,6 +32,7 @@ namespace Controller
         private readonly FlyToCenterGravity _flyToCenterGravity;
         private readonly LastPlanet _lastPlanet;
         private readonly CameraMove _cameraMove;
+        private readonly CameraRotateLastPlanet _cameraRotateLastPlanet;
 
         public PlayerController(ScriptableData.ScriptableData data, PlayerView playerView, IUserInput<Vector3>[] touchInput, 
             IUserInput<SwipeData> swipeInput, PlanetView[] planetViews, GravityView[] gravityViews, GravityEnterView[] gravityEnterViews,
@@ -77,8 +78,11 @@ namespace Controller
                 planetViews[(int) PlanetNumber.Last].transform, _planetViews[_planetIndex].transform, _flyPlanetAngle, 
                 data.Camera.moveSpeed, data.Camera.cameraOffsetBeforeRotation, _flyToCenterGravity,
                 data.LastPlanet.minimalPercentMoveSpeedFirstPerson);
-            
-            _playerState = new AimNextPlanetPlayerState(this, false);
+
+            _cameraRotateLastPlanet = new CameraRotateLastPlanet();
+
+            //_playerState = new AimNextPlanetPlayerState(this, false);
+            _playerState = new LastPlanetShootState(this);
 
             _playerModel.OnZeroHealth += ChangeDeadState;
         }
@@ -227,6 +231,11 @@ namespace Controller
         {
             _playerState.Move(deltaTime);
         }
+
+        public void CameraDrift()
+		{
+            _cameraRotateLastPlanet.CameraRotateTransform();
+		}
 
         public void Clean()
         {

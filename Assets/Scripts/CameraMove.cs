@@ -236,21 +236,25 @@ public class CameraMove
 		switch (swipeData.Direction)
 		{
 			case SwipeDirection.Left:
-                _cameraTransform.RotateAround(_lastPlanetCenter, _cameraTransform.up, swipeData.Value * _firstPersonRotationSpeed); ///
+                _cameraTransform.RotateAround(_lastPlanetCenter, _cameraTransform.up, 
+                    swipeData.Value * _firstPersonRotationSpeed); 
             break;
 
             case SwipeDirection.Right:
-                _cameraTransform.RotateAround(_lastPlanetCenter, -_cameraTransform.up, swipeData.Value * _firstPersonRotationSpeed);
+                _cameraTransform.RotateAround(_lastPlanetCenter, -_cameraTransform.up, 
+                    swipeData.Value * _firstPersonRotationSpeed);
                 break;
 
 			case SwipeDirection.Up:
-                _cameraTransform.RotateAround(_lastPlanetCenter, _cameraTransform.right, swipeData.Value * _firstPersonRotationSpeed);
+                _cameraTransform.RotateAround(_lastPlanetCenter, _cameraTransform.right, 
+                    swipeData.Value * _firstPersonRotationSpeed);
                 break;
 
 			case SwipeDirection.Down:
-                _cameraTransform.RotateAround(_lastPlanetCenter, -_cameraTransform.right, swipeData.Value * _firstPersonRotationSpeed);
+                _cameraTransform.RotateAround(_lastPlanetCenter, -_cameraTransform.right, 
+                    swipeData.Value * _firstPersonRotationSpeed);
                 break;
-            default:
+			default:
 				throw new ArgumentOutOfRangeException();
 		}
 	}
