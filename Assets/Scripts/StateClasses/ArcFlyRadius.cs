@@ -11,9 +11,6 @@ namespace StateClasses
 
           private readonly StateController _stateController;
           private readonly Transform _playerTransform;
-          private readonly GameObject _gravityView;
-          private readonly GameObject _gravityLittleView;
-          private readonly SphereCollider _planetCollider;
           private readonly float _rotationSpeed;
           private readonly ArcFromPlanet _arcFromPlanet;
 
@@ -21,15 +18,12 @@ namespace StateClasses
           private Vector3 _centerCircle;
           private float _rotatedDistance;
 
-          public ArcFlyRadius(StateController stateController, Transform playerTransform, float rotationSpeed, 
-               GameObject gravityView, GameObject gravityLittleView, SphereCollider planetCollider, ArcFromPlanet arcFromPlanet)
+          public ArcFlyRadius(StateController stateController, Transform playerTransform, float rotationSpeed, ArcFromPlanet arcFromPlanet)
           {
                _stateController = stateController;
                _playerTransform = playerTransform;
                _rotationSpeed = rotationSpeed;
-               _gravityView = gravityView;
-               _gravityLittleView = gravityLittleView;
-               _planetCollider = planetCollider;
+               
                _arcFromPlanet = arcFromPlanet;
 
                _stateController.OnStateChange += ChangeState;
@@ -76,9 +70,6 @@ namespace StateClasses
                }
                else
                {
-                    _gravityView.SetActive(false);
-                    _gravityLittleView.SetActive(false);
-                    _planetCollider.enabled = false;
                     OnFinish?.Invoke();
                }
           }

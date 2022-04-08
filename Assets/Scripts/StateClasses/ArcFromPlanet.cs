@@ -16,6 +16,9 @@ namespace StateClasses
           private readonly float _radius;
           private readonly float _moveSpeed;
           private readonly float _rotationSpeed;
+          private readonly GameObject _gravityView;
+          private readonly GameObject _gravityLittleView;
+          private readonly SphereCollider _planetCollider;
 
           private bool _isActive;
           private float _angleRotateToSurface;
@@ -25,7 +28,8 @@ namespace StateClasses
           private float _currentAngleRotated;
 
           public ArcFromPlanet(StateController stateController,Transform playerTransform, float distanceToCenterCircle, 
-               float radius, float moveSpeed, float rotationSpeed)
+               float radius, float moveSpeed, float rotationSpeed, GameObject gravityView, GameObject gravityLittleView, 
+               SphereCollider planetCollider)
           {
                _stateController = stateController;
                _playerTransform = playerTransform;
@@ -33,6 +37,9 @@ namespace StateClasses
                _radius = radius;
                _moveSpeed = moveSpeed;
                _rotationSpeed = rotationSpeed;
+               _gravityView = gravityView;
+               _gravityLittleView = gravityLittleView;
+               _planetCollider = planetCollider;
 
                _stateController.OnStateChange += ChangeState;
           }
@@ -74,6 +81,9 @@ namespace StateClasses
                     }
                     else
                     {
+                         _gravityView.SetActive(false);
+                         _gravityLittleView.SetActive(false);
+                         _planetCollider.enabled = false;
                          OnFinish?.Invoke();
                     }  
                }

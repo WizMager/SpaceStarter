@@ -39,10 +39,9 @@ namespace Controllers
                 data.Planet.moveSpeedToEdgeGravity, gravityLittleView, playerTransform, 
                 this, planetTransform);
             _arcFromPlanet = new ArcFromPlanet(this, playerTransform, data.Planet.distanceToCenterRadiusArc,
-                data.Planet.radiusArc, data.Planet.moveSpeedArcFromPlanet, data.Planet.rotationSpeedArcFromPlanet);
-            _arcFlyRadius = new ArcFlyRadius(this, playerTransform, data.Planet.rotationSpeedRadius, 
-                gravityView.gameObject, gravityLittleView.gameObject, planetTransform.GetComponent<SphereCollider>(),
-                _arcFromPlanet);
+                data.Planet.radiusArc, data.Planet.moveSpeedArcFromPlanet, data.Planet.rotationSpeedArcFromPlanet, 
+                gravityView.gameObject, gravityLittleView.gameObject, planetTransform.GetComponent<SphereCollider>());
+            _arcFlyRadius = new ArcFlyRadius(this, playerTransform, data.Planet.rotationSpeedRadius, _arcFromPlanet);
             _arcCameraDown = new ArcCameraDown(this, playerTransform, planetView,
                 data.Planet.stopDistanceFromPlanetSurface, data.Planet.percentOfCameraDownPath, 
                 data.Planet.moveSpeedArcCameraDown, data.Planet.rotationSpeedArcFromPlanet);
