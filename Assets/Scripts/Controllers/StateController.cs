@@ -1,6 +1,7 @@
 using System;
 using Interface;
 using ScriptableData;
+using StateClasses;
 using UnityEngine;
 using Utils;
 using View;
@@ -143,9 +144,22 @@ namespace Controllers
             _edgeGravityToPlanet.OnFinish -= EndEdgeGravityToPlanetToPlanet;
             _edgeGravityFromPlanet.OnFinished -= EndGravityFromPlanetFromPlanet;
             _arcFromPlanet.OnFinish -= EndArcFlyFromPlanet;
+            _arcFlyRadius.OnFinish -= EndFlyRadius;
             _arcCameraDown.OnFinish -= EndArcCameraDown;
             _arcFlyFirstPerson.OnFinish -= EndArcFlyFirstPerson;
             _shootPlanet.OnFinish -= EndShoot;
+            _flyAway.OnFinish -= EndFlyAway;
+            
+            _flewAngle.Dispose();
+            _toCenterGravity.Dispose();
+            _edgeGravityToPlanet.Dispose();
+            _edgeGravityFromPlanet.Dispose();
+            _arcFromPlanet.Dispose();
+            _arcFlyRadius.Dispose();
+            _arcCameraDown.Dispose();
+            _arcFlyFirstPerson.Dispose();
+            _shootPlanet.Dispose();
+            _flyAway.Dispose();
         }
     }
 }
