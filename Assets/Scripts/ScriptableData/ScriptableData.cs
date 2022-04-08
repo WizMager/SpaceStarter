@@ -14,20 +14,6 @@ namespace ScriptableData
         [SerializeField] private InputData _inputData;
         [SerializeField] private BonusData _bonusData;
         [SerializeField] private MissileData _missleData;
-        [SerializeField] private SpeedRotateCameraData _speedRotateCameraData; //
-
-        public SpeedRotateCameraData SpeedRotate ///
-		{
-            get
-			{
-                if (_speedRotateCameraData = null)
-				{
-                    throw new NullReferenceException("You don't create or set SpeedRotateCameraData scriptable object");
-				}
-
-                return _speedRotateCameraData;
-			}
-		}
 
 		public PlayerData Player
         {

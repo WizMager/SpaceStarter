@@ -78,8 +78,7 @@ namespace Controller
                 data.Camera.moveSpeed, data.Camera.cameraOffsetBeforeRotation, _flyToCenterGravity,
                 data.LastPlanet.minimalPercentMoveSpeedFirstPerson, data.LastPlanet.speedDreft);
 
-            //_playerState = new AimNextPlanetPlayerState(this, false);
-            _playerState = new LastPlanetShootState(this);
+            _playerState = new AimNextPlanetPlayerState(this, false);
 
             _playerModel.OnZeroHealth += ChangeDeadState;
         }
