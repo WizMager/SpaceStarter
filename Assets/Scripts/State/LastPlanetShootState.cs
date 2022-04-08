@@ -20,7 +20,7 @@ namespace State
             PlayerController.CameraDrift();
 
             if (!PlayerController.CameraState(CameraState.LastPlanetFirstPerson, deltaTime)) return;
-
+            //TODO: realize CameraState.YourNewState after this if
             PlayerController.ShootLastPlanet();
             _isActivated = true;
         }

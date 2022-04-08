@@ -81,8 +81,8 @@ namespace Controller
 
             _cameraRotateLastPlanet = new CameraRotateLastPlanet();
 
-            //_playerState = new AimNextPlanetPlayerState(this, false);
-            _playerState = new LastPlanetShootState(this);
+            _playerState = new AimNextPlanetPlayerState(this, false);
+            //_playerState = new LastPlanetShootState(this);
 
             _playerModel.OnZeroHealth += ChangeDeadState;
         }
@@ -97,6 +97,7 @@ namespace Controller
         {
             switch (state)
             {
+                //TODO: add enum for new camera state for drift and realize drift camera method
                 case Utils.CameraState.Follow:
                     _cameraMove.FollowPlayer();
                     return true;
