@@ -20,14 +20,14 @@ MonoBehaviour:
   cameraDownSpeed: 20
   cameraOffsetBeforeRotation: 7
   moveSpeedFlyFromPlanet: 0.5
-  offsetBackFlyFromPlayer: 10
-  offsetUpFlyFromPlayer: 15
+  offsetBackFlyFromPlanet: 10
+  offsetUpFlyFromPlanet: 15
   rotationSpeedFlyRadius: 1
   moveSpeedFlyRadius: 1
   offsetBackFlyRadius: 10
   offsetUpFlyRadius: 3
   rotationSpeedFlyCameraDown: 2
-  moveSpeedFlyCameraDown: 3
+  moveSpeedFlyCameraDown: 1
   offsetBackFlyCameraDown: 1
   offsetUpFlyCameraDown: 1
   rotationSpeedFlyFirstPerson: 2

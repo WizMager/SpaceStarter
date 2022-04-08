@@ -18,8 +18,8 @@ namespace ScriptableData
         public float cameraOffsetBeforeRotation;
         [Header("Fly from planet")]
         public float moveSpeedFlyFromPlanet;
-        public float offsetBackFlyFromPlayer;
-        public float offsetUpFlyFromPlayer;
+        public float offsetBackFlyFromPlanet;
+        public float offsetUpFlyFromPlanet;
         
         [Header("Fly radius")]
         public float rotationSpeedFlyRadius;

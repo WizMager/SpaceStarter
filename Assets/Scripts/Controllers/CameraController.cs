@@ -21,9 +21,9 @@ namespace Controllers
         private readonly float _offsetUpFlyRadius;
         
         private readonly float _moveSpeedFlyFromPlanet;
-        private readonly float _offsetBackFlyFromPlayer;
-        private readonly float _offsetUpFlyFromPlayer;
-        
+        private readonly float _offsetUpFlyFromPlanet;
+        private readonly float _offsetBackFlyFromPlanet;
+
         private readonly float _rotationSpeedFlyCameraDown;
         private readonly float _moveSpeedFlyCameraDown;
         private readonly float _offsetBackFlyCameraDown;
@@ -33,8 +33,8 @@ namespace Controllers
         private readonly float _moveSpeedFlyFirstPerson;
         private readonly float _offsetBackFlyFirstPerson;
         private readonly float _offsetUpFlyFirstPerson;
-        
-        
+
+
         public CameraController(StateController stateController, Transform playerTransform, Transform cameraTransform,
             Transform planet, AllData data)
         {
@@ -45,8 +45,8 @@ namespace Controllers
             
             _rotationSpeedFlyRadius = data.Camera.rotationSpeedFlyRadius;
             _moveSpeedFlyFromPlanet = data.Camera.moveSpeedFlyFromPlanet;
-            _offsetBackFlyFromPlayer = data.Camera.offsetBackFlyFromPlayer;
-            _offsetUpFlyFromPlayer = data.Camera.offsetUpFlyFromPlayer;
+            _offsetBackFlyFromPlanet = data.Camera.offsetBackFlyFromPlanet;
+            _offsetUpFlyFromPlanet = data.Camera.offsetUpFlyFromPlanet;
             
             _moveSpeedFlyRadius = data.Camera.moveSpeedFlyRadius;
             _offsetBackFlyRadius = data.Camera.offsetBackFlyRadius;
@@ -83,42 +83,44 @@ namespace Controllers
             _camera.LookAt(_planet.position);
         }
 
+        private void Fly(float moveSpeed, float offsetUp, float offsetBack)
+        {
+            Fly(0f, moveSpeed, offsetUp, offsetBack);
+        }
+        
+        private void Fly(float rotationSpeed, float moveSpeed, float offsetUp, float offsetBack)
+        {
+            var planet = _planet.position;
+            var player = _player.position;
+            
+            if (rotationSpeed != 0)
+            {
+                var look = Quaternion.LookRotation(planet - _camera.position);
+                _camera.rotation = Quaternion.Lerp(_camera.rotation, look, Time.deltaTime * rotationSpeed);
+            }
+            
+            Vector3 dirNorm = (player - planet).normalized;
+            Vector3 target = player + dirNorm * offsetBack + Vector3.up * offsetUp;
+            _camera.position = Vector3.Lerp(_camera.position, target,  Time.deltaTime * moveSpeed);
+        }
         private void FlyFromPlanet()
         {
-            Vector3 dirNorm = (_player.position - _planet.position).normalized;
-            Vector3 target = _player.position + dirNorm * _offsetBackFlyFromPlayer + Vector3.up * _offsetUpFlyFromPlayer;
-            _camera.position = Vector3.Lerp(_camera.position, target,  Time.deltaTime * _moveSpeedFlyFromPlanet);
+            Fly(_moveSpeedFlyFromPlanet, _offsetUpFlyFromPlanet, _offsetBackFlyFromPlanet);
         }
         private void FlyRadius()
         {
-            var look = Quaternion.LookRotation(_planet.position - _camera.position);
-            _camera.rotation = Quaternion.Lerp(_camera.rotation, look, _rotationSpeedFlyRadius * Time.deltaTime);
-                        
-            Vector3 dirNorm = (_player.position - _planet.position).normalized;
-            Vector3 target = _player.position + dirNorm * _offsetBackFlyRadius + Vector3.up * _offsetUpFlyRadius;
-            _camera.position = Vector3.Lerp(_camera.position, target,  Time.deltaTime * _moveSpeedFlyRadius);
+            Fly(_rotationSpeedFlyRadius, _moveSpeedFlyRadius, _offsetUpFlyRadius, _offsetBackFlyRadius);
         }
 
         private void FlyCameraDown()
         {
-            var look = Quaternion.LookRotation(_planet.position - _camera.position);
-            _camera.rotation = Quaternion.Lerp(_camera.rotation, look, _rotationSpeedFlyCameraDown * Time.deltaTime);
-                        
-            Vector3 dirNorm = (_player.position - _planet.position).normalized;
-            Vector3 target = _player.position + dirNorm * _offsetBackFlyCameraDown + Vector3.up * _offsetUpFlyCameraDown;
-            _camera.position = Vector3.Lerp(_camera.position, target,  Time.deltaTime * _moveSpeedFlyCameraDown);
+            Fly(_rotationSpeedFlyCameraDown, _moveSpeedFlyCameraDown, _offsetUpFlyCameraDown, _offsetBackFlyCameraDown);
         }
         
         private void ToFirstPerson()
         {
-            var look = Quaternion.LookRotation(_planet.position - _camera.position);
-            _camera.rotation = Quaternion.Lerp(_camera.rotation, look, _rotationSpeedFlyFirstPerson * Time.deltaTime);
-                        
-            Vector3 dirNorm = (_player.position - _planet.position).normalized;
-            Vector3 target = _player.position + dirNorm * _offsetBackFlyFirstPerson + Vector3.up * _offsetUpFlyFirstPerson;
-            _camera.position = Vector3.Lerp(_camera.position, target,  Time.deltaTime * _moveSpeedFlyFirstPerson);
+            Fly(_rotationSpeedFlyFirstPerson, _moveSpeedFlyFirstPerson, _offsetUpFlyFirstPerson, _offsetBackFlyFirstPerson);
         }
-        
         
         public void Execute(float deltaTime)
         {
