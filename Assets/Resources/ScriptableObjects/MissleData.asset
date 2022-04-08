@@ -12,14 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c97cc8174f0d10d40bcba03e615491f2, type: 3}
   m_Name: MissleData
   m_EditorClassIdentifier: 
-  missile: {fileID: 1961994478963943998, guid: 64a19c176d3501b44b347c5de8dd6e75, type: 3}
+  missilePrefab: {fileID: 1961994478963943998, guid: 64a19c176d3501b44b347c5de8dd6e75, type: 3}
   timeBeforeStartEngine: 1
   timeBeforeEngineStop: 2
   initialImpulse: 250
   engineAcceleration: 1000
   rotationSpeed: 1
   explosionParticleSystem: {fileID: 8510677244830863334, guid: 9d69d2a8d25d62845afe6ae61919a641, type: 3}
-  explosionArea: 1
+  explosionArea: 1.5
+  explosionAreaExt: 1.6
   explosionForce: 20
   explosionDelay: 0.3
   scaleModifier: 0.9

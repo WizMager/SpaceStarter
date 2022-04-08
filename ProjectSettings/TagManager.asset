@@ -7,6 +7,9 @@ TagManager:
   - HealthIndicator
   - BonusIndicator
   - Asteroid
+  - Chelik
+  - Building
+  - PlanetSubobject
   layers:
   - Default
   - TransparentFX

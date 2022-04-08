@@ -1,5 +1,4 @@
 ﻿using System;
-using DefaultNamespace;
 using View;
 
 public class LastPlanet : IDisposable
@@ -14,7 +13,6 @@ public class LastPlanet : IDisposable
     {
         _gravityView = gravityView;
         _moveSpeed = moveSpeed;
-
         _gravityView.OnPlayerGravityEnter += GravityEntered;
         _trajectory = trajectoryCalculate;
     }

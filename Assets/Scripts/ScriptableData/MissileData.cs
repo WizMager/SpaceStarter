@@ -15,6 +15,7 @@ namespace ScriptableData
         [Header("Explosion")]
         public GameObject explosionParticleSystem;
         public float explosionArea;
+        public float explosionAreaExt;
         public float explosionForce;
         public float explosionDelay;
         public float scaleModifier;

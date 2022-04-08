@@ -1,7 +1,5 @@
 ﻿using UnityEngine;
 
-namespace DefaultNamespace
-{
     public class TrajectoryCalculate
     {
         private readonly Transform _playerTransform;
@@ -165,4 +163,3 @@ namespace DefaultNamespace
             _distance = 10f;
         }
     }
-}
