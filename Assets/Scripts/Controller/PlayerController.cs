@@ -78,15 +78,11 @@ namespace Controller
                 planetViews[(int) PlanetNumber.Last].transform, _planetViews[_planetIndex].transform, _flyPlanetAngle, 
                 data.Camera.moveSpeed, data.Camera.cameraOffsetBeforeRotation, _flyToCenterGravity,
                 data.LastPlanet.minimalPercentMoveSpeedFirstPerson);
-<<<<<<< HEAD
 
             _cameraRotateLastPlanet = new CameraRotateLastPlanet();
 
             //_playerState = new AimNextPlanetPlayerState(this, false);
             _playerState = new LastPlanetShootState(this);
-=======
-            _playerState = new AimNextPlanetPlayerState(this, false);
->>>>>>> dcbc1cb33bb774718a5a7fdf906d27ed3563ac3f
 
             _playerModel.OnZeroHealth += ChangeDeadState;
         }
