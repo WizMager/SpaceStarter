@@ -19,3 +19,4 @@ MonoBehaviour:
   _inputData: {fileID: 11400000, guid: 1b963a50ca3462946b814abf481e44b2, type: 2}
   _bonusData: {fileID: 11400000, guid: f7f9ffc538e6ef14eae352d266069897, type: 2}
   _missleData: {fileID: 11400000, guid: ba0f3da42a58a264bb753c0ab378ac1d, type: 2}
+  _speedRotateCameraData: {fileID: 11400000, guid: 3e91e28b91bf7a341a55163133228601, type: 2}

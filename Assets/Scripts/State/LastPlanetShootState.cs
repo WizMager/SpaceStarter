@@ -17,10 +17,10 @@ namespace State
         {
             if (_isActivated) return;
 
-            PlayerController.CameraDrift();
-
             if (!PlayerController.CameraState(CameraState.LastPlanetFirstPerson, deltaTime)) return;
-            //TODO: realize CameraState.YourNewState after this if
+
+            PlayerController.CameraState(CameraState.CameraDrift, deltaTime);
+            
             PlayerController.ShootLastPlanet();
             _isActivated = true;
         }

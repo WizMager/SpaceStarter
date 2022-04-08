@@ -8,5 +8,7 @@
         FlyToLastPlanet,
         RotateAroundPlanet,
         LastPlanetFirstPerson,
+
+        CameraDrift
     }
 }

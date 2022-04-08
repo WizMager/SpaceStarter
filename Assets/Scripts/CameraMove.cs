@@ -37,12 +37,15 @@ public class CameraMove
     private float _pathToCenter;
     private int _planetIndex;
 
+    private CameraRotateLastPlanet _cameraRotateLastPlanet;
+    ScriptableData.ScriptableData data;
+
     public CameraMove(Camera camera, float cameraUpSpeed, float cameraUpOffset, 
         IUserInput<SwipeData> swipeInput, Vector3 lastPlanetCenter, float firstPersonRotationSpeed, PlayerView playerView,
         float cameraDownPosition, float cameraDownSpeed, CameraColliderView cameraCameraColliderView, 
         float cameraDownPositionLastPlanet, float cameraDownSpeedLastPlanet, float distanceLastPlanet, float moveSpeedLastPlanet,
         Transform lastPlanetTransform, Transform currentPlanet, FlyPlanetAngle flyPlanetAngle, float speedToCenterBetween, 
-        float angleLeadRotateAround, FlyToCenterGravity flyToCenterGravity, int minimalPercentMoveSpeedFirstPerson)
+        float angleLeadRotateAround, FlyToCenterGravity flyToCenterGravity, int minimalPercentMoveSpeedFirstPerson, float speedDrift)
     {
         _cameraTransform = camera.transform;
         _cameraUpSpeed = cameraUpSpeed;
@@ -72,6 +75,8 @@ public class CameraMove
         _flyPlanetAngle.OnRotateCalculated += RotateAroundPlanet;
         _flyPlanetAngle.OnPathBetweenPlanets += SetCenterBetweenPlanets;
         _flyToCenterGravity.OnDirectionCalculated += RotatedToPlanet;
+
+        _cameraRotateLastPlanet = new CameraRotateLastPlanet(speedDrift, _cameraTransform, _lastPlanetCenter);
     }
 
     public bool CameraDownPlanet(float deltaTime)
@@ -170,7 +175,12 @@ public class CameraMove
         return false;
     }
 
-    private void SetCenterBetweenPlanets(float halfPath)
+	internal bool CameraDrift(float deltaTime)
+	{
+        return _cameraRotateLastPlanet.CameraRotateTransform(deltaTime); //
+	}
+
+	private void SetCenterBetweenPlanets(float halfPath)
     {
         RotateAroundPlanet(-_angleLeadRotateAround);
         var planetPositionUp = _currentPlanet.position;

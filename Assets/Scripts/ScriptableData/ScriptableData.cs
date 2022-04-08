@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Assets.Scripts.ScriptableData;
+using System;
 using UnityEngine;
 
 namespace ScriptableData
@@ -13,8 +14,22 @@ namespace ScriptableData
         [SerializeField] private InputData _inputData;
         [SerializeField] private BonusData _bonusData;
         [SerializeField] private MissileData _missleData;
+        [SerializeField] private SpeedRotateCameraData _speedRotateCameraData; //
 
-        public PlayerData Player
+        public SpeedRotateCameraData SpeedRotate ///
+		{
+            get
+			{
+                if (_speedRotateCameraData = null)
+				{
+                    throw new NullReferenceException("You don't create or set SpeedRotateCameraData scriptable object");
+				}
+
+                return _speedRotateCameraData;
+			}
+		}
+
+		public PlayerData Player
         {
             get
             {
