@@ -70,7 +70,6 @@ namespace InputClasses
                 swipe.Value = Mathf.Abs(value);
                 OnChange?.Invoke(swipe);
             }
-
             _fingerUpPosition = _fingerDownPosition;
         }
 

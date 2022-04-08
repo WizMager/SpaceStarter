@@ -3,7 +3,7 @@ using Utils;
 
 namespace State
 {
-    public class LastPlanetShootState : PlayerState
+	public class LastPlanetShootState : PlayerState
     {
         private bool _isActivated;
 
@@ -15,8 +15,12 @@ namespace State
         
         public override void Move(float deltaTime)
         {
-            if (_isActivated) return;
-            
+            if (_isActivated)
+			{
+                PlayerController.CameraState(CameraState.CameraDrift, deltaTime);
+                return;
+            }
+
             if (!PlayerController.CameraState(CameraState.LastPlanetFirstPerson, deltaTime)) return;
             
             PlayerController.ShootLastPlanet();

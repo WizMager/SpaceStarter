@@ -10,7 +10,7 @@ namespace View
         public event Action OnPlayerPlanetExit;
         public PlanetNumber number;
 
-        private void OnTriggerEnter(Collider other)
+		private void OnTriggerEnter(Collider other)
         {
             if (!other.GetComponent<PlayerView>()) return;
             

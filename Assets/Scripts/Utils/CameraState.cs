@@ -7,6 +7,8 @@
         CameraDown,
         FlyToLastPlanet,
         RotateAroundPlanet,
-        LastPlanetFirstPerson
+        LastPlanetFirstPerson,
+
+        CameraDrift
     }
 }

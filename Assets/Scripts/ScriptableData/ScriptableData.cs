@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Assets.Scripts.ScriptableData;
+using System;
 using UnityEngine;
 
 namespace ScriptableData
@@ -14,7 +15,7 @@ namespace ScriptableData
         [SerializeField] private BonusData _bonusData;
         [SerializeField] private MissileData _missleData;
 
-        public PlayerData Player
+		public PlayerData Player
         {
             get
             {

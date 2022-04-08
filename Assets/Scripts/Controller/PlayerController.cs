@@ -45,7 +45,7 @@ namespace Controller
             _playerModel = playerModel;
             _deadScreenView = deadScreenView;
             _cameraBeforeRotateOffset = data.Camera.cameraOffsetBeforeRotation;
-            
+
             var playerTransform = playerView.transform;
             var trajectoryCalculate = new TrajectoryCalculate(playerTransform, data.Planet.moveSpeedToNextPlanet, 
                 data.Planet.iterationsCount, data.Planet.oneStepTimeIteration);
@@ -76,7 +76,8 @@ namespace Controller
                 data.LastPlanet.distanceFromLastPlanetToStop, data.LastPlanet.moveSpeedFirstPerson,
                 planetViews[(int) PlanetNumber.Last].transform, _planetViews[_planetIndex].transform, _flyPlanetAngle, 
                 data.Camera.moveSpeed, data.Camera.cameraOffsetBeforeRotation, _flyToCenterGravity,
-                data.LastPlanet.minimalPercentMoveSpeedFirstPerson);
+                data.LastPlanet.minimalPercentMoveSpeedFirstPerson, data.LastPlanet.speedDreft);
+
             _playerState = new AimNextPlanetPlayerState(this, false);
 
             _playerModel.OnZeroHealth += ChangeDeadState;
@@ -107,6 +108,9 @@ namespace Controller
                     return true;
                 case Utils.CameraState.LastPlanetFirstPerson:
                     return _cameraMove.CameraFlyStopped();
+                case Utils.CameraState.CameraDrift:
+                    _cameraMove.CameraDrift(deltaTime);
+                    return true;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(state), state, null);
             }
