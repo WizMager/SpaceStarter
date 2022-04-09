@@ -6,14 +6,14 @@ namespace View
 {
     public class BonusView : MonoBehaviour
     {
-        [SerializeField] private BonusType _bonusType;
-        public event Action<BonusType> OnBonusPickUp;
+        public BonusType bonusType;
+        public event Action<GameObject> OnBonusPickUp;
         
         private void OnTriggerEnter(Collider other)
         {
             if (!other.GetComponent<PlayerView>()) return;
             
-            OnBonusPickUp?.Invoke(_bonusType);
+            OnBonusPickUp?.Invoke(gameObject);
             Destroy(gameObject);
         }
     }

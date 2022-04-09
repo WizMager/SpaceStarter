@@ -99,7 +99,22 @@ namespace Controllers
         private void ChangeState(GameState gameState)
         {
             _gameState = gameState;
-            _isFirstPerson = gameState == GameState.ShootPlanet;
+            
+            switch (gameState)
+            {
+                case GameState.FlyAroundPlanet:
+                    FlyAroundPlanet(7f);
+                    break;
+                case GameState.EdgeGravityFromPlanet:
+                    FlyAroundPlanet(-7f);
+                    break;
+                case GameState.ShootPlanet:
+                    _isFirstPerson = true;
+                    break;
+                case GameState.FlyAway:
+                    _isFirstPerson = false;
+                    break;
+            }
         }
 
         private void FollowPlayer()
@@ -125,6 +140,13 @@ namespace Controllers
             _endVectorAround = _startVectorAround;
         }
 
+        private void FlyAroundPlanet(float angle)
+        {
+            _startVectorAround = _player.position - _planetTransform.position;
+            _camera.RotateAround(_planetCenter, _planetTransform.up, angle);
+            _endVectorAround = _startVectorAround;
+        }
+        
         private void EdgeGravityFromPlanet(float deltaTime)
         {
             if (_camera.position.y >= _cameraCenterGravityUpPosition) return;

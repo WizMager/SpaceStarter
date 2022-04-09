@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a2adc827b714141943a1f1f7943bf73, type: 3}
   m_Name: PlanetData
   m_EditorClassIdentifier: 
-  flyAngle: 50
+  flyAngle: 30
   startGravity: 1
   gravityAcceleration: 25
   maxGravity: 30
@@ -35,7 +35,7 @@ MonoBehaviour:
   percentOfCameraDownPath: 30
   moveSpeedArcCameraDown: 10
   moveSpeedArcFirstPerson: 7
-  timeToDriftAgain: 1
+  timeToDriftAgain: 5
   moveSpeedFlyAway: 10
   rotationSpeedFlyAway: 25
   distanceFlyAway: 10

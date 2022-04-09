@@ -25,7 +25,7 @@ namespace Controllers
         private readonly FlyAway _flyAway;
 
         public StateController(PlanetView planetView, PlayerView playerView, AllData data, GravityView gravityView, 
-            GravityLittleView gravityLittleView, IUserInput<Vector3>[] touch, Camera camera)
+            GravityLittleView gravityLittleView, IUserInput<Vector3>[] touch, Camera camera, Transform missilePosition)
         {
             var playerTransform = playerView.transform;
             var planetTransform = planetView.transform;
@@ -51,7 +51,7 @@ namespace Controllers
             _arcFlyFirstPerson = new ArcFlyFirstPerson(this, playerTransform, planetView,
                 data.Planet.stopDistanceFromPlanetSurface,
                 data.Planet.percentOfCameraDownPath, data.Planet.moveSpeedArcFirstPerson);
-            _shootPlanet = new ShootPlanet(touch, camera, data, playerTransform, this);
+            _shootPlanet = new ShootPlanet(touch, camera, data, missilePosition, this);
             _flyAway = new FlyAway(this, playerTransform, planetTransform, data.Planet.distanceFlyAway,
                 data.Planet.moveSpeedFlyAway, data.Planet.rotationSpeedFlyAway, gravityView.gameObject);
 
