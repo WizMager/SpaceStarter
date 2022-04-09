@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class CameraRotateLastPlanet 
 {
-	Transform _camera;
-	float _speedRotate;
-	Vector3 _centerPoint;
+	private readonly Transform _camera;
+	private readonly float _speedRotate;
+	private readonly Vector3 _centerPoint;
 
 	public CameraRotateLastPlanet(float speedDrift, Transform camera, Vector3 centerPoint)
 	{
@@ -15,11 +15,9 @@ public class CameraRotateLastPlanet
 		_speedRotate = speedDrift;
 	}
 
-	public bool CameraRotateTransform(float deltaTime)
+	public void CameraRotateTransform(float deltaTime)
 	{
 		_camera.RotateAround(_centerPoint, _camera.up,
 			_speedRotate * deltaTime);
-
-		return true;
 	}
 }

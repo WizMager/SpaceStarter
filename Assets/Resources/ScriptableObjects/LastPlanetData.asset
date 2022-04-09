@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b21636f000f4b29a88471c4b40dcb3a, type: 3}
   m_Name: LastPlanetData
   m_EditorClassIdentifier: 
+  timerStopRotate: 3
   speedDreft: 20
   distanceFromLastPlanetToStop: 12
   moveSpeedFirstPerson: 40

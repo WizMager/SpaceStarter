@@ -6,6 +6,7 @@ namespace ScriptableData
     public class LastPlanetData : ScriptableObject
     {
         [Header("Fly Phase First Person")]
+        public float timerStopRotate;
         public float speedDreft;
         public float distanceFromLastPlanetToStop;
         public float moveSpeedFirstPerson;
