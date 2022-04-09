@@ -21,3 +21,4 @@ public class CameraRotateLastPlanet
 			_speedRotate * deltaTime);
 	}
 }
+ 

@@ -45,7 +45,7 @@ namespace Controller
             _playerModel = playerModel;
             _deadScreenView = deadScreenView;
             _cameraBeforeRotateOffset = data.Camera.cameraOffsetBeforeRotation;
-            
+
             var playerTransform = playerView.transform;
             var trajectoryCalculate = new TrajectoryCalculate(playerTransform, data.Planet.moveSpeedToNextPlanet, 
                 data.Planet.iterationsCount, data.Planet.oneStepTimeIteration);
