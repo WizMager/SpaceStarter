@@ -12,6 +12,7 @@ namespace Controllers
     {
         public event Action<GameState> OnStateChange;
 
+        private readonly StartPositionPlayerAndCamera _startPosition;
         private readonly FlewAngleCounter _flewAngle;
         private readonly FlyToCenterGravity _toCenterGravity;
         private readonly EdgeGravityToPlanet _edgeGravityToPlanet;
@@ -28,7 +29,9 @@ namespace Controllers
         {
             var playerTransform = playerView.transform;
             var planetTransform = planetView.transform;
-            
+
+            _startPosition = new StartPositionPlayerAndCamera(playerTransform, planetTransform, gravityView.transform,
+                camera.transform, data.Planet.distanceFromCenterPlanetToSpawn, data.Camera.startCameraHeight);
             _flewAngle = new FlewAngleCounter(planetTransform, playerTransform, data.Planet.flyAngle, 
                 this);
             _toCenterGravity = new FlyToCenterGravity(playerTransform, data.Planet.rotationInGravitySpeed,
@@ -62,6 +65,8 @@ namespace Controllers
             _arcFlyFirstPerson.OnFinish += EndArcFlyFirstPerson;
             _shootPlanet.OnFinish += EndShoot;
             _flyAway.OnFinish += EndFlyAway;
+            
+            _startPosition.Set();
         }
 
         private void EndFlyAway()

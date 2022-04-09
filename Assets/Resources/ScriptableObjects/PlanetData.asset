@@ -25,6 +25,7 @@ MonoBehaviour:
   moveSpeedCenterGravity: 3
   rotationInGravitySpeed: 175
   moveSpeedToPlanet: 7
+  distanceFromCenterPlanetToSpawn: 40
   rotationSpeedArcFromPlanet: 15
   moveSpeedArcFromPlanet: 10
   radiusArc: 3
@@ -34,6 +35,7 @@ MonoBehaviour:
   percentOfCameraDownPath: 30
   moveSpeedArcCameraDown: 10
   moveSpeedArcFirstPerson: 7
+  timeToDriftAgain: 1
   moveSpeedFlyAway: 10
   rotationSpeedFlyAway: 25
   distanceFlyAway: 10

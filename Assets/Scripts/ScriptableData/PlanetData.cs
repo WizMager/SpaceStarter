@@ -22,6 +22,7 @@ namespace ScriptableData
         public float rotationInGravitySpeed;
         [Header("Edge Gravity To Planet")] 
         public float moveSpeedToPlanet;
+        public float distanceFromCenterPlanetToSpawn;
         [Header("Arc From Planet (Yellow)")] 
         public float rotationSpeedArcFromPlanet;
         public float moveSpeedArcFromPlanet;
@@ -33,6 +34,7 @@ namespace ScriptableData
         [Range(1, 99)] public int percentOfCameraDownPath;
         public float moveSpeedArcCameraDown;
         public float moveSpeedArcFirstPerson;
+        public float timeToDriftAgain;
         [Header("Fly Away")] 
         public float moveSpeedFlyAway;
         public float rotationSpeedFlyAway;

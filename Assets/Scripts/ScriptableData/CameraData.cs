@@ -11,11 +11,14 @@ namespace ScriptableData
         public float moveSpeed;
         [Header("First Person(Last Planet)")]
         public float firstPersonRotationSpeed;
+        public float firstPersonDriftSpeed;
         [Header("Camera Down")]
         public float cameraDownPosition;
         public float cameraDownSpeed;
         [Header("Rotate Around Planet")] 
         public float cameraOffsetBeforeRotation;
+        public float startCameraHeight;
+        
         [Header("Fly from planet")]
         public float moveSpeedFlyFromPlanet;
         public float offsetBackFlyFromPlanet;

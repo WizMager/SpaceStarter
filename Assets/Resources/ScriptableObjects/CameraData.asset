@@ -16,9 +16,11 @@ MonoBehaviour:
   upOffsetFromPlayer: 25
   moveSpeed: 7
   firstPersonRotationSpeed: 0.3
+  firstPersonDriftSpeed: 2
   cameraDownPosition: 30
   cameraDownSpeed: 20
   cameraOffsetBeforeRotation: 7
+  startCameraHeight: 40
   moveSpeedFlyFromPlanet: 0.5
   offsetBackFlyFromPlanet: 10
   offsetUpFlyFromPlanet: 15

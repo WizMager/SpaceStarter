@@ -1,19 +1,30 @@
 using System;
+using InputClasses;
 using Interface;
 using ScriptableData;
 using UnityEngine;
 using Utils;
-using View;
 
 namespace Controllers
 {
-    public class CameraController : IExecute
+    public class CameraController : IExecute, IClean
     {
         private readonly StateController _stateController;
         private GameState _gameState;
         private readonly Transform _player;
         private readonly Transform _camera;
-        private readonly Transform _planet;
+        private readonly Transform _planetTransform;
+        private readonly IUserInput<SwipeData> _swipeInput;
+        private readonly Transform _gravityTransform;
+        private readonly float _startDistanceFromPlanet;
+
+        private readonly Vector3 _planetCenter;
+        private readonly float _firstPersonRotationSpeed;
+        private readonly float _firstPersonDriftSpeed;
+        private bool _isFirstPerson;
+        private bool _temporarilyStopDrift;
+        private readonly float _cooldownDrift;
+        private float _pastTimeSwipe;
 
         private readonly float _rotationSpeedFlyRadius;
         private readonly float _moveSpeedFlyRadius;
@@ -36,13 +47,21 @@ namespace Controllers
 
 
         public CameraController(StateController stateController, Transform playerTransform, Transform cameraTransform,
-            Transform planet, AllData data)
+            Transform planetTransform, AllData data, IUserInput<SwipeData> swipeInput, Transform gravityTransform)
         {
             _stateController = stateController;
             _player = playerTransform;
             _camera = cameraTransform;
-            _planet = planet;
-            
+            _planetTransform = planetTransform;
+            _swipeInput = swipeInput;
+            _gravityTransform = gravityTransform;
+            _startDistanceFromPlanet = data.Planet.distanceFromCenterPlanetToSpawn;
+
+            _planetCenter = _planetTransform.position;
+            _firstPersonRotationSpeed = data.Camera.firstPersonRotationSpeed;
+            _cooldownDrift = data.Planet.timeToDriftAgain;
+            _firstPersonDriftSpeed = data.Camera.firstPersonDriftSpeed;
+
             _rotationSpeedFlyRadius = data.Camera.rotationSpeedFlyRadius;
             _moveSpeedFlyFromPlanet = data.Camera.moveSpeedFlyFromPlanet;
             _offsetBackFlyFromPlanet = data.Camera.offsetBackFlyFromPlanet;
@@ -63,13 +82,29 @@ namespace Controllers
             _offsetUpFlyFirstPerson = data.Camera.offsetUpFlyFirstPerson;
             
             _stateController.OnStateChange += ChangeState;
+            _swipeInput.OnChange += CameraSwipeRotate;
+            
+            //SetStartPosition();
         }
 
         private void ChangeState(GameState gameState)
         {
             _gameState = gameState;
+            _isFirstPerson = gameState == GameState.ShootPlanet;
         }
 
+        private void SetStartPosition()
+        {
+            var ray = new Ray(_player.position, _player.forward);
+            var planetRadius = _planetTransform.GetComponent<SphereCollider>().radius;
+            var distanceHalfGravity = (_gravityTransform.GetComponent<MeshCollider>().bounds.size.x / 2 - planetRadius) / 2;
+            var distanceToCenterGravity = _startDistanceFromPlanet - planetRadius - distanceHalfGravity;
+            var startPosition = ray.GetPoint(distanceToCenterGravity);
+            startPosition.y = 40f;
+            var startRotation = Quaternion.Euler(new Vector3(90, 90, 180));
+            _camera.SetPositionAndRotation(startPosition, startRotation);
+        }
+        
         private void FollowPlayer()
         {
             var offsetPosition = _player.position;
@@ -77,10 +112,24 @@ namespace Controllers
             _camera.position = offsetPosition;
         }
 
-        private void FirstPerson()
+        private void ShootPlanet(float deltaTime)
         {
-            _camera.position = _player.position;
-            _camera.LookAt(_planet.position);
+            if (_temporarilyStopDrift)
+            {
+                if (_pastTimeSwipe < _cooldownDrift)
+                {
+                    _pastTimeSwipe += deltaTime;
+                }
+                else
+                {
+                    _pastTimeSwipe = 0;
+                    _temporarilyStopDrift = false;
+                }
+            }
+            else
+            {
+                _camera.RotateAround(_planetCenter, _camera.up, _firstPersonDriftSpeed * deltaTime);
+            }
         }
 
         private void Fly(float moveSpeed, float offsetUp, float offsetBack)
@@ -90,7 +139,7 @@ namespace Controllers
         
         private void Fly(float rotationSpeed, float moveSpeed, float offsetUp, float offsetBack)
         {
-            var planet = _planet.position;
+            var planet = _planetTransform.position;
             var player = _player.position;
             
             if (rotationSpeed != 0)
@@ -122,12 +171,42 @@ namespace Controllers
             Fly(_rotationSpeedFlyFirstPerson, _moveSpeedFlyFirstPerson, _offsetUpFlyFirstPerson, _offsetBackFlyFirstPerson);
         }
         
+        private void CameraSwipeRotate(SwipeData swipeData)
+        {
+            if (!_isFirstPerson) return;
+            _temporarilyStopDrift = true;
+            switch (swipeData.Direction)
+            {
+                case SwipeDirection.Left:
+                    _camera.RotateAround(_planetCenter, _camera.up, 
+                        swipeData.Value * _firstPersonRotationSpeed); 
+                    break;
+
+                case SwipeDirection.Right:
+                    _camera.RotateAround(_planetCenter, -_camera.up, 
+                        swipeData.Value * _firstPersonRotationSpeed);
+                    break;
+
+                case SwipeDirection.Up:
+                    _camera.RotateAround(_planetCenter, _camera.right, 
+                        swipeData.Value * _firstPersonRotationSpeed);
+                    break;
+
+                case SwipeDirection.Down:
+                    _camera.RotateAround(_planetCenter, -_camera.right, 
+                        swipeData.Value * _firstPersonRotationSpeed);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException("Unknown direction in SwipeData in Swipe Camera Rotate");
+            }
+        }
+        
         public void Execute(float deltaTime)
         {
             switch (_gameState)
             {
                 case GameState.EdgeGravityToPlanet:
-                    FollowPlayer();
+                    //FollowPlayer();
                     break;
                 case GameState.ToCenterGravity:
                     FollowPlayer();
@@ -151,7 +230,7 @@ namespace Controllers
                     ToFirstPerson();
                     break;
                 case GameState.ShootPlanet:
-                    FirstPerson();
+                    ShootPlanet(deltaTime);
                     break;
                 case GameState.FlyAway:
                     FollowPlayer();
@@ -159,6 +238,12 @@ namespace Controllers
                 default:
                     throw new ArgumentOutOfRangeException();
             }
+        }
+
+        public void Clean()
+        {
+            _stateController.OnStateChange -= ChangeState;
+            _swipeInput.OnChange -= CameraSwipeRotate; 
         }
     }
 }
