@@ -15,8 +15,6 @@ namespace Controllers
         private readonly Transform _camera;
         private readonly Transform _planetTransform;
         private readonly IUserInput<SwipeData> _swipeInput;
-        private readonly Transform _gravityTransform;
-        private readonly float _startDistanceFromPlanet;
 
         private readonly Vector3 _planetCenter;
         private readonly float _firstPersonRotationSpeed;
@@ -25,6 +23,12 @@ namespace Controllers
         private bool _temporarilyStopDrift;
         private readonly float _cooldownDrift;
         private float _pastTimeSwipe;
+
+        private readonly float _cameraCenterGravityPosition;
+        private readonly float _cameraCenterGravityDownSpeed;
+
+        private Vector3 _startVectorAround;
+        private Vector3 _endVectorAround;
 
         private readonly float _rotationSpeedFlyRadius;
         private readonly float _moveSpeedFlyRadius;
@@ -47,20 +51,21 @@ namespace Controllers
 
 
         public CameraController(StateController stateController, Transform playerTransform, Transform cameraTransform,
-            Transform planetTransform, AllData data, IUserInput<SwipeData> swipeInput, Transform gravityTransform)
+            Transform planetTransform, AllData data, IUserInput<SwipeData> swipeInput)
         {
             _stateController = stateController;
             _player = playerTransform;
             _camera = cameraTransform;
             _planetTransform = planetTransform;
             _swipeInput = swipeInput;
-            _gravityTransform = gravityTransform;
-            _startDistanceFromPlanet = data.Planet.distanceFromCenterPlanetToSpawn;
 
             _planetCenter = _planetTransform.position;
             _firstPersonRotationSpeed = data.Camera.firstPersonRotationSpeed;
             _cooldownDrift = data.Planet.timeToDriftAgain;
             _firstPersonDriftSpeed = data.Camera.firstPersonDriftSpeed;
+
+            _cameraCenterGravityPosition = data.Camera.cameraDownPosition;
+            _cameraCenterGravityDownSpeed = data.Camera.cameraDownSpeed;
 
             _rotationSpeedFlyRadius = data.Camera.rotationSpeedFlyRadius;
             _moveSpeedFlyFromPlanet = data.Camera.moveSpeedFlyFromPlanet;
@@ -83,8 +88,6 @@ namespace Controllers
             
             _stateController.OnStateChange += ChangeState;
             _swipeInput.OnChange += CameraSwipeRotate;
-            
-            //SetStartPosition();
         }
 
         private void ChangeState(GameState gameState)
@@ -93,18 +96,6 @@ namespace Controllers
             _isFirstPerson = gameState == GameState.ShootPlanet;
         }
 
-        private void SetStartPosition()
-        {
-            var ray = new Ray(_player.position, _player.forward);
-            var planetRadius = _planetTransform.GetComponent<SphereCollider>().radius;
-            var distanceHalfGravity = (_gravityTransform.GetComponent<MeshCollider>().bounds.size.x / 2 - planetRadius) / 2;
-            var distanceToCenterGravity = _startDistanceFromPlanet - planetRadius - distanceHalfGravity;
-            var startPosition = ray.GetPoint(distanceToCenterGravity);
-            startPosition.y = 40f;
-            var startRotation = Quaternion.Euler(new Vector3(90, 90, 180));
-            _camera.SetPositionAndRotation(startPosition, startRotation);
-        }
-        
         private void FollowPlayer()
         {
             var offsetPosition = _player.position;
@@ -112,6 +103,24 @@ namespace Controllers
             _camera.position = offsetPosition;
         }
 
+        private void ToCenterGravity(float deltaTime)
+        {
+            var cameraY = _camera.position.y;
+            if (cameraY <= _cameraCenterGravityPosition) return;
+            var cameraPosition = _camera.position;
+            cameraY -= _cameraCenterGravityDownSpeed * deltaTime;
+            cameraPosition.y = cameraY;
+            _camera.position = cameraPosition;
+        }
+
+        private void FlyAroundPlanet()
+        {
+            _startVectorAround = _player.position - _planetTransform.position;
+            var angle = Vector3.Angle(_startVectorAround, _endVectorAround);
+            _camera.RotateAround(_planetCenter, _planetTransform.up, angle);
+            _endVectorAround = _startVectorAround;
+        }
+        
         private void ShootPlanet(float deltaTime)
         {
             if (_temporarilyStopDrift)
@@ -209,10 +218,10 @@ namespace Controllers
                     //FollowPlayer();
                     break;
                 case GameState.ToCenterGravity:
-                    FollowPlayer();
+                    ToCenterGravity(deltaTime);
                     break;
                 case GameState.FlyAroundPlanet:
-                    FollowPlayer();
+                    FlyAroundPlanet();
                     break;
                 case GameState.EdgeGravityFromPlanet:
                     FollowPlayer();

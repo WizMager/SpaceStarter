@@ -25,17 +25,29 @@ namespace StateClasses
             _flyAngle = flyAngle;
             _player = player;
             _stateController = stateController;
-            _start = _player.position - _planet.position;
-            _end = _start;
 
             _stateController.OnStateChange += StateChange;
         }
 
         private void StateChange(GameState gameState)
         {
-            _isActive = gameState == GameState.FlyAroundPlanet;
+            if (gameState == GameState.FlyAroundPlanet)
+            {
+                _isActive = true;
+                SetupAndCalculate();
+            }
+            else
+            {
+                _isActive = false;
+            }
         }
 
+        private void SetupAndCalculate()
+        {
+            _start = _player.position - _planet.position;
+            _end = _start;
+        }
+        
         public void FlewAngle()
         {
             if (!_isActive) return;
