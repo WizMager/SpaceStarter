@@ -15,12 +15,14 @@ namespace State
         
         public override void Move(float deltaTime)
         {
-            if (_isActivated) return;
-
-            PlayerController.CameraDrift();
+            if (_isActivated)
+			{
+                PlayerController.CameraState(CameraState.CameraDrift, deltaTime);
+                return;
+            }
 
             if (!PlayerController.CameraState(CameraState.LastPlanetFirstPerson, deltaTime)) return;
-
+            
             PlayerController.ShootLastPlanet();
             _isActivated = true;
         }

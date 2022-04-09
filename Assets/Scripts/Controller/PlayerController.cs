@@ -32,7 +32,6 @@ namespace Controller
         private readonly FlyToCenterGravity _flyToCenterGravity;
         private readonly LastPlanet _lastPlanet;
         private readonly CameraMove _cameraMove;
-        private readonly CameraRotateLastPlanet _cameraRotateLastPlanet;
 
         public PlayerController(ScriptableData.ScriptableData data, PlayerView playerView, IUserInput<Vector3>[] touchInput, 
             IUserInput<SwipeData> swipeInput, PlanetView[] planetViews, GravityView[] gravityViews, GravityEnterView[] gravityEnterViews,
@@ -77,12 +76,9 @@ namespace Controller
                 data.LastPlanet.distanceFromLastPlanetToStop, data.LastPlanet.moveSpeedFirstPerson,
                 planetViews[(int) PlanetNumber.Last].transform, _planetViews[_planetIndex].transform, _flyPlanetAngle, 
                 data.Camera.moveSpeed, data.Camera.cameraOffsetBeforeRotation, _flyToCenterGravity,
-                data.LastPlanet.minimalPercentMoveSpeedFirstPerson);
+                data.LastPlanet.minimalPercentMoveSpeedFirstPerson, data.LastPlanet.speedDreft, data.LastPlanet.timerStopRotate);
 
-            _cameraRotateLastPlanet = new CameraRotateLastPlanet();
-
-            //_playerState = new AimNextPlanetPlayerState(this, false);
-            _playerState = new LastPlanetShootState(this);
+            _playerState = new AimNextPlanetPlayerState(this, false);
 
             _playerModel.OnZeroHealth += ChangeDeadState;
         }
@@ -112,6 +108,9 @@ namespace Controller
                     return true;
                 case Utils.CameraState.LastPlanetFirstPerson:
                     return _cameraMove.CameraFlyStopped();
+                case Utils.CameraState.CameraDrift:
+                    _cameraMove.CameraDrift(deltaTime);
+                    return true;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(state), state, null);
             }
@@ -231,11 +230,6 @@ namespace Controller
         {
             _playerState.Move(deltaTime);
         }
-
-        public void CameraDrift()
-		{
-            _cameraRotateLastPlanet.CameraRotateTransform();
-		}
 
         public void Clean()
         {

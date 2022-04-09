@@ -37,12 +37,16 @@ public class CameraMove
     private float _pathToCenter;
     private int _planetIndex;
 
+    private float _timerStopRotate;
+
+    private CameraRotateLastPlanet _cameraRotateLastPlanet;
+
     public CameraMove(Camera camera, float cameraUpSpeed, float cameraUpOffset, 
         IUserInput<SwipeData> swipeInput, Vector3 lastPlanetCenter, float firstPersonRotationSpeed, PlayerView playerView,
         float cameraDownPosition, float cameraDownSpeed, CameraColliderView cameraCameraColliderView, 
         float cameraDownPositionLastPlanet, float cameraDownSpeedLastPlanet, float distanceLastPlanet, float moveSpeedLastPlanet,
         Transform lastPlanetTransform, Transform currentPlanet, FlyPlanetAngle flyPlanetAngle, float speedToCenterBetween, 
-        float angleLeadRotateAround, FlyToCenterGravity flyToCenterGravity, int minimalPercentMoveSpeedFirstPerson)
+        float angleLeadRotateAround, FlyToCenterGravity flyToCenterGravity, int minimalPercentMoveSpeedFirstPerson, float speedDrift, float timerStopRotate)
     {
         _cameraTransform = camera.transform;
         _cameraUpSpeed = cameraUpSpeed;
@@ -66,12 +70,16 @@ public class CameraMove
         _flyToCenterGravity = flyToCenterGravity;
         _minimalPercentMoveSpeed = minimalPercentMoveSpeedFirstPerson;
 
+        _timerStopRotate = timerStopRotate;
+
         _playerTransform = playerView.transform;
         _swipeInput.OnChange += CameraSwipeRotate;
         _cameraColliderView.OnPlayerEnter += PlayerCameraCameraColliderEntered;
         _flyPlanetAngle.OnRotateCalculated += RotateAroundPlanet;
         _flyPlanetAngle.OnPathBetweenPlanets += SetCenterBetweenPlanets;
         _flyToCenterGravity.OnDirectionCalculated += RotatedToPlanet;
+
+        _cameraRotateLastPlanet = new CameraRotateLastPlanet(speedDrift, _cameraTransform, _lastPlanetCenter);
     }
 
     public bool CameraDownPlanet(float deltaTime)
@@ -170,7 +178,30 @@ public class CameraMove
         return false;
     }
 
-    private void SetCenterBetweenPlanets(float halfPath)
+    private bool _flagStopCameraRotate;
+    private float _timerStartRotate;
+
+	internal void CameraDrift(float deltaTime)
+	{
+        if (_flagStopCameraRotate)
+		{
+            if (_timerStartRotate < _timerStopRotate)
+			{
+                _timerStartRotate += Time.deltaTime;
+			}
+            else
+			{
+                _flagStopCameraRotate = false;
+                _timerStartRotate = 0;
+			}
+		}
+        else
+		{
+            _cameraRotateLastPlanet.CameraRotateTransform(deltaTime);
+        }
+	}
+
+	private void SetCenterBetweenPlanets(float halfPath)
     {
         RotateAroundPlanet(-_angleLeadRotateAround);
         var planetPositionUp = _currentPlanet.position;
@@ -231,32 +262,33 @@ public class CameraMove
 
     private void CameraSwipeRotate(SwipeData swipeData)
     {
-		if (!_cameraStopped) return;
+        if (!_cameraStopped) return;
+        _flagStopCameraRotate = true;
+        
+		  switch (swipeData.Direction)
+		  {
+			  case SwipeDirection.Left:
+                  _cameraTransform.RotateAround(_lastPlanetCenter, _cameraTransform.up, 
+                      swipeData.Value * _firstPersonRotationSpeed); 
+              break;
 
-		switch (swipeData.Direction)
-		{
-			case SwipeDirection.Left:
-                _cameraTransform.RotateAround(_lastPlanetCenter, _cameraTransform.up, 
-                    swipeData.Value * _firstPersonRotationSpeed); 
-            break;
+              case SwipeDirection.Right:
+                  _cameraTransform.RotateAround(_lastPlanetCenter, -_cameraTransform.up, 
+                      swipeData.Value * _firstPersonRotationSpeed);
+                  break;
 
-            case SwipeDirection.Right:
-                _cameraTransform.RotateAround(_lastPlanetCenter, -_cameraTransform.up, 
-                    swipeData.Value * _firstPersonRotationSpeed);
-                break;
+			  case SwipeDirection.Up:
+                  _cameraTransform.RotateAround(_lastPlanetCenter, _cameraTransform.right, 
+                      swipeData.Value * _firstPersonRotationSpeed);
+                  break;
 
-			case SwipeDirection.Up:
-                _cameraTransform.RotateAround(_lastPlanetCenter, _cameraTransform.right, 
-                    swipeData.Value * _firstPersonRotationSpeed);
-                break;
-
-			case SwipeDirection.Down:
-                _cameraTransform.RotateAround(_lastPlanetCenter, -_cameraTransform.right, 
-                    swipeData.Value * _firstPersonRotationSpeed);
-                break;
-			default:
-				throw new ArgumentOutOfRangeException();
-		}
+			  case SwipeDirection.Down:
+                  _cameraTransform.RotateAround(_lastPlanetCenter, -_cameraTransform.right, 
+                      swipeData.Value * _firstPersonRotationSpeed);
+                  break;
+			  default:
+		      throw new ArgumentOutOfRangeException();
+		    }
 	}
 
     public void ChangePlanet(Transform currentPlanet)
