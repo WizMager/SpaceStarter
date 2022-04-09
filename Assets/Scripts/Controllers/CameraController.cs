@@ -24,11 +24,14 @@ namespace Controllers
         private readonly float _cooldownDrift;
         private float _pastTimeSwipe;
 
-        private readonly float _cameraCenterGravityPosition;
+        private readonly float _cameraCenterGravityDownPosition;
         private readonly float _cameraCenterGravityDownSpeed;
 
         private Vector3 _startVectorAround;
         private Vector3 _endVectorAround;
+
+        private readonly float _cameraCenterGravityUpPosition;
+        private readonly float _cameraCenterGravityUpSpeed;
 
         private readonly float _rotationSpeedFlyRadius;
         private readonly float _moveSpeedFlyRadius;
@@ -64,8 +67,11 @@ namespace Controllers
             _cooldownDrift = data.Planet.timeToDriftAgain;
             _firstPersonDriftSpeed = data.Camera.firstPersonDriftSpeed;
 
-            _cameraCenterGravityPosition = data.Camera.cameraDownPosition;
+            _cameraCenterGravityDownPosition = data.Camera.cameraDownPosition;
             _cameraCenterGravityDownSpeed = data.Camera.cameraDownSpeed;
+
+            _cameraCenterGravityUpPosition = data.Camera.upOffsetFromPlayer;
+            _cameraCenterGravityUpSpeed = data.Camera.upSpeed;
 
             _rotationSpeedFlyRadius = data.Camera.rotationSpeedFlyRadius;
             _moveSpeedFlyFromPlanet = data.Camera.moveSpeedFlyFromPlanet;
@@ -105,12 +111,10 @@ namespace Controllers
 
         private void ToCenterGravity(float deltaTime)
         {
-            var cameraY = _camera.position.y;
-            if (cameraY <= _cameraCenterGravityPosition) return;
-            var cameraPosition = _camera.position;
-            cameraY -= _cameraCenterGravityDownSpeed * deltaTime;
-            cameraPosition.y = cameraY;
-            _camera.position = cameraPosition;
+
+            if (_camera.position.y <= _cameraCenterGravityDownPosition) return;
+            var cameraY = _cameraCenterGravityDownSpeed * deltaTime;
+            _camera.position -= new Vector3(0, cameraY, 0);
         }
 
         private void FlyAroundPlanet()
@@ -119,6 +123,13 @@ namespace Controllers
             var angle = Vector3.Angle(_startVectorAround, _endVectorAround);
             _camera.RotateAround(_planetCenter, _planetTransform.up, angle);
             _endVectorAround = _startVectorAround;
+        }
+
+        private void EdgeGravityFromPlanet(float deltaTime)
+        {
+            if (_camera.position.y >= _cameraCenterGravityUpPosition) return;
+            var cameraY = deltaTime * _cameraCenterGravityUpSpeed;
+            _camera.position += new Vector3(0, cameraY, 0);
         }
         
         private void ShootPlanet(float deltaTime)
@@ -224,7 +235,7 @@ namespace Controllers
                     FlyAroundPlanet();
                     break;
                 case GameState.EdgeGravityFromPlanet:
-                    FollowPlayer();
+                    EdgeGravityFromPlanet(deltaTime);
                     break;
                 case GameState.ArcFlyFromPlanet:
                     FlyFromPlanet();
