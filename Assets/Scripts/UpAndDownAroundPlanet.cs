@@ -6,26 +6,33 @@ using View;
 
 public class UpAndDownAroundPlanet : IDisposable
 {
+    public event Action<bool> OnTakeDamage;
+    
     private readonly float _startEngineForce;
     private readonly float _startGravityForce;
     private readonly Transform _playerTransform;
-    private GravityLittleView _gravityView;
-    private PlanetView _planetView;
+    private readonly GravityLittleView _gravityView;
+    private readonly PlanetView _planetView;
     private readonly IUserInput<Vector3>[] _touch;
     private readonly float _maxGravityForce;
     private readonly float _maxEngineForce;
     private readonly float _gravityAcceleration;
     private readonly float _engineAcceleration;
+    private readonly float _cooldownTakeDamage;
+    private readonly float _thresholdPlanetGravity;
     
     private float _currentEngineForce;
     private float _currentGravityForce;
     private bool _engineOn;
     private UpAndDownState _state;
     private bool _isActive;
+    private float _timeInPlanetOrGravity;
+    private bool _timerStarted;
+    private float _currentThresholdPlanetGravity;
 
     public UpAndDownAroundPlanet(float startEngineForce, float startGravityForce, Transform playerTransform, 
         PlanetView planetView, GravityLittleView gravityView, IUserInput<Vector3>[] touch, float maxGravityForce,
-        float maxEngineForce, float gravityAcceleration, float engineAcceleration)
+        float maxEngineForce, float gravityAcceleration, float engineAcceleration, float cooldownTakeDamage, float thresholdPlanetGravity)
     {
         _startEngineForce = startEngineForce;
         _startGravityForce = startGravityForce;
@@ -37,6 +44,8 @@ public class UpAndDownAroundPlanet : IDisposable
         _maxEngineForce = maxEngineForce;
         _gravityAcceleration = gravityAcceleration;
         _engineAcceleration = engineAcceleration;
+        _cooldownTakeDamage = cooldownTakeDamage;
+        _thresholdPlanetGravity = thresholdPlanetGravity;
 
         _currentGravityForce = _startEngineForce;
         _currentEngineForce = _startEngineForce;
@@ -57,6 +66,32 @@ public class UpAndDownAroundPlanet : IDisposable
     
     public void Move(float deltaTime)
     {
+        if (_timerStarted)
+        {
+            if (_timeInPlanetOrGravity < _cooldownTakeDamage)
+            {
+                _timeInPlanetOrGravity += deltaTime;
+            }
+            else
+            {
+                OnTakeDamage?.Invoke(true);
+            }
+        }
+        else
+        {
+            if (_currentThresholdPlanetGravity < _thresholdPlanetGravity)
+            {
+                _currentThresholdPlanetGravity += deltaTime;
+                _timeInPlanetOrGravity += deltaTime;
+            }
+            else
+            {
+                OnTakeDamage?.Invoke(false);
+                _currentThresholdPlanetGravity = 0;
+                _timeInPlanetOrGravity = 0; 
+            }
+        }
+        
         var shipPositionAxisX = Vector3.zero;
         switch (_state)
         {
@@ -93,24 +128,28 @@ public class UpAndDownAroundPlanet : IDisposable
     {
         if (!_isActive) return;
         _state = _engineOn ? UpAndDownState.EngineAccelerate : UpAndDownState.Engine;
+        _timerStarted = true;
     }
         
     private void PlanetExited()
     {
         if (!_isActive) return;
         _state = _engineOn ? UpAndDownState.EngineAccelerate : UpAndDownState.GravityAccelerate;
+        _timerStarted = false;
     }
         
     private void GravityEntered()
     {
         if (!_isActive) return;
         _state = _engineOn ? UpAndDownState.EngineAccelerate : UpAndDownState.GravityAccelerate;
+        _timerStarted = false;
     }
         
     private void GravityExited()
     {
         if (!_isActive) return;
         _state = _engineOn ? UpAndDownState.Gravity : UpAndDownState.GravityAccelerate;
+        _timerStarted = true;
     }
 
     private void TouchedDown(Vector3 value)

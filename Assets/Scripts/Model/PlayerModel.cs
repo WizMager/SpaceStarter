@@ -18,6 +18,19 @@ namespace Model
             _playerBonus = startPlayerBonus;
         }
 
+        public void TakeDamage(int damage)
+        {
+            _playerHealth -= damage;
+            if (_playerHealth >= 0)
+            {
+                OnChangeHealth?.Invoke(_playerHealth);
+            }
+            else
+            {
+                OnZeroHealth?.Invoke();
+            }
+        }
+        
         public void IndicatorChange(BonusType bonusType, int value)
         {
             switch (bonusType)

@@ -7,5 +7,10 @@ namespace ScriptableData
      {
           public int missileCount;
           public int startHealth;
+          public float cooldownTakeDamage;
+          public float multiplyDamageTake;
+          public float startDamageTake;
+          public float endDamageTake;
+          public float thresholdAfterTouchPlanetGravity;
      }
 }

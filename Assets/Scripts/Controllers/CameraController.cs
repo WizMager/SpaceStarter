@@ -277,6 +277,8 @@ namespace Controllers
                 case GameState.FlyAway:
                     FollowPlayer();
                     break;
+                case GameState.RocketCrushed:
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }

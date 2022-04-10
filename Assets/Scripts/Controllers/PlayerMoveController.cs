@@ -1,3 +1,4 @@
+using System;
 using Interface;
 using ScriptableData;
 using UnityEngine;
@@ -8,6 +9,8 @@ namespace Controllers
 {
     public class PlayerMoveController: IExecute, IClean
     {
+        public event Action<bool> OnTakeDamage;
+        
         private readonly RotationAroundPlanet _rotationAroundPlanet;
         private readonly UpAndDownAroundPlanet _upAndDownAroundPlanet;
         private readonly StateController _stateController;
@@ -23,10 +26,12 @@ namespace Controllers
              _rotationAroundPlanet = new RotationAroundPlanet(data.Planet.startSpeedRotationAroundPlanet, playerTransform, planetTransform);
             _upAndDownAroundPlanet = new UpAndDownAroundPlanet(data.Planet.startEngineForce, data.Planet.startGravity,
                 playerTransform, planetView, gravityView, touchInput, data.Planet.maxGravity,
-                data.Planet.maxEngineForce, data.Planet.gravityAcceleration, data.Planet.engineAcceleration);
+                data.Planet.maxEngineForce, data.Planet.gravityAcceleration, data.Planet.engineAcceleration, 
+                data.Player.cooldownTakeDamage, data.Player.thresholdAfterTouchPlanetGravity);
             _stateController = stateController;
 
             _stateController.OnStateChange += StateChange;
+            _upAndDownAroundPlanet.OnTakeDamage += TakeDamage;
         }
 
         private void StateChange(GameState gameState)
@@ -43,6 +48,11 @@ namespace Controllers
             }
         }
 
+        private void TakeDamage(bool isTake)
+        {
+            OnTakeDamage?.Invoke(isTake);
+        }
+        
         public void Execute(float deltaTime)
         {
             if (!_isActive) return;

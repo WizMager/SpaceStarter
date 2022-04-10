@@ -14,3 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   missileCount: 0
   startHealth: 100
+  cooldownTakeDamage: 1
+  multiplyDamageTake: 1
+  startDamageTake: 0.001
+  endDamageTake: 0.003
+  thresholdAfterTouchPlanetGravity: 1

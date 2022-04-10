@@ -22,12 +22,17 @@ public class GameInitialization
       
 
       var inputInitialization = new InputInitialization(data.Input.minimalDistanceForSwipe);
-      var stateController = new StateController(planetView, playerView, data, gravityView, gravityLittleView, inputInitialization.GetAllTouch(), camera, missilePosition);
+      var stateController = new StateController(planetView, playerView, data, gravityView, gravityLittleView, 
+         inputInitialization.GetAllTouch(), camera, missilePosition,playerModel, deadView);
+      var playerMoveController = new PlayerMoveController(playerView, data, inputInitialization.GetAllTouch(),
+         planetView, gravityLittleView, stateController);
       controllers.Add(new InputController(inputInitialization.GetAllTouch(), inputInitialization.GetSwipe()));
-      controllers.Add(new CameraController(stateController, playerView.transform, camera.transform, planetView.transform, data, inputInitialization.GetSwipe()));
-      controllers.Add(new PlayerMoveController(playerView, data, inputInitialization.GetAllTouch(), planetView,
-         gravityLittleView, stateController));
+      controllers.Add(new CameraController(stateController, playerView.transform, camera.transform, planetView.transform, 
+         data, inputInitialization.GetSwipe()));
       controllers.Add(new BonusController(playerModel, playerIndicatorView, bonusViews, BonusTypeValue(data), stateController));
+      controllers.Add(new PlayerHealthController(playerModel, playerMoveController, data.Player.multiplyDamageTake,
+         data.Player.startDamageTake, data.Player.endDamageTake));
+      controllers.Add(playerMoveController);
       controllers.Add(stateController);
    }
 

@@ -1,5 +1,6 @@
 using System;
 using Interface;
+using Model;
 using ScriptableData;
 using StateClasses;
 using UnityEngine;
@@ -12,6 +13,9 @@ namespace Controllers
     {
         public event Action<GameState> OnStateChange;
 
+        private readonly PlayerModel _playerModel;
+        private readonly DeadScreenView _deadView;
+        
         private readonly StartPositionPlayerAndCamera _startPosition;
         private readonly FlewAngleCounter _flewAngle;
         private readonly FlyToCenterGravity _toCenterGravity;
@@ -25,8 +29,12 @@ namespace Controllers
         private readonly FlyAway _flyAway;
 
         public StateController(PlanetView planetView, PlayerView playerView, AllData data, GravityView gravityView, 
-            GravityLittleView gravityLittleView, IUserInput<Vector3>[] touch, Camera camera, Transform missilePosition)
+            GravityLittleView gravityLittleView, IUserInput<Vector3>[] touch, Camera camera, Transform missilePosition,
+            PlayerModel playerModel, DeadScreenView deadView)
         {
+            _playerModel = playerModel;
+            _deadView = deadView;
+            
             var playerTransform = playerView.transform;
             var planetTransform = planetView.transform;
 
@@ -65,8 +73,16 @@ namespace Controllers
             _arcFlyFirstPerson.OnFinish += EndArcFlyFirstPerson;
             _shootPlanet.OnFinish += EndShoot;
             _flyAway.OnFinish += EndFlyAway;
+            _playerModel.OnZeroHealth += RocketCrushed;
             
             _startPosition.Set();
+        }
+
+        private void RocketCrushed()
+        {
+            OnStateChange?.Invoke(GameState.RocketCrushed);
+            _deadView.OnDead();
+            Debug.Log(GameState.RocketCrushed);
         }
 
         private void EndFlyAway()

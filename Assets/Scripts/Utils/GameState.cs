@@ -11,6 +11,7 @@ namespace Utils
         ArcFlyCameraDown,
         ArcFlyFirstPerson,
         ShootPlanet,
-        FlyAway
+        FlyAway,
+        RocketCrushed
     }
 }
