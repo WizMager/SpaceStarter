@@ -32,6 +32,8 @@ public class GameInitialization
       controllers.Add(new PlayerHealthController(playerModel, playerMoveController, data.Player.multiplyDamageTake,
          data.Player.startDamageTake, data.Player.endDamageTake));
       controllers.Add(new PortalController(playerView.transform, planetView.transform, data, stateController));
+      controllers.Add(new ShootController(inputInitialization.GetAllTouch(), camera, data, missilePosition,
+         planetView.transform, stateController, playerModel));
       controllers.Add(playerMoveController);
       controllers.Add(stateController);
    }

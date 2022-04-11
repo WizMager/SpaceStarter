@@ -61,10 +61,10 @@ namespace Controllers
             switch(bonusView.bonusType)
             {
                 case BonusType.GoodBonus:
-                    _model.IndicatorChange(BonusType.GoodBonus, _valueBonus[0]);
+                    _model.TakeBonus(BonusType.GoodBonus, _valueBonus[0]);
                     break;
                 case BonusType.BadBonus:
-                    _model.IndicatorChange(BonusType.BadBonus, _valueBonus[1]);
+                    _model.TakeBonus(BonusType.BadBonus, _valueBonus[1]);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(bonusView.bonusType), bonusView.bonusType, null);

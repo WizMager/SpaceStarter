@@ -9,6 +9,8 @@ namespace Model
         public event Action<int> OnChangeBonus;
         public event Action OnZeroHealth;
 
+        public event Action OnZeroBonusLeft;
+
         private int _playerHealth;
         private int _playerBonus;
 
@@ -18,6 +20,16 @@ namespace Model
             _playerBonus = startPlayerBonus;
         }
 
+        public void ShootRocket()
+        {
+            _playerBonus--;
+            OnChangeBonus?.Invoke(_playerBonus);
+            if (_playerBonus <= 0)
+            {
+                OnZeroBonusLeft?.Invoke();
+            }
+        }
+        
         public void TakeDamage(int damage)
         {
             _playerHealth -= damage;
@@ -31,7 +43,7 @@ namespace Model
             }
         }
         
-        public void IndicatorChange(BonusType bonusType, int value)
+        public void TakeBonus(BonusType bonusType, int value)
         {
             switch (bonusType)
             {
