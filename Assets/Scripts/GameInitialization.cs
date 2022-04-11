@@ -19,6 +19,8 @@ public class GameInitialization
       var gravityView = Object.FindObjectOfType<GravityView>();
       var gravityLittleView = Object.FindObjectOfType<GravityLittleView>();
       var playerModel = new PlayerModel(data.Player.startHealth, data.Player.missileCount);
+      var buildingController = new BuildingsController(data, planetView.transform);
+      buildingController.CreateBuildings(planetView.transform);
 
       var inputInitialization = new InputInitialization(data.Input.minimalDistanceForSwipe);
       var stateController = new StateController(planetView, playerView, data, gravityView, gravityLittleView, 
