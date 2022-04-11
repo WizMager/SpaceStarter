@@ -4,7 +4,6 @@ using Interface;
 using ScriptableData;
 using UnityEngine;
 using Utils;
-using View;
 
 namespace Controllers
 {
