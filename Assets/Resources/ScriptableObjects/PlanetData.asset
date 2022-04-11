@@ -36,4 +36,4 @@ MonoBehaviour:
   moveSpeedArcFirstPerson: 7
   moveSpeedFlyAway: 10
   rotationSpeedFlyAway: 25
-  distanceFlyAway: 10
+  distanceFlyAway: 50

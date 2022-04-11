@@ -11,7 +11,7 @@ public class GameInitialization
    {
       var playerView = Object.FindObjectOfType<PlayerView>();
       var camera = Object.FindObjectOfType<Camera>();
-      var missilePosition = camera.GetComponentInChildren<Transform>();
+      var missilePosition = camera.transform.GetChild(0).transform;
       var playerIndicatorView = Object.FindObjectOfType<PlayerIndicatorView>();
       var bonusViews = Object.FindObjectsOfType<BonusView>();
       var deadView = Object.FindObjectOfType<DeadScreenView>();
@@ -19,15 +19,16 @@ public class GameInitialization
       var gravityView = Object.FindObjectOfType<GravityView>();
       var gravityLittleView = Object.FindObjectOfType<GravityLittleView>();
       var playerModel = new PlayerModel(data.Player.startHealth, data.Player.missileCount);
-      
 
       var inputInitialization = new InputInitialization(data.Input.minimalDistanceForSwipe);
-      var stateController = new StateController(planetView, playerView, data, gravityView, gravityLittleView, inputInitialization.GetAllTouch(), camera);
+      var stateController = new StateController(planetView, playerView, data, gravityView, gravityLittleView,
+         inputInitialization.GetAllTouch(), camera, missilePosition);
       controllers.Add(new InputController(inputInitialization.GetAllTouch(), inputInitialization.GetSwipe()));
-      controllers.Add(new CameraController(stateController, playerView.transform, camera.transform, planetView.transform, data));
+      controllers.Add(new CameraController(camera.transform, playerView.transform, planetView.transform, data, stateController));
       controllers.Add(new PlayerMoveController(playerView, data, inputInitialization.GetAllTouch(), planetView,
          gravityLittleView, stateController));
       controllers.Add(new BonusController(playerModel, playerIndicatorView, bonusViews, BonusTypeValue(data)));
+      controllers.Add(new PortalController(playerView.transform, planetView.transform, data, stateController));
       controllers.Add(stateController);
    }
 

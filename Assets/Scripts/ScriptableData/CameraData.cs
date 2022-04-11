@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.Jobs;
 
 namespace ScriptableData
 {
@@ -38,6 +39,19 @@ namespace ScriptableData
         public float moveSpeedFlyFirstPerson;
         public float offsetBackFlyFirstPerson;
         public float offsetUpFlyFirstPerson;
+
+        [Header("Fly away (1st stage)")]
+        public float timeFlyAway1;
+        public float rotationSpeedFlyAway1;
+        public float moveSpeedFlyAway1;
+        public float offsetBackFlyAway1;
+        public float offsetUpFlyAway1;
+        
+        [Header("Fly away (2nd stage)")]
+        public float rotationSpeedFlyAway2;
+        public float moveSpeedFlyAway2;
+        public float offsetBackFlyAway2;
+        public float offsetUpFlyAway2;
 
     }
 }

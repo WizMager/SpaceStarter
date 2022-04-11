@@ -3,7 +3,6 @@ using Interface;
 using ScriptableData;
 using UnityEngine;
 using Utils;
-using View;
 
 namespace Controllers
 {
@@ -33,15 +32,27 @@ namespace Controllers
         private readonly float _moveSpeedFlyFirstPerson;
         private readonly float _offsetBackFlyFirstPerson;
         private readonly float _offsetUpFlyFirstPerson;
+        
+        private readonly float _timeFlyAway1;
+        private readonly float _rotationSpeedFlyAway1;
+        private readonly float _moveSpeedFlyAway1;
+        private readonly float _offsetBackFlyAway1;
+        private readonly float _offsetUpFlyAway1;
+        
+        private readonly float _rotationSpeedFlyAway2;
+        private readonly float _moveSpeedFlyAway2;
+        private readonly float _offsetBackFlyAway2;
+        private readonly float _offsetUpFlyAway2;
+        
+        private float _stageTime;
 
-
-        public CameraController(StateController stateController, Transform playerTransform, Transform cameraTransform,
-            Transform planet, AllData data)
+        public CameraController(Transform cameraTransform, Transform playerTransform,
+            Transform planetTransform, AllData data, StateController stateController)
         {
             _stateController = stateController;
             _player = playerTransform;
             _camera = cameraTransform;
-            _planet = planet;
+            _planet = planetTransform;
             
             _rotationSpeedFlyRadius = data.Camera.rotationSpeedFlyRadius;
             _moveSpeedFlyFromPlanet = data.Camera.moveSpeedFlyFromPlanet;
@@ -61,8 +72,21 @@ namespace Controllers
             _moveSpeedFlyFirstPerson = data.Camera.moveSpeedFlyFirstPerson;
             _offsetBackFlyFirstPerson = data.Camera.offsetBackFlyFirstPerson;
             _offsetUpFlyFirstPerson = data.Camera.offsetUpFlyFirstPerson;
+
+            _timeFlyAway1 = data.Camera.timeFlyAway1;
+            _rotationSpeedFlyAway1 = data.Camera.rotationSpeedFlyAway1;
+            _moveSpeedFlyAway1 = data.Camera.moveSpeedFlyAway1;
+            _offsetBackFlyAway1 = data.Camera.offsetBackFlyAway1;
+            _offsetUpFlyAway1 = data.Camera.offsetUpFlyAway1;
             
+            _rotationSpeedFlyAway2 = data.Camera.rotationSpeedFlyAway2;
+            _moveSpeedFlyAway2 = data.Camera.moveSpeedFlyAway2;
+            _offsetBackFlyAway2 = data.Camera.offsetBackFlyAway2;
+            _offsetUpFlyAway2 = data.Camera.offsetUpFlyAway2;
+
             _stateController.OnStateChange += ChangeState;
+
+            _stageTime = 0f;
         }
 
         private void ChangeState(GameState gameState)
@@ -122,6 +146,35 @@ namespace Controllers
             Fly(_rotationSpeedFlyFirstPerson, _moveSpeedFlyFirstPerson, _offsetUpFlyFirstPerson, _offsetBackFlyFirstPerson);
         }
         
+        private void FlyAway()
+        {
+            var planet = _planet.position;
+            var player = _player.position;
+            Quaternion look;
+            
+            if (_timeFlyAway1 > _stageTime)
+            {
+                look = Quaternion.LookRotation(planet - _camera.position);
+                _camera.rotation = Quaternion.Lerp(_camera.rotation, look, Time.deltaTime * _rotationSpeedFlyAway1);
+
+                Vector3 dirNorm = (player - planet).normalized;
+                Vector3 target = player + dirNorm * _offsetBackFlyAway1 + Vector3.up * _offsetUpFlyAway1;
+                
+                _camera.position = Vector3.Lerp(_camera.position, target, Time.deltaTime * _moveSpeedFlyAway1);
+            }
+            else
+            {
+                look = Quaternion.LookRotation(player - _camera.position);
+                _camera.rotation = Quaternion.Lerp(_camera.rotation, look, Time.deltaTime * _rotationSpeedFlyAway2);
+
+                Vector3 dirNorm = (player - planet).normalized;
+                Vector3 target = player + dirNorm * _offsetBackFlyAway2 + Vector3.up * _offsetUpFlyAway2;
+                _camera.position = Vector3.Lerp(_camera.position, target, Time.deltaTime * _moveSpeedFlyAway2);
+            }
+            _stageTime += Time.deltaTime;
+        }
+        
+        
         public void Execute(float deltaTime)
         {
             switch (_gameState)
@@ -154,7 +207,9 @@ namespace Controllers
                     FirstPerson();
                     break;
                 case GameState.FlyAway:
-                    FollowPlayer();
+                    FlyAway();
+                    break;
+                case GameState.EndFlyAway:
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
