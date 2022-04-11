@@ -12,22 +12,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 979b64ca403041b3aa08fd44a9cec415, type: 3}
   m_Name: CameraData
   m_EditorClassIdentifier: 
-  upSpeed: 10
-  upOffsetFromPlayer: 25
+  upSpeed: 15
+  upOffsetFromPlayer: 40
   moveSpeed: 1
-  firstPersonRotationSpeed: 0.3
-  firstPersonDriftSpeed: 2
-  cameraDownPosition: 15
-  cameraDownSpeed: 20
-  cameraOffsetBeforeRotation: 7
+  firstPersonRotationSpeed: 0.1
+  firstPersonDriftSpeed: 1.2
+  cameraDownPosition: 20
+  cameraDownSpeed: 30
+  cameraOffsetBeforeRotation: 10
   startCameraHeight: 40
-  moveSpeedFlyFromPlanet: 0.5
-  offsetBackFlyFromPlanet: 10
-  offsetUpFlyFromPlanet: 15
-  rotationSpeedFlyRadius: 1
-  moveSpeedFlyRadius: 1
-  offsetBackFlyRadius: 10
-  offsetUpFlyRadius: 3
+  moveSpeedFlyFromPlanet: 1.5
+  offsetBackFlyFromPlanet: 15
+  offsetUpFlyFromPlanet: 20
+  rotationSpeedFlyRadius: 1.5
+  moveSpeedFlyRadius: 1.5
+  offsetBackFlyRadius: 15
+  offsetUpFlyRadius: 5
   rotationSpeedFlyCameraDown: 2
   moveSpeedFlyCameraDown: 1
   offsetBackFlyCameraDown: 1

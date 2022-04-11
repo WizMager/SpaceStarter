@@ -20,8 +20,8 @@ MonoBehaviour:
   startEngineForce: 1
   engineAcceleration: 25
   maxEngineForce: 30
-  moveSpeedToEdgeGravity: 5
-  rotationTimeToEdgeGravity: 0.8
+  moveSpeedToEdgeGravity: 11
+  rotationTimeToEdgeGravity: 1
   moveSpeedCenterGravity: 3
   rotationInGravitySpeed: 175
   moveSpeedToPlanet: 7
@@ -31,11 +31,11 @@ MonoBehaviour:
   radiusArc: 3
   distanceToCenterRadiusArc: 15
   rotationSpeedRadius: 50
-  stopDistanceFromPlanetSurface: 10
+  stopDistanceFromPlanetSurface: 25
   percentOfCameraDownPath: 30
   moveSpeedArcCameraDown: 10
   moveSpeedArcFirstPerson: 7
-  timeToDriftAgain: 5
+  timeToDriftAgain: 3
   moveSpeedFlyAway: 10
-  rotationSpeedFlyAway: 25
+  rotationSpeedFlyAway: 50
   distanceFlyAway: 50
