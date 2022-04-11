@@ -88,12 +88,13 @@ namespace Controllers
 
         private void EndCycle()
         {
-            Debug.Log("Cycle Finished");
+            Debug.Log("End Cycle");
         }
+        
         private void EndFlyAway()
         {
-            OnStateChange?.Invoke(GameState.EndFlyAway);
             Debug.Log(GameState.EndFlyAway);
+            OnStateChange?.Invoke(GameState.EndFlyAway);
         }
 
         private void EndShoot()
@@ -161,7 +162,6 @@ namespace Controllers
             _arcCameraDown.Move(deltaTime);
             _arcFlyFirstPerson.Move(deltaTime);
             _flyAway.Move(deltaTime);
-            _endFlyAway.DoAction(deltaTime);
         }
         
         public void Clean()

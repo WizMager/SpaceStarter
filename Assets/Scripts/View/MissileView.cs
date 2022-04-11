@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using ScriptableData;
 using UnityEngine;
@@ -7,6 +8,8 @@ namespace View
 {
     public class MissileView : MonoBehaviour
     {
+        public event Action<MissileView> OnFlyEnd;
+        
         [SerializeField] private ParticleSystem engineParticleSystem;
         [SerializeField] private GameObject _body;
         [SerializeField] private MissileData _data;
@@ -24,9 +27,8 @@ namespace View
         private float _scaleModifier;
         private float _explosionDestroy;
         private Transform _planetTransform;
-        
-        
-        private void Start()
+
+        private void Awake()
         {
             _rigidbody = GetComponentInParent<Rigidbody>();
             _timeBeforeStartEngine = _data.timeBeforeStartEngine;
@@ -40,21 +42,30 @@ namespace View
             _explosionParticleSystem = _data.explosionParticleSystem;
             _scaleModifier = _data.scaleModifier;
             _explosionDestroy = _data.explosionDestroy;
+        }
+
+        private void OnEnable()
+        {
+            _body.SetActive(true);
             StartCoroutine(BeforeStartingEngine());
         }
 
-        
-        public void SetTargetPoint(Vector3 target)
+        private void OnDisable()
         {
-            _target = target;
+            _rigidbody.velocity = Vector3.zero;
+            engineParticleSystem.Stop();
+            StopAllCoroutines();
         }
 
-        public void SetPlanetTransform(Transform planetTransorm)
+        public void SetTarget(Vector3 target, Transform planetTransform)
         {
-            _planetTransform = planetTransorm;
+            _target = target;
+            _planetTransform = planetTransform;
         }
+        
         private IEnumerator Explosion()
         {
+            _body.SetActive(false);
             for (float i = 0; i < _explosionDelay; i += Time.deltaTime)
             {
                 yield return null;
@@ -75,7 +86,6 @@ namespace View
                     
                     Vector3 dirNorm = (hitSphereCast.transform.position - _planetTransform.position).normalized;
                     hitSphereCast.rigidbody.AddForce(dirNorm * _explosionForce, ForceMode.Impulse);
-                    //hitSphereCast.rigidbody.AddForce(hitSphereCast.normal * _explosionForce, ForceMode.Impulse);
                 }
                         
                 if (hitSphereCast.transform.CompareTag("Chelik"))
@@ -84,7 +94,7 @@ namespace View
                     chelikMoveScript.DeactivateChelikMove();
                 }
             }
-            Destroy(gameObject);
+            OnFlyEnd?.Invoke(gameObject.GetComponent<MissileView>());
         }
 
         private IEnumerator BeforeStartingEngine()
@@ -121,7 +131,6 @@ namespace View
         {
             StopAllCoroutines();
             StartCoroutine(Explosion());
-            _body.SetActive(false);
             var explosion = Instantiate(_explosionParticleSystem, transform.position, Quaternion.identity);
             Destroy(explosion, _explosionDestroy);
         }

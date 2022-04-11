@@ -3,7 +3,7 @@ using Model;
 using UnityEngine;
 using Utils;
 using View;
-using Object = UnityEngine.Object;
+using MissilePoolUsing = MissilePool.MissilePool;
 
 namespace Controllers
 {
@@ -16,6 +16,7 @@ namespace Controllers
         private readonly GameObject _missile;
         private readonly StateController _stateController;
         private readonly PlayerModel _playerModel;
+        private readonly MissilePoolUsing _missilePool;
 
         private bool _isActive;
         private Vector3 _touchDownPosition;
@@ -30,6 +31,8 @@ namespace Controllers
             _missileStartPosition = missileStartPosition;
             _stateController = stateController;
             _playerModel = playerModel;
+
+            _missilePool = new MissilePoolUsing(_missile, _missileStartPosition, 5, _missileStartPosition);
 
             _touch[(int) TouchInputState.InputTouchDown].OnChange += TouchDown;
             _touch[(int) TouchInputState.InputTouchUp].OnChange += TouchUp;
@@ -46,12 +49,15 @@ namespace Controllers
             var ray = _camera.ScreenPointToRay(touchPosition);
             var raycastHit = new RaycastHit[1];
             Physics.RaycastNonAlloc(ray, raycastHit, _camera.farClipPlane, GlobalData.LayerForAim);
-            var cameraTransform = _camera.transform; 
-            var missile = Object.Instantiate(_missile, _missileStartPosition.position, cameraTransform.rotation);
-            var missileView = missile.GetComponent<MissileView>(); 
-            missileView.SetTargetPoint(raycastHit[0].point);
-            missileView.SetPlanetTransform(_planet);
+            var missileView = _missilePool.Pop();
+            missileView.OnFlyEnd += MissileFlyEnded;
+            missileView.SetTarget(raycastHit[0].point, _planet);
             _playerModel.ShootRocket();
+        }
+
+        private void MissileFlyEnded(MissileView obj)
+        {
+            _missilePool.Push(obj);
         }
 
         private void TouchDown(Vector3 position)
