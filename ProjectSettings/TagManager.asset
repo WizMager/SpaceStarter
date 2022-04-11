@@ -7,7 +7,6 @@ TagManager:
   - HealthIndicator
   - BonusIndicator
   - Chelik
-  - Portal
   layers:
   - Default
   - TransparentFX
