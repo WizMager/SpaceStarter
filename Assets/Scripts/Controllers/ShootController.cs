@@ -3,7 +3,7 @@ using Model;
 using UnityEngine;
 using Utils;
 using View;
-using MissilePoolUsing = MissilePool.MissilePool;
+using MissilePoolUsing = Pool.MissilePool;
 
 namespace Controllers
 {
@@ -32,7 +32,7 @@ namespace Controllers
             _stateController = stateController;
             _playerModel = playerModel;
 
-            _missilePool = new MissilePoolUsing(_missile, _missileStartPosition, 5, _missileStartPosition);
+            _missilePool = new MissilePoolUsing(_missile, _missileStartPosition, 5);
 
             _touch[(int) TouchInputState.InputTouchDown].OnChange += TouchDown;
             _touch[(int) TouchInputState.InputTouchUp].OnChange += TouchUp;
@@ -50,6 +50,7 @@ namespace Controllers
             var raycastHit = new RaycastHit[1];
             Physics.RaycastNonAlloc(ray, raycastHit, _camera.farClipPlane, GlobalData.LayerForAim);
             var missileView = _missilePool.Pop();
+            missileView.transform.SetPositionAndRotation(_missileStartPosition.position, _missileStartPosition.rotation);
             missileView.OnFlyEnd += MissileFlyEnded;
             missileView.SetTarget(raycastHit[0].point, _planet);
             _playerModel.ShootRocket();
@@ -57,6 +58,7 @@ namespace Controllers
 
         private void MissileFlyEnded(MissileView obj)
         {
+            obj.OnFlyEnd -= MissileFlyEnded;
             _missilePool.Push(obj);
         }
 

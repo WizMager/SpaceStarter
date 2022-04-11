@@ -1,7 +1,9 @@
 using System.Collections.Generic;
 
-public abstract class AbstractPool<TTemplate, TStorageType>
+namespace Pool
 {
+    public abstract class AbstractPool<TTemplate, TStorageType>
+    {
         protected TTemplate _template;
         protected Stack<TStorageType> _storage;
 
@@ -32,8 +34,9 @@ public abstract class AbstractPool<TTemplate, TStorageType>
         {
             for (int i = 0; i < storageAmount; i++)
             {
-               Push(Create()); 
+                Push(Create()); 
             }
         }
 
+    }
 }
