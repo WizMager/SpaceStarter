@@ -245,22 +245,22 @@ namespace Controllers
             switch (swipeData.Direction)
             {
                 case SwipeDirection.Left:
-                    _camera.RotateAround(_planetCenter, _camera.up, 
+                    _camera.RotateAround(_planetCenter, -_camera.up, 
                         swipeData.Value * _firstPersonRotationSpeed); 
                     break;
 
                 case SwipeDirection.Right:
-                    _camera.RotateAround(_planetCenter, -_camera.up, 
+                    _camera.RotateAround(_planetCenter, _camera.up, 
                         swipeData.Value * _firstPersonRotationSpeed);
                     break;
 
                 case SwipeDirection.Up:
-                    _camera.RotateAround(_planetCenter, _camera.right, 
+                    _camera.RotateAround(_planetCenter, -_camera.right, 
                         swipeData.Value * _firstPersonRotationSpeed);
                     break;
 
                 case SwipeDirection.Down:
-                    _camera.RotateAround(_planetCenter, -_camera.right, 
+                    _camera.RotateAround(_planetCenter, _camera.right, 
                         swipeData.Value * _firstPersonRotationSpeed);
                     break;
                 default:

@@ -14,3 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   building1Prefab: {fileID: 7574144739707593195, guid: 71dbb6c2cb808474c92db0248307323a, type: 3}
   Building1Count: 50
+  building2Prefab: {fileID: 4832781786137145737, guid: 187e91d43c2b09a49893bc3717b6e12a, type: 3}
+  Building2Count: 0
