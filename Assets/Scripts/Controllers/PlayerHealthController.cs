@@ -1,6 +1,5 @@
 using Interface;
 using Model;
-using UnityEngine;
 
 namespace Controllers
 {
@@ -28,6 +27,12 @@ namespace Controllers
             _currentDamageTake = startDamageTake;
 
             _playerMoveController.OnTakeDamage += TakeDamage;
+            _playerMoveController.OnStopTakeDamage += StopTakeDamage;
+        }
+
+        private void StopTakeDamage()
+        {
+            _isTakeDamage = false;
         }
 
         private void TakeDamage(bool isTake)

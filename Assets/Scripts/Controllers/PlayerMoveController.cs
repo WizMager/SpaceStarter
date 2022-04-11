@@ -10,6 +10,7 @@ namespace Controllers
     public class PlayerMoveController: IExecute, IClean
     {
         public event Action<bool> OnTakeDamage;
+        public event Action OnStopTakeDamage;
         
         private readonly RotationAroundPlanet _rotationAroundPlanet;
         private readonly UpAndDownAroundPlanet _upAndDownAroundPlanet;
@@ -44,7 +45,8 @@ namespace Controllers
             else
             {
                 _isActive = false;
-                _upAndDownAroundPlanet.Active(false); 
+                _upAndDownAroundPlanet.Active(false);
+                OnStopTakeDamage?.Invoke();
             }
         }
 

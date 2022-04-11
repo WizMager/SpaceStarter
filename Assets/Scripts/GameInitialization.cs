@@ -31,7 +31,6 @@ public class GameInitialization
       controllers.Add(new BonusController(playerModel, playerIndicatorView, bonusViews, BonusTypeValue(data), stateController));
       controllers.Add(new PlayerHealthController(playerModel, playerMoveController, data.Player.multiplyDamageTake,
          data.Player.startDamageTake, data.Player.endDamageTake));
-      controllers.Add(playerMoveController);
       controllers.Add(new PortalController(playerView.transform, planetView.transform, data, stateController));
       controllers.Add(playerMoveController);
       controllers.Add(stateController);
