@@ -12,6 +12,7 @@ public class ShootPlanet : IDisposable
     
     private readonly IUserInput<Vector3>[] _touch;
     private readonly Camera _camera;
+    private readonly Transform _planet;
     private readonly Transform _missileStartPosition;
     private readonly GameObject _missile;
     private readonly StateController _stateController;
@@ -20,10 +21,11 @@ public class ShootPlanet : IDisposable
     private Vector3 _touchDownPosition;
     private int _testShootCounter = 5;
 
-    public ShootPlanet(IUserInput<Vector3>[] touch, Camera camera, ScriptableData.AllData data, Transform missileStartPosition, StateController stateController)
+    public ShootPlanet(IUserInput<Vector3>[] touch, Camera camera, ScriptableData.AllData data, Transform missileStartPosition, Transform planet, StateController stateController)
     {
         _touch = touch;
         _camera = camera;
+        _planet = planet;
         _missile = data.Missile.missilePrefab;
         _missileStartPosition = missileStartPosition;
         _stateController = stateController;
@@ -45,7 +47,9 @@ public class ShootPlanet : IDisposable
         Physics.RaycastNonAlloc(ray, raycastHit, _camera.farClipPlane, GlobalData.LayerForAim);
         var cameraTransform = _camera.transform; 
         var missile = Object.Instantiate(_missile, _missileStartPosition.position, cameraTransform.rotation);
-        missile.GetComponent<MissileView>().SetTargetPoint(raycastHit[0].point);
+        var missileView = missile.GetComponent<MissileView>(); 
+        missileView.SetTargetPoint(raycastHit[0].point);
+        missileView.SetPlanetTransform(_planet);
         _testShootCounter--;
         Debug.Log($"Shoots left: {_testShootCounter}");
         if (_testShootCounter <= 0)

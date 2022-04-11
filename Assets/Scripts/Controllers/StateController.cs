@@ -49,7 +49,7 @@ namespace Controllers
             _arcFlyFirstPerson = new ArcFlyFirstPerson(this, playerTransform, planetView,
                 data.Planet.stopDistanceFromPlanetSurface,
                 data.Planet.percentOfCameraDownPath, data.Planet.moveSpeedArcFirstPerson);
-            _shootPlanet = new ShootPlanet(touch, camera, data, missilePosition, this);
+            _shootPlanet = new ShootPlanet(touch, camera, data, missilePosition, planetTransform, this);
             _flyAway = new FlyAway(this, playerTransform, planetTransform, data.Planet.distanceFlyAway,
                 data.Planet.moveSpeedFlyAway, data.Planet.rotationSpeedFlyAway, gravityView.gameObject);
             _endFlyAway = new EndFlyAway(this, playerTransform);

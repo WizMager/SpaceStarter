@@ -23,6 +23,7 @@ namespace View
         private float _explosionDelay;
         private float _scaleModifier;
         private float _explosionDestroy;
+        private Transform _planetTransform;
         
         
         private void Start()
@@ -42,11 +43,16 @@ namespace View
             StartCoroutine(BeforeStartingEngine());
         }
 
+        
         public void SetTargetPoint(Vector3 target)
         {
             _target = target;
         }
-        
+
+        public void SetPlanetTransform(Transform planetTransorm)
+        {
+            _planetTransform = planetTransorm;
+        }
         private IEnumerator Explosion()
         {
             for (float i = 0; i < _explosionDelay; i += Time.deltaTime)
@@ -66,8 +72,10 @@ namespace View
                             
                     var localScale = hitSphereCast.transform.localScale;
                     hitSphereCast.transform.localScale = new Vector3(localScale.x * _scaleModifier, localScale.y * _scaleModifier, localScale.z * _scaleModifier);
-                            
-                    hitSphereCast.rigidbody.AddForce(hitSphereCast.normal * _explosionForce, ForceMode.Impulse);
+                    
+                    Vector3 dirNorm = (hitSphereCast.transform.position - _planetTransform.position).normalized;
+                    hitSphereCast.rigidbody.AddForce(dirNorm * _explosionForce, ForceMode.Impulse);
+                    //hitSphereCast.rigidbody.AddForce(hitSphereCast.normal * _explosionForce, ForceMode.Impulse);
                 }
                         
                 if (hitSphereCast.transform.CompareTag("Chelik"))
