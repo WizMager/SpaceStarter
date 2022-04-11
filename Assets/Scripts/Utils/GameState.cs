@@ -12,6 +12,7 @@ namespace Utils
         ArcFlyFirstPerson,
         ShootPlanet,
         FlyAway,
-        RocketCrushed
+        RocketCrushed,
+        EndFlyAway
     }
 }

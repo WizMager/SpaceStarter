@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   upSpeed: 10
   upOffsetFromPlayer: 25
-  moveSpeed: 7
+  moveSpeed: 1
   firstPersonRotationSpeed: 0.3
   firstPersonDriftSpeed: 2
   cameraDownPosition: 15
@@ -36,3 +36,12 @@ MonoBehaviour:
   moveSpeedFlyFirstPerson: 5
   offsetBackFlyFirstPerson: -1.4
   offsetUpFlyFirstPerson: 0.4
+  timeFlyAway1: 5
+  rotationSpeedFlyAway1: 1
+  moveSpeedFlyAway1: 1
+  offsetBackFlyAway1: 30
+  offsetUpFlyAway1: 15
+  rotationSpeedFlyAway2: 1
+  moveSpeedFlyAway2: 0.5
+  offsetBackFlyAway2: 3
+  offsetUpFlyAway2: 3

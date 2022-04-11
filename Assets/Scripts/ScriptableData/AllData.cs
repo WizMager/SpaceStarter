@@ -12,7 +12,8 @@ namespace ScriptableData
         [SerializeField] private CameraData _cameraData;
         [SerializeField] private InputData _inputData;
         [SerializeField] private BonusData _bonusData;
-        [SerializeField] private MissileData _missleData;
+        [SerializeField] private MissileData _missileData;
+        [SerializeField] private PortalData _portalData;
 
         public PlayerData Player
         {
@@ -96,13 +97,27 @@ namespace ScriptableData
         {
             get
             {
-                if (_missleData == null)
+                if (_missileData == null)
                 {
-                    throw new NullReferenceException("You don't create or set MissleData scriptable object");
+                    throw new NullReferenceException("You don't create or set MissileData scriptable object");
                 }
 
-                return _missleData;
+                return _missileData;
+            }
+        }
+        
+        public PortalData Portal
+        {
+            get
+            {
+                if (_portalData == null)
+                {
+                    throw new NullReferenceException("You don't create or set PortalData scriptable object");
+                }
+
+                return _portalData;
             }
         }        
+        
     }
 }

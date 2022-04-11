@@ -27,6 +27,7 @@ namespace Controllers
         private readonly ArcFlyFirstPerson _arcFlyFirstPerson;
         private readonly ShootPlanet _shootPlanet;
         private readonly FlyAway _flyAway;
+        private readonly EndFlyAway _endFlyAway;
 
         public StateController(PlanetView planetView, PlayerView playerView, AllData data, GravityView gravityView, 
             GravityLittleView gravityLittleView, IUserInput<Vector3>[] touch, Camera camera, Transform missilePosition,
@@ -59,9 +60,10 @@ namespace Controllers
             _arcFlyFirstPerson = new ArcFlyFirstPerson(this, playerTransform, planetView,
                 data.Planet.stopDistanceFromPlanetSurface,
                 data.Planet.percentOfCameraDownPath, data.Planet.moveSpeedArcFirstPerson);
-            _shootPlanet = new ShootPlanet(touch, camera, data, missilePosition, this);
+            _shootPlanet = new ShootPlanet(touch, camera, data, missilePosition, planetTransform, this);
             _flyAway = new FlyAway(this, playerTransform, planetTransform, data.Planet.distanceFlyAway,
                 data.Planet.moveSpeedFlyAway, data.Planet.rotationSpeedFlyAway, gravityView.gameObject);
+            _endFlyAway = new EndFlyAway(this, playerTransform);
 
             _flewAngle.OnFinish += EndRotateAround;
             _toCenterGravity.OnFinish += EndToCenterGravity;
@@ -73,6 +75,7 @@ namespace Controllers
             _arcFlyFirstPerson.OnFinish += EndArcFlyFirstPerson;
             _shootPlanet.OnFinish += EndShoot;
             _flyAway.OnFinish += EndFlyAway;
+            _endFlyAway.OnFinish += EndCycle;
             _playerModel.OnZeroHealth += RocketCrushed;
             
             _startPosition.Set();
@@ -85,9 +88,14 @@ namespace Controllers
             Debug.Log(GameState.RocketCrushed);
         }
 
-        private void EndFlyAway()
+        private void EndCycle()
         {
             Debug.Log("Cycle Finished");
+        }
+        private void EndFlyAway()
+        {
+            OnStateChange?.Invoke(GameState.EndFlyAway);
+            Debug.Log(GameState.EndFlyAway);
         }
 
         private void EndShoot()
@@ -155,6 +163,7 @@ namespace Controllers
             _arcCameraDown.Move(deltaTime);
             _arcFlyFirstPerson.Move(deltaTime);
             _flyAway.Move(deltaTime);
+            _endFlyAway.DoAction(deltaTime);
         }
         
         public void Clean()
@@ -169,6 +178,7 @@ namespace Controllers
             _arcFlyFirstPerson.OnFinish -= EndArcFlyFirstPerson;
             _shootPlanet.OnFinish -= EndShoot;
             _flyAway.OnFinish -= EndFlyAway;
+            _endFlyAway.OnFinish -= EndCycle;
             
             _flewAngle.Dispose();
             _toCenterGravity.Dispose();
@@ -180,6 +190,7 @@ namespace Controllers
             _arcFlyFirstPerson.Dispose();
             _shootPlanet.Dispose();
             _flyAway.Dispose();
+            _endFlyAway.Dispose();
         }
     }
 }
