@@ -36,6 +36,7 @@ MonoBehaviour:
   moveSpeedArcCameraDown: 10
   moveSpeedArcFirstPerson: 7
   timeToDriftAgain: 3
+  waitBeforeFlyAway: 8
   moveSpeedFlyAway: 10
   rotationSpeedFlyAway: 50
-  distanceFlyAway: 50
+  distanceFlyAway: 70
