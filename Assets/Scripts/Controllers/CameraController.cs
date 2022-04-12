@@ -149,9 +149,8 @@ namespace Controllers
             _camera.position = offsetPosition;
         }
 
-        private void ToCenterGravity(float deltaTime)
+        private void CameraDown(float deltaTime)
         {
-
             if (_camera.position.y <= _cameraCenterGravityDownPosition) return;
             var cameraY = _cameraCenterGravityDownSpeed * deltaTime;
             _camera.position -= new Vector3(0, cameraY, 0);
@@ -302,10 +301,10 @@ namespace Controllers
             switch (_gameState)
             {
                 case GameState.EdgeGravityToPlanet:
-                    //FollowPlayer();
+                    CameraDown(deltaTime);
                     break;
                 case GameState.ToCenterGravity:
-                    ToCenterGravity(deltaTime);
+                    CameraDown(deltaTime);
                     break;
                 case GameState.FlyAroundPlanet:
                     FlyAroundPlanet();
