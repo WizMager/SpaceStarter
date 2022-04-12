@@ -18,8 +18,7 @@ namespace Utils
         [SerializeField] private GameObject _body;
         [SerializeField] private GameObject _upPoint;
         [SerializeField] private GameObject _downPosition;
-
-        private HouseView[] _houseViews;
+        
         private Vector3 _centerPlanet;
         private float _lastTimeForRotate;
         private bool _isActive = true;
@@ -27,10 +26,8 @@ namespace Utils
         
         private void Start()
         {
-            _houseViews = FindObjectsOfType<HouseView>();
             _collider = GetComponent<BoxCollider>();
             _centerPlanet = CenterPlanet();
-            SubscribeHouse();
         }
 
 
@@ -64,22 +61,6 @@ namespace Utils
             transform.RotateAround(_centerPlanet, rotationAxis, 180f);
         }
         
-        private void SubscribeHouse()
-        {
-            foreach (var houseView in _houseViews)
-            {
-                houseView.OnHouseColliderEnter += HouseColliderEntered;
-            }
-        }
-
-        private void UnSubscribeHouse()
-        {
-            foreach (var houseView in _houseViews)
-            {
-                houseView.OnHouseColliderEnter -= HouseColliderEntered;
-            }
-        }
-
         private IEnumerator Rotate()
         {
             _isActive = false;
@@ -149,10 +130,11 @@ namespace Utils
 
             return planetView.gameObject.transform.position;
         }
-
-        private void OnDestroy()
+        
+        private void OnTriggerEnter(Collider other)
         {
-            UnSubscribeHouse();
+            HouseColliderEntered();
         }
+        
     }
 }
