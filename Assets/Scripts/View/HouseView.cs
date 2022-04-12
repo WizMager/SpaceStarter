@@ -5,27 +5,26 @@ namespace View
 {
     public class HouseView : MonoBehaviour
     {
-        public event Action OnHouseColliderEnter;
+        private Rigidbody _rb;
         private bool _onTheGround = true;
+
+        private void Start()
+        {
+            _rb = GetComponent<Rigidbody>();
+        }
 
         private void Update()
         {
-            // if (!_onTheGround) return;
-            // var groundRay = new Ray(transform.position, -transform.forward);
-            // var raycastHit = new RaycastHit[1];
-            //
-            // if (Physics.RaycastNonAlloc(groundRay, raycastHit, .3f) >= 1) return;
-            // _onTheGround = false;
-            // var rb = GetComponent<Rigidbody>();
-            // rb.AddForce(transform.forward + new Vector3(UnityEngine.Random.Range(0f, 2f), UnityEngine.Random.Range(0f, 2f), UnityEngine.Random.Range(0f, 2f)), ForceMode.Impulse);
+            if (!_onTheGround) return;
+            var groundRay = new Ray(transform.position, -transform.up);
+            var raycastHit = new RaycastHit[1];
+            
+            if (Physics.RaycastNonAlloc(groundRay, raycastHit, .3f) >= 1) return;
+            _onTheGround = false;
+            _rb.AddForce(transform.up * UnityEngine.Random.Range(0f, 2f), ForceMode.Impulse);
+            _rb.angularVelocity = new Vector3(UnityEngine.Random.Range(0f, 1f), UnityEngine.Random.Range(0f, 1f),
+                UnityEngine.Random.Range(0f, 1f));
         }
         
-        private void OnTriggerEnter(Collider other)
-        {
-            if (other.CompareTag("Chelik"))
-            {
-                OnHouseColliderEnter?.Invoke();
-            }
-        }
     }
 }
