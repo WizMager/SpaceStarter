@@ -53,6 +53,7 @@ namespace View
         private void OnDisable()
         {
             _rigidbody.velocity = Vector3.zero;
+            _rigidbody.angularVelocity = Vector3.zero;
             engineParticleSystem.Stop();
             StopAllCoroutines();
         }
