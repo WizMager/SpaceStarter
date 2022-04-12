@@ -11,6 +11,7 @@ namespace Utils
         ArcFlyCameraDown,
         ArcFlyFirstPerson,
         ShootPlanet,
+        NextStateAfterEndShoot,
         FlyAway,
         RocketCrushed,
         EndFlyAway

@@ -327,6 +327,8 @@ namespace Controllers
                 case GameState.ShootPlanet:
                     ShootPlanet(deltaTime);
                     break;
+                case GameState.NextStateAfterEndShoot:
+                    break;
                 case GameState.FlyAway:
                     FlyAway();
                     break;

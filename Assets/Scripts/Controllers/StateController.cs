@@ -25,6 +25,7 @@ namespace Controllers
         private readonly ArcFlyRadius _arcFlyRadius;
         private readonly ArcCameraDown _arcCameraDown;
         private readonly ArcFlyFirstPerson _arcFlyFirstPerson;
+        private readonly NextStateAfterEndShoot _nextStateAfterEndShoot;
         private readonly FlyAway _flyAway;
         private readonly EndFlyAway _endFlyAway;
 
@@ -59,6 +60,7 @@ namespace Controllers
             _arcFlyFirstPerson = new ArcFlyFirstPerson(this, playerTransform, planetView,
                 data.Planet.stopDistanceFromPlanetSurface,
                 data.Planet.percentOfCameraDownPath, data.Planet.moveSpeedArcFirstPerson);
+            _nextStateAfterEndShoot = new NextStateAfterEndShoot(this, data.Planet.waitBeforeFlyAway);
             _flyAway = new FlyAway(this, playerTransform, planetTransform, data.Planet.distanceFlyAway,
                 data.Planet.moveSpeedFlyAway, data.Planet.rotationSpeedFlyAway, gravityView.gameObject);
             _endFlyAway = new EndFlyAway(this, playerTransform);
@@ -71,6 +73,7 @@ namespace Controllers
             _arcFlyRadius.OnFinish += EndFlyRadius;
             _arcCameraDown.OnFinish += EndArcCameraDown;
             _arcFlyFirstPerson.OnFinish += EndArcFlyFirstPerson;
+            _nextStateAfterEndShoot.OnFinish += NextStateAfterEndShoot;
             _flyAway.OnFinish += EndFlyAway;
             _endFlyAway.OnFinish += EndCycle;
             _playerModel.OnZeroHealth += RocketCrushed;
@@ -97,10 +100,16 @@ namespace Controllers
             OnStateChange?.Invoke(GameState.EndFlyAway);
         }
 
-        private void EndShoot()
+        private void NextStateAfterEndShoot()
         {
             OnStateChange?.Invoke(GameState.FlyAway);
             Debug.Log(GameState.FlyAway);
+        }
+        
+        private void EndShoot()
+        {
+            OnStateChange?.Invoke(GameState.NextStateAfterEndShoot);
+            Debug.Log(GameState.NextStateAfterEndShoot);
         }
 
         private void EndArcFlyFirstPerson()
@@ -161,6 +170,7 @@ namespace Controllers
             _arcFlyRadius.Move(deltaTime);
             _arcCameraDown.Move(deltaTime);
             _arcFlyFirstPerson.Move(deltaTime);
+            _nextStateAfterEndShoot.Move(deltaTime);
             _flyAway.Move(deltaTime);
         }
         
@@ -174,6 +184,7 @@ namespace Controllers
             _arcFlyRadius.OnFinish -= EndFlyRadius;
             _arcCameraDown.OnFinish -= EndArcCameraDown;
             _arcFlyFirstPerson.OnFinish -= EndArcFlyFirstPerson;
+            _nextStateAfterEndShoot.OnFinish -= NextStateAfterEndShoot;
             _flyAway.OnFinish -= EndFlyAway;
             _endFlyAway.OnFinish -= EndCycle;
             _playerModel.OnZeroHealth -= RocketCrushed;
@@ -186,6 +197,7 @@ namespace Controllers
             _arcFlyRadius.Dispose();
             _arcCameraDown.Dispose();
             _arcFlyFirstPerson.Dispose();
+            _nextStateAfterEndShoot.Dispose();
             _flyAway.Dispose();
             _endFlyAway.Dispose();
         }

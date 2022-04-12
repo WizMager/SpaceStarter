@@ -35,7 +35,8 @@ namespace ScriptableData
         public float moveSpeedArcCameraDown;
         public float moveSpeedArcFirstPerson;
         public float timeToDriftAgain;
-        [Header("Fly Away")] 
+        [Header("Fly Away")]
+        public float waitBeforeFlyAway;
         public float moveSpeedFlyAway;
         public float rotationSpeedFlyAway;
         public float distanceFlyAway;

@@ -108,11 +108,16 @@ namespace Controllers
                 case GameState.ShootPlanet:
                     CreatePortal();
                     break;
-                case GameState.FlyAway:
+                case GameState.NextStateAfterEndShoot:
                     OpenPortal();
+                    break;
+                case GameState.FlyAway:
                     break;
                 case GameState.EndFlyAway:
                     LaunchPortal();
+                    break;
+                
+                case GameState.RocketCrushed:
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
