@@ -581,13 +581,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _cooldownRotate: 3
   _rotationSpeed: 50
-  _moveSpeed: 20
+  _moveSpeed: 10
   _maxAngleToOneRotate: 135
   _intoSpaceTime: 20
   _speedIntoSpace: 3
   _rotateIntoSpace: 300
-  _planetNumber: 4
-  _stayWithoutGround: 1
   _rayCastPoint: {fileID: 4100225735554574283}
   _body: {fileID: 1429608298132746686}
   _upPoint: {fileID: 829859813073236018}
