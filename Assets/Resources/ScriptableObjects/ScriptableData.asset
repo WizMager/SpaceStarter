@@ -21,3 +21,4 @@ MonoBehaviour:
   _missileData: {fileID: 11400000, guid: ba0f3da42a58a264bb753c0ab378ac1d, type: 2}
   _portalData: {fileID: 11400000, guid: 3aed69ad7fa600141a49af65ce8e5834, type: 2}
   _buildingsData: {fileID: 11400000, guid: b5a135e3fad07f944901dc13ab94d863, type: 2}
+  _objectsOnPlanetData: {fileID: 11400000, guid: 2b37c681bd7a83c499b880982867f693, type: 2}

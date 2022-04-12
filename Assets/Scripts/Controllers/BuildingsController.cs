@@ -34,8 +34,11 @@ namespace Controllers
         
         public void CreateBuildings(Transform planet)
         {
-            CreateBuildingsByPrefab(planet, _data.BuildingsData.building1Prefab, _data.BuildingsData.Building1Count);
-            CreateBuildingsByPrefab(planet, _data.BuildingsData.building2Prefab, _data.BuildingsData.Building2Count);
+            var objectTypes = _data.ObjectsOnPlanetData.objectsTypeOnPlanet;
+            foreach (var objectType in objectTypes)
+            {
+                CreateBuildingsByPrefab(planet, objectType.prefab, objectType.count);
+            }
         }
     }
 }
