@@ -26,18 +26,14 @@ namespace StateClasses
         {
             if (state == GameState.EndFlyAway)
             {
-                _isActive = true;
-            }
-            else
-            {
-                _isActive = false;
+                DoAction();
             }
         }
         
-        public void DoAction(float deltaTime)
+        private void DoAction()
         {
-            if (!_isActive) return;
             _playerTransform.gameObject.SetActive(false);
+            OnFinish?.Invoke();
         }
 
         public void Dispose()
