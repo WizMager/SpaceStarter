@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01a76cbd5939430790379db6b5a719b5, type: 3}
   m_Name: PlayerData
   m_EditorClassIdentifier: 
-  missileCount: 1
+  missileCount: 10
   startHealth: 100
   cooldownTakeDamage: 1
   multiplyDamageTake: 1

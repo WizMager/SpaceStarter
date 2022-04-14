@@ -1,12 +1,15 @@
+using System;
 using System.Collections.Generic;
 using Model;
 using UnityEngine;
 using UnityEngine.UI;
+using Utils;
 
 namespace View
 {
     public class RocketIndicatorView : MonoBehaviour
     {
+        [SerializeField] private RocketPanel _rocketPanel;
         private List<Image> _rockets;
         private int _rocketCount;
         private PlayerModel _playerModel;
@@ -24,14 +27,36 @@ namespace View
         public void TakeModelRef(PlayerModel playerModel, int startRocket)
         {
             _playerModel = playerModel;
-            _rocketCount = startRocket > 7 ? 7 : startRocket;
-            IndicateRocket();
+            RocketChanged(startRocket);
             _playerModel.OnChangeBonus += RocketChanged;
         }
 
         private void RocketChanged(int value)
         {
-            _rocketCount = value > 7 ? 7 : value;
+            switch (_rocketPanel)
+            {
+                case RocketPanel.FirstDownPanel:
+                    _rocketCount = value > 7 ? 7 : value;
+                    Debug.Log($"value {value}, count {_rocketCount}");
+                    break;
+                case RocketPanel.SecondUpPanel:
+                    if (value <= 7)
+                    {
+                        _rocketCount = 0;
+                    }
+                    else if (value > 14)
+                    {
+                        _rocketCount = 7;
+                    }
+                    else
+                    {
+                        _rocketCount = value - 7;
+                    }
+                    Debug.Log($"value {value}, count {_rocketCount}");
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
             IndicateRocket();
         }
 
@@ -42,9 +67,22 @@ namespace View
                 rocket.enabled = false;
             }
             
-            for (int i = 0; i < _rocketCount; i++)
+            switch (_rocketPanel)
             {
-                _rockets[i].enabled = true;
+                case RocketPanel.FirstDownPanel:
+                    for (int i = 0; i < _rocketCount; i++)
+                    {
+                        _rockets[i].enabled = true;
+                    }
+                    break;
+                case RocketPanel.SecondUpPanel:
+                    for (int i = 0; i < _rocketCount; i++)
+                    {
+                        _rockets[i].enabled = true;
+                    }
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException($"{_rocketPanel}");
             }
         }
         

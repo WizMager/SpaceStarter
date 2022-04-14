@@ -19,8 +19,12 @@ public class GameInitialization
       var gravityLittleView = Object.FindObjectOfType<GravityLittleView>();
       var playerModel = new PlayerModel(data.Player.startHealth, data.Player.missileCount);
       var buildingViews = Object.FindObjectsOfType<BuildingView>();
-      var rocketIndicatorView = Object.FindObjectOfType<RocketIndicatorView>();
-      rocketIndicatorView.TakeModelRef(playerModel,data.Player.missileCount);
+      var rocketIndicatorViews = Object.FindObjectsOfType<RocketIndicatorView>();
+      foreach (var rocketIndicatorView in rocketIndicatorViews)
+      {
+         //Debug.Log(playerModel);
+         rocketIndicatorView.TakeModelRef(playerModel, data.Player.missileCount);
+      }
       var firstPersonView = Object.FindObjectOfType<FirstPersonView>();
       firstPersonView.gameObject.SetActive(false);
       
