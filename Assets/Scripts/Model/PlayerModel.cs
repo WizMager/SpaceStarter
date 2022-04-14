@@ -1,4 +1,5 @@
 ﻿using System;
+using UnityEngine;
 using Utils;
 
 namespace Model
@@ -8,7 +9,6 @@ namespace Model
         public event Action<int> OnChangeHealth;
         public event Action<int> OnChangeBonus;
         public event Action OnZeroHealth;
-
         public event Action OnZeroBonusLeft;
 
         private int _playerHealth;

@@ -13,12 +13,12 @@ public class GameInitialization
       var camera = Object.FindObjectOfType<Camera>();
       var missilePosition = camera.transform.GetChild(0).transform;
       var playerIndicatorView = Object.FindObjectOfType<PlayerIndicatorView>();
-      var bonusViews = Object.FindObjectsOfType<BonusView>();
       var deadView = Object.FindObjectOfType<DeadScreenView>();
       var planetView = Object.FindObjectOfType<PlanetView>();
       var gravityView = Object.FindObjectOfType<GravityView>();
       var gravityLittleView = Object.FindObjectOfType<GravityLittleView>();
       var playerModel = new PlayerModel(data.Player.startHealth, data.Player.missileCount);
+      var buildingViews = Object.FindObjectsOfType<BuildingView>();
       var buildingController = new BuildingsController(data, planetView.transform);
       buildingController.CreateBuildings(planetView.transform);
 
@@ -30,7 +30,7 @@ public class GameInitialization
       controllers.Add(new InputController(inputInitialization.GetAllTouch(), inputInitialization.GetSwipe()));
       controllers.Add(new CameraController(stateController, playerView.transform, camera.transform, planetView.transform, 
          data, inputInitialization.GetSwipe()));
-      controllers.Add(new BonusController(playerModel, playerIndicatorView, bonusViews, BonusTypeValue(data), stateController));
+      controllers.Add(new BonusController(stateController, playerModel, playerIndicatorView, BonusTypeValue(data),buildingViews));
       controllers.Add(new PlayerHealthController(playerModel, playerMoveController, data.Player.multiplyDamageTake,
          data.Player.startDamageTake, data.Player.endDamageTake));
       controllers.Add(new PortalController(playerView.transform, planetView.transform, data, stateController));

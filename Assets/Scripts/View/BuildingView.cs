@@ -1,15 +1,19 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using Utils;
 
 namespace View
 {
     public class BuildingView : MonoBehaviour
     {
+        public event Action<BonusType> OnFloorTouch;
+        
         [SerializeField] private Vector3 _centerPlanet = Vector3.zero;
         private List<Rigidbody> _rigidbodies;
+        private bool _isFirstTouch = true;
 
-        
         private void Start()
         {
             _rigidbodies = new List<Rigidbody>(SortRigidbody(transform.GetComponentsInChildren<Rigidbody>()));
@@ -25,8 +29,25 @@ namespace View
             // }
         }
 
-        private void ShipTouched(string floorName)
+        private void ShipTouched(string floorName, BonusType bonusType)
         {
+            if (_isFirstTouch)
+            {
+                switch (bonusType)
+                {
+                    case BonusType.GoodBonus:
+                        OnFloorTouch?.Invoke(BonusType.GoodBonus);
+                        break;
+                    case BonusType.BadBonus:
+                        OnFloorTouch?.Invoke(BonusType.BadBonus);
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException(nameof(bonusType), bonusType, null);
+                } 
+            }
+            
+            _isFirstTouch = false;
+            
             for (int i = 0; i < _rigidbodies.Count; i++)
             {
                 if (_rigidbodies[i].name != floorName) continue;
@@ -41,7 +62,7 @@ namespace View
             }
         }
 
-        private List<Rigidbody> SortRigidbody(IEnumerable<Rigidbody> rigidbodies)
+        private IEnumerable<Rigidbody> SortRigidbody(IEnumerable<Rigidbody> rigidbodies)
         {
             return rigidbodies.OrderBy(o => Vector3.Distance(_centerPlanet, o.position)).ToList();
         }

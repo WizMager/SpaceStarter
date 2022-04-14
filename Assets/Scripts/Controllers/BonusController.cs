@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using Interface;
 using Model;
-using UnityEngine;
 using Utils;
 using View;
 
@@ -11,25 +10,22 @@ namespace Controllers
     public class BonusController : IClean, IController
     {
         private readonly PlayerModel _model;
-        private readonly List<BonusView> _bonusViewList;
-        private readonly BonusView[] _bonusViews;
         private readonly int[] _valueBonus;
         private readonly StateController _stateController;
+        private readonly List<BuildingView> _buildingViews;
         
-        public BonusController(PlayerModel playerModel, PlayerIndicatorView indicatorView, 
-            BonusView[] bonusViews, int[] valueBonus, StateController stateController)
+        public BonusController(StateController stateController, PlayerModel playerModel, PlayerIndicatorView indicatorView, 
+            int[] valueBonus, IEnumerable<BuildingView> buildingViews)
         {
             _model = playerModel;
             indicatorView.SubscribeModel(_model);
-            _bonusViewList = new List<BonusView>();
-            _bonusViews = bonusViews;
             _valueBonus = valueBonus;
             _stateController = stateController;
-            foreach (var bonusView in bonusViews)
+            _buildingViews = new List<BuildingView>();
+            foreach (var buildingView in buildingViews)
             {
-                _bonusViewList.Add(bonusView);
+                _buildingViews.Add(buildingView);
             }
-
             _stateController.OnStateChange += ChangeState;
             
             Subscribe();
@@ -37,28 +33,20 @@ namespace Controllers
 
         private void ChangeState(GameState gameState)
         {
-            if (gameState != GameState.ArcFlyRadius) return;
-            foreach (var bonusView in _bonusViewList)
-            {
-                bonusView.gameObject.SetActive(false);
-            }
+            
         }
 
         private void Subscribe()
         {
-            foreach (var bonusView in _bonusViews)
+            foreach (var buildingView in _buildingViews)
             {
-                if (bonusView != null)
-                {
-                    bonusView.OnBonusPickUp += BonusPickedUp; 
-                }
+                buildingView.OnFloorTouch += FloorTouched;
             }
         }
 
-        private void BonusPickedUp(GameObject bonus)
+        private void FloorTouched(BonusType type)
         {
-            var bonusView = bonus.GetComponent<BonusView>();
-            switch(bonusView.bonusType)
+            switch (type)
             {
                 case BonusType.GoodBonus:
                     _model.TakeBonus(BonusType.GoodBonus, _valueBonus[0]);
@@ -67,17 +55,15 @@ namespace Controllers
                     _model.TakeBonus(BonusType.BadBonus, _valueBonus[1]);
                     break;
                 default:
-                    throw new ArgumentOutOfRangeException(nameof(bonusView.bonusType), bonusView.bonusType, null);
+                    throw new ArgumentOutOfRangeException(nameof(type), type, null);
             }
-
-            _bonusViewList.Remove(bonusView);
         }
 
         private void UnSubscribe()
         {
-            foreach (var bonusView in _bonusViews)
+            foreach (var buildingView in _buildingViews)
             {
-                bonusView.OnBonusPickUp -= BonusPickedUp;
+                buildingView.OnFloorTouch -= FloorTouched;
             }
         }
 

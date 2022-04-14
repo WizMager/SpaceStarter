@@ -1,3 +1,13 @@
 fileFormatVersion: 2
 guid: 7d0d644b4792410bb489096ff9d51fcd
-timeCreated: 1649934068
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - _goodFloor: {fileID: 2100000, guid: e3d6d5f080571ec409ee5ec0af280993, type: 2}
+  - _badFloor: {fileID: 2100000, guid: 1bf47dc9600ec9848838b5b7ea09366a, type: 2}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
