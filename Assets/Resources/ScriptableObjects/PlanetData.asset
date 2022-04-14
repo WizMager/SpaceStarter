@@ -12,11 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a2adc827b714141943a1f1f7943bf73, type: 3}
   m_Name: PlanetData
   m_EditorClassIdentifier: 
-  flyAngle: 30
+  flyAngle: 300
   startGravity: 1
   gravityAcceleration: 25
   maxGravity: 30
-  startSpeedRotationAroundPlanet: 25
+  startSpeedRotationAroundPlanet: 10
   startEngineForce: 1
   engineAcceleration: 25
   maxEngineForce: 30
