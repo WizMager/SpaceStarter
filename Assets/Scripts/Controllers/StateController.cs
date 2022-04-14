@@ -15,6 +15,8 @@ namespace Controllers
 
         private readonly PlayerModel _playerModel;
         private readonly DeadScreenView _deadView;
+        private readonly FirstPersonView _firstPersonView;
+        private readonly PlayerIndicatorView _indicatorView;
         
         private readonly StartPositionPlayerAndCamera _startPosition;
         private readonly FlewAngleCounter _flewAngle;
@@ -30,11 +32,13 @@ namespace Controllers
         private readonly EndFlyAway _endFlyAway;
 
         public StateController(PlanetView planetView, PlayerView playerView, AllData data, GravityView gravityView, 
-            GravityLittleView gravityLittleView, IUserInput<Vector3>[] touch, Camera camera, Transform missilePosition,
-            PlayerModel playerModel, DeadScreenView deadView)
+            GravityLittleView gravityLittleView, Camera camera, PlayerModel playerModel, DeadScreenView deadView, 
+            FirstPersonView firstPersonView, PlayerIndicatorView indicatorView)
         {
             _playerModel = playerModel;
             _deadView = deadView;
+            _firstPersonView = firstPersonView;
+            _indicatorView = indicatorView;
             
             var playerTransform = playerView.transform;
             var planetTransform = planetView.transform;
@@ -102,6 +106,7 @@ namespace Controllers
 
         private void NextStateAfterEndShoot()
         {
+            _firstPersonView.gameObject.SetActive(false);
             OnStateChange?.Invoke(GameState.FlyAway);
             Debug.Log(GameState.FlyAway);
         }
@@ -120,6 +125,8 @@ namespace Controllers
 
         private void EndArcCameraDown()
         {
+            _indicatorView.gameObject.SetActive(false);
+            _firstPersonView.gameObject.SetActive(true);
             OnStateChange?.Invoke(GameState.ArcFlyFirstPerson);
             Debug.Log(GameState.ArcFlyFirstPerson);
         }

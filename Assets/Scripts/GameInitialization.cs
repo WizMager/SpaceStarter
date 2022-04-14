@@ -19,12 +19,17 @@ public class GameInitialization
       var gravityLittleView = Object.FindObjectOfType<GravityLittleView>();
       var playerModel = new PlayerModel(data.Player.startHealth, data.Player.missileCount);
       var buildingViews = Object.FindObjectsOfType<BuildingView>();
+      var rocketIndicatorView = Object.FindObjectOfType<RocketIndicatorView>();
+      rocketIndicatorView.TakeModelRef(playerModel,data.Player.missileCount);
+      var firstPersonView = Object.FindObjectOfType<FirstPersonView>();
+      firstPersonView.gameObject.SetActive(false);
+      
       var buildingController = new BuildingsController(data, planetView.transform);
       buildingController.CreateBuildings(planetView.transform);
 
       var inputInitialization = new InputInitialization(data.Input.minimalDistanceForSwipe);
-      var stateController = new StateController(planetView, playerView, data, gravityView, gravityLittleView, 
-         inputInitialization.GetAllTouch(), camera, missilePosition,playerModel, deadView);
+      var stateController = new StateController(planetView, playerView, data, gravityView, gravityLittleView, camera, 
+         playerModel, deadView, firstPersonView, playerIndicatorView);
       var playerMoveController = new PlayerMoveController(playerView, data, inputInitialization.GetAllTouch(),
          planetView, gravityLittleView, stateController);
       controllers.Add(new InputController(inputInitialization.GetAllTouch(), inputInitialization.GetSwipe()));
