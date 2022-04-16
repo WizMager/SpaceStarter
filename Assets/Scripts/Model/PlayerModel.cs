@@ -14,6 +14,8 @@ namespace Model
         private int _playerHealth;
         private int _playerRocket;
         private int _playerScore;
+        private int _playerQuality;
+        private int _playerTryCount;
 
         public PlayerModel(int startPlayerHealth, int startPlayerRocket)
         {
@@ -61,6 +63,13 @@ namespace Model
                 default:
                     throw new ArgumentOutOfRangeException(nameof(bonusType), bonusType, null);
             }
+        }
+
+        public int[] GetValueToFinalScreen()
+        {
+            _playerQuality = _playerHealth;
+            _playerTryCount = _playerRocket;
+            return new[] {_playerScore, _playerTryCount, _playerQuality};
         }
     }
 }

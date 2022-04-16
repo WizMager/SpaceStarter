@@ -18,6 +18,7 @@ namespace Controllers
         private readonly DeadScreenView _deadView;
         private readonly FirstPersonView _firstPersonView;
         private readonly Button _restart;
+        private readonly FinalScreenView _finalScreenView;
 
         private readonly StartPositionPlayerAndCamera _startPosition;
         private readonly FlewAngleCounter _flewAngle;
@@ -34,12 +35,13 @@ namespace Controllers
 
         public StateController(PlanetView planetView, PlayerView playerView, AllData data, GravityView gravityView, 
             GravityLittleView gravityLittleView, Camera camera, PlayerModel playerModel, DeadScreenView deadView, 
-            FirstPersonView firstPersonView, Button restartButton)
+            FirstPersonView firstPersonView, Button restartButton, FinalScreenView finalScreenView)
         {
             _playerModel = playerModel;
             _deadView = deadView;
             _firstPersonView = firstPersonView;
             _restart = restartButton;
+            _finalScreenView = finalScreenView;
 
             var playerTransform = playerView.transform;
             var planetTransform = planetView.transform;
@@ -95,8 +97,17 @@ namespace Controllers
             Debug.Log(GameState.RocketCrushed);
         }
 
+        private void TestFinalScreen()
+        {
+            Debug.Log("Click on restart or next level");
+        }
+        
         private void EndCycle()
         {
+            _finalScreenView.gameObject.SetActive(true);
+            var buttons = _finalScreenView.SetValue(_playerModel.GetValueToFinalScreen());
+            buttons[0].onClick.AddListener(TestFinalScreen);
+            buttons[1].onClick.AddListener(TestFinalScreen);
             Debug.Log("End Cycle");
         }
         
@@ -197,6 +208,7 @@ namespace Controllers
             _endFlyAway.OnFinish -= EndCycle;
             _playerModel.OnZeroHealth -= RocketCrushed;
             
+            _restart.onClick.RemoveAllListeners();
             _flewAngle.Dispose();
             _toCenterGravity.Dispose();
             _edgeGravityToPlanet.Dispose();

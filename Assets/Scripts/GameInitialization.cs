@@ -28,13 +28,15 @@ public class GameInitialization
       var firstPersonView = Object.FindObjectOfType<FirstPersonView>();
       firstPersonView.gameObject.SetActive(false);
       var restartButton = Object.FindObjectOfType<RestartButtonView>().GetComponent<Button>();
+      var finalScreenView = Object.FindObjectOfType<FinalScreenView>();
+      finalScreenView.gameObject.SetActive(false);
       
       var buildingController = new BuildingsController(data, planetView.transform);
       buildingController.CreateBuildings(planetView.transform);
 
       var inputInitialization = new InputInitialization(data.Input.minimalDistanceForSwipe);
       var stateController = new StateController(planetView, playerView, data, gravityView, gravityLittleView, camera, 
-         playerModel, deadView, firstPersonView, restartButton);
+         playerModel, deadView, firstPersonView, restartButton, finalScreenView);
       var playerMoveController = new PlayerMoveController(playerView, data, inputInitialization.GetAllTouch(),
          planetView, gravityLittleView, stateController);
       controllers.Add(new InputController(inputInitialization.GetAllTouch(), inputInitialization.GetSwipe()));
