@@ -3,6 +3,6 @@
     public enum BonusType
     {
         GoodBonus,
-        BadBonus
+        None
     }
 }

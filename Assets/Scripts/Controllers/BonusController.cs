@@ -50,9 +50,10 @@ namespace Controllers
             {
                 case BonusType.GoodBonus:
                     _model.TakeBonus(BonusType.GoodBonus, _valueBonus[0]);
+                    _model.TakeBonus(BonusType.None, _valueBonus[1]);
                     break;
-                case BonusType.BadBonus:
-                    _model.TakeBonus(BonusType.BadBonus, _valueBonus[1]);
+                case BonusType.None:
+                    _model.TakeBonus(BonusType.None, _valueBonus[1]);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(type), type, null);

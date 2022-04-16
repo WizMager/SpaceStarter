@@ -38,8 +38,8 @@ namespace View
                     case BonusType.GoodBonus:
                         OnFloorTouch?.Invoke(BonusType.GoodBonus);
                         break;
-                    case BonusType.BadBonus:
-                        OnFloorTouch?.Invoke(BonusType.BadBonus);
+                    case BonusType.None:
+                        OnFloorTouch?.Invoke(BonusType.None);
                         break;
                     default:
                         throw new ArgumentOutOfRangeException(nameof(bonusType), bonusType, null);

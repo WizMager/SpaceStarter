@@ -4,9 +4,10 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - HealthIndicator
-  - BonusIndicator
   - Chelik
+  - Portal
+  - ScoreIndicator
+  - RestartButton
   layers:
   - Default
   - TransparentFX

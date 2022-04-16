@@ -6,27 +6,29 @@ namespace Model
 {
     public class PlayerModel
     {
-        public event Action<int> OnChangeHealth;
-        public event Action<int> OnChangeBonus;
+        public event Action<int> OnChangeScore;
+        public event Action<int> OnChangeRocket;
         public event Action OnZeroHealth;
-        public event Action OnZeroBonusLeft;
+        public event Action OnZeroRocketLeft;
 
         private int _playerHealth;
-        private int _playerBonus;
+        private int _playerRocket;
+        private int _playerScore;
 
-        public PlayerModel(int startPlayerHealth, int startPlayerBonus)
+        public PlayerModel(int startPlayerHealth, int startPlayerRocket)
         {
             _playerHealth = startPlayerHealth;
-            _playerBonus = startPlayerBonus;
+            _playerRocket = startPlayerRocket;
+            _playerScore = 0;
         }
 
         public void ShootRocket()
         {
-            _playerBonus--;
-            OnChangeBonus?.Invoke(_playerBonus);
-            if (_playerBonus <= 0)
+            _playerRocket--;
+            OnChangeRocket?.Invoke(_playerRocket);
+            if (_playerRocket <= 0)
             {
-                OnZeroBonusLeft?.Invoke();
+                OnZeroRocketLeft?.Invoke();
             }
         }
         
@@ -35,10 +37,11 @@ namespace Model
             _playerHealth -= damage;
             if (_playerHealth >= 0)
             {
-                OnChangeHealth?.Invoke(_playerHealth);
+                Debug.Log($"Current health: {_playerHealth}");
             }
             else
             {
+                Debug.Log($"Current health: {_playerHealth}");
                 OnZeroHealth?.Invoke();
             }
         }
@@ -48,20 +51,12 @@ namespace Model
             switch (bonusType)
             {
                 case BonusType.GoodBonus:
-                    _playerBonus += value;
-                    OnChangeBonus?.Invoke(_playerBonus);
+                    _playerRocket += value;
+                    OnChangeRocket?.Invoke(_playerRocket);
                     break;
-                case BonusType.BadBonus:
-                    _playerHealth -= value;
-                    if (_playerHealth > 0)
-                    {
-                        OnChangeHealth?.Invoke(_playerHealth);
-                    }
-                    else
-                    {
-                        OnChangeHealth?.Invoke(_playerHealth);
-                        OnZeroHealth?.Invoke();
-                    }
+                case BonusType.None:
+                    _playerScore += value;
+                    OnChangeScore?.Invoke(_playerScore);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(bonusType), bonusType, null);

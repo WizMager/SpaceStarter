@@ -4,6 +4,7 @@ using Model;
 using ScriptableData;
 using StateClasses;
 using UnityEngine;
+using UnityEngine.UI;
 using Utils;
 using View;
 
@@ -16,8 +17,8 @@ namespace Controllers
         private readonly PlayerModel _playerModel;
         private readonly DeadScreenView _deadView;
         private readonly FirstPersonView _firstPersonView;
-        private readonly PlayerIndicatorView _indicatorView;
-        
+        private readonly Button _restart;
+
         private readonly StartPositionPlayerAndCamera _startPosition;
         private readonly FlewAngleCounter _flewAngle;
         private readonly FlyToCenterGravity _toCenterGravity;
@@ -33,13 +34,13 @@ namespace Controllers
 
         public StateController(PlanetView planetView, PlayerView playerView, AllData data, GravityView gravityView, 
             GravityLittleView gravityLittleView, Camera camera, PlayerModel playerModel, DeadScreenView deadView, 
-            FirstPersonView firstPersonView, PlayerIndicatorView indicatorView)
+            FirstPersonView firstPersonView, Button restartButton)
         {
             _playerModel = playerModel;
             _deadView = deadView;
             _firstPersonView = firstPersonView;
-            _indicatorView = indicatorView;
-            
+            _restart = restartButton;
+
             var playerTransform = playerView.transform;
             var planetTransform = planetView.transform;
 
@@ -81,7 +82,8 @@ namespace Controllers
             _flyAway.OnFinish += EndFlyAway;
             _endFlyAway.OnFinish += EndCycle;
             _playerModel.OnZeroHealth += RocketCrushed;
-            _playerModel.OnZeroBonusLeft += EndShoot;
+            _playerModel.OnZeroRocketLeft += EndShoot;
+            _restart.onClick.AddListener(RocketCrushed);
             
             _startPosition.Set();
         }
@@ -125,7 +127,6 @@ namespace Controllers
 
         private void EndArcCameraDown()
         {
-            _indicatorView.gameObject.SetActive(false);
             _firstPersonView.gameObject.SetActive(true);
             OnStateChange?.Invoke(GameState.ArcFlyFirstPerson);
             Debug.Log(GameState.ArcFlyFirstPerson);

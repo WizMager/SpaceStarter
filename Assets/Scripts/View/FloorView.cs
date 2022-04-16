@@ -19,7 +19,7 @@ namespace View
                 case BonusType.GoodBonus:
                     gameObject.GetComponent<MeshRenderer>().material = _goodFloor;
                     break;
-                case BonusType.BadBonus:
+                case BonusType.None:
                     gameObject.GetComponent<MeshRenderer>().material = _badFloor;
                     break;
                 default:

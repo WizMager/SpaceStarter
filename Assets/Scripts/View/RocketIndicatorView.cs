@@ -28,7 +28,7 @@ namespace View
         {
             _playerModel = playerModel;
             RocketChanged(startRocket);
-            _playerModel.OnChangeBonus += RocketChanged;
+            _playerModel.OnChangeRocket += RocketChanged;
         }
 
         private void RocketChanged(int value)
@@ -37,7 +37,6 @@ namespace View
             {
                 case RocketPanel.FirstDownPanel:
                     _rocketCount = value > 7 ? 7 : value;
-                    Debug.Log($"value {value}, count {_rocketCount}");
                     break;
                 case RocketPanel.SecondUpPanel:
                     if (value <= 7)
@@ -52,7 +51,6 @@ namespace View
                     {
                         _rocketCount = value - 7;
                     }
-                    Debug.Log($"value {value}, count {_rocketCount}");
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -88,7 +86,7 @@ namespace View
         
         private void OnDestroy()
         {
-            _playerModel.OnChangeBonus -= RocketChanged;
+            _playerModel.OnChangeRocket -= RocketChanged;
         }
     }
 }

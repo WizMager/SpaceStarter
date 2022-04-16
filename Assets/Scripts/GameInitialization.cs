@@ -2,6 +2,7 @@
 using InputClasses;
 using Model;
 using UnityEngine;
+using UnityEngine.UI;
 using View;
 using Object = UnityEngine.Object;
 
@@ -22,18 +23,18 @@ public class GameInitialization
       var rocketIndicatorViews = Object.FindObjectsOfType<RocketIndicatorView>();
       foreach (var rocketIndicatorView in rocketIndicatorViews)
       {
-         //Debug.Log(playerModel);
          rocketIndicatorView.TakeModelRef(playerModel, data.Player.missileCount);
       }
       var firstPersonView = Object.FindObjectOfType<FirstPersonView>();
       firstPersonView.gameObject.SetActive(false);
+      var restartButton = Object.FindObjectOfType<RestartButtonView>().GetComponent<Button>();
       
       var buildingController = new BuildingsController(data, planetView.transform);
       buildingController.CreateBuildings(planetView.transform);
 
       var inputInitialization = new InputInitialization(data.Input.minimalDistanceForSwipe);
       var stateController = new StateController(planetView, playerView, data, gravityView, gravityLittleView, camera, 
-         playerModel, deadView, firstPersonView, playerIndicatorView);
+         playerModel, deadView, firstPersonView, restartButton);
       var playerMoveController = new PlayerMoveController(playerView, data, inputInitialization.GetAllTouch(),
          planetView, gravityLittleView, stateController);
       controllers.Add(new InputController(inputInitialization.GetAllTouch(), inputInitialization.GetSwipe()));
