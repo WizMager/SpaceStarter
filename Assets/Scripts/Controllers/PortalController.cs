@@ -116,7 +116,8 @@ namespace Controllers
                 case GameState.EndFlyAway:
                     LaunchPortal();
                     break;
-                
+                case GameState.Restart:
+                    break;
                 case GameState.RocketCrushed:
                     break;
                 default:

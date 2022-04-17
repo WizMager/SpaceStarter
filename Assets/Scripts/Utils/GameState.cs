@@ -13,7 +13,8 @@ namespace Utils
         ShootPlanet,
         NextStateAfterEndShoot,
         FlyAway,
+        EndFlyAway,
         RocketCrushed,
-        EndFlyAway
+        Restart
     }
 }

@@ -30,7 +30,8 @@ public class GameInitialization
       var restartButton = Object.FindObjectOfType<RestartButtonView>().GetComponent<Button>();
       var finalScreenView = Object.FindObjectOfType<FinalScreenView>();
       finalScreenView.gameObject.SetActive(false);
-      
+      var restart = Object.FindObjectOfType<Restart>();
+
       var buildingController = new BuildingsController(data, planetView.transform);
       buildingController.CreateBuildings(planetView.transform);
 
@@ -39,6 +40,7 @@ public class GameInitialization
          playerModel, deadView, firstPersonView, restartButton, finalScreenView);
       var playerMoveController = new PlayerMoveController(stateController, playerView, data, inputInitialization.GetAllTouch(),
          planetView, gravityLittleView, playerModel);
+      restart.TakeStateController(stateController);
       controllers.Add(new InputController(inputInitialization.GetAllTouch(), inputInitialization.GetSwipe()));
       controllers.Add(new CameraController(stateController, playerView.transform, camera.transform, planetView.transform, 
          data, inputInitialization.GetSwipe()));

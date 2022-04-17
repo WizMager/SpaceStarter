@@ -336,6 +336,8 @@ namespace Controllers
                     break;
                 case GameState.RocketCrushed:
                     break;
+                case GameState.Restart:
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }

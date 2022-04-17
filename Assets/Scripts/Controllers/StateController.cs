@@ -85,7 +85,7 @@ namespace Controllers
             _endFlyAway.OnFinish += EndCycle;
             _playerModel.OnZeroHealth += RocketCrushed;
             _playerModel.OnZeroRocketLeft += EndShoot;
-            _restart.onClick.AddListener(RocketCrushed);
+            _restart.onClick.AddListener(Restart);
             
             _startPosition.Set();
         }
@@ -97,6 +97,13 @@ namespace Controllers
             Debug.Log(GameState.RocketCrushed);
         }
 
+        private void Restart()
+        {
+            OnStateChange?.Invoke(GameState.Restart);
+            _startPosition.Set();
+            Debug.Log(GameState.Restart);
+        }
+        
         private void TestFinalScreen()
         {
             Debug.Log("Click on restart or next level");
