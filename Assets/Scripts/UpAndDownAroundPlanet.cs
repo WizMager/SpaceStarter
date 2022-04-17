@@ -29,7 +29,18 @@ public class UpAndDownAroundPlanet : IDisposable
     private float _timeInPlanetOrGravity;
     private bool _timerStarted;
     private float _currentThresholdPlanetGravity;
+    private float _playerTouchEdgeOrPlanetTime;
 
+    public float GetPlayerTouchTime
+    {
+        get
+        {
+            var time = _playerTouchEdgeOrPlanetTime;
+            _playerTouchEdgeOrPlanetTime = 0;
+            return time;
+        }
+    }
+    
     public UpAndDownAroundPlanet(float startEngineForce, float startGravityForce, Transform playerTransform, 
         PlanetView planetView, GravityLittleView gravityView, IUserInput<Vector3>[] touch, float maxGravityForce,
         float maxEngineForce, float gravityAcceleration, float engineAcceleration, float cooldownTakeDamage, float thresholdPlanetGravity)
@@ -68,6 +79,7 @@ public class UpAndDownAroundPlanet : IDisposable
     {
         if (_timerStarted)
         {
+            _playerTouchEdgeOrPlanetTime += deltaTime;
             if (_timeInPlanetOrGravity < _cooldownTakeDamage)
             {
                 _timeInPlanetOrGravity += deltaTime;

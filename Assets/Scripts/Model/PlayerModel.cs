@@ -16,12 +16,15 @@ namespace Model
         private int _playerScore;
         private int _playerQuality;
         private int _playerTryCount;
+        private int _scoreMultiply;
 
         public PlayerModel(int startPlayerHealth, int startPlayerRocket)
         {
             _playerHealth = startPlayerHealth;
             _playerRocket = startPlayerRocket;
             _playerScore = 0;
+            _playerTryCount = 1;
+            _scoreMultiply = 1;
         }
 
         public void ShootRocket()
@@ -65,11 +68,20 @@ namespace Model
             }
         }
 
+        public void SetQuality(float wholeTime, float touchTime)
+        {
+            _playerQuality = 100 - Mathf.RoundToInt(touchTime * 100 / wholeTime);
+        }
+
+        public void SetScoreMultiply()
+        {
+            _scoreMultiply = _playerRocket;
+        }
+        
         public int[] GetValueToFinalScreen()
         {
             _playerQuality = _playerHealth;
-            _playerTryCount = _playerRocket;
-            return new[] {_playerScore, _playerTryCount, _playerQuality};
+            return new[] {_playerScore * _scoreMultiply, _playerTryCount, _playerQuality};
         }
     }
 }
