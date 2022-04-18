@@ -102,6 +102,8 @@ namespace Controllers
             OnStateChange?.Invoke(GameState.Restart);
             _startPosition.Set();
             Debug.Log(GameState.Restart);
+            OnStateChange?.Invoke(GameState.EdgeGravityToPlanet);
+            _playerModel.ResetRound();
         }
         
         private void TestFinalScreen()

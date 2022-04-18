@@ -11,7 +11,9 @@ namespace Model
         public event Action OnZeroHealth;
         public event Action OnZeroRocketLeft;
 
+        private int _basePlayerHealth;
         private int _playerHealth;
+        private int _basePlayerRocket;
         private int _playerRocket;
         private int _playerScore;
         private int _playerQuality;
@@ -20,7 +22,9 @@ namespace Model
 
         public PlayerModel(int startPlayerHealth, int startPlayerRocket)
         {
+            _basePlayerHealth = startPlayerHealth;
             _playerHealth = startPlayerHealth;
+            _basePlayerRocket = startPlayerRocket;
             _playerRocket = startPlayerRocket;
             _playerScore = 0;
             _playerTryCount = 1;
@@ -82,6 +86,18 @@ namespace Model
         {
             _playerQuality = _playerHealth;
             return new[] {_playerScore * _scoreMultiply, _playerTryCount, _playerQuality};
+        }
+
+        public void ResetRound()
+        {
+        _playerHealth = _basePlayerHealth;
+        _playerRocket = _basePlayerRocket;
+        _playerScore = 0;
+        _playerQuality = 0;
+        _playerTryCount = 1;
+        _scoreMultiply = 1;
+        OnChangeRocket?.Invoke(_playerRocket);
+        OnChangeScore?.Invoke(_playerScore);
         }
     }
 }

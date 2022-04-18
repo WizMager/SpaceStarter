@@ -6,15 +6,12 @@ using Utils;
 
 public class Restart : MonoBehaviour
 {
-    [SerializeField] private float _timeForRestart;
-    [SerializeField] private float _restartSpeed;
     private List<Transform> _allObjectTransforms = new List<Transform>();
     private List<Vector3> _allObjectStartPositions = new List<Vector3>();
     private List<Quaternion> _allObjectStartRotations = new List<Quaternion>();
     private StateController _stateController;
-    private bool _firstIteration = true;
 
-    private void Awake()
+    private void Start()
     {
         SaveAllObjects();
     }
@@ -40,39 +37,23 @@ public class Restart : MonoBehaviour
     {
         if (gameState == GameState.Restart)
         {
-            StartCoroutine(RestartActivate());
+            RestartActivate();
         }
     }
 
-    private IEnumerator RestartActivate()
+    private void RestartActivate()
     {
-        for (float i = 0; i < _timeForRestart;)
+        for (int j = 0; j < _allObjectTransforms.Count; j++)
         {
-            var deltaTime = Time.deltaTime;
-            i += deltaTime;
-
-            for (int j = 0; j < _allObjectTransforms.Count; j++)
+            var rigidBody = _allObjectTransforms[j].GetComponent<Rigidbody>();
+            if (rigidBody != null)
             {
-                if (_firstIteration)
-                {
-                    var rigidBody = _allObjectTransforms[j].GetComponent<Rigidbody>();
-                    if (rigidBody != null)
-                    {
-                        rigidBody.isKinematic = true; 
-                    }
-                }
-                var stepTransform = Vector3.Lerp(_allObjectTransforms[j].position, _allObjectStartPositions[j],
-                    deltaTime * _timeForRestart / _timeForRestart);
-                var stepRotation = Quaternion.Lerp(_allObjectTransforms[j].rotation, _allObjectStartRotations[j],
-                    deltaTime * _timeForRestart / _timeForRestart);
-                _allObjectTransforms[j].SetPositionAndRotation(stepTransform, stepRotation);
+                rigidBody.isKinematic = true;
             }
 
-            _firstIteration = false;
-            yield return null;
+            _allObjectTransforms[j]
+                .SetPositionAndRotation(_allObjectStartPositions[j], _allObjectStartRotations[j]);
         }
-
-        StopCoroutine(RestartActivate());
     }
     
 }
