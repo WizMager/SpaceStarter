@@ -47,7 +47,7 @@ namespace Controllers
             var planetTransform = planetView.transform;
 
             _startPosition = new StartPositionPlayerAndCamera(playerTransform, planetTransform, gravityView.transform,
-                camera.transform, data.Planet.distanceFromCenterPlanetToSpawn, data.Camera.startCameraHeight);
+                camera.transform, data.Planet.distanceFromCenterPlanetToSpawn, data.Camera.startCameraHeight, gravityLittleView);
             _flewAngle = new FlewAngleCounter(planetTransform, playerTransform, data.Planet.flyAngle, 
                 this);
             _toCenterGravity = new FlyToCenterGravity(playerTransform, data.Planet.rotationInGravitySpeed,
@@ -100,10 +100,11 @@ namespace Controllers
         private void Restart()
         {
             OnStateChange?.Invoke(GameState.Restart);
-            _startPosition.Set();
+            _startPosition.SetRestart();
             Debug.Log(GameState.Restart);
-            OnStateChange?.Invoke(GameState.EdgeGravityToPlanet);
             _playerModel.ResetRound();
+            OnStateChange?.Invoke(GameState.FlyAroundPlanet);
+            Debug.Log(GameState.FlyAroundPlanet);
         }
         
         private void TestFinalScreen()

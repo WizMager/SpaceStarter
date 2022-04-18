@@ -1,4 +1,5 @@
 using UnityEngine;
+using View;
 
 public class StartPositionPlayerAndCamera
 {
@@ -8,9 +9,10 @@ public class StartPositionPlayerAndCamera
     private readonly Transform _camera;
     private readonly float _startDistanceFromPlanet;
     private readonly float _startCameraHeight;
+    private readonly GravityLittleView _gravityLittleView;
 
     public StartPositionPlayerAndCamera(Transform playerTransform, Transform planetTransform, Transform gravityTransform,
-        Transform cameraTransform, float startDistanceFromPlanet, float startCameraHeight)
+        Transform cameraTransform, float startDistanceFromPlanet, float startCameraHeight, GravityLittleView gravityLittleView)
     {
         _player = playerTransform;
         _planet = planetTransform;
@@ -18,8 +20,28 @@ public class StartPositionPlayerAndCamera
         _camera = cameraTransform;
         _startDistanceFromPlanet = startDistanceFromPlanet;
         _startCameraHeight = startCameraHeight;
+        _gravityLittleView = gravityLittleView;
     }
 
+    public void SetRestart()
+    {
+        _player.gameObject.SetActive(true);
+        _planet.gameObject.SetActive(true);
+        _gravityLittleView.gameObject.SetActive(true);
+        var planetRay = new Ray(_planet.position, _planet.forward);
+        var gravityRadius = _gravity.gameObject.GetComponent<MeshCollider>().bounds.size.x / 2;
+        var pathToCenter = gravityRadius - (gravityRadius - _planet.gameObject.GetComponent<SphereCollider>().radius) / 2;
+        var startPlayerPosition = planetRay.GetPoint(pathToCenter);
+        var rotation = Quaternion.FromToRotation(_player.right, planetRay.direction);
+        _player.position = startPlayerPosition;
+        _player.rotation = rotation;
+
+        var cameraPosition = startPlayerPosition;
+        cameraPosition.y = _startCameraHeight;
+        var startRotation = Quaternion.Euler(new Vector3(90, 180, 180));
+        _camera.SetPositionAndRotation(cameraPosition, startRotation);
+    }
+    
     public void Set()
     {
         var planetRay = new Ray(_planet.position, _planet.forward);
