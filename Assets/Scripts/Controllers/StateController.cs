@@ -108,6 +108,7 @@ namespace Controllers
         private void Restart()
         {
             OnStateChange?.Invoke(GameState.Restart);
+            _firstPersonView.gameObject.SetActive(false);
             _finalScreenView.gameObject.SetActive(false);
             _deadView.gameObject.SetActive(false);
             _startPosition.SetRestart();
