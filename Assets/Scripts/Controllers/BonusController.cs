@@ -13,12 +13,14 @@ namespace Controllers
         private readonly int[] _valueBonus;
         private readonly StateController _stateController;
         private readonly List<BuildingView> _buildingViews;
+        private readonly PlayerIndicatorView _playerIndicatorView;
         
         public BonusController(StateController stateController, PlayerModel playerModel, PlayerIndicatorView indicatorView, 
             int[] valueBonus, IEnumerable<BuildingView> buildingViews)
         {
             _model = playerModel;
-            indicatorView.SubscribeModel(_model);
+            _playerIndicatorView = indicatorView;
+            _playerIndicatorView.SubscribeModel(_model);
             _valueBonus = valueBonus;
             _stateController = stateController;
             _buildingViews = new List<BuildingView>();
@@ -33,7 +35,19 @@ namespace Controllers
 
         private void ChangeState(GameState gameState)
         {
-            
+            switch (gameState)
+            {
+                case GameState.Restart:
+                    foreach (var buildingView in _buildingViews)
+                    {
+                        buildingView.Reset();
+                    }
+                    _playerIndicatorView.gameObject.SetActive(true);
+                    break;
+                case GameState.RocketCrushed:
+                    _playerIndicatorView.gameObject.SetActive(false);
+                    break;
+            }
         }
 
         private void Subscribe()

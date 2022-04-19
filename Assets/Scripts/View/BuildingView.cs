@@ -22,13 +22,13 @@ namespace View
             {
                 rb.GetComponent<FloorView>().OnShipTouch += ShipTouched;
             }
-            // Test right sorting.
-            // foreach (var rb in _rigidbodies)
-            // {
-            //     Debug.Log(Vector3.Distance(_centerPlanet, rb.position) + "   -   " + rb.name);
-            // }
         }
 
+        public void Reset()
+        {
+            _isFirstTouch = true;
+        }
+        
         private void ShipTouched(string floorName, BonusType bonusType)
         {
             if (_isFirstTouch)

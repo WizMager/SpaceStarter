@@ -26,14 +26,17 @@ public class StartPositionPlayerAndCamera
     public void SetRestart()
     {
         _player.gameObject.SetActive(true);
-        _planet.gameObject.SetActive(true);
+        _planet.GetComponent<SphereCollider>().enabled = true;
+        _gravity.gameObject.SetActive(true);
         _gravityLittleView.gameObject.SetActive(true);
         var planetRay = new Ray(_planet.position, _planet.forward);
         var gravityRadius = _gravity.gameObject.GetComponent<MeshCollider>().bounds.size.x / 2;
         var pathToCenter = gravityRadius - (gravityRadius - _planet.gameObject.GetComponent<SphereCollider>().radius) / 2;
         var startPlayerPosition = planetRay.GetPoint(pathToCenter);
-        var rotation = Quaternion.FromToRotation(_player.right, planetRay.direction);
+        var rotation = Quaternion.FromToRotation(_planet.forward, _planet.right);
+        
         _player.position = startPlayerPosition;
+        _player.LookAt(_planet.position);
         _player.rotation = rotation;
 
         var cameraPosition = startPlayerPosition;

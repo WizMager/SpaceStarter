@@ -2,7 +2,6 @@
 using InputClasses;
 using Model;
 using UnityEngine;
-using UnityEngine.UI;
 using View;
 using Object = UnityEngine.Object;
 
@@ -27,7 +26,7 @@ public class GameInitialization
       }
       var firstPersonView = Object.FindObjectOfType<FirstPersonView>();
       firstPersonView.gameObject.SetActive(false);
-      var restartButton = Object.FindObjectOfType<RestartButtonView>().GetComponent<Button>();
+      var restartButtons = Object.FindObjectsOfType<RestartButtonView>();
       var finalScreenView = Object.FindObjectOfType<FinalScreenView>();
       finalScreenView.gameObject.SetActive(false);
       var restart = Object.FindObjectOfType<Restart>();
@@ -37,7 +36,7 @@ public class GameInitialization
 
       var inputInitialization = new InputInitialization(data.Input.minimalDistanceForSwipe);
       var stateController = new StateController(planetView, playerView, data, gravityView, gravityLittleView, camera, 
-         playerModel, deadView, firstPersonView, restartButton, finalScreenView);
+         playerModel, deadView, firstPersonView, restartButtons, finalScreenView);
       var playerMoveController = new PlayerMoveController(stateController, playerView, data, inputInitialization.GetAllTouch(),
          planetView, gravityLittleView, playerModel);
       restart.TakeStateController(stateController);

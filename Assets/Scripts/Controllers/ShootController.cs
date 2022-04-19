@@ -1,4 +1,5 @@
-﻿using Interface;
+﻿using System.Collections.Generic;
+using Interface;
 using Model;
 using UnityEngine;
 using Utils;
@@ -17,6 +18,7 @@ namespace Controllers
         private readonly StateController _stateController;
         private readonly PlayerModel _playerModel;
         private readonly MissilePoolUsing _missilePool;
+        private List<MissileView> _activeMissile;
 
         private bool _isActive;
         private Vector3 _touchDownPosition;
@@ -33,6 +35,7 @@ namespace Controllers
             _playerModel = playerModel;
 
             _missilePool = new MissilePoolUsing(_missile, _missileStartPosition, 5);
+            _activeMissile = new List<MissileView>();
 
             _touch[(int) TouchInputState.InputTouchDown].OnChange += TouchDown;
             _touch[(int) TouchInputState.InputTouchUp].OnChange += TouchUp;
@@ -41,7 +44,22 @@ namespace Controllers
 
         private void ChangeState(GameState state)
         {
-            _isActive = state == GameState.ShootPlanet;
+            switch (state)
+            {
+                case GameState.ShootPlanet:
+                    _isActive = true;
+                    break;
+                case GameState.Restart:
+                    foreach (var missileView in _activeMissile)
+                    {
+                        _missilePool.Push(missileView);
+                    }
+                    _isActive = false;
+                    break;
+                default:
+                    _isActive = false;
+                    break;
+            }
         }
 
         private void Shoot(Vector3 touchPosition)
@@ -50,6 +68,7 @@ namespace Controllers
             var raycastHit = new RaycastHit[1];
             Physics.RaycastNonAlloc(ray, raycastHit, _camera.farClipPlane, GlobalData.LayerForAim);
             var missileView = _missilePool.Pop();
+            _activeMissile.Add(missileView);
             missileView.transform.SetPositionAndRotation(_missileStartPosition.position, _missileStartPosition.rotation);
             missileView.OnFlyEnd += MissileFlyEnded;
             missileView.SetTarget(raycastHit[0].point, _planet);
@@ -58,6 +77,7 @@ namespace Controllers
 
         private void MissileFlyEnded(MissileView obj)
         {
+            _activeMissile.Remove(obj);
             obj.OnFlyEnd -= MissileFlyEnded;
             _missilePool.Push(obj);
         }

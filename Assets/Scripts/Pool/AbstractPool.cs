@@ -5,7 +5,7 @@ namespace Pool
     public abstract class AbstractPool<TTemplate, TStorageType>
     {
         protected TTemplate _template;
-        protected Stack<TStorageType> _storage;
+        private Stack<TStorageType> _storage;
 
         protected AbstractPool(TTemplate template)
         {
@@ -30,7 +30,7 @@ namespace Pool
 
         protected abstract TStorageType Create();
 
-        public virtual void Fill(int storageAmount)
+        protected virtual void Fill(int storageAmount)
         {
             for (int i = 0; i < storageAmount; i++)
             {

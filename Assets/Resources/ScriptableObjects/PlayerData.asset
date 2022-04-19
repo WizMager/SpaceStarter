@@ -15,7 +15,7 @@ MonoBehaviour:
   missileCount: 7
   startHealth: 100
   cooldownTakeDamage: 1
-  multiplyDamageTake: 1
+  multiplyDamageTake: 100
   startDamageTake: 0.001
   endDamageTake: 0.003
   thresholdAfterTouchPlanetGravity: 1

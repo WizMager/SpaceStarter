@@ -17,7 +17,7 @@ namespace Controllers
         private readonly PlayerModel _playerModel;
         private readonly DeadScreenView _deadView;
         private readonly FirstPersonView _firstPersonView;
-        private readonly Button _restart;
+        private readonly Button[] _restartButtons;
         private readonly FinalScreenView _finalScreenView;
 
         private readonly StartPositionPlayerAndCamera _startPosition;
@@ -35,12 +35,16 @@ namespace Controllers
 
         public StateController(PlanetView planetView, PlayerView playerView, AllData data, GravityView gravityView, 
             GravityLittleView gravityLittleView, Camera camera, PlayerModel playerModel, DeadScreenView deadView, 
-            FirstPersonView firstPersonView, Button restartButton, FinalScreenView finalScreenView)
+            FirstPersonView firstPersonView, RestartButtonView[] restartButtons, FinalScreenView finalScreenView)
         {
             _playerModel = playerModel;
             _deadView = deadView;
             _firstPersonView = firstPersonView;
-            _restart = restartButton;
+            _restartButtons = new Button[restartButtons.Length];
+            for (int i = 0; i < restartButtons.Length; i++)
+            {
+                _restartButtons[i] = restartButtons[i].GetComponent<Button>();
+            }
             _finalScreenView = finalScreenView;
 
             var playerTransform = playerView.transform;
@@ -85,21 +89,27 @@ namespace Controllers
             _endFlyAway.OnFinish += EndCycle;
             _playerModel.OnZeroHealth += RocketCrushed;
             _playerModel.OnZeroRocketLeft += EndShoot;
-            _restart.onClick.AddListener(Restart);
-            
+            foreach (var restartButton in _restartButtons)
+            {
+                restartButton.onClick.AddListener(Restart);
+            }
+
+            _deadView.gameObject.SetActive(false);
             _startPosition.Set();
         }
 
         private void RocketCrushed()
         {
             OnStateChange?.Invoke(GameState.RocketCrushed);
-            _deadView.OnDead();
+            _deadView.gameObject.SetActive(true);
             Debug.Log(GameState.RocketCrushed);
         }
 
         private void Restart()
         {
             OnStateChange?.Invoke(GameState.Restart);
+            _finalScreenView.gameObject.SetActive(false);
+            _deadView.gameObject.SetActive(false);
             _startPosition.SetRestart();
             Debug.Log(GameState.Restart);
             _playerModel.ResetRound();
@@ -109,14 +119,14 @@ namespace Controllers
         
         private void TestFinalScreen()
         {
-            Debug.Log("Click on restart or next level");
+            Debug.Log("Click on next level");
         }
         
         private void EndCycle()
         {
             _finalScreenView.gameObject.SetActive(true);
             var buttons = _finalScreenView.SetValue(_playerModel.GetValueToFinalScreen());
-            buttons[0].onClick.AddListener(TestFinalScreen);
+            buttons[0].onClick.AddListener(Restart);
             buttons[1].onClick.AddListener(TestFinalScreen);
             Debug.Log("End Cycle");
         }
@@ -218,7 +228,10 @@ namespace Controllers
             _endFlyAway.OnFinish -= EndCycle;
             _playerModel.OnZeroHealth -= RocketCrushed;
             
-            _restart.onClick.RemoveAllListeners();
+            foreach (var restartButton in _restartButtons)
+            {
+                restartButton.onClick.RemoveAllListeners();
+            }
             _flewAngle.Dispose();
             _toCenterGravity.Dispose();
             _edgeGravityToPlanet.Dispose();
