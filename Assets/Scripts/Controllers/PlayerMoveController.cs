@@ -39,6 +39,7 @@ namespace Controllers
                 data.Player.cooldownTakeDamage, data.Player.thresholdAfterTouchPlanetGravity);
             _stateController = stateController;
             _playerModel = playerModel;
+            _shipView.SetupAndCalculate(data);
 
             _stateController.OnStateChange += StateChange;
             _upAndDownAroundPlanet.OnTakeDamage += TakeDamage;
@@ -49,7 +50,7 @@ namespace Controllers
             switch (gameState)
             {
                 case GameState.ToCenterGravity:
-                    _shipView.SeparateTurbine(_planetTransform, _data);
+                    _shipView.SeparateTurbine();
                     break;
                 case GameState.FlyAroundPlanet:
                     _shipView.StartFlyTurbine();
@@ -64,10 +65,17 @@ namespace Controllers
                     _playerModel.SetScoreMultiply();
                     _wholeFlyTime = 0;
                     break;
-                case GameState.FlyAway:
+                case GameState.ArcFlyFromPlanet:
                     _isActive = false;
                     _upAndDownAroundPlanet.Active(false);
+                    OnStopTakeDamage?.Invoke();
                     _shipView.ConnectTurbine();
+                    break;
+                case GameState.Restart:
+                    _isActive = false;
+                    _upAndDownAroundPlanet.Active(false);
+                    OnStopTakeDamage?.Invoke();
+                    _shipView.RestartConnectTurbine();
                     break;
                 default:
                     _isActive = false;

@@ -11,6 +11,13 @@ namespace View
         private bool _isFlyAroundPlanet;
         private float _currentAngle;
 
+        public void SetValueFields(Transform planet, AllData data)
+        {
+            _planet = planet;
+            _flyAngle = data.Planet.flyAngle;
+            _speedRotation = data.Planet.startSpeedRotationAroundPlanet;
+        }
+        
         private void Update()
         {
             if (!_isFlyAroundPlanet) return;
@@ -28,32 +35,11 @@ namespace View
         {
             _isFlyAroundPlanet = isActive;
         }
-
-        public void SetValueFields(Transform planet, AllData data)
-        {
-            _planet = planet;
-            _flyAngle = data.Planet.flyAngle;
-            _speedRotation = data.Planet.startSpeedRotationAroundPlanet;
-        }
         
-        // public void StartMove(float rotationTime)
-        // {
-        //     _rotation = Quaternion.LookRotation(-transform.right);
-        //     _rotationTime = rotationTime;
-        //     StartCoroutine(FlyToConnectPoint());
-        // }
-        //
-        // private IEnumerator FlyToConnectPoint()
-        // {
-        //     var currentRotation = transform.rotation;
-        //     for (float i = 0; i < _rotationTime; )
-        //     {
-        //         var deltaTime = Time.deltaTime;
-        //         i += deltaTime;
-        //         transform.rotation = Quaternion.Lerp(currentRotation, _rotation, i / _rotationTime);
-        //         yield return null;
-        //     }
-        //     
-        // }
+        public void Reset()
+        {
+            _currentAngle = 0;
+            _isFlyAroundPlanet = true;
+        }
     }
 }
