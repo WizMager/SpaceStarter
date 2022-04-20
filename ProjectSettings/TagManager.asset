@@ -8,6 +8,7 @@ TagManager:
   - Portal
   - ScoreIndicator
   - RestartButton
+  - ShipBackPart
   layers:
   - Default
   - TransparentFX

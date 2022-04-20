@@ -33,7 +33,7 @@ namespace Controllers
         private readonly FlyAway _flyAway;
         private readonly EndFlyAway _endFlyAway;
 
-        public StateController(PlanetView planetView, PlayerView playerView, AllData data, GravityView gravityView, 
+        public StateController(PlanetView planetView, ShipView shipView, AllData data, GravityView gravityView, 
             GravityLittleView gravityLittleView, Camera camera, PlayerModel playerModel, DeadScreenView deadView, 
             FirstPersonView firstPersonView, RestartButtonView[] restartButtons, FinalScreenView finalScreenView)
         {
@@ -47,7 +47,7 @@ namespace Controllers
             }
             _finalScreenView = finalScreenView;
 
-            var playerTransform = playerView.transform;
+            var playerTransform = shipView.transform;
             var planetTransform = planetView.transform;
 
             _startPosition = new StartPositionPlayerAndCamera(playerTransform, planetTransform, gravityView.transform,
