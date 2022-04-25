@@ -1,3 +1,0 @@
-planet 13
-gravity 26.4
-gravity collider 25.8
