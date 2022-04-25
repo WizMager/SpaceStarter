@@ -28,7 +28,6 @@ namespace View
             _data = data;
             _turbineEdgeGravityRotation = _turbine.rotation;
             var ray = new Ray(transform.position, transform.forward);
-            Debug.DrawRay(transform.position, _gravity.transform.position, Color.green, 100f);
             var pathToEdgeGravity = Vector3.Distance(transform.position, _gravity.transform.position) -
                                     _gravity.GetComponent<MeshCollider>().bounds.size.x / 2;
             _turbineEdgeGravityPosition = ray.GetPoint(pathToEdgeGravity);

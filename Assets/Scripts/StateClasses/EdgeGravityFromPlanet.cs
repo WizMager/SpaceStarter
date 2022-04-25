@@ -12,17 +12,18 @@ namespace StateClasses
         public event Action OnFinished;
         private readonly float _rotationTime;
         private readonly float _moveSpeed;
-        private readonly GravityLittleView _gravityColliderView;
+        private readonly GravityView _gravityColliderView;
         private readonly Transform _playerTransform;
         private readonly StateController _stateController;
         private readonly Transform _planetTransform;
         
         private bool _isInGravity;
-        private bool _isRotated;
-        private Quaternion _lookRotation;
+        private Quaternion _finishRotation;
         private bool _isActive;
+        private Vector3 _moveDirection;
+        private bool _isRotated;
 
-        public EdgeGravityFromPlanet(float rotationTime, float moveSpeed, GravityLittleView gravityColliderView, 
+        public EdgeGravityFromPlanet(float rotationTime, float moveSpeed, GravityView gravityColliderView, 
             Transform playerTransform, StateController stateController, Transform planetTransform)
         {
             _rotationTime = rotationTime;
@@ -32,24 +33,28 @@ namespace StateClasses
             _stateController = stateController;
             _planetTransform = planetTransform;
 
-            _gravityColliderView.OnPlayerGravityExit += GravityColliderExited;
+            _gravityColliderView.OnShipGravityExit += GravityColliderExited;
             _stateController.OnStateChange += ChangeState;
         }
 
         private void ChangeState(GameState gameState)
         {
-            if (gameState == GameState.EdgeGravityFromPlanet)
+            switch (gameState)
             {
-                _isActive = true;
-                _isInGravity = true;
-                _isRotated = false;
-                var lookDirection = _playerTransform.position - _planetTransform.position;
-                _lookRotation = Quaternion.LookRotation(new Vector3(lookDirection.x, 0, lookDirection.z));
-                _gravityColliderView.StartCoroutine(Rotate());
-            }
-            else
-            {
-                _isActive = false;
+                case GameState.EdgeGravityFromPlanet:
+                    _isActive = true;
+                    _isInGravity = true;
+                    _isRotated = false;
+                    var correctPlayerPosition =
+                        new Vector3(_playerTransform.position.x, 0, _playerTransform.position.z);
+                    _playerTransform.position = correctPlayerPosition;
+                    _moveDirection = _playerTransform.position - _planetTransform.position;
+                    _finishRotation = Quaternion.LookRotation(new Vector3(_moveDirection.x, 0, _moveDirection.z));
+                    _gravityColliderView.StartCoroutine(Rotate());
+                    break;
+                default:
+                    _isActive = false;
+                    break;
             }
         }
 
@@ -58,7 +63,7 @@ namespace StateClasses
             var startRotation = _playerTransform.rotation;
             for (float i = 0; i < _rotationTime; i += Time.deltaTime)
             {
-                _playerTransform.rotation = Quaternion.Lerp(startRotation, _lookRotation, i / _rotationTime);
+                _playerTransform.rotation = Quaternion.Lerp(startRotation, _finishRotation, i / _rotationTime);
                 yield return null;
             }
             _isRotated = true;
@@ -76,17 +81,20 @@ namespace StateClasses
             if (!_isActive) return;
             if (!_isInGravity)
             {
-                OnFinished?.Invoke();
+                if (_isRotated)
+                {
+                    OnFinished?.Invoke();
+                }
             }
-            if (_isRotated)
+            else
             {
-                _playerTransform.Translate(_playerTransform.forward * Time.deltaTime * _moveSpeed, Space.World);
+                _playerTransform.Translate(_moveDirection * Time.deltaTime * _moveSpeed, Space.World);
             }
         }
 
         public void Dispose()
         {
-            _gravityColliderView.OnPlayerGravityExit -= GravityColliderExited;
+            _gravityColliderView.OnShipGravityExit -= GravityColliderExited;
             _stateController.OnStateChange -= ChangeState;
         }
     }

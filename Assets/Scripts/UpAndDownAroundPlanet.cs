@@ -104,32 +104,32 @@ public class UpAndDownAroundPlanet : IDisposable
             }
         }
         
-        var shipPositionAxisX = Vector3.zero;
+        var shipPositionAxisY = Vector3.zero;
         switch (_state)
         {
             case UpAndDownState.Engine:
-                shipPositionAxisX.x = -_startEngineForce;
-                _playerTransform.Translate(shipPositionAxisX * deltaTime);
+                shipPositionAxisY.y = _startEngineForce;
+                _playerTransform.Translate(shipPositionAxisY * deltaTime);
                 break;
             case UpAndDownState.EngineAccelerate:
                 if (_currentEngineForce < _maxEngineForce)
                 {
                     _currentEngineForce += _engineAcceleration * deltaTime;
                 }
-                shipPositionAxisX.x = -_currentEngineForce;
-                _playerTransform.Translate(shipPositionAxisX * deltaTime);
+                shipPositionAxisY.y = _currentEngineForce;
+                _playerTransform.Translate(shipPositionAxisY * deltaTime);
                 break;
             case UpAndDownState.Gravity:
-                shipPositionAxisX.x = _startGravityForce;
-                _playerTransform.Translate(shipPositionAxisX * deltaTime);
+                shipPositionAxisY.y = -_startGravityForce;
+                _playerTransform.Translate(shipPositionAxisY * deltaTime);
                 break;
             case UpAndDownState.GravityAccelerate:
                 if (_currentGravityForce < _maxGravityForce)
                 {
                     _currentGravityForce += _gravityAcceleration * deltaTime;
                 }
-                shipPositionAxisX.x = _currentGravityForce;
-                _playerTransform.Translate(shipPositionAxisX * deltaTime);
+                shipPositionAxisY.y = -_currentGravityForce;
+                _playerTransform.Translate(shipPositionAxisY * deltaTime);
                 break;
             default:
                 throw new ArgumentOutOfRangeException("This state not exist in UpAndDown");

@@ -20,10 +20,10 @@ MonoBehaviour:
   startEngineForce: 1
   engineAcceleration: 25
   maxEngineForce: 30
-  moveSpeedToEdgeGravity: 11
-  rotationTimeToEdgeGravity: 1
+  moveSpeedToEdgeGravity: 0.2
+  rotationTimeToEdgeGravity: 3
   moveSpeedCenterGravity: 3
-  rotationInGravitySpeed: 175
+  rotationInGravitySpeed: 1
   moveSpeedToPlanet: 7
   distanceFromCenterPlanetToSpawn: 40
   rotationSpeedArcFromPlanet: 15

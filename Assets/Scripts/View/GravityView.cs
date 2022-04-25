@@ -6,20 +6,18 @@ namespace View
     public class GravityView : MonoBehaviour
     {
         public event Action OnPlayerGravityEnter;
-        public event Action OnPlayerGravityExit;
+        public event Action OnShipGravityExit;
 
         private void OnTriggerEnter(Collider other)
         {
-            if (!other.GetComponent<ShipView>()) return;
-            
+            if (!other.CompareTag("Player")) return;
             OnPlayerGravityEnter?.Invoke();
         }
 
         private void OnTriggerExit(Collider other)
         {
-            if (!other.GetComponent<ShipView>()) return;
-            
-            OnPlayerGravityExit?.Invoke();
+            if (!other.CompareTag("Player")) return;
+            OnShipGravityExit?.Invoke();
         }
     }
 }
