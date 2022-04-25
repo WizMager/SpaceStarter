@@ -3,11 +3,7 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags:
-  - Chelik
-  - Portal
-  - ScoreIndicator
-  - RestartButton
+  tags: []
   layers:
   - Default
   - TransparentFX
@@ -19,7 +15,7 @@ TagManager:
   - 
   - 
   - 
-  - RaycastLayer
+  - 
   - 
   - 
   - 

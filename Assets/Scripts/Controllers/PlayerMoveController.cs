@@ -17,23 +17,29 @@ namespace Controllers
         private readonly UpAndDownAroundPlanet _upAndDownAroundPlanet;
         private readonly StateController _stateController;
         private readonly PlayerModel _playerModel;
+        private readonly ShipView _shipView;
+        private readonly Transform _planetTransform;
+        private readonly AllData _data;
 
         private bool _isActive;
         private float _wholeFlyTime;
         
-        public PlayerMoveController(StateController stateController, PlayerView playerView, AllData data, IUserInput<Vector3>[] touchInput, 
+        public PlayerMoveController(StateController stateController, ShipView shipView, AllData data, IUserInput<Vector3>[] touchInput, 
             PlanetView planetView, GravityLittleView gravityView, PlayerModel playerModel)
         {
-             var playerTransform = playerView.transform;
-             var planetTransform = planetView.transform;
-             
-            _rotationAroundPlanet = new RotationAroundPlanet(data.Planet.startSpeedRotationAroundPlanet, playerTransform, planetTransform);
+            _shipView = shipView;
+             var playerTransform = shipView.transform;
+             _planetTransform = planetView.transform;
+             _data = data;
+
+             _rotationAroundPlanet = new RotationAroundPlanet(data.Planet.startSpeedRotationAroundPlanet, playerTransform, _planetTransform);
             _upAndDownAroundPlanet = new UpAndDownAroundPlanet(data.Planet.startEngineForce, data.Planet.startGravity,
                 playerTransform, planetView, gravityView, touchInput, data.Planet.maxGravity,
                 data.Planet.maxEngineForce, data.Planet.gravityAcceleration, data.Planet.engineAcceleration, 
                 data.Player.cooldownTakeDamage, data.Player.thresholdAfterTouchPlanetGravity);
             _stateController = stateController;
             _playerModel = playerModel;
+            _shipView.SetupAndCalculate(data);
 
             _stateController.OnStateChange += StateChange;
             _upAndDownAroundPlanet.OnTakeDamage += TakeDamage;
@@ -43,7 +49,11 @@ namespace Controllers
         {
             switch (gameState)
             {
+                case GameState.ToCenterGravity:
+                    _shipView.SeparateTurbine();
+                    break;
                 case GameState.FlyAroundPlanet:
+                    _shipView.StartFlyTurbine();
                     _isActive = true;
                     _upAndDownAroundPlanet.Active(true);
                     break;
@@ -54,6 +64,18 @@ namespace Controllers
                     _playerModel.SetQuality(_wholeFlyTime, _upAndDownAroundPlanet.GetPlayerTouchTime);
                     _playerModel.SetScoreMultiply();
                     _wholeFlyTime = 0;
+                    break;
+                case GameState.ArcFlyFromPlanet:
+                    _isActive = false;
+                    _upAndDownAroundPlanet.Active(false);
+                    OnStopTakeDamage?.Invoke();
+                    _shipView.ConnectTurbine();
+                    break;
+                case GameState.Restart:
+                    _isActive = false;
+                    _upAndDownAroundPlanet.Active(false);
+                    OnStopTakeDamage?.Invoke();
+                    _shipView.RestartConnectTurbine();
                     break;
                 default:
                     _isActive = false;

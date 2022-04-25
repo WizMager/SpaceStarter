@@ -21,6 +21,10 @@ namespace View
             foreach (var rocket in rockets)
             {
                 _rockets.Add(rocket);
+                if (_rocketPanel == RocketPanel.SecondUpPanel)
+                {
+                    _rockets.Reverse(); 
+                }
             }
         }
 

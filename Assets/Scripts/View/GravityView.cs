@@ -10,14 +10,14 @@ namespace View
 
         private void OnTriggerEnter(Collider other)
         {
-            if (!other.GetComponent<PlayerView>()) return;
+            if (!other.GetComponent<ShipView>()) return;
             
             OnPlayerGravityEnter?.Invoke();
         }
 
         private void OnTriggerExit(Collider other)
         {
-            if (!other.GetComponent<PlayerView>()) return;
+            if (!other.GetComponent<ShipView>()) return;
             
             OnPlayerGravityExit?.Invoke();
         }

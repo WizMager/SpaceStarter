@@ -9,7 +9,7 @@ public class GameInitialization
 {
    public GameInitialization(AllControllers controllers, ScriptableData.AllData data)
    {
-      var playerView = Object.FindObjectOfType<PlayerView>();
+      var playerView = Object.FindObjectOfType<ShipView>();
       var camera = Object.FindObjectOfType<Camera>();
       var missilePosition = camera.transform.GetChild(0).transform;
       var playerIndicatorView = Object.FindObjectOfType<PlayerIndicatorView>();

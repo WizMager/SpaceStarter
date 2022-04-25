@@ -33,7 +33,7 @@ namespace Controllers
         private readonly FlyAway _flyAway;
         private readonly EndFlyAway _endFlyAway;
 
-        public StateController(PlanetView planetView, PlayerView playerView, AllData data, GravityView gravityView, 
+        public StateController(PlanetView planetView, ShipView shipView, AllData data, GravityView gravityView, 
             GravityLittleView gravityLittleView, Camera camera, PlayerModel playerModel, DeadScreenView deadView, 
             FirstPersonView firstPersonView, RestartButtonView[] restartButtons, FinalScreenView finalScreenView)
         {
@@ -47,7 +47,7 @@ namespace Controllers
             }
             _finalScreenView = finalScreenView;
 
-            var playerTransform = playerView.transform;
+            var playerTransform = shipView.transform;
             var planetTransform = planetView.transform;
 
             _startPosition = new StartPositionPlayerAndCamera(playerTransform, planetTransform, gravityView.transform,
@@ -100,6 +100,7 @@ namespace Controllers
 
         private void RocketCrushed()
         {
+            _firstPersonView.gameObject.SetActive(false);
             OnStateChange?.Invoke(GameState.RocketCrushed);
             _deadView.gameObject.SetActive(true);
             Debug.Log(GameState.RocketCrushed);
@@ -108,7 +109,7 @@ namespace Controllers
         private void Restart()
         {
             OnStateChange?.Invoke(GameState.Restart);
-            _firstPersonView.gameObject.SetActive(false);
+            _firstPersonView.gameObject.SetActive(true);
             _finalScreenView.gameObject.SetActive(false);
             _deadView.gameObject.SetActive(false);
             _startPosition.SetRestart();
@@ -190,12 +191,14 @@ namespace Controllers
 
         private void EndToCenterGravity()
         {
+            _firstPersonView.gameObject.SetActive(true);
             OnStateChange?.Invoke(GameState.FlyAroundPlanet);
             Debug.Log(GameState.FlyAroundPlanet);
         }
 
         private void EndRotateAround()
         {
+            _firstPersonView.gameObject.SetActive(false);
             OnStateChange?.Invoke(GameState.EdgeGravityFromPlanet);
             Debug.Log(GameState.EdgeGravityFromPlanet);
         }
