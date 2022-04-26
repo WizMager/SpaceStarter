@@ -8,5 +8,10 @@ namespace ScriptableData
     public class ObjectsOnPlanetData : ScriptableObject
     {
         public ObjectTypeOnPlanet[] objectsTypeOnPlanet;
+
+        [Header("Building Around Planet Generation")]
+        public float minimalAngleBetweenBuildings;
+        public float maximumAngleBetweenBuildings;
+        public int buildingsWithBonus;
     }
 }

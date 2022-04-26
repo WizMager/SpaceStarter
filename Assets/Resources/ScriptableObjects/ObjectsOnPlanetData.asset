@@ -13,9 +13,15 @@ MonoBehaviour:
   m_Name: ObjectsOnPlanetData
   m_EditorClassIdentifier: 
   objectsTypeOnPlanet:
-  - prefab: {fileID: 7574144739707593195, guid: 71dbb6c2cb808474c92db0248307323a, type: 3}
+  - prefab: {fileID: 7574144739707593195, guid: 71dbb6c2cb808474c92db0248307323a,
+      type: 3}
     count: 0
-  - prefab: {fileID: 4832781786137145737, guid: 187e91d43c2b09a49893bc3717b6e12a, type: 3}
+  - prefab: {fileID: 4832781786137145737, guid: 187e91d43c2b09a49893bc3717b6e12a,
+      type: 3}
     count: 0
-  - prefab: {fileID: 8188460256541391138, guid: 7795086a4aec3734dbf5dcf94482f48e, type: 3}
+  - prefab: {fileID: 8188460256541391138, guid: 7795086a4aec3734dbf5dcf94482f48e,
+      type: 3}
     count: 0
+  minimalAngleBetweenBuildings: 10
+  maximumAngleBetweenBuildings: 15
+  buildingsWithBonus: 8
