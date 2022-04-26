@@ -37,10 +37,13 @@ namespace Controllers
         {
             var ray = new Ray(_planet.position, _planet.forward);
             _positionGenerator.position = ray.GetPoint(_planetRadius);
-            var angleAroundPlanet = 360f - (_maximumAngle - _minimalAngle);
-            for (float i = 0; i < angleAroundPlanet; )
+            for (float i = 0; i < 360f; )
             {
                 var iterationAngle = Random.Range(_minimalAngle, _maximumAngle);
+                if (360f - i < _minimalAngle)
+                {
+                    return;
+                }
                 i += iterationAngle;
                 _positionGenerator.RotateAround(_planet.position, _planet.up, iterationAngle);
                 Object.Instantiate(_buildingPrefab, -_positionGenerator.position, _positionGenerator.rotation);
