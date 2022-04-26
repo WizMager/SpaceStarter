@@ -26,10 +26,8 @@ namespace View
 
         private void Start()
         {
-            if (_rocketPanel == RocketPanel.SecondUpPanel)
-            {
-                _rockets.Reverse();
-            }
+            _rockets.Reverse();
+            IndicateRocket();
         }
 
         public void TakeModelRef(PlayerModel playerModel, int startRocket)
