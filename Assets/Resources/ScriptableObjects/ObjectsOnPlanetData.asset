@@ -24,4 +24,7 @@ MonoBehaviour:
     count: 0
   minimalAngleBetweenBuildings: 10
   maximumAngleBetweenBuildings: 15
+  maximumBuildingAngleDown: 5
+  maximumBuildingAngleUp: 5
+  maximumAngleRotateBuildingAroundItself: 180
   buildingsWithBonus: 8

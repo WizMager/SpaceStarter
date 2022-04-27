@@ -12,6 +12,9 @@ namespace ScriptableData
         [Header("Building Around Planet Generation")]
         public float minimalAngleBetweenBuildings;
         public float maximumAngleBetweenBuildings;
+        public float maximumBuildingAngleDown;
+        public float maximumBuildingAngleUp;
+        public float maximumAngleRotateBuildingAroundItself;
         public int buildingsWithBonus;
     }
 }
