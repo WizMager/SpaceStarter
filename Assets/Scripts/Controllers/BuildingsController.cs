@@ -21,6 +21,7 @@ namespace Controllers
         private readonly float _maximumAngleRotateBuildingAroundItself;
         
         private readonly GameObject _buildingPrefab;
+        private int _buildingsCounter;
 
         public BuildingsController(AllData data, Transform planet, Transform positionGenerator)
         {
@@ -49,6 +50,7 @@ namespace Controllers
                 var iterationAngle = Random.Range(_minimumAngleBetweenBuildings, _maximumAngleBetweenBuildings);
                 if (360f - i < _minimumAngleBetweenBuildings)
                 {
+                    Debug.Log(_buildingsCounter);
                     return;
                 }
                 i += iterationAngle;
@@ -58,6 +60,7 @@ namespace Controllers
                 var randomAngleRotationBuilding = Random.Range(0f, _maximumAngleRotateBuildingAroundItself);
                 var building = Object.Instantiate(_buildingPrefab, _positionGenerator.position, _positionGenerator.rotation);
                 building.transform.RotateAround(building.transform.position, building.transform.forward, randomAngleRotationBuilding);
+                _buildingsCounter++;
                 _positionGenerator.RotateAround(planetPosition, _planet.forward, -upOrDownAngle);
             }
         }
