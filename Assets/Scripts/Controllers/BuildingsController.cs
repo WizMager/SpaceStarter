@@ -1,8 +1,6 @@
-using System.Collections.Generic;
 using Builders;
 using ScriptableData;
 using UnityEngine;
-using View;
 using Object = UnityEngine.Object;
 using Random = UnityEngine.Random;
 
@@ -25,6 +23,7 @@ namespace Controllers
         private int _buildingsCounter;
         private readonly GameObject _rootBuildingAroundPlanet;
         private FirstTypeHouseBuilder _firstTypeHouseBuilder;
+        private HouseDirector _houseDirector;
 
         public BuildingsController(AllData data, Transform planet, Transform positionGenerator)
         {
@@ -43,6 +42,10 @@ namespace Controllers
             _rootBuildingAroundPlanet = new GameObject("BuildingAroundPlanet");
             _rootBuildingAroundPlanet.transform.SetParent(rootEnvironment.transform);
             _firstTypeHouseBuilder = new FirstTypeHouseBuilder();
+            _houseDirector = new HouseDirector
+            {
+                Builder = _firstTypeHouseBuilder
+            };
         }
 
         #region Generate_Buildings_Around_Planet
@@ -58,10 +61,7 @@ namespace Controllers
                 if (360f - i < _minimumAngleBetweenBuildings)
                 {
                     Debug.Log(_buildingsCounter);
-                    _firstTypeHouseBuilder.CreateSimpleFloor();
-                    _firstTypeHouseBuilder.CreateSimpleFloor();
-                    _firstTypeHouseBuilder.CreateGlassFloor();
-                    var go = _firstTypeHouseBuilder.GetHouse();
+                    var go = _houseDirector.Build3Floor();
                     go.transform.RotateAround(go.transform.position, go.transform.forward, Random.Range(0f, _maximumAngleRotateBuildingAroundItself));
                     return;
                 }

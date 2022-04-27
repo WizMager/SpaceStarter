@@ -6,6 +6,6 @@ namespace Builders
     {
         void CreateSimpleFloor();
         void CreateGlassFloor();
-        GameObject GetHouse();
+        GameObject RoofAndGetHouse();
     }
 }

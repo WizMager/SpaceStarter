@@ -30,16 +30,28 @@ namespace Builders
         public void CreateSimpleFloor()
         {
             var simpleFloor = Object.Instantiate(_simpleFloor, _house.transform, false);
+            var sizeY = simpleFloor.GetComponent<MeshRenderer>().bounds.size.y;
+            var position = new Vector3(0, 0, _localPositionZ + sizeY / 2);
+            simpleFloor.transform.localPosition = position; 
+            _localPositionZ += sizeY;
         }
 
         public void CreateGlassFloor()
         {
             var glassFloor = Object.Instantiate(_glassFloor, _house.transform, false);
+            var sizeY = glassFloor.GetComponent<MeshRenderer>().bounds.size.y;
+            var position = new Vector3(0, 0, _localPositionZ + sizeY / 2);
+            glassFloor.transform.localPosition = position; 
+            _localPositionZ += sizeY;
         }
 
-        public GameObject GetHouse()
+        public GameObject RoofAndGetHouse()
         {
             var roof = Object.Instantiate(_roof, _house.transform, false);
+            var sizeY = roof.GetComponent<MeshRenderer>().bounds.size.y;
+            var position = new Vector3(0, 0, _localPositionZ + sizeY / 2);
+            roof.transform.localPosition = position; 
+            _localPositionZ += sizeY;
             
             var completeHouse = _house;
             ResetHouse();
