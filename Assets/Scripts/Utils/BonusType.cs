@@ -2,7 +2,7 @@
 {
     public enum BonusType
     {
-        GoodBonus,
-        None
+        None,
+        GoodBonus
     }
 }

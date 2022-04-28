@@ -4,8 +4,11 @@ namespace Builders
 {
     public interface IHouseBuilder
     {
+        void ResetHouse();
         void CreateSimpleFloor();
         void CreateGlassFloor();
-        GameObject RoofAndGetHouse();
+        void CreateRoof();
+        void CreateGlassRoof();
+        GameObject GetHouse();
     }
 }

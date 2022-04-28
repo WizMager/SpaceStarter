@@ -13,9 +13,11 @@ namespace Builders
 
         public GameObject Build3Floor()
         {
+            _houseBuilder.ResetHouse();
             _houseBuilder.CreateSimpleFloor();
             _houseBuilder.CreateSimpleFloor();
-            return _houseBuilder.RoofAndGetHouse();
+            _houseBuilder.CreateRoof();
+            return _houseBuilder.GetHouse();
         }
     }
 }

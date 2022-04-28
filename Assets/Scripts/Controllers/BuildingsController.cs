@@ -23,6 +23,9 @@ namespace Controllers
         private int _buildingsCounter;
         private readonly GameObject _rootBuildingAroundPlanet;
         private FirstTypeHouseBuilder _firstTypeHouseBuilder;
+        private SecondTypeHouseBuilder _secondTypeHouseBuilder;
+        private ThirdTypeHouseBuilder _thirdTypeHouseBuilder;
+        private FourthTypeHouseBuilder _fourthTypeHouseBuilder;
         private HouseDirector _houseDirector;
 
         public BuildingsController(AllData data, Transform planet, Transform positionGenerator)
@@ -42,6 +45,9 @@ namespace Controllers
             _rootBuildingAroundPlanet = new GameObject("BuildingAroundPlanet");
             _rootBuildingAroundPlanet.transform.SetParent(rootEnvironment.transform);
             _firstTypeHouseBuilder = new FirstTypeHouseBuilder();
+            _secondTypeHouseBuilder = new SecondTypeHouseBuilder();
+            _thirdTypeHouseBuilder = new ThirdTypeHouseBuilder();
+            _fourthTypeHouseBuilder = new FourthTypeHouseBuilder();
             _houseDirector = new HouseDirector
             {
                 Builder = _firstTypeHouseBuilder
@@ -61,8 +67,6 @@ namespace Controllers
                 if (360f - i < _minimumAngleBetweenBuildings)
                 {
                     Debug.Log(_buildingsCounter);
-                    var go = _houseDirector.Build3Floor();
-                    go.transform.RotateAround(go.transform.position, go.transform.forward, Random.Range(0f, _maximumAngleRotateBuildingAroundItself));
                     return;
                 }
                 i += iterationAngle;
@@ -70,7 +74,8 @@ namespace Controllers
                 var upOrDownAngle = Random.Range(-_maximumBuildingAngleDown, _maximumBuildingAngleUp);
                 _positionGenerator.RotateAround(planetPosition, _planet.forward, upOrDownAngle);
                 var randomAngleRotationBuilding = Random.Range(0f, _maximumAngleRotateBuildingAroundItself);
-                var building = Object.Instantiate(_buildingPrefab, _positionGenerator.position, _positionGenerator.rotation);
+                var building = _houseDirector.Build3Floor();
+                building.transform.SetPositionAndRotation(_positionGenerator.position, _positionGenerator.rotation);
                 building.transform.RotateAround(building.transform.position, building.transform.forward, randomAngleRotationBuilding);
                 building.transform.SetParent(_rootBuildingAroundPlanet.transform);
                 _buildingsCounter++;

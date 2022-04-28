@@ -2,7 +2,7 @@
 
 namespace Builders
 {
-    public class FirstTypeHouseBuilder : IHouseBuilder
+    public class FourthTypeHouseBuilder : IHouseBuilder
     {
         private GameObject _house;
         private readonly GameObject _simpleFloor;
@@ -11,14 +11,14 @@ namespace Builders
         private readonly GameObject _glassRoof;
 
         private int _houseNumber;
-        private const string HouseName = "HouseFirstType";
+        private const string HouseName = "HouseFourthType";
         private float _localPositionZ;
 
-        public FirstTypeHouseBuilder()
+        public FourthTypeHouseBuilder()
         {
-            _simpleFloor = Resources.Load<GameObject>("Buildings/FirstTypeBuilding/SimpleFloorType1");
+            _simpleFloor = Resources.Load<GameObject>("Buildings/FourthTypeBuilding/SimpleFloorType4");
             _glassFloor = Resources.Load<GameObject>("Buildings/GlassBuilding/GlassFloor");
-            _roof = Resources.Load<GameObject>("Buildings/FirstTypeBuilding/RoofType1");
+            _roof = Resources.Load<GameObject>("Buildings/FourthTypeBuilding/RoofType4");
             _glassRoof = Resources.Load<GameObject>("Buildings/GlassBuilding/GlassRoof");
         }
 
