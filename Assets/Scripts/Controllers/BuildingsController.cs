@@ -19,7 +19,6 @@ namespace Controllers
         private readonly float _maximumBuildingAngleDown;
         private readonly float _maximumAngleRotateBuildingAroundItself;
         
-        private readonly GameObject _buildingPrefab;
         private int _buildingsCounter;
         private readonly GameObject _rootBuildingAroundPlanet;
         private FirstTypeHouseBuilder _firstTypeHouseBuilder;
@@ -40,7 +39,6 @@ namespace Controllers
             _maximumBuildingAngleDown = data.ObjectsOnPlanetData.maximumBuildingAngleDown;
             _maximumAngleRotateBuildingAroundItself = data.ObjectsOnPlanetData.maximumAngleRotateBuildingAroundItself;
             
-            _buildingPrefab = Resources.Load<GameObject>("TestBuilding");
             var rootEnvironment = new GameObject("PlanetEnvironment");
             _rootBuildingAroundPlanet = new GameObject("BuildingAroundPlanet");
             _rootBuildingAroundPlanet.transform.SetParent(rootEnvironment.transform);
