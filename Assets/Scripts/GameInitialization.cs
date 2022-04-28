@@ -34,7 +34,7 @@ public class GameInitialization
       
       var buildingController = new BuildingsController(data, planetView.transform, positionGenerator.transform);
       buildingController.CreateBuildings(planetView.transform);
-      buildingController.GeneratePositions();
+      buildingController.GenerateBuildingsAroundPlanet();
 
       var inputInitialization = new InputInitialization(data.Input.minimalDistanceForSwipe);
       var stateController = new StateController(planetView, playerView, data, gravityView, gravityLittleView, camera, 

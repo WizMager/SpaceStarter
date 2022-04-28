@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Builders;
 using ScriptableData;
 using UnityEngine;
@@ -25,7 +26,9 @@ namespace Controllers
         private SecondTypeHouseBuilder _secondTypeHouseBuilder;
         private ThirdTypeHouseBuilder _thirdTypeHouseBuilder;
         private FourthTypeHouseBuilder _fourthTypeHouseBuilder;
-        private HouseDirector _houseDirector;
+        private readonly HouseDirector _houseDirector;
+        private readonly List<Vector3> _buildingPositions;
+        private readonly List<Quaternion> _buildingRotations;
 
         public BuildingsController(AllData data, Transform planet, Transform positionGenerator)
         {
@@ -38,7 +41,9 @@ namespace Controllers
             _maximumBuildingAngleUp = data.ObjectsOnPlanetData.maximumBuildingAngleUp;
             _maximumBuildingAngleDown = data.ObjectsOnPlanetData.maximumBuildingAngleDown;
             _maximumAngleRotateBuildingAroundItself = data.ObjectsOnPlanetData.maximumAngleRotateBuildingAroundItself;
-            
+
+            _buildingPositions = new List<Vector3>();
+            _buildingRotations = new List<Quaternion>();
             var rootEnvironment = new GameObject("PlanetEnvironment");
             _rootBuildingAroundPlanet = new GameObject("BuildingAroundPlanet");
             _rootBuildingAroundPlanet.transform.SetParent(rootEnvironment.transform);
@@ -54,7 +59,13 @@ namespace Controllers
 
         #region Generate_Buildings_Around_Planet
 
-        public void GeneratePositions()
+        public void GenerateBuildingsAroundPlanet()
+        {
+            GeneratePositions();
+            CreateBuildingAndPosition();
+        }
+        
+        private void GeneratePositions()
         {
             var planetPosition = _planet.position;
             var ray = new Ray(planetPosition, _planet.forward);
@@ -71,16 +82,25 @@ namespace Controllers
                 _positionGenerator.RotateAround(planetPosition, _planet.up, iterationAngle);
                 var upOrDownAngle = Random.Range(-_maximumBuildingAngleDown, _maximumBuildingAngleUp);
                 _positionGenerator.RotateAround(planetPosition, _planet.forward, upOrDownAngle);
-                var randomAngleRotationBuilding = Random.Range(0f, _maximumAngleRotateBuildingAroundItself);
-                var building = _houseDirector.Build3Floor();
-                building.transform.SetPositionAndRotation(_positionGenerator.position, _positionGenerator.rotation);
-                building.transform.RotateAround(building.transform.position, building.transform.forward, randomAngleRotationBuilding);
-                building.transform.SetParent(_rootBuildingAroundPlanet.transform);
-                _buildingsCounter++;
+                _buildingPositions.Add(_positionGenerator.position);
+                _buildingRotations.Add(_positionGenerator.rotation);
                 _positionGenerator.RotateAround(planetPosition, _planet.forward, -upOrDownAngle);
+                _buildingsCounter++;
             }
         }
 
+        private void CreateBuildingAndPosition()
+        {
+            for (int i = 0; i < _buildingsCounter; i++)
+            {
+                var randomAngleRotationBuilding = Random.Range(0f, _maximumAngleRotateBuildingAroundItself);
+                var building = _houseDirector.Build3Floor();
+                building.transform.SetPositionAndRotation(_buildingPositions[i], _buildingRotations[i]);
+                building.transform.RotateAround(building.transform.position, building.transform.forward, randomAngleRotationBuilding);
+                building.transform.SetParent(_rootBuildingAroundPlanet.transform);
+            }
+        }
+        
         #endregion
         
         private void CreateBuildingsByPrefab(Transform planet, GameObject buildingPrefab, int buildingsCount)
