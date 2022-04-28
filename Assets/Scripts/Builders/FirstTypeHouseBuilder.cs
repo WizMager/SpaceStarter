@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using View;
 
 namespace Builders
 {
@@ -68,6 +69,7 @@ namespace Builders
         public GameObject GetHouse()
         {
             var completeHouse = _house;
+            completeHouse.AddComponent<BuildingView>();
             return completeHouse;
         }
     }

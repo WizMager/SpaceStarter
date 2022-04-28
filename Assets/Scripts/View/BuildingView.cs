@@ -10,7 +10,6 @@ namespace View
     {
         public event Action<BonusType> OnFloorTouch;
         
-        [SerializeField] private Vector3 _centerPlanet = Vector3.zero;
         private List<Rigidbody> _rigidbodies;
         private bool _isFirstTouch = true;
 
@@ -64,7 +63,7 @@ namespace View
 
         private IEnumerable<Rigidbody> SortRigidbody(IEnumerable<Rigidbody> rigidbodies)
         {
-            return rigidbodies.OrderBy(o => Vector3.Distance(_centerPlanet, o.position)).ToList();
+            return rigidbodies.OrderBy(o => Vector3.Distance(Vector3.zero, o.position)).ToList();
         }
 
         private void OnDestroy()
