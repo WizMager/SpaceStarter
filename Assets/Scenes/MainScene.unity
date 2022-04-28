@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.052786306, g: 0.15031967, b: 0.1943556, a: 1}
+  m_IndirectSpecularColor: {r: 0.051441513, g: 0.1500552, b: 0.19368404, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -814,6 +814,9 @@ MonoBehaviour:
   _bonusType: 1
   _goodFloor: {fileID: 2100000, guid: e3d6d5f080571ec409ee5ec0af280993, type: 2}
   _badFloor: {fileID: 2100000, guid: 1bf47dc9600ec9848838b5b7ea09366a, type: 2}
+  _centerPlanet: {x: 0, y: 0, z: 0}
+  _timerBeforIsKinimatik: 3
+  _gravidyForce: 10
 --- !u!65 &318376407
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -968,13 +971,45 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2079749790}
     m_Modifications:
+    - target: {fileID: 345441117960092057, guid: cc0ef0cb9708b2242a9dd4fc74d0c304, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 345441117960092057, guid: cc0ef0cb9708b2242a9dd4fc74d0c304, type: 3}
+      propertyPath: m_TagString
+      value: Floor
+      objectReference: {fileID: 0}
     - target: {fileID: 421891914949321107, guid: cc0ef0cb9708b2242a9dd4fc74d0c304, type: 3}
       propertyPath: m_Name
       value: House9
       objectReference: {fileID: 0}
     - target: {fileID: 421891914949321107, guid: cc0ef0cb9708b2242a9dd4fc74d0c304, type: 3}
       propertyPath: m_TagString
-      value: Untagged
+      value: Building
+      objectReference: {fileID: 0}
+    - target: {fileID: 547501518470672169, guid: cc0ef0cb9708b2242a9dd4fc74d0c304, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 547501518470672169, guid: cc0ef0cb9708b2242a9dd4fc74d0c304, type: 3}
+      propertyPath: m_TagString
+      value: Floor
+      objectReference: {fileID: 0}
+    - target: {fileID: 1954020863288983086, guid: cc0ef0cb9708b2242a9dd4fc74d0c304, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 1954020863288983086, guid: cc0ef0cb9708b2242a9dd4fc74d0c304, type: 3}
+      propertyPath: m_TagString
+      value: Floor
+      objectReference: {fileID: 0}
+    - target: {fileID: 3691265837889308660, guid: cc0ef0cb9708b2242a9dd4fc74d0c304, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 3691265837889308660, guid: cc0ef0cb9708b2242a9dd4fc74d0c304, type: 3}
+      propertyPath: m_TagString
+      value: Floor
       objectReference: {fileID: 0}
     - target: {fileID: 4481359724085361194, guid: cc0ef0cb9708b2242a9dd4fc74d0c304, type: 3}
       propertyPath: m_RootOrder
@@ -1019,6 +1054,50 @@ PrefabInstance:
     - target: {fileID: 4481359724085361194, guid: cc0ef0cb9708b2242a9dd4fc74d0c304, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5549694786371638345, guid: cc0ef0cb9708b2242a9dd4fc74d0c304, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 5549694786371638345, guid: cc0ef0cb9708b2242a9dd4fc74d0c304, type: 3}
+      propertyPath: m_TagString
+      value: Floor
+      objectReference: {fileID: 0}
+    - target: {fileID: 5639192523610088695, guid: cc0ef0cb9708b2242a9dd4fc74d0c304, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 5639192523610088695, guid: cc0ef0cb9708b2242a9dd4fc74d0c304, type: 3}
+      propertyPath: m_TagString
+      value: Floor
+      objectReference: {fileID: 0}
+    - target: {fileID: 5857812353736705035, guid: cc0ef0cb9708b2242a9dd4fc74d0c304, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6031427293954816439, guid: cc0ef0cb9708b2242a9dd4fc74d0c304, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 6031427293954816439, guid: cc0ef0cb9708b2242a9dd4fc74d0c304, type: 3}
+      propertyPath: m_TagString
+      value: Floor
+      objectReference: {fileID: 0}
+    - target: {fileID: 6410877719671187492, guid: cc0ef0cb9708b2242a9dd4fc74d0c304, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 6410877719671187492, guid: cc0ef0cb9708b2242a9dd4fc74d0c304, type: 3}
+      propertyPath: m_TagString
+      value: Floor
+      objectReference: {fileID: 0}
+    - target: {fileID: 6475827150524842233, guid: cc0ef0cb9708b2242a9dd4fc74d0c304, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 6475827150524842233, guid: cc0ef0cb9708b2242a9dd4fc74d0c304, type: 3}
+      propertyPath: m_TagString
+      value: Floor
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cc0ef0cb9708b2242a9dd4fc74d0c304, type: 3}
@@ -1626,6 +1705,9 @@ MonoBehaviour:
   _bonusType: 1
   _goodFloor: {fileID: 2100000, guid: e3d6d5f080571ec409ee5ec0af280993, type: 2}
   _badFloor: {fileID: 2100000, guid: 1bf47dc9600ec9848838b5b7ea09366a, type: 2}
+  _centerPlanet: {x: 0, y: 0, z: 0}
+  _timerBeforIsKinimatik: 3
+  _gravidyForce: 50
 --- !u!65 &531471133
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1662,6 +1744,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _centerPlanet: {x: 0, y: 0, z: 0}
+  _gravidyForce: 14
 --- !u!65 &555775739
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1773,6 +1856,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _centerPlanet: {x: 0, y: 0, z: 0}
+  _gravidyForce: 20
 --- !u!65 &579041941
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1793,13 +1877,97 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2079749790}
     m_Modifications:
+    - target: {fileID: 530495766814360411, guid: 653ca077e289ef44d8ba0b9af0022c0a, type: 3}
+      propertyPath: m_IsTrigger
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 598186241117432672, guid: 653ca077e289ef44d8ba0b9af0022c0a, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 598186241117432672, guid: 653ca077e289ef44d8ba0b9af0022c0a, type: 3}
+      propertyPath: m_TagString
+      value: Floor
+      objectReference: {fileID: 0}
+    - target: {fileID: 795794142046264286, guid: 653ca077e289ef44d8ba0b9af0022c0a, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 795794142046264286, guid: 653ca077e289ef44d8ba0b9af0022c0a, type: 3}
+      propertyPath: m_TagString
+      value: Floor
+      objectReference: {fileID: 0}
+    - target: {fileID: 1092893821497130417, guid: 653ca077e289ef44d8ba0b9af0022c0a, type: 3}
+      propertyPath: m_IsTrigger
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1393421443513908947, guid: 653ca077e289ef44d8ba0b9af0022c0a, type: 3}
+      propertyPath: m_IsTrigger
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1566319891445741088, guid: 653ca077e289ef44d8ba0b9af0022c0a, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 1566319891445741088, guid: 653ca077e289ef44d8ba0b9af0022c0a, type: 3}
+      propertyPath: m_TagString
+      value: Floor
+      objectReference: {fileID: 0}
+    - target: {fileID: 2171074375649413153, guid: 653ca077e289ef44d8ba0b9af0022c0a, type: 3}
+      propertyPath: m_IsTrigger
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2292757673471954798, guid: 653ca077e289ef44d8ba0b9af0022c0a, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 2292757673471954798, guid: 653ca077e289ef44d8ba0b9af0022c0a, type: 3}
+      propertyPath: m_TagString
+      value: Floor
+      objectReference: {fileID: 0}
+    - target: {fileID: 4810970656950121998, guid: 653ca077e289ef44d8ba0b9af0022c0a, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 4810970656950121998, guid: 653ca077e289ef44d8ba0b9af0022c0a, type: 3}
+      propertyPath: m_TagString
+      value: Floor
+      objectReference: {fileID: 0}
     - target: {fileID: 4887985565496782340, guid: 653ca077e289ef44d8ba0b9af0022c0a, type: 3}
       propertyPath: m_Name
       value: House7
       objectReference: {fileID: 0}
     - target: {fileID: 4887985565496782340, guid: 653ca077e289ef44d8ba0b9af0022c0a, type: 3}
       propertyPath: m_TagString
-      value: Untagged
+      value: Building
+      objectReference: {fileID: 0}
+    - target: {fileID: 5119492470527853979, guid: 653ca077e289ef44d8ba0b9af0022c0a, type: 3}
+      propertyPath: m_IsTrigger
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5384161497714102134, guid: 653ca077e289ef44d8ba0b9af0022c0a, type: 3}
+      propertyPath: m_IsTrigger
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6706232649097114041, guid: 653ca077e289ef44d8ba0b9af0022c0a, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 6706232649097114041, guid: 653ca077e289ef44d8ba0b9af0022c0a, type: 3}
+      propertyPath: m_TagString
+      value: Floor
+      objectReference: {fileID: 0}
+    - target: {fileID: 7800781275631385174, guid: 653ca077e289ef44d8ba0b9af0022c0a, type: 3}
+      propertyPath: m_IsTrigger
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8445729482616637539, guid: 653ca077e289ef44d8ba0b9af0022c0a, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 8445729482616637539, guid: 653ca077e289ef44d8ba0b9af0022c0a, type: 3}
+      propertyPath: m_TagString
+      value: Floor
       objectReference: {fileID: 0}
     - target: {fileID: 8664851339296929213, guid: 653ca077e289ef44d8ba0b9af0022c0a, type: 3}
       propertyPath: m_RootOrder
@@ -1807,7 +1975,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8664851339296929213, guid: 653ca077e289ef44d8ba0b9af0022c0a, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 12.5
+      value: 12.69
       objectReference: {fileID: 0}
     - target: {fileID: 8664851339296929213, guid: 653ca077e289ef44d8ba0b9af0022c0a, type: 3}
       propertyPath: m_LocalPosition.y
@@ -1976,6 +2144,9 @@ MonoBehaviour:
   _bonusType: 0
   _goodFloor: {fileID: 2100000, guid: e3d6d5f080571ec409ee5ec0af280993, type: 2}
   _badFloor: {fileID: 2100000, guid: 1bf47dc9600ec9848838b5b7ea09366a, type: 2}
+  _centerPlanet: {x: 0, y: 0, z: 0}
+  _timerBeforIsKinimatik: 3
+  _gravidyForce: 10
 --- !u!65 &708111946
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2175,6 +2346,9 @@ MonoBehaviour:
   _bonusType: 1
   _goodFloor: {fileID: 2100000, guid: e3d6d5f080571ec409ee5ec0af280993, type: 2}
   _badFloor: {fileID: 2100000, guid: 1bf47dc9600ec9848838b5b7ea09366a, type: 2}
+  _centerPlanet: {x: 0, y: 0, z: 0}
+  _timerBeforIsKinimatik: 3
+  _gravidyForce: 10
 --- !u!65 &727792295
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2320,6 +2494,9 @@ MonoBehaviour:
   _bonusType: 1
   _goodFloor: {fileID: 2100000, guid: e3d6d5f080571ec409ee5ec0af280993, type: 2}
   _badFloor: {fileID: 2100000, guid: 1bf47dc9600ec9848838b5b7ea09366a, type: 2}
+  _centerPlanet: {x: 0, y: 0, z: 0}
+  _timerBeforIsKinimatik: 3
+  _gravidyForce: 10
 --- !u!65 &827199177
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2369,6 +2546,9 @@ MonoBehaviour:
   _bonusType: 1
   _goodFloor: {fileID: 2100000, guid: e3d6d5f080571ec409ee5ec0af280993, type: 2}
   _badFloor: {fileID: 2100000, guid: 1bf47dc9600ec9848838b5b7ea09366a, type: 2}
+  _centerPlanet: {x: 0, y: 0, z: 0}
+  _timerBeforIsKinimatik: 3
+  _gravidyForce: 10
 --- !u!65 &834604409
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2886,6 +3066,9 @@ MonoBehaviour:
   _bonusType: 1
   _goodFloor: {fileID: 2100000, guid: e3d6d5f080571ec409ee5ec0af280993, type: 2}
   _badFloor: {fileID: 2100000, guid: 1bf47dc9600ec9848838b5b7ea09366a, type: 2}
+  _centerPlanet: {x: 0, y: 0, z: 0}
+  _timerBeforIsKinimatik: 3
+  _gravidyForce: 50
 --- !u!65 &915879733
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2999,6 +3182,9 @@ MonoBehaviour:
   _bonusType: 1
   _goodFloor: {fileID: 2100000, guid: e3d6d5f080571ec409ee5ec0af280993, type: 2}
   _badFloor: {fileID: 2100000, guid: 1bf47dc9600ec9848838b5b7ea09366a, type: 2}
+  _centerPlanet: {x: 0, y: 0, z: 0}
+  _timerBeforIsKinimatik: 3
+  _gravidyForce: 10
 --- !u!65 &961263241
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3048,6 +3234,9 @@ MonoBehaviour:
   _bonusType: 1
   _goodFloor: {fileID: 2100000, guid: e3d6d5f080571ec409ee5ec0af280993, type: 2}
   _badFloor: {fileID: 2100000, guid: 1bf47dc9600ec9848838b5b7ea09366a, type: 2}
+  _centerPlanet: {x: 0, y: 0, z: 0}
+  _timerBeforIsKinimatik: 3
+  _gravidyForce: 10
 --- !u!65 &984150228
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3068,6 +3257,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2079749790}
     m_Modifications:
+    - target: {fileID: 375874543032416846, guid: be1ba1d13d30cdb45b9df81bfae904c0, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 375874543032416846, guid: be1ba1d13d30cdb45b9df81bfae904c0, type: 3}
+      propertyPath: m_TagString
+      value: Floor
+      objectReference: {fileID: 0}
     - target: {fileID: 593808512425641872, guid: be1ba1d13d30cdb45b9df81bfae904c0, type: 3}
       propertyPath: m_RootOrder
       value: 3
@@ -3112,16 +3309,98 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3658644195522987043, guid: be1ba1d13d30cdb45b9df81bfae904c0, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 3658644195522987043, guid: be1ba1d13d30cdb45b9df81bfae904c0, type: 3}
+      propertyPath: m_TagString
+      value: Floor
+      objectReference: {fileID: 0}
     - target: {fileID: 3735596430015568937, guid: be1ba1d13d30cdb45b9df81bfae904c0, type: 3}
       propertyPath: m_Name
       value: House5
       objectReference: {fileID: 0}
     - target: {fileID: 3735596430015568937, guid: be1ba1d13d30cdb45b9df81bfae904c0, type: 3}
       propertyPath: m_TagString
-      value: Untagged
+      value: Building
+      objectReference: {fileID: 0}
+    - target: {fileID: 4231835036278734171, guid: be1ba1d13d30cdb45b9df81bfae904c0, type: 3}
+      propertyPath: m_IsTrigger
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7157469659664043262, guid: be1ba1d13d30cdb45b9df81bfae904c0, type: 3}
+      propertyPath: m_IsTrigger
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7331493455357002765, guid: be1ba1d13d30cdb45b9df81bfae904c0, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 7331493455357002765, guid: be1ba1d13d30cdb45b9df81bfae904c0, type: 3}
+      propertyPath: m_TagString
+      value: Floor
+      objectReference: {fileID: 0}
+    - target: {fileID: 7936232546892708364, guid: be1ba1d13d30cdb45b9df81bfae904c0, type: 3}
+      propertyPath: m_IsTrigger
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8057959137457175875, guid: be1ba1d13d30cdb45b9df81bfae904c0, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 8057959137457175875, guid: be1ba1d13d30cdb45b9df81bfae904c0, type: 3}
+      propertyPath: m_TagString
+      value: Floor
+      objectReference: {fileID: 0}
+    - target: {fileID: 8601504506136899958, guid: be1ba1d13d30cdb45b9df81bfae904c0, type: 3}
+      propertyPath: m_IsTrigger
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8669203778965281101, guid: be1ba1d13d30cdb45b9df81bfae904c0, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 8669203778965281101, guid: be1ba1d13d30cdb45b9df81bfae904c0, type: 3}
+      propertyPath: m_TagString
+      value: Floor
+      objectReference: {fileID: 0}
+    - target: {fileID: 9162750410617360284, guid: be1ba1d13d30cdb45b9df81bfae904c0, type: 3}
+      propertyPath: m_IsTrigger
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: be1ba1d13d30cdb45b9df81bfae904c0, type: 3}
+--- !u!1 &1045684722
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1045684723}
+  m_Layer: 0
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1045684723
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1045684722}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -6.3606567, z: 6.581949}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 7
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1070710219
 GameObject:
   m_ObjectHideFlags: 0
@@ -3433,6 +3712,9 @@ MonoBehaviour:
   _bonusType: 1
   _goodFloor: {fileID: 2100000, guid: e3d6d5f080571ec409ee5ec0af280993, type: 2}
   _badFloor: {fileID: 2100000, guid: 1bf47dc9600ec9848838b5b7ea09366a, type: 2}
+  _centerPlanet: {x: 0, y: 0, z: 0}
+  _timerBeforIsKinimatik: 3
+  _gravidyForce: 10
 --- !u!65 &1150722760
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3482,6 +3764,9 @@ MonoBehaviour:
   _bonusType: 0
   _goodFloor: {fileID: 2100000, guid: e3d6d5f080571ec409ee5ec0af280993, type: 2}
   _badFloor: {fileID: 2100000, guid: 1bf47dc9600ec9848838b5b7ea09366a, type: 2}
+  _centerPlanet: {x: 0, y: 0, z: 0}
+  _timerBeforIsKinimatik: 3
+  _gravidyForce: 50
 --- !u!65 &1158851519
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -4244,6 +4529,9 @@ MonoBehaviour:
   _bonusType: 1
   _goodFloor: {fileID: 2100000, guid: e3d6d5f080571ec409ee5ec0af280993, type: 2}
   _badFloor: {fileID: 2100000, guid: 1bf47dc9600ec9848838b5b7ea09366a, type: 2}
+  _centerPlanet: {x: 0, y: 0, z: 0}
+  _timerBeforIsKinimatik: 3
+  _gravidyForce: 10
 --- !u!65 &1395958071
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -4344,6 +4632,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _centerPlanet: {x: 0, y: 0, z: 0}
+  _gravidyForce: 30
+--- !u!65 &1493623074
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1493623071}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1495687537 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6410877719671187492, guid: cc0ef0cb9708b2242a9dd4fc74d0c304, type: 3}
@@ -4380,6 +4682,9 @@ MonoBehaviour:
   _bonusType: 1
   _goodFloor: {fileID: 2100000, guid: e3d6d5f080571ec409ee5ec0af280993, type: 2}
   _badFloor: {fileID: 2100000, guid: 1bf47dc9600ec9848838b5b7ea09366a, type: 2}
+  _centerPlanet: {x: 0, y: 0, z: 0}
+  _timerBeforIsKinimatik: 3
+  _gravidyForce: 10
 --- !u!65 &1495687544
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -4388,7 +4693,7 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1495687537}
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
@@ -5194,6 +5499,24 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!1 &1841986458 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5665805095818355066, guid: efb7df09e7b780d4ba478bd66540d450, type: 3}
+  m_PrefabInstance: {fileID: 3190577758220308986}
+  m_PrefabAsset: {fileID: 0}
+--- !u!65 &1841986459
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1841986458}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1887398315 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 795794142046264286, guid: 653ca077e289ef44d8ba0b9af0022c0a, type: 3}
@@ -5230,6 +5553,9 @@ MonoBehaviour:
   _bonusType: 0
   _goodFloor: {fileID: 2100000, guid: e3d6d5f080571ec409ee5ec0af280993, type: 2}
   _badFloor: {fileID: 2100000, guid: 1bf47dc9600ec9848838b5b7ea09366a, type: 2}
+  _centerPlanet: {x: 0, y: 0, z: 0}
+  _timerBeforIsKinimatik: 3
+  _gravidyForce: 10
 --- !u!65 &1887398322
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -5413,6 +5739,9 @@ MonoBehaviour:
   _bonusType: 0
   _goodFloor: {fileID: 2100000, guid: e3d6d5f080571ec409ee5ec0af280993, type: 2}
   _badFloor: {fileID: 2100000, guid: 1bf47dc9600ec9848838b5b7ea09366a, type: 2}
+  _centerPlanet: {x: 0, y: 0, z: 0}
+  _timerBeforIsKinimatik: 3
+  _gravidyForce: 10
 --- !u!65 &1919437782
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -5462,6 +5791,9 @@ MonoBehaviour:
   _bonusType: 1
   _goodFloor: {fileID: 2100000, guid: e3d6d5f080571ec409ee5ec0af280993, type: 2}
   _badFloor: {fileID: 2100000, guid: 1bf47dc9600ec9848838b5b7ea09366a, type: 2}
+  _centerPlanet: {x: 0, y: 0, z: 0}
+  _timerBeforIsKinimatik: 3
+  _gravidyForce: 50
 --- !u!65 &1931404729
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -5511,6 +5843,9 @@ MonoBehaviour:
   _bonusType: 1
   _goodFloor: {fileID: 2100000, guid: e3d6d5f080571ec409ee5ec0af280993, type: 2}
   _badFloor: {fileID: 2100000, guid: 1bf47dc9600ec9848838b5b7ea09366a, type: 2}
+  _centerPlanet: {x: 0, y: 0, z: 0}
+  _timerBeforIsKinimatik: 3
+  _gravidyForce: 10
 --- !u!65 &1958710767
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -5678,6 +6013,9 @@ MonoBehaviour:
   _bonusType: 0
   _goodFloor: {fileID: 2100000, guid: e3d6d5f080571ec409ee5ec0af280993, type: 2}
   _badFloor: {fileID: 2100000, guid: 1bf47dc9600ec9848838b5b7ea09366a, type: 2}
+  _centerPlanet: {x: 0, y: 0, z: 0}
+  _timerBeforIsKinimatik: 3
+  _gravidyForce: 50
 --- !u!65 &2056545681
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -5727,6 +6065,9 @@ MonoBehaviour:
   _bonusType: 1
   _goodFloor: {fileID: 2100000, guid: e3d6d5f080571ec409ee5ec0af280993, type: 2}
   _badFloor: {fileID: 2100000, guid: 1bf47dc9600ec9848838b5b7ea09366a, type: 2}
+  _centerPlanet: {x: 0, y: 0, z: 0}
+  _timerBeforIsKinimatik: 3
+  _gravidyForce: 0
 --- !u!65 &2059899293
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -5776,6 +6117,9 @@ MonoBehaviour:
   _bonusType: 0
   _goodFloor: {fileID: 2100000, guid: e3d6d5f080571ec409ee5ec0af280993, type: 2}
   _badFloor: {fileID: 2100000, guid: 1bf47dc9600ec9848838b5b7ea09366a, type: 2}
+  _centerPlanet: {x: 0, y: 0, z: 0}
+  _timerBeforIsKinimatik: 3
+  _gravidyForce: 10
 --- !u!65 &2074203639
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -5956,6 +6300,9 @@ MonoBehaviour:
   _bonusType: 1
   _goodFloor: {fileID: 2100000, guid: e3d6d5f080571ec409ee5ec0af280993, type: 2}
   _badFloor: {fileID: 2100000, guid: 1bf47dc9600ec9848838b5b7ea09366a, type: 2}
+  _centerPlanet: {x: 0, y: 0, z: 0}
+  _timerBeforIsKinimatik: 3
+  _gravidyForce: 10
 --- !u!65 &2125325940
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -5991,6 +6338,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2079749790}
     m_Modifications:
+    - target: {fileID: 313324431427680508, guid: 739db41318bd10047b2d17b5261e8f9f, type: 3}
+      propertyPath: m_TagString
+      value: Planet
+      objectReference: {fileID: 0}
+    - target: {fileID: 313324431427680510, guid: 739db41318bd10047b2d17b5261e8f9f, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4645487739378413400, guid: 739db41318bd10047b2d17b5261e8f9f, type: 3}
       propertyPath: m_RootOrder
       value: 4
@@ -6038,6 +6393,10 @@ PrefabInstance:
     - target: {fileID: 5418893377215493602, guid: 739db41318bd10047b2d17b5261e8f9f, type: 3}
       propertyPath: m_Name
       value: PlanetAndGravity
+      objectReference: {fileID: 0}
+    - target: {fileID: 5418893377215493602, guid: 739db41318bd10047b2d17b5261e8f9f, type: 3}
+      propertyPath: m_TagString
+      value: Untagged
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 739db41318bd10047b2d17b5261e8f9f, type: 3}
@@ -6216,6 +6575,42 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2079749790}
     m_Modifications:
+    - target: {fileID: 1343451180171067408, guid: efb7df09e7b780d4ba478bd66540d450, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 1343451180171067408, guid: efb7df09e7b780d4ba478bd66540d450, type: 3}
+      propertyPath: m_TagString
+      value: Floor
+      objectReference: {fileID: 0}
+    - target: {fileID: 1786179636090485086, guid: efb7df09e7b780d4ba478bd66540d450, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 1786179636090485086, guid: efb7df09e7b780d4ba478bd66540d450, type: 3}
+      propertyPath: m_TagString
+      value: Floor
+      objectReference: {fileID: 0}
+    - target: {fileID: 3787243042609457317, guid: efb7df09e7b780d4ba478bd66540d450, type: 3}
+      propertyPath: m_Drag
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3787243042609457317, guid: efb7df09e7b780d4ba478bd66540d450, type: 3}
+      propertyPath: m_Mass
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3787243042609457317, guid: efb7df09e7b780d4ba478bd66540d450, type: 3}
+      propertyPath: m_UseGravity
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3787243042609457317, guid: efb7df09e7b780d4ba478bd66540d450, type: 3}
+      propertyPath: m_IsKinematic
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3787243042609457317, guid: efb7df09e7b780d4ba478bd66540d450, type: 3}
+      propertyPath: m_CollisionDetection
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3787243042609457318, guid: efb7df09e7b780d4ba478bd66540d450, type: 3}
       propertyPath: _badFloor
       value: 
@@ -6224,6 +6619,38 @@ PrefabInstance:
       propertyPath: _goodFloor
       value: 
       objectReference: {fileID: 2100000, guid: e3d6d5f080571ec409ee5ec0af280993, type: 2}
+    - target: {fileID: 3787243042609457318, guid: efb7df09e7b780d4ba478bd66540d450, type: 3}
+      propertyPath: _gravidyForce
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 3787243042609457318, guid: efb7df09e7b780d4ba478bd66540d450, type: 3}
+      propertyPath: _timerBeforIsKinimatik
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3787243042609457319, guid: efb7df09e7b780d4ba478bd66540d450, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4531694537157300715, guid: efb7df09e7b780d4ba478bd66540d450, type: 3}
+      propertyPath: m_Drag
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4531694537157300715, guid: efb7df09e7b780d4ba478bd66540d450, type: 3}
+      propertyPath: m_Mass
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4531694537157300715, guid: efb7df09e7b780d4ba478bd66540d450, type: 3}
+      propertyPath: m_UseGravity
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4531694537157300715, guid: efb7df09e7b780d4ba478bd66540d450, type: 3}
+      propertyPath: m_IsKinematic
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4531694537157300715, guid: efb7df09e7b780d4ba478bd66540d450, type: 3}
+      propertyPath: m_CollisionDetection
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4531694537157300716, guid: efb7df09e7b780d4ba478bd66540d450, type: 3}
       propertyPath: _badFloor
       value: 
@@ -6232,13 +6659,45 @@ PrefabInstance:
       propertyPath: _goodFloor
       value: 
       objectReference: {fileID: 2100000, guid: e3d6d5f080571ec409ee5ec0af280993, type: 2}
+    - target: {fileID: 4531694537157300716, guid: efb7df09e7b780d4ba478bd66540d450, type: 3}
+      propertyPath: _gravidyForce
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 4531694537157300716, guid: efb7df09e7b780d4ba478bd66540d450, type: 3}
+      propertyPath: _timerBeforIsKinimatik
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4531694537157300717, guid: efb7df09e7b780d4ba478bd66540d450, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5665805095818355066, guid: efb7df09e7b780d4ba478bd66540d450, type: 3}
       propertyPath: m_Name
       value: House3
       objectReference: {fileID: 0}
     - target: {fileID: 5665805095818355066, guid: efb7df09e7b780d4ba478bd66540d450, type: 3}
       propertyPath: m_TagString
-      value: Untagged
+      value: Building
+      objectReference: {fileID: 0}
+    - target: {fileID: 6054826815441508072, guid: efb7df09e7b780d4ba478bd66540d450, type: 3}
+      propertyPath: m_Drag
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6054826815441508072, guid: efb7df09e7b780d4ba478bd66540d450, type: 3}
+      propertyPath: m_Mass
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6054826815441508072, guid: efb7df09e7b780d4ba478bd66540d450, type: 3}
+      propertyPath: m_UseGravity
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6054826815441508072, guid: efb7df09e7b780d4ba478bd66540d450, type: 3}
+      propertyPath: m_IsKinematic
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6054826815441508072, guid: efb7df09e7b780d4ba478bd66540d450, type: 3}
+      propertyPath: m_CollisionDetection
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6054826815441508073, guid: efb7df09e7b780d4ba478bd66540d450, type: 3}
       propertyPath: _badFloor
@@ -6248,6 +6707,42 @@ PrefabInstance:
       propertyPath: _goodFloor
       value: 
       objectReference: {fileID: 2100000, guid: e3d6d5f080571ec409ee5ec0af280993, type: 2}
+    - target: {fileID: 6054826815441508073, guid: efb7df09e7b780d4ba478bd66540d450, type: 3}
+      propertyPath: _gravidyForce
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 6054826815441508073, guid: efb7df09e7b780d4ba478bd66540d450, type: 3}
+      propertyPath: _timerBeforIsKinimatik
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6054826815441508074, guid: efb7df09e7b780d4ba478bd66540d450, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7126891599352705154, guid: efb7df09e7b780d4ba478bd66540d450, type: 3}
+      propertyPath: _gravidyForce
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 7126891599352705154, guid: efb7df09e7b780d4ba478bd66540d450, type: 3}
+      propertyPath: _centerGravity
+      value: 
+      objectReference: {fileID: 4909258485407023689}
+    - target: {fileID: 7126891599352705154, guid: efb7df09e7b780d4ba478bd66540d450, type: 3}
+      propertyPath: _centerPlanet.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7126891599352705154, guid: efb7df09e7b780d4ba478bd66540d450, type: 3}
+      propertyPath: _centerPlanet.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7126891599352705154, guid: efb7df09e7b780d4ba478bd66540d450, type: 3}
+      propertyPath: _centerPlanet.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7126891599352705154, guid: efb7df09e7b780d4ba478bd66540d450, type: 3}
+      propertyPath: _planetPositions
+      value: 
+      objectReference: {fileID: 4909258485407023689}
     - target: {fileID: 8451808634251885251, guid: efb7df09e7b780d4ba478bd66540d450, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -6291,6 +6786,14 @@ PrefabInstance:
     - target: {fileID: 8451808634251885251, guid: efb7df09e7b780d4ba478bd66540d450, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8664966887703922461, guid: efb7df09e7b780d4ba478bd66540d450, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 8664966887703922461, guid: efb7df09e7b780d4ba478bd66540d450, type: 3}
+      propertyPath: m_TagString
+      value: Floor
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: efb7df09e7b780d4ba478bd66540d450, type: 3}

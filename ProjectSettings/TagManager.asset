@@ -8,6 +8,9 @@ TagManager:
   - Portal
   - ScoreIndicator
   - RestartButton
+  - Building
+  - Floor
+  - Planet
   layers:
   - Default
   - TransparentFX

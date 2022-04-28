@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: 4531694537157300716}
   m_Layer: 0
   m_Name: level (2)
-  m_TagString: Untagged
+  m_TagString: Building
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -142,6 +142,9 @@ MonoBehaviour:
   _bonusType: 0
   _goodFloor: {fileID: 0}
   _badFloor: {fileID: 0}
+  _centerPlanet: {x: 0, y: 0, z: 0}
+  _timerBeforIsKinimatik: 0
+  _gravidyForce: 0
 --- !u!1 &1786179636090485086
 GameObject:
   m_ObjectHideFlags: 0
@@ -159,7 +162,7 @@ GameObject:
   - component: {fileID: 3787243042609457318}
   m_Layer: 0
   m_Name: level
-  m_TagString: Untagged
+  m_TagString: Building
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -284,6 +287,9 @@ MonoBehaviour:
   _bonusType: 1
   _goodFloor: {fileID: 0}
   _badFloor: {fileID: 0}
+  _centerPlanet: {x: 0, y: 0, z: 0}
+  _timerBeforIsKinimatik: 0
+  _gravidyForce: 0
 --- !u!1 &5665805095818355066
 GameObject:
   m_ObjectHideFlags: 0
@@ -296,7 +302,7 @@ GameObject:
   - component: {fileID: 7126891599352705154}
   m_Layer: 0
   m_Name: House3
-  m_TagString: Untagged
+  m_TagString: Building
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -331,6 +337,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _centerPlanet: {x: 0, y: 0, z: 0}
+  _gravidyForce: 10
 --- !u!1 &8664966887703922461
 GameObject:
   m_ObjectHideFlags: 0
@@ -348,7 +355,7 @@ GameObject:
   - component: {fileID: 6054826815441508073}
   m_Layer: 0
   m_Name: level (1)
-  m_TagString: Untagged
+  m_TagString: Building
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -473,3 +480,6 @@ MonoBehaviour:
   _bonusType: 1
   _goodFloor: {fileID: 0}
   _badFloor: {fileID: 0}
+  _centerPlanet: {x: 0, y: 0, z: 0}
+  _timerBeforIsKinimatik: 0
+  _gravidyForce: 0

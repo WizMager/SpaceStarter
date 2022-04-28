@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -9,15 +9,17 @@ namespace View
     public class BuildingView : MonoBehaviour
     {
         public event Action<BonusType> OnFloorTouch;
-        
+
         [SerializeField] private Vector3 _centerPlanet = Vector3.zero;
         private List<Rigidbody> _rigidbodies;
         private bool _isFirstTouch = true;
 
+        [SerializeField] private float _gravidyForce;//!!!
+
         private void Start()
         {
-            _rigidbodies = new List<Rigidbody>(SortRigidbody(transform.GetComponentsInChildren<Rigidbody>()));
 
+            _rigidbodies = new List<Rigidbody>(SortRigidbody(transform.GetComponentsInChildren<Rigidbody>()));
             foreach (var rb in _rigidbodies)
             {
                 rb.GetComponent<FloorView>().OnShipTouch += ShipTouched;
@@ -47,20 +49,21 @@ namespace View
             }
             
             _isFirstTouch = false;
-            
-            for (int i = 0; i < _rigidbodies.Count; i++)
-            {
-                if (_rigidbodies[i].name != floorName) continue;
-                
-                for (int j = i; j < _rigidbodies.Count; j++)
-                {
+
+			for (int i = 0; i < _rigidbodies.Count; i++)
+			{
+				if (_rigidbodies[i].name != floorName) continue;
+
+				for (int j = i; j < _rigidbodies.Count; j++)
+				{
                     _rigidbodies[j].isKinematic = false;
-                    _rigidbodies[j].AddForce(1f * _rigidbodies[j].transform.forward, ForceMode.Impulse);
-                    _rigidbodies[j].angularVelocity = Vector3.up;
-                }
-                return;
-            }
-        }
+                    _rigidbodies[j].GetComponent<FloorView>().IsActive(true);//!!!
+                    _rigidbodies[j].AddForce(_rigidbodies[j].transform.right, ForceMode.Impulse);//!!!
+                    _rigidbodies[j].angularVelocity = -Vector3.up;
+				}
+				return;
+			}
+		}
 
         private IEnumerable<Rigidbody> SortRigidbody(IEnumerable<Rigidbody> rigidbodies)
         {

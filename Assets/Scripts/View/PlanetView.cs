@@ -12,8 +12,8 @@ namespace View
         {
             if (!other.GetComponent<PlayerView>()) return;
             
-            OnPlayerPlanetEnter?.Invoke();
-        }
+            OnPlayerPlanetEnter?.Invoke();         
+		}
 
         private void OnTriggerExit(Collider other)
         {
