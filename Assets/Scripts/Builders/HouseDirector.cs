@@ -11,12 +11,21 @@ namespace Builders
             set => _houseBuilder = value;
         }
 
-        public GameObject Build3Floor()
+        public GameObject BuildSimpleHouse(int floors)
         {
             _houseBuilder.ResetHouse();
-            _houseBuilder.CreateSimpleFloor();
-            _houseBuilder.CreateSimpleFloor();
+            for (int i = 0; i < floors; i++)
+            {
+                _houseBuilder.CreateSimpleFloor();  
+            }
             _houseBuilder.CreateRoof();
+            return _houseBuilder.GetHouse();
+        }
+        
+        public GameObject BuildGlassHouse(int floors)
+        {
+            _houseBuilder.ResetHouse();
+            
             return _houseBuilder.GetHouse();
         }
     }

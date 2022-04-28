@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Builders;
 using ScriptableData;
@@ -94,7 +95,26 @@ namespace Controllers
             for (int i = 0; i < _buildingsCounter; i++)
             {
                 var randomAngleRotationBuilding = Random.Range(0f, _maximumAngleRotateBuildingAroundItself);
-                var building = _houseDirector.Build3Floor();
+                var randomFloors = Random.Range(1, 15);
+                var randomBuildingType = Random.Range(0, 3);
+                switch (randomBuildingType)
+                {
+                    case 0: 
+                        _houseDirector.Builder = _firstTypeHouseBuilder;
+                        break;
+                    case 1:
+                        _houseDirector.Builder = _secondTypeHouseBuilder;
+                        break;
+                    case 2: 
+                        _houseDirector.Builder = _thirdTypeHouseBuilder;
+                        break;
+                    case 3:
+                        _houseDirector.Builder = _fourthTypeHouseBuilder;
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException("Out of range in generate building");
+                }
+                var building = _houseDirector.BuildSimpleHouse(randomFloors);
                 building.transform.SetPositionAndRotation(_buildingPositions[i], _buildingRotations[i]);
                 building.transform.RotateAround(building.transform.position, building.transform.forward, randomAngleRotationBuilding);
                 building.transform.SetParent(_rootBuildingAroundPlanet.transform);
