@@ -12,6 +12,8 @@ namespace Builders
         private readonly GameObject _glassRoof;
 
         private int _houseNumber;
+        private int _floorNumber;
+        private const string FloorName = "Floor";
         private const string HouseName = "HouseSecondType";
         private float _localPositionZ;
 
@@ -26,6 +28,7 @@ namespace Builders
         public void ResetHouse()
         {
             _localPositionZ = 0f;
+            _floorNumber = 0;
             _houseNumber++;
             _house = new GameObject(HouseName + _houseNumber);
         }
@@ -33,6 +36,7 @@ namespace Builders
         public void CreateSimpleFloor()
         {
             var simpleFloor = Object.Instantiate(_simpleFloor, _house.transform, false);
+            simpleFloor.name = FloorName + _floorNumber;
             var sizeY = simpleFloor.GetComponent<BoxCollider>().bounds.size.y;
             var position = new Vector3(0, 0, _localPositionZ + sizeY / 2);
             simpleFloor.transform.localPosition = position; 
@@ -42,6 +46,7 @@ namespace Builders
         public void CreateGlassFloor()
         {
             var glassFloor = Object.Instantiate(_glassFloor, _house.transform, false);
+            glassFloor.name = FloorName + _floorNumber;
             var sizeY = glassFloor.GetComponent<MeshRenderer>().bounds.size.y;
             var position = new Vector3(0, 0, _localPositionZ + sizeY / 2);
             glassFloor.transform.localPosition = position; 
@@ -51,6 +56,7 @@ namespace Builders
         public void CreateRoof()
         {
             var roof = Object.Instantiate(_roof, _house.transform, false);
+            roof.name = FloorName + _floorNumber;
             var sizeY = roof.GetComponent<MeshRenderer>().bounds.size.y;
             var position = new Vector3(0, 0, _localPositionZ + sizeY / 2);
             roof.transform.localPosition = position; 
@@ -60,6 +66,7 @@ namespace Builders
         public void CreateGlassRoof()
         {
             var roof = Object.Instantiate(_glassRoof, _house.transform, false);
+            roof.name = FloorName + _floorNumber;
             var sizeY = roof.GetComponent<MeshRenderer>().bounds.size.y;
             var position = new Vector3(0, 0, _localPositionZ + sizeY / 2);
             roof.transform.localPosition = position; 

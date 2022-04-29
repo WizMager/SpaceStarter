@@ -15,9 +15,9 @@ GameObject:
   - component: {fileID: 8196435671116593937}
   - component: {fileID: 6261057370570148861}
   - component: {fileID: 2256142953374108480}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: RoofType3
-  m_TagString: Untagged
+  m_TagString: Floor
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -138,3 +138,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _bonusType: 0
+  _gravityForce: 10

@@ -66,7 +66,7 @@ namespace Controllers
         {
             var ray = _camera.ScreenPointToRay(touchPosition);
             var raycastHit = new RaycastHit[1];
-            Physics.RaycastNonAlloc(ray, raycastHit, _camera.farClipPlane, GlobalData.LayerForAim);
+            Physics.RaycastNonAlloc(ray, raycastHit, _camera.farClipPlane, GlobalData.LayerForExplosion);
             var missileView = _missilePool.Pop();
             _activeMissile.Add(missileView);
             missileView.transform.SetPositionAndRotation(_missileStartPosition.position, _missileStartPosition.rotation);

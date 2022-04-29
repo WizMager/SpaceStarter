@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5723127217778916566}
   - component: {fileID: 4892596866251232476}
   - component: {fileID: 2435747202932391266}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: polySurface2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -92,9 +92,9 @@ GameObject:
   - component: {fileID: -4421597074146010561}
   - component: {fileID: -2672170783263509669}
   - component: {fileID: -3507152940837467032}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: GlassFloor
-  m_TagString: Untagged
+  m_TagString: Floor
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -170,6 +170,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _bonusType: 1
+  _gravityForce: 10
 --- !u!1 &5636305400050137408
 GameObject:
   m_ObjectHideFlags: 0
@@ -181,7 +182,7 @@ GameObject:
   - component: {fileID: 2399790405832154654}
   - component: {fileID: 8426023083622786551}
   - component: {fileID: 7446315205329563202}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: polySurface4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
