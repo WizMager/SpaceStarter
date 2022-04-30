@@ -37,6 +37,7 @@ namespace Builders
         {
             var simpleFloor = Object.Instantiate(_simpleFloor, _house.transform, false);
             simpleFloor.name = FloorName + _floorNumber;
+            _floorNumber++;
             var sizeY = simpleFloor.GetComponent<BoxCollider>().bounds.size.y;
             var position = new Vector3(0, 0, _localPositionZ + sizeY / 2);
             simpleFloor.transform.localPosition = position; 
@@ -47,6 +48,7 @@ namespace Builders
         {
             var glassFloor = Object.Instantiate(_glassFloor, _house.transform, false);
             glassFloor.name = FloorName + _floorNumber;
+            _floorNumber++;
             var sizeY = glassFloor.GetComponent<MeshRenderer>().bounds.size.y;
             var position = new Vector3(0, 0, _localPositionZ + sizeY / 2);
             glassFloor.transform.localPosition = position; 
@@ -57,6 +59,7 @@ namespace Builders
         {
             var roof = Object.Instantiate(_roof, _house.transform, false);
             roof.name = FloorName + _floorNumber;
+            _floorNumber++;
             var sizeY = roof.GetComponent<MeshRenderer>().bounds.size.y;
             var position = new Vector3(0, 0, _localPositionZ + sizeY / 2);
             roof.transform.localPosition = position; 
@@ -67,6 +70,7 @@ namespace Builders
         {
             var roof = Object.Instantiate(_glassRoof, _house.transform, false);
             roof.name = FloorName + _floorNumber;
+            _floorNumber++;
             var sizeY = roof.GetComponent<MeshRenderer>().bounds.size.y;
             var position = new Vector3(0, 0, _localPositionZ + sizeY / 2);
             roof.transform.localPosition = position; 
