@@ -16,10 +16,8 @@ namespace ScriptableData
         public float maxEngineForce;
         [Header("Edge Gravity From Planet")]
         public float moveSpeedToEdgeGravity;
-        public float rotationTimeToEdgeGravity;
         [Header("Fly To Center Gravity")]
         public float moveSpeedCenterGravity;
-        public float rotationInGravitySpeed;
         [Header("Edge Gravity To Planet")] 
         public float moveSpeedToPlanet;
         public float distanceFromCenterPlanetToSpawn;
