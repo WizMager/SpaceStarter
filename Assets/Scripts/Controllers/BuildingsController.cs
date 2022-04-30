@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Builders;
 using ScriptableData;
 using UnityEngine;
@@ -20,13 +21,15 @@ namespace Controllers
         private readonly float _maximumBuildingAngleUp;
         private readonly float _maximumBuildingAngleDown;
         private readonly float _maximumAngleRotateBuildingAroundItself;
+        private readonly int _maximumFloorsInHouse;
+        private readonly int _buildingWithGlass;
         
         private int _buildingsCounter;
         private readonly GameObject _rootBuildingAroundPlanet;
-        private FirstTypeHouseBuilder _firstTypeHouseBuilder;
-        private SecondTypeHouseBuilder _secondTypeHouseBuilder;
-        private ThirdTypeHouseBuilder _thirdTypeHouseBuilder;
-        private FourthTypeHouseBuilder _fourthTypeHouseBuilder;
+        private readonly FirstTypeHouseBuilder _firstTypeHouseBuilder;
+        private readonly SecondTypeHouseBuilder _secondTypeHouseBuilder;
+        private readonly ThirdTypeHouseBuilder _thirdTypeHouseBuilder;
+        private readonly FourthTypeHouseBuilder _fourthTypeHouseBuilder;
         private readonly HouseDirector _houseDirector;
         private readonly List<Vector3> _buildingPositions;
         private readonly List<Quaternion> _buildingRotations;
@@ -42,6 +45,8 @@ namespace Controllers
             _maximumBuildingAngleUp = data.ObjectsOnPlanetData.maximumBuildingAngleUp;
             _maximumBuildingAngleDown = data.ObjectsOnPlanetData.maximumBuildingAngleDown;
             _maximumAngleRotateBuildingAroundItself = data.ObjectsOnPlanetData.maximumAngleRotateBuildingAroundItself;
+            _maximumFloorsInHouse = data.ObjectsOnPlanetData.maximumFloorInHouse;
+            _buildingWithGlass = data.ObjectsOnPlanetData.buildingsWithBonus;
 
             _buildingPositions = new List<Vector3>();
             _buildingRotations = new List<Quaternion>();
@@ -76,7 +81,6 @@ namespace Controllers
                 var iterationAngle = Random.Range(_minimumAngleBetweenBuildings, _maximumAngleBetweenBuildings);
                 if (360f - i < _minimumAngleBetweenBuildings)
                 {
-                    Debug.Log(_buildingsCounter);
                     return;
                 }
                 i += iterationAngle;
@@ -90,12 +94,28 @@ namespace Controllers
             }
         }
 
+        private List<int> TakeRandomFloorNumber(int numberOfHouses)
+        {
+            var randomBuildings = new List<int> {Random.Range(0, numberOfHouses)};
+            while (randomBuildings.Count < _buildingWithGlass)
+            {
+                var randomBuildingNumber = Random.Range(0, numberOfHouses);
+                var isExistInList = randomBuildings.Any(numberInList => numberInList == randomBuildingNumber);
+                if (!isExistInList)
+                {
+                    randomBuildings.Add(randomBuildingNumber);
+                }
+            }
+            return randomBuildings;
+        }
+        
         private void CreateBuildingAndPosition()
         {
+            var numbersBuildingsWithGlass = TakeRandomFloorNumber(_buildingsCounter);
             for (int i = 0; i < _buildingsCounter; i++)
             {
                 var randomAngleRotationBuilding = Random.Range(0f, _maximumAngleRotateBuildingAroundItself);
-                var randomFloors = Random.Range(1, 15);
+                var randomFloors = Random.Range(1, _maximumFloorsInHouse);
                 var randomBuildingType = Random.Range(0, 3);
                 switch (randomBuildingType)
                 {
@@ -112,9 +132,11 @@ namespace Controllers
                         _houseDirector.Builder = _fourthTypeHouseBuilder;
                         break;
                     default:
-                        throw new ArgumentOutOfRangeException("Out of range in generate building");
+                        throw new ArgumentOutOfRangeException("Out of range type in generate building");
                 }
-                var building = _houseDirector.BuildSimpleHouse(randomFloors);
+
+                var isGlassHouse = numbersBuildingsWithGlass.Any(buildingWithGlass => i == buildingWithGlass);
+                var building = isGlassHouse ? _houseDirector.BuildGlassHouse(randomFloors) : _houseDirector.BuildSimpleHouse(randomFloors);
                 building.transform.SetPositionAndRotation(_buildingPositions[i], _buildingRotations[i]);
                 building.transform.RotateAround(building.transform.position, building.transform.forward, randomAngleRotationBuilding);
                 building.transform.SetParent(_rootBuildingAroundPlanet.transform);

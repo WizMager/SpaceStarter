@@ -15,6 +15,7 @@ namespace ScriptableData
         public float maximumBuildingAngleDown;
         public float maximumBuildingAngleUp;
         public float maximumAngleRotateBuildingAroundItself;
+        public int maximumFloorInHouse;
         public int buildingsWithBonus;
     }
 }
