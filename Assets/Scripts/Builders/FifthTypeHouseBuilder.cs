@@ -3,7 +3,7 @@ using View;
 
 namespace Builders
 {
-    public class FourthTypeHouseBuilder : IHouseBuilder
+    public class FifthTypeHouseBuilder : IHouseBuilder
     {
         private GameObject _house;
         private readonly GameObject _simpleFloor;
@@ -14,14 +14,14 @@ namespace Builders
         private int _houseNumber;
         private int _floorNumber;
         private const string FloorName = "Floor";
-        private const string HouseName = "HouseFourthType";
+        private const string HouseName = "HouseFifthType";
         private float _localPositionZ;
 
-        public FourthTypeHouseBuilder()
+        public FifthTypeHouseBuilder()
         {
-            _simpleFloor = Resources.Load<GameObject>("Buildings/FourthTypeBuilding/SimpleRoofType4");
+            _simpleFloor = Resources.Load<GameObject>("Buildings/FifthTypeBuilding/SimpleFloor5");
             _glassFloor = Resources.Load<GameObject>("Buildings/GlassBuilding/GlassFloor");
-            _roof = Resources.Load<GameObject>("Buildings/FourthTypeBuilding/RoofType4");
+            _roof = Resources.Load<GameObject>("Buildings/FifthTypeBuilding/Roof5");
             _glassRoof = Resources.Load<GameObject>("Buildings/GlassBuilding/GlassRoof");
         }
 

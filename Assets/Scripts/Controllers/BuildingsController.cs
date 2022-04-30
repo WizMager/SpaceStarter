@@ -30,6 +30,8 @@ namespace Controllers
         private readonly SecondTypeHouseBuilder _secondTypeHouseBuilder;
         private readonly ThirdTypeHouseBuilder _thirdTypeHouseBuilder;
         private readonly FourthTypeHouseBuilder _fourthTypeHouseBuilder;
+        private readonly FifthTypeHouseBuilder _fifthTypeHouseBuilder;
+        private readonly SixthTypeHouseBuilder _sixthTypeHouseBuilder;
         private readonly HouseDirector _houseDirector;
         private readonly List<Vector3> _buildingPositions;
         private readonly List<Quaternion> _buildingRotations;
@@ -57,6 +59,8 @@ namespace Controllers
             _secondTypeHouseBuilder = new SecondTypeHouseBuilder();
             _thirdTypeHouseBuilder = new ThirdTypeHouseBuilder();
             _fourthTypeHouseBuilder = new FourthTypeHouseBuilder();
+            _fifthTypeHouseBuilder = new FifthTypeHouseBuilder();
+            _sixthTypeHouseBuilder = new SixthTypeHouseBuilder();
             _houseDirector = new HouseDirector
             {
                 Builder = _firstTypeHouseBuilder
@@ -116,7 +120,7 @@ namespace Controllers
             {
                 var randomAngleRotationBuilding = Random.Range(0f, _maximumAngleRotateBuildingAroundItself);
                 var randomFloors = Random.Range(1, _maximumFloorsInHouse);
-                var randomBuildingType = Random.Range(0, 3);
+                var randomBuildingType = Random.Range(0, 5);
                 switch (randomBuildingType)
                 {
                     case 0: 
@@ -130,6 +134,12 @@ namespace Controllers
                         break;
                     case 3:
                         _houseDirector.Builder = _fourthTypeHouseBuilder;
+                        break;
+                    case 4:
+                        _houseDirector.Builder = _fifthTypeHouseBuilder;
+                        break;
+                    case 5:
+                        _houseDirector.Builder = _sixthTypeHouseBuilder;
                         break;
                     default:
                         throw new ArgumentOutOfRangeException("Out of range type in generate building");
