@@ -13,12 +13,12 @@ MonoBehaviour:
   m_Name: ScriptableData
   m_EditorClassIdentifier: 
   _playerData: {fileID: 11400000, guid: ebc4737f03cc9b74d9404968bd1dc31c, type: 2}
-  _lastPlanetData: {fileID: 11400000, guid: 007deee80969c494cb99d210a7f267f7, type: 2}
   _planetData: {fileID: 11400000, guid: 54a166172da6f1a4ab9275695b367dde, type: 2}
   _cameraData: {fileID: 11400000, guid: defd4d2e33de5bc44bafd69bf3b0e4bb, type: 2}
   _inputData: {fileID: 11400000, guid: 1b963a50ca3462946b814abf481e44b2, type: 2}
   _bonusData: {fileID: 11400000, guid: f7f9ffc538e6ef14eae352d266069897, type: 2}
   _missileData: {fileID: 11400000, guid: ba0f3da42a58a264bb753c0ab378ac1d, type: 2}
   _portalData: {fileID: 11400000, guid: 3aed69ad7fa600141a49af65ce8e5834, type: 2}
-  _buildingsData: {fileID: 11400000, guid: b5a135e3fad07f944901dc13ab94d863, type: 2}
-  _objectsOnPlanetData: {fileID: 11400000, guid: 2b37c681bd7a83c499b880982867f693, type: 2}
+  _objectsOnPlanetData: {fileID: 11400000, guid: 2b37c681bd7a83c499b880982867f693,
+    type: 2}
+  _restartData: {fileID: 11400000, guid: 48e3ef8caeba7e84a83d26d0ea6db2dd, type: 2}

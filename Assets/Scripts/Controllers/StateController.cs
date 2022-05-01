@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using Interface;
 using Model;
 using ScriptableData;
@@ -19,6 +21,7 @@ namespace Controllers
         private readonly FirstPersonView _firstPersonView;
         private readonly Button[] _restartButtons;
         private readonly FinalScreenView _finalScreenView;
+        private readonly List<GameObject> _rocketIndicators;
 
         private readonly StartPositionPlayerAndCamera _startPosition;
         private readonly FlewAngleCounter _flewAngle;
@@ -32,10 +35,11 @@ namespace Controllers
         private readonly NextStateAfterEndShoot _nextStateAfterEndShoot;
         private readonly FlyAway _flyAway;
         private readonly EndFlyAway _endFlyAway;
+        private readonly RestartAfterWaiting _restartAfterWaiting;
 
         public StateController(PlanetView planetView, ShipView shipView, AllData data, GravityView gravityView, 
             GravityLittleView gravityLittleView, Camera camera, PlayerModel playerModel, DeadScreenView deadView, 
-            FirstPersonView firstPersonView, RestartButtonView[] restartButtons, FinalScreenView finalScreenView)
+            FirstPersonView firstPersonView, RestartButtonView[] restartButtons, FinalScreenView finalScreenView, RocketIndicatorView[] rocketIndicatorViews)
         {
             _playerModel = playerModel;
             _deadView = deadView;
@@ -46,13 +50,19 @@ namespace Controllers
                 _restartButtons[i] = restartButtons[i].GetComponent<Button>();
             }
             _finalScreenView = finalScreenView;
+            _rocketIndicators = new List<GameObject>(rocketIndicatorViews.Length);
+            foreach (var rocketIndicatorView in rocketIndicatorViews)
+            {
+                _rocketIndicators.Add(rocketIndicatorView.gameObject);
+            }
 
             var playerTransform = shipView.transform;
             var planetTransform = planetView.transform;
             var gravityHalfSize = gravityView.GetComponent<MeshRenderer>().bounds.size.x / 2;
 
             _startPosition = new StartPositionPlayerAndCamera(playerTransform, planetTransform, gravityView.transform,
-                camera.transform, data.Planet.distanceFromCenterPlanetToSpawn, data.Camera.startCameraHeight, gravityLittleView);
+                camera.transform, data.Planet.distanceFromCenterPlanetToSpawn, data.Camera.startCameraHeight,
+                data.Camera.cameraDownPosition, gravityLittleView);
             _flewAngle = new FlewAngleCounter(planetTransform, playerTransform, data.Planet.flyAngle, 
                 this);
             _toCenterGravity = new FlyToCenterGravity(shipView, data.Planet.moveSpeedCenterGravity, planetTransform, this);
@@ -74,6 +84,7 @@ namespace Controllers
             _flyAway = new FlyAway(this, playerTransform, planetTransform, data.Planet.distanceFlyAway,
                 data.Planet.moveSpeedFlyAway, data.Planet.rotationSpeedFlyAway, gravityView.gameObject);
             _endFlyAway = new EndFlyAway(this, playerTransform);
+            _restartAfterWaiting = new RestartAfterWaiting(this, data.RestartData.waitAfterRestart, planetView);
 
             _flewAngle.OnFinish += EndRotateAround;
             _toCenterGravity.OnFinish += EndToCenterGravity;
@@ -88,6 +99,7 @@ namespace Controllers
             _endFlyAway.OnFinish += EndCycle;
             _playerModel.OnZeroHealth += RocketCrushed;
             _playerModel.OnZeroRocketLeft += EndShoot;
+            _restartAfterWaiting.OnFinish += RestartAfterWaiting;
             foreach (var restartButton in _restartButtons)
             {
                 restartButton.onClick.AddListener(Restart);
@@ -97,6 +109,23 @@ namespace Controllers
             _startPosition.Set();
         }
 
+        private void SwitchUIWhenInteract(bool isActive)
+        {
+            _firstPersonView.gameObject.SetActive(isActive);
+            foreach (var restartButton in _restartButtons)
+            {
+                if (restartButton.GetComponent<RestartButtonView>().GetButtonType !=
+                    RestartButtonType.WhenInteract) continue;
+                restartButton.gameObject.SetActive(isActive);
+                break;
+            }
+
+            foreach (var rocketIndicator in _rocketIndicators)
+            {
+                rocketIndicator.SetActive(isActive);
+            }
+        }
+        
         private void RocketCrushed()
         {
             _firstPersonView.gameObject.SetActive(false);
@@ -108,12 +137,19 @@ namespace Controllers
         private void Restart()
         {
             OnStateChange?.Invoke(GameState.Restart);
-            _firstPersonView.gameObject.SetActive(true);
+            Debug.Log(GameState.Restart);
+            SwitchUIWhenInteract(true);
             _finalScreenView.gameObject.SetActive(false);
             _deadView.gameObject.SetActive(false);
             _startPosition.SetRestart();
-            Debug.Log(GameState.Restart);
             _playerModel.ResetRound();
+        }
+        
+        private void RestartAfterWaiting()
+        {
+            OnStateChange?.Invoke(GameState.RestartAfterWaiting);
+            Debug.Log(GameState.RestartAfterWaiting);
+            
             OnStateChange?.Invoke(GameState.FlyAroundPlanet);
             Debug.Log(GameState.FlyAroundPlanet);
         }
@@ -134,19 +170,21 @@ namespace Controllers
         
         private void EndFlyAway()
         {
+            SwitchUIWhenInteract(false);
             Debug.Log(GameState.EndFlyAway);
             OnStateChange?.Invoke(GameState.EndFlyAway);
         }
 
         private void NextStateAfterEndShoot()
         {
-            _firstPersonView.gameObject.SetActive(false);
+            SwitchUIWhenInteract(false);
             OnStateChange?.Invoke(GameState.FlyAway);
             Debug.Log(GameState.FlyAway);
         }
         
         private void EndShoot()
         {
+            SwitchUIWhenInteract(false);
             OnStateChange?.Invoke(GameState.NextStateAfterEndShoot);
             Debug.Log(GameState.NextStateAfterEndShoot);
         }
@@ -159,7 +197,7 @@ namespace Controllers
 
         private void EndArcCameraDown()
         {
-            _firstPersonView.gameObject.SetActive(true);
+            SwitchUIWhenInteract(true);
             OnStateChange?.Invoke(GameState.ArcFlyFirstPerson);
             Debug.Log(GameState.ArcFlyFirstPerson);
         }
@@ -190,14 +228,14 @@ namespace Controllers
 
         private void EndToCenterGravity()
         {
-            _firstPersonView.gameObject.SetActive(true);
+            SwitchUIWhenInteract(true);
             OnStateChange?.Invoke(GameState.FlyAroundPlanet);
             Debug.Log(GameState.FlyAroundPlanet);
         }
 
         private void EndRotateAround()
         {
-            _firstPersonView.gameObject.SetActive(false);
+            SwitchUIWhenInteract(false);
             OnStateChange?.Invoke(GameState.EdgeGravityFromPlanet);
             Debug.Log(GameState.EdgeGravityFromPlanet);
         }
@@ -228,6 +266,7 @@ namespace Controllers
             _flyAway.OnFinish -= EndFlyAway;
             _endFlyAway.OnFinish -= EndCycle;
             _playerModel.OnZeroHealth -= RocketCrushed;
+            _restartAfterWaiting.OnFinish += RestartAfterWaiting;
             
             foreach (var restartButton in _restartButtons)
             {
@@ -244,6 +283,7 @@ namespace Controllers
             _nextStateAfterEndShoot.Dispose();
             _flyAway.Dispose();
             _endFlyAway.Dispose();
+            _restartAfterWaiting.Dispose();
         }
     }
 }

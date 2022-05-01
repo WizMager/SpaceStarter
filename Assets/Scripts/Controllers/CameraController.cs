@@ -332,14 +332,8 @@ namespace Controllers
                 case GameState.FlyAway:
                     FlyAway();
                     break;
-                case GameState.EndFlyAway:
-                    break;
-                case GameState.RocketCrushed:
-                    break;
-                case GameState.Restart:
-                    break;
                 default:
-                    throw new ArgumentOutOfRangeException();
+                    break;
             }
         }
 

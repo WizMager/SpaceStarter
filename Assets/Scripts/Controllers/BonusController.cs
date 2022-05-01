@@ -37,7 +37,7 @@ namespace Controllers
         {
             switch (gameState)
             {
-                case GameState.Restart:
+                case GameState.RestartAfterWaiting:
                     foreach (var buildingView in _buildingViews)
                     {
                         buildingView.Reset();

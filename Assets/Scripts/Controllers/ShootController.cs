@@ -49,7 +49,7 @@ namespace Controllers
                 case GameState.ShootPlanet:
                     _isActive = true;
                     break;
-                case GameState.Restart:
+                case GameState.RestartAfterWaiting:
                     foreach (var missileView in _activeMissile)
                     {
                         _missilePool.Push(missileView);

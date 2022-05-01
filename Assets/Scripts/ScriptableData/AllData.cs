@@ -7,7 +7,6 @@ namespace ScriptableData
     public class AllData : ScriptableObject
     {
         [SerializeField] private PlayerData _playerData;
-        [SerializeField] private LastPlanetData _lastPlanetData;
         [SerializeField] private PlanetData _planetData;
         [SerializeField] private CameraData _cameraData;
         [SerializeField] private InputData _inputData;
@@ -15,6 +14,7 @@ namespace ScriptableData
         [SerializeField] private MissileData _missileData;
         [SerializeField] private PortalData _portalData;
         [SerializeField] private ObjectsOnPlanetData _objectsOnPlanetData;
+        [SerializeField] private RestartData _restartData;
 
         public PlayerData Player
         {
@@ -29,16 +29,16 @@ namespace ScriptableData
             }
         }
 
-        public LastPlanetData LastPlanet
+        public RestartData RestartData
         {
             get
             {
-                if (_lastPlanetData == null)
+                if (_restartData == null)
                 {
-                    throw new NullReferenceException("You don't create or set LastPlanetData scriptable object");
+                    throw new NullReferenceException("You don't create or set RestartData scriptable object");
                 }
 
-                return _lastPlanetData;
+                return _restartData;
             }
         }
         

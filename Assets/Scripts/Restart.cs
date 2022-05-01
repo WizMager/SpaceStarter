@@ -5,24 +5,24 @@ using Utils;
 
 public class Restart : MonoBehaviour
 {
-    private List<Transform> _allObjectTransforms = new List<Transform>();
-    private List<Vector3> _allObjectStartPositions = new List<Vector3>();
-    private List<Quaternion> _allObjectStartRotations = new List<Quaternion>();
+    private readonly List<Transform> _allObjectTransforms = new List<Transform>();
+    private readonly List<Vector3> _allObjectStartPositions = new List<Vector3>();
+    private readonly List<Quaternion> _allObjectStartRotations = new List<Quaternion>();
+    private readonly List<Vector3> _allObjectStartScale = new List<Vector3>();
     private StateController _stateController;
 
-    private void Start()
+    public void SaveAllObjects(List<Transform> spawnedBuildingTransforms)
     {
-        SaveAllObjects();
-    }
-
-    private void SaveAllObjects()
-    {
-        var transforms = gameObject.GetComponentsInChildren<Transform>();
-        foreach (var currentTransform in transforms)
+        foreach (var spawnedBuilding in spawnedBuildingTransforms)
         {
-            _allObjectTransforms.Add(currentTransform);
-            _allObjectStartPositions.Add(currentTransform.position);
-            _allObjectStartRotations.Add(currentTransform.rotation);
+            var buildingTransforms = spawnedBuilding.GetComponent<Transform>();
+            foreach (Transform currentTransform in buildingTransforms)
+            {
+                _allObjectTransforms.Add(currentTransform);
+                _allObjectStartPositions.Add(currentTransform.position);
+                _allObjectStartRotations.Add(currentTransform.rotation);
+                _allObjectStartScale.Add(currentTransform.localScale);
+            }
         }
     }
 
@@ -53,6 +53,7 @@ public class Restart : MonoBehaviour
 
             _allObjectTransforms[j]
                 .SetPositionAndRotation(_allObjectStartPositions[j], _allObjectStartRotations[j]);
+            _allObjectTransforms[j].localScale = _allObjectStartScale[j];
         }
     }
     

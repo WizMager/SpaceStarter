@@ -38,10 +38,11 @@ public class GameInitialization
 
       var inputInitialization = new InputInitialization(data.Input.minimalDistanceForSwipe);
       var stateController = new StateController(planetView, playerView, data, gravityView, gravityLittleView, camera, 
-         playerModel, deadView, firstPersonView, restartButtons, finalScreenView);
+         playerModel, deadView, firstPersonView, restartButtons, finalScreenView, rocketIndicatorViews);
       var playerMoveController = new PlayerMoveController(stateController, playerView, data, inputInitialization.GetAllTouch(),
          planetView, gravityLittleView, playerModel);
       restart.TakeStateController(stateController);
+      restart.SaveAllObjects(buildingController.GetSpawnedBuildings);
       controllers.Add(new InputController(inputInitialization.GetAllTouch(), inputInitialization.GetSwipe()));
       controllers.Add(new CameraController(stateController, playerView.transform, camera.transform, planetView.transform, 
          data, inputInitialization.GetSwipe()));
