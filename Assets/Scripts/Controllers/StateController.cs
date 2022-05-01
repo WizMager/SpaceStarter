@@ -107,6 +107,7 @@ namespace Controllers
 
             _deadView.gameObject.SetActive(false);
             _startPosition.Set();
+            SwitchUIWhenInteract(false);
         }
 
         private void SwitchUIWhenInteract(bool isActive)
