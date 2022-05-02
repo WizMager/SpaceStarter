@@ -32,7 +32,7 @@ public class GameInitialization
       var positionGenerator = Object.FindObjectOfType<PositionGeneratorView>();
       
       var buildingController = new BuildingsController(data, planetView.transform, positionGenerator.transform);
-      //buildingController.CreateBuildings(planetView.transform);
+      buildingController.CreateBuildings(planetView.transform);
       buildingController.GenerateBuildingsAroundPlanet();
       var buildingViews = Object.FindObjectsOfType<BuildingView>();
 
