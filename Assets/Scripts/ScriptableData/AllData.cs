@@ -10,7 +10,7 @@ namespace ScriptableData
         [SerializeField] private PlanetData _planetData;
         [SerializeField] private CameraData _cameraData;
         [SerializeField] private InputData _inputData;
-        [SerializeField] private MissileData _missileData;
+        [SerializeField] private PrefabLinkData _prefabLinkData;
         [SerializeField] private PortalData _portalData;
         [SerializeField] private ObjectsOnPlanetData _objectsOnPlanetData;
         [SerializeField] private RestartData _restartData;
@@ -80,16 +80,16 @@ namespace ScriptableData
             }
         }
 
-        public MissileData Missile
+        public PrefabLinkData Prefab
         {
             get
             {
-                if (_missileData == null)
+                if (_prefabLinkData == null)
                 {
-                    throw new NullReferenceException("You don't create or set MissileData scriptable object");
+                    throw new NullReferenceException("You don't create or set PrefabLinkData scriptable object");
                 }
 
-                return _missileData;
+                return _prefabLinkData;
             }
         }
         

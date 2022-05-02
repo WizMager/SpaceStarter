@@ -29,7 +29,7 @@ namespace Controllers
             _touch = touch;
             _camera = camera;
             _planet = planet;
-            _missile = data.Missile.missilePrefab;
+            _missile = data.Prefab.missilePrefab;
             _missileStartPosition = missileStartPosition;
             _stateController = stateController;
             _playerModel = playerModel;
