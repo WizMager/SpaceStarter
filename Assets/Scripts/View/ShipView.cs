@@ -41,7 +41,7 @@ namespace View
 
         public void StartFlyTurbine()
         {
-            _turbineView.SwitchFlyAroundPlanet(true);
+            _turbineView.Reset();
         }
 
         public void ConnectTurbine()
@@ -51,12 +51,12 @@ namespace View
             _turbine.localRotation = _turbineConnectedRotation;
         }
 
-        public void RestartConnectTurbine()
+        public void RestartTurbine()
         {
             SeparateTurbine();
             _turbine.rotation = _turbineEdgeGravityRotation;
             _turbine.position = _turbineEdgeGravityPosition;
-            _turbineView.Reset();
+            _turbineView.SwitchFlyAroundPlanet(false);
         }
     }
 }

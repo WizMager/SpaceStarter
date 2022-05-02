@@ -71,11 +71,11 @@ namespace Controllers
                     OnStopTakeDamage?.Invoke();
                     _shipView.ConnectTurbine();
                     break;
-                case GameState.RestartAfterWaiting:
+                case GameState.Restart:
                     _isActive = false;
                     _upAndDownAroundPlanet.Active(false);
                     OnStopTakeDamage?.Invoke();
-                    _shipView.RestartConnectTurbine();
+                    _shipView.RestartTurbine();
                     break;
                 default:
                     _isActive = false;

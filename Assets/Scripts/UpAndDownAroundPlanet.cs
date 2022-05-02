@@ -73,6 +73,10 @@ public class UpAndDownAroundPlanet : IDisposable
     public void Active(bool value)
     {
         _isActive = value;
+        if (!value) return;
+        _state = UpAndDownState.GravityAccelerate;
+        _engineOn = false;
+        _timerStarted = false;
     }
     
     public void Move(float deltaTime)
