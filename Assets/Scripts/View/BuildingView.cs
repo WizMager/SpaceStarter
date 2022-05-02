@@ -8,7 +8,7 @@ namespace View
 {
     public class BuildingView : MonoBehaviour
     {
-        public event Action<BonusType> OnFloorTouch;
+        public event Action<FloorType> OnFloorTouch;
         
         private List<Rigidbody> _rigidbodies;
         private bool _isFirstTouch = true;
@@ -28,20 +28,20 @@ namespace View
             _isFirstTouch = true;
         }
         
-        private void ShipTouched(string floorName, BonusType bonusType, Vector3 touchedFloorPosition)
+        private void ShipTouched(string floorName, FloorType floorType, Vector3 touchedFloorPosition)
         {
             if (_isFirstTouch)
             {
-                switch (bonusType)
+                switch (floorType)
                 {
-                    case BonusType.GoodBonus:
-                        OnFloorTouch?.Invoke(BonusType.GoodBonus);
+                    case FloorType.GlassFloor:
+                        OnFloorTouch?.Invoke(FloorType.GlassFloor);
                         break;
-                    case BonusType.None:
-                        OnFloorTouch?.Invoke(BonusType.None);
+                    case FloorType.SimpleFloor:
+                        OnFloorTouch?.Invoke(FloorType.SimpleFloor);
                         break;
                     default:
-                        throw new ArgumentOutOfRangeException(nameof(bonusType), bonusType, null);
+                        throw new ArgumentOutOfRangeException(nameof(floorType), floorType, null);
                 } 
             }
             

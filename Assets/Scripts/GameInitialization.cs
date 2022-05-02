@@ -46,7 +46,7 @@ public class GameInitialization
       controllers.Add(new InputController(inputInitialization.GetAllTouch(), inputInitialization.GetSwipe()));
       controllers.Add(new CameraController(stateController, playerView.transform, camera.transform, planetView.transform, 
          data, inputInitialization.GetSwipe()));
-      controllers.Add(new BonusController(stateController, playerModel, playerIndicatorView, BonusTypeValue(data),buildingViews));
+      controllers.Add(new BonusController(stateController, playerModel, playerIndicatorView, buildingViews));
       controllers.Add(new PlayerHealthController(playerModel, playerMoveController, data.Player.multiplyDamageTake,
          data.Player.startDamageTake, data.Player.endDamageTake));
       controllers.Add(new PortalController(playerView.transform, planetView.transform, data, stateController));
@@ -55,10 +55,4 @@ public class GameInitialization
       controllers.Add(playerMoveController);
       controllers.Add(stateController);
    }
-
-   private int[] BonusTypeValue(ScriptableData.AllData data)
-   {
-      return new [] {data.Bonus.goodBonus, data.Bonus.badBonus};
-   }
-
 }

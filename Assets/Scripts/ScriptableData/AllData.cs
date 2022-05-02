@@ -10,7 +10,6 @@ namespace ScriptableData
         [SerializeField] private PlanetData _planetData;
         [SerializeField] private CameraData _cameraData;
         [SerializeField] private InputData _inputData;
-        [SerializeField] private BonusData _bonusData;
         [SerializeField] private MissileData _missileData;
         [SerializeField] private PortalData _portalData;
         [SerializeField] private ObjectsOnPlanetData _objectsOnPlanetData;
@@ -80,20 +79,7 @@ namespace ScriptableData
                 return _inputData;
             }
         }
-        
-        public BonusData Bonus
-        {
-            get
-            {
-                if (_bonusData == null)
-                {
-                    throw new NullReferenceException("You don't create or set BonusData scriptable object");
-                }
 
-                return _bonusData;
-            }
-        }
-        
         public MissileData Missile
         {
             get

@@ -6,9 +6,9 @@ namespace View
 {
     public class FloorView : MonoBehaviour
     {
-        public event Action<string, BonusType, Vector3> OnShipTouch;
+        public event Action<string, FloorType, Vector3> OnShipTouch;
 
-        [SerializeField] private BonusType _bonusType;
+        [SerializeField] private FloorType floorType;
         [SerializeField] private float _gravityForce;
         
         private bool _isActive;
@@ -34,7 +34,7 @@ namespace View
             }
 
             if (!other.gameObject.CompareTag("Player")) return;
-            OnShipTouch?.Invoke(gameObject.name, _bonusType, other.GetComponent<Transform>().position);
+            OnShipTouch?.Invoke(gameObject.name, floorType, other.GetComponent<Transform>().position);
             gameObject.GetComponent<BoxCollider>().enabled = false;
         }
 

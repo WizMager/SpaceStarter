@@ -10,18 +10,16 @@ namespace Controllers
     public class BonusController : IClean, IController
     {
         private readonly PlayerModel _model;
-        private readonly int[] _valueBonus;
         private readonly StateController _stateController;
         private readonly List<BuildingView> _buildingViews;
         private readonly PlayerIndicatorView _playerIndicatorView;
         
         public BonusController(StateController stateController, PlayerModel playerModel, PlayerIndicatorView indicatorView, 
-            int[] valueBonus, IEnumerable<BuildingView> buildingViews)
+            IEnumerable<BuildingView> buildingViews)
         {
             _model = playerModel;
             _playerIndicatorView = indicatorView;
             _playerIndicatorView.SubscribeModel(_model);
-            _valueBonus = valueBonus;
             _stateController = stateController;
             _buildingViews = new List<BuildingView>();
             foreach (var buildingView in buildingViews)
@@ -58,16 +56,16 @@ namespace Controllers
             }
         }
 
-        private void FloorTouched(BonusType type)
+        private void FloorTouched(FloorType type)
         {
             switch (type)
             {
-                case BonusType.GoodBonus:
-                    _model.TakeBonus(BonusType.GoodBonus, _valueBonus[0]);
-                    _model.TakeBonus(BonusType.None, _valueBonus[1]);
+                case FloorType.GlassFloor:
+                    _model.TouchHouse(FloorType.GlassFloor);
+                    _model.TouchHouse(FloorType.SimpleFloor);
                     break;
-                case BonusType.None:
-                    _model.TakeBonus(BonusType.None, _valueBonus[1]);
+                case FloorType.SimpleFloor:
+                    _model.TouchHouse(FloorType.SimpleFloor);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(type), type, null);
