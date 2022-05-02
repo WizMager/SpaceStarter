@@ -28,7 +28,7 @@ namespace View
             _isFirstTouch = true;
         }
         
-        private void ShipTouched(string floorName, FloorType floorType, Vector3 touchedFloorPosition)
+        private void ShipTouched(string floorName, FloorType floorType)
         {
             if (_isFirstTouch)
             {
@@ -50,15 +50,10 @@ namespace View
             for (int i = 0; i < _rigidbodies.Count; i++)
             {
                 if (_rigidbodies[i].name != floorName) continue;
-                var startFloorCounter = i;
                 for (int j = i; j < _rigidbodies.Count; j++)
                 {
                     _rigidbodies[j].isKinematic = false;
                     _rigidbodies[j].GetComponent<FloorView>().IsActive();
-                    // var yUpOffset = _rigidbodies[j].GetComponent<BoxCollider>().bounds.size.y;
-                    // var touchedPosition = touchedFloorPosition;
-                    // touchedPosition.y = yUpOffset * (j - startFloorCounter + 1);
-                    //var impulseDirection = (_rigidbodies[j].position - touchedPosition).normalized;
                     _rigidbodies[j].AddForce(_rigidbodies[j].transform.right * 20f, ForceMode.Force);
                     _rigidbodies[j].angularVelocity = Vector3.up;
                 }

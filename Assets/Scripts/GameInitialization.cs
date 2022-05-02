@@ -18,7 +18,6 @@ public class GameInitialization
       var gravityView = Object.FindObjectOfType<GravityView>();
       var gravityLittleView = Object.FindObjectOfType<GravityLittleView>();
       var playerModel = new PlayerModel(data.Player.startHealth, data.Player.missileCount);
-      var buildingViews = Object.FindObjectsOfType<BuildingView>();
       var rocketIndicatorViews = Object.FindObjectsOfType<RocketIndicatorView>();
       foreach (var rocketIndicatorView in rocketIndicatorViews)
       {
@@ -35,6 +34,7 @@ public class GameInitialization
       var buildingController = new BuildingsController(data, planetView.transform, positionGenerator.transform);
       //buildingController.CreateBuildings(planetView.transform);
       buildingController.GenerateBuildingsAroundPlanet();
+      var buildingViews = Object.FindObjectsOfType<BuildingView>();
 
       var inputInitialization = new InputInitialization(data.Input.minimalDistanceForSwipe);
       var stateController = new StateController(planetView, playerView, data, gravityView, gravityLittleView, camera, 

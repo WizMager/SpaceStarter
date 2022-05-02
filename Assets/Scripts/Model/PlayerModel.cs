@@ -67,7 +67,7 @@ namespace Model
                     break;
                 case FloorType.SimpleFloor:
                     _touchedHouses += 1;
-                    _playerScore = _touchedHouses * _scoreMultiply;
+                    _playerScore = _touchedHouses * _playerRocket;
                     OnChangeScore?.Invoke(_playerScore);
                     break;
                 default:
