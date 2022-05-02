@@ -54,7 +54,7 @@ namespace View
         {
             _rigidbody.velocity = Vector3.zero;
             _rigidbody.angularVelocity = Vector3.zero;
-            engineParticleSystem.Stop();
+            //engineParticleSystem.Stop();
             StopAllCoroutines();
         }
 
@@ -113,7 +113,7 @@ namespace View
 
         private IEnumerator BeforeStopEngine()
         {
-            engineParticleSystem.Play();
+            //engineParticleSystem.Play();
             for (float i = 0; i < _timeBeforeEngineStop; )
             {
                 var deltaTime = Time.deltaTime;
@@ -124,7 +124,7 @@ namespace View
                 _rigidbody.velocity = _rigidbody.transform.forward * _engineAcceleration * deltaTime;
                 yield return null;
             }
-            engineParticleSystem.Stop();
+            //engineParticleSystem.Stop();
             StopCoroutine(BeforeStopEngine());
         }
 
