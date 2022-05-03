@@ -139,6 +139,9 @@ namespace Controllers
                 case GameState.FlyAway:
                     _isFirstPerson = false;
                     break;
+                case GameState.Restart:
+                    _isFirstPerson = false;
+                    break;
             }
         }
 
