@@ -13,7 +13,7 @@ public class GameInitialization
    {
       var playerView = Object.FindObjectOfType<ShipView>();
       var camera = Object.FindObjectOfType<Camera>();
-      var missilePosition = camera.transform.GetChild(0).transform;
+      var missilePosition = data.MissileData.missilePosition;
       var playerIndicatorView = Object.FindObjectOfType<PlayerIndicatorView>();
       var deadView = Object.FindObjectOfType<DeadScreenView>();
       var planetView = Object.FindObjectOfType<PlanetView>();

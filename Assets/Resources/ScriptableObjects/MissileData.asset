@@ -12,8 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c97cc8174f0d10d40bcba03e615491f2, type: 3}
   m_Name: MissileData
   m_EditorClassIdentifier: 
-  missilePrefab: {fileID: 3817833196089825922, guid: c16d0120de15f7c4aac83b3f6635bca1,
-    type: 3}
+  missilePosition: {x: 0, y: -0.6, z: 0.225}
   timeBeforeStartEngine: 0.2
   timeBeforeEngineStop: 15
   initialImpulse: 500

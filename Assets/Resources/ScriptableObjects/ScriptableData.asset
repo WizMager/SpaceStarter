@@ -21,3 +21,4 @@ MonoBehaviour:
   _objectsOnPlanetData: {fileID: 11400000, guid: 2b37c681bd7a83c499b880982867f693,
     type: 2}
   _restartData: {fileID: 11400000, guid: 48e3ef8caeba7e84a83d26d0ea6db2dd, type: 2}
+  _missileData: {fileID: 11400000, guid: ba0f3da42a58a264bb753c0ab378ac1d, type: 2}

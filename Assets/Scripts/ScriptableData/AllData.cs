@@ -14,6 +14,7 @@ namespace ScriptableData
         [SerializeField] private PortalData _portalData;
         [SerializeField] private ObjectsOnPlanetData _objectsOnPlanetData;
         [SerializeField] private RestartData _restartData;
+        [SerializeField] private MissileData _missileData;
 
         public PlayerData Player
         {
@@ -116,6 +117,18 @@ namespace ScriptableData
                 }
 
                 return _objectsOnPlanetData;
+            }
+        }
+        public MissileData MissileData
+        {
+            get
+            {
+                if (_missileData == null)
+                {
+                    throw new NullReferenceException("You don't create or set MissileData scriptable object");
+                }
+
+                return _missileData;
             }
         }
 

@@ -5,6 +5,7 @@ namespace ScriptableData
     [CreateAssetMenu(menuName = "Data/MissileData", fileName = "MissileData")]
     public class MissileData : ScriptableObject
     {
+        public Vector3 missilePosition;
         [Header("Missile engine")]
         public float timeBeforeStartEngine;
         public float timeBeforeEngineStop;
