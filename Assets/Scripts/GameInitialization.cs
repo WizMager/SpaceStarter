@@ -1,4 +1,6 @@
-﻿using Controllers;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Controllers;
 using InputClasses;
 using Model;
 using UnityEngine;
@@ -28,7 +30,6 @@ public class GameInitialization
       var restartButtons = Object.FindObjectsOfType<RestartButtonView>();
       var finalScreenView = Object.FindObjectOfType<FinalScreenView>();
       finalScreenView.gameObject.SetActive(false);
-      var restart = Object.FindObjectOfType<Restart>();
       var positionGenerator = Object.FindObjectOfType<PositionGeneratorView>();
       
       var buildingController = new BuildingsController(data, planetView.transform, positionGenerator.transform);
@@ -41,8 +42,10 @@ public class GameInitialization
          playerModel, deadView, firstPersonView, restartButtons, finalScreenView, rocketIndicatorViews);
       var playerMoveController = new PlayerMoveController(stateController, playerView, data, inputInitialization.GetAllTouch(),
          planetView, gravityLittleView, playerModel);
-      restart.TakeStateController(stateController);
-      restart.SaveAllObjects(buildingController.GetSpawnedBuildings);
+      var restartController = new RestartController(stateController);
+      restartController.SaveObjects(buildingController.GetSpawnedBuildings);
+      restartController.SaveObjects(planetView.GetComponentsInChildren<Transform>().ToList());
+      controllers.Add(restartController);
       controllers.Add(new InputController(inputInitialization.GetAllTouch(), inputInitialization.GetSwipe()));
       controllers.Add(new CameraController(stateController, playerView.transform, camera.transform, planetView.transform, 
          data, inputInitialization.GetSwipe()));
