@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c97cc8174f0d10d40bcba03e615491f2, type: 3}
   m_Name: MissileData
   m_EditorClassIdentifier: 
-  missilePosition: {x: 0, y: -0.6, z: 0.225}
+  missilePosition: {x: 0, y: -2, z: 1}
   timeBeforeStartEngine: 0.2
   timeBeforeEngineStop: 15
   initialImpulse: 500
