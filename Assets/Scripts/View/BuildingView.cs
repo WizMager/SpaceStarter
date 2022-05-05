@@ -12,6 +12,7 @@ namespace View
         
         private List<Rigidbody> _rigidbodies;
         private bool _isFirstTouch = true;
+        private int _startFloor;
 
         private void Start()
         {
@@ -28,7 +29,7 @@ namespace View
             _isFirstTouch = true;
         }
         
-        private void ShipTouched(string floorName, FloorType floorType)
+        private void ShipTouched(string floorName, FloorType floorType, Vector3 shipPosition)
         {
             if (_isFirstTouch)
             {
@@ -42,23 +43,45 @@ namespace View
                         break;
                     default:
                         throw new ArgumentOutOfRangeException(nameof(floorType), floorType, null);
-                } 
-            }
-            
-            _isFirstTouch = false;
-            
-            for (int i = 0; i < _rigidbodies.Count; i++)
-            {
-                if (_rigidbodies[i].name != floorName) continue;
-                for (int j = i; j < _rigidbodies.Count; j++)
-                {
-                    _rigidbodies[j].isKinematic = false;
-                    _rigidbodies[j].GetComponent<FloorView>().IsActive();
-                    _rigidbodies[j].AddForce(_rigidbodies[j].transform.right * 20f, ForceMode.Force);
-                    _rigidbodies[j].angularVelocity = Vector3.up;
                 }
-                return;
+
+                for (int i = 0; i < _rigidbodies.Count; i++)
+                {
+                    if (_rigidbodies[i].name != floorName) continue;
+                    _startFloor = i;
+                    var shipPositionForFloor = shipPosition;
+                    for (int j = i; j < _rigidbodies.Count; j++)
+                    {
+                        var floorMultiply = j - _startFloor;
+                        var floorSizeY = _rigidbodies[j].GetComponent<BoxCollider>().bounds.size.y;
+                        shipPositionForFloor.z = floorMultiply * floorSizeY;
+                        var impulseDirection = _rigidbodies[j].position - shipPositionForFloor;
+                        Debug.DrawRay(shipPositionForFloor, _rigidbodies[j].position, Color.green, 50f);
+                        _rigidbodies[j].isKinematic = false;
+                        _rigidbodies[j].GetComponent<FloorView>().IsActive();
+                        _rigidbodies[j].AddForce(impulseDirection * 1f, ForceMode.Impulse);
+                        //_rigidbodies[j].angularVelocity = Vector3.up;
+                        i++;
+                    }
+                }
+                
+                _isFirstTouch = false;
             }
+            
+            
+            
+            // for (int i = 0; i < _rigidbodies.Count; i++)
+            // {
+            //     if (_rigidbodies[i].name != floorName) continue;
+            //     for (int j = i; j < _rigidbodies.Count; j++)
+            //     {
+            //         _rigidbodies[j].isKinematic = false;
+            //         _rigidbodies[j].GetComponent<FloorView>().IsActive();
+            //         _rigidbodies[j].AddForce(_rigidbodies[j].transform.right * 20f, ForceMode.Force);
+            //         _rigidbodies[j].angularVelocity = Vector3.up;
+            //         i++;
+            //     }
+            // }
         }
 
         private IEnumerable<Rigidbody> SortRigidbody(IEnumerable<Rigidbody> rigidbodies)
