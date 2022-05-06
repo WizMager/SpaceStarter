@@ -89,39 +89,17 @@ namespace Controllers
         {
             switch (_gameState)
             {
-                case GameState.EdgeGravityToPlanet:
-                    break;
-                case GameState.ToCenterGravity:
-                    break;
-                case GameState.FlyAroundPlanet:
-                    break;
-                case GameState.EdgeGravityFromPlanet:
-                    break;
-                case GameState.ArcFlyFromPlanet:
-                    break;
-                case GameState.ArcFlyRadius:
-                    break;
-                case GameState.ArcFlyCameraDown:
-                    break;
-                case GameState.ArcFlyFirstPerson:
-                    break;
                 case GameState.ShootPlanet:
                     CreatePortal();
                     break;
                 case GameState.NextStateAfterEndShoot:
                     OpenPortal();
                     break;
-                case GameState.FlyAway:
-                    break;
                 case GameState.EndFlyAway:
                     LaunchPortal();
                     break;
-                case GameState.Restart:
-                    break;
-                case GameState.RocketCrushed:
-                    break;
                 default:
-                    throw new ArgumentOutOfRangeException();
+                    break;
             }
         }
     }

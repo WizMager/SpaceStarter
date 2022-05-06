@@ -35,6 +35,7 @@ namespace Controllers
         private readonly HouseDirector _houseDirector;
         private readonly List<Vector3> _buildingPositions;
         private readonly List<Quaternion> _buildingRotations;
+        private readonly List<Transform> _spawnedBuildings;
 
         public BuildingsController(AllData data, Transform planet, Transform positionGenerator)
         {
@@ -65,7 +66,10 @@ namespace Controllers
             {
                 Builder = _firstTypeHouseBuilder
             };
+            _spawnedBuildings = new List<Transform>();
         }
+
+        public List<Transform> GetSpawnedBuildings => _spawnedBuildings;
 
         #region Generate_Buildings_Around_Planet
 
@@ -149,6 +153,7 @@ namespace Controllers
                 var building = isGlassHouse ? _houseDirector.BuildGlassHouse(randomFloors) : _houseDirector.BuildSimpleHouse(randomFloors);
                 building.transform.SetPositionAndRotation(_buildingPositions[i], _buildingRotations[i]);
                 building.transform.RotateAround(building.transform.position, building.transform.forward, randomAngleRotationBuilding);
+                _spawnedBuildings.Add(building.transform);
                 building.transform.SetParent(_rootBuildingAroundPlanet.transform);
             }
         }

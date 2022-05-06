@@ -139,6 +139,9 @@ namespace Controllers
                 case GameState.FlyAway:
                     _isFirstPerson = false;
                     break;
+                case GameState.Restart:
+                    _isFirstPerson = false;
+                    break;
             }
         }
 
@@ -178,8 +181,17 @@ namespace Controllers
             _camera.position += new Vector3(0, cameraY, 0);
         }
         
-        private void ShootPlanet(float deltaTime)
+        private void ShootPlanet(float deltaTime, float rotationSpeed)
         {
+
+            var planet = _planet.position;
+
+            if (rotationSpeed != 0)
+            {
+                var look = Quaternion.LookRotation(planet - _camera.position);
+                _camera.rotation = Quaternion.Lerp(_camera.rotation, look, Time.deltaTime * rotationSpeed);
+            }
+
             if (_temporarilyStopDrift)
             {
                 if (_pastTimeSwipe < _cooldownDrift)
@@ -325,21 +337,15 @@ namespace Controllers
                     ToFirstPerson();
                     break;
                 case GameState.ShootPlanet:
-                    ShootPlanet(deltaTime);
+                    ShootPlanet(deltaTime, _rotationSpeedFlyFirstPerson);
                     break;
                 case GameState.NextStateAfterEndShoot:
                     break;
                 case GameState.FlyAway:
                     FlyAway();
                     break;
-                case GameState.EndFlyAway:
-                    break;
-                case GameState.RocketCrushed:
-                    break;
-                case GameState.Restart:
-                    break;
                 default:
-                    throw new ArgumentOutOfRangeException();
+                    break;
             }
         }
 

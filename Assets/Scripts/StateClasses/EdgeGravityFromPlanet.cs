@@ -39,15 +39,15 @@ namespace StateClasses
                     var correctPlayerPosition =
                         new Vector3(_shipTransform.position.x, 0, _shipTransform.position.z);
                     _shipTransform.position = correctPlayerPosition;
-                    _shipView.StartCoroutine(Rotate());
+                    _shipView.StartCoroutine(RotateAndMove());
                     break;
                 default:
-                    _shipView.StopCoroutine(Rotate());
+                    _shipView.StopCoroutine(RotateAndMove());
                     break;
             }
         }
 
-        private IEnumerator Rotate()
+        private IEnumerator RotateAndMove()
         {
             var moveDirection = (_shipTransform.position - _planetTransform.position).normalized;
             var finishRotation = Quaternion.LookRotation(new Vector3(moveDirection.x, 0, moveDirection.z));

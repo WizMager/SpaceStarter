@@ -9,13 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 01a76cbd5939430790379db6b5a719b5, type: 3}
-  m_Name: PlayerData
+  m_Script: {fileID: 11500000, guid: 2df67c4f64d244b6adac05255387d9d3, type: 3}
+  m_Name: RestartData
   m_EditorClassIdentifier: 
-  missileCount: 4
-  startHealth: 100
-  cooldownTakeDamage: 1
-  multiplyDamageTake: 1
-  startDamageTake: 0.001
-  endDamageTake: 0.003
-  thresholdAfterTouchPlanetGravity: 1
+  waitAfterRestart: 1.5

@@ -7,14 +7,14 @@ namespace ScriptableData
     public class AllData : ScriptableObject
     {
         [SerializeField] private PlayerData _playerData;
-        [SerializeField] private LastPlanetData _lastPlanetData;
         [SerializeField] private PlanetData _planetData;
         [SerializeField] private CameraData _cameraData;
         [SerializeField] private InputData _inputData;
-        [SerializeField] private BonusData _bonusData;
-        [SerializeField] private MissileData _missileData;
+        [SerializeField] private PrefabLinkData _prefabLinkData;
         [SerializeField] private PortalData _portalData;
         [SerializeField] private ObjectsOnPlanetData _objectsOnPlanetData;
+        [SerializeField] private RestartData _restartData;
+        [SerializeField] private MissileData _missileData;
 
         public PlayerData Player
         {
@@ -29,16 +29,16 @@ namespace ScriptableData
             }
         }
 
-        public LastPlanetData LastPlanet
+        public RestartData RestartData
         {
             get
             {
-                if (_lastPlanetData == null)
+                if (_restartData == null)
                 {
-                    throw new NullReferenceException("You don't create or set LastPlanetData scriptable object");
+                    throw new NullReferenceException("You don't create or set RestartData scriptable object");
                 }
 
-                return _lastPlanetData;
+                return _restartData;
             }
         }
         
@@ -80,30 +80,17 @@ namespace ScriptableData
                 return _inputData;
             }
         }
-        
-        public BonusData Bonus
+
+        public PrefabLinkData Prefab
         {
             get
             {
-                if (_bonusData == null)
+                if (_prefabLinkData == null)
                 {
-                    throw new NullReferenceException("You don't create or set BonusData scriptable object");
+                    throw new NullReferenceException("You don't create or set PrefabLinkData scriptable object");
                 }
 
-                return _bonusData;
-            }
-        }
-        
-        public MissileData Missile
-        {
-            get
-            {
-                if (_missileData == null)
-                {
-                    throw new NullReferenceException("You don't create or set MissileData scriptable object");
-                }
-
-                return _missileData;
+                return _prefabLinkData;
             }
         }
         
@@ -130,6 +117,18 @@ namespace ScriptableData
                 }
 
                 return _objectsOnPlanetData;
+            }
+        }
+        public MissileData MissileData
+        {
+            get
+            {
+                if (_missileData == null)
+                {
+                    throw new NullReferenceException("You don't create or set MissileData scriptable object");
+                }
+
+                return _missileData;
             }
         }
 

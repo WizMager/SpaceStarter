@@ -15,6 +15,7 @@ namespace Utils
         FlyAway,
         EndFlyAway,
         RocketCrushed,
+        RestartAfterWaiting,
         Restart
     }
 }

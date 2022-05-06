@@ -9,8 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 50d45a5b2d0e4252a3f79b6655eb2816, type: 3}
-  m_Name: BonusData
+  m_Script: {fileID: 11500000, guid: b14fbe7eb1d246dc979d89b73d4416b3, type: 3}
+  m_Name: PrefabLinkData
   m_EditorClassIdentifier: 
-  goodBonus: 1
-  badBonus: 25
+  missilePrefab: {fileID: 3817833196089825922, guid: c16d0120de15f7c4aac83b3f6635bca1,
+    type: 3}

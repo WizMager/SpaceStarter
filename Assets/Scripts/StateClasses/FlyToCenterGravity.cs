@@ -37,7 +37,6 @@ namespace StateClasses
             switch (gameState)
             {
                 case GameState.ToCenterGravity:
-                    
                     _shipView.StartCoroutine(RotateAndMove());
                     break;
                 default:
