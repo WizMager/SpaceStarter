@@ -49,18 +49,17 @@ namespace Controllers
 
             var playerTransform = shipView.transform;
             var planetTransform = planetView.transform;
+            var gravityHalfSize = gravityView.GetComponent<MeshRenderer>().bounds.size.x / 2;
 
             _startPosition = new StartPositionPlayerAndCamera(playerTransform, planetTransform, gravityView.transform,
                 camera.transform, data.Planet.distanceFromCenterPlanetToSpawn, data.Camera.startCameraHeight, gravityLittleView);
             _flewAngle = new FlewAngleCounter(planetTransform, playerTransform, data.Planet.flyAngle, 
                 this);
-            _toCenterGravity = new FlyToCenterGravity(shipView, data.Planet.rotationInGravitySpeed,
-                data.Planet.moveSpeedCenterGravity, planetTransform, this);
+            _toCenterGravity = new FlyToCenterGravity(shipView, data.Planet.moveSpeedCenterGravity, planetTransform, this);
             _edgeGravityToPlanet = new EdgeGravityToPlanet(playerTransform, gravityView, this, 
                 data.Planet.moveSpeedToPlanet);
-            _edgeGravityFromPlanet = new EdgeGravityFromPlanet(data.Planet.rotationTimeToEdgeGravity,
-                data.Planet.moveSpeedToEdgeGravity, gravityView, playerTransform, 
-                this, planetTransform);
+            _edgeGravityFromPlanet = new EdgeGravityFromPlanet(data.Planet.moveSpeedToEdgeGravity, gravityHalfSize, 
+                shipView, this, planetTransform);
             _arcFromPlanet = new ArcFromPlanet(this, playerTransform, data.Planet.distanceToCenterRadiusArc,
                 data.Planet.radiusArc, data.Planet.moveSpeedArcFromPlanet, data.Planet.rotationSpeedArcFromPlanet, 
                 gravityView.gameObject, gravityLittleView.gameObject, planetTransform.GetComponent<SphereCollider>());
@@ -206,9 +205,7 @@ namespace Controllers
         public void Execute(float deltaTime)
         {
             _flewAngle.FlewAngle();
-            //_toCenterGravity.FlyToCenter(deltaTime);
             _edgeGravityToPlanet.Move(deltaTime);
-            _edgeGravityFromPlanet.Move();
             _arcFromPlanet.Move(deltaTime);
             _arcFlyRadius.Move(deltaTime);
             _arcCameraDown.Move(deltaTime);

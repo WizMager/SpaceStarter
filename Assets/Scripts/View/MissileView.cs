@@ -72,7 +72,7 @@ namespace View
                 yield return null;
             }
             var hitsSphereCast = Physics.SphereCastAll(transform.position, _explosionArea, transform.forward,
-                _explosionArea, GlobalData.LayerForAim);
+                _explosionArea, GlobalData.LayerForExplosion);
             foreach (var hitSphereCast in hitsSphereCast)
             {
                 if (hitSphereCast.rigidbody)

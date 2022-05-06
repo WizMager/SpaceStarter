@@ -6,33 +6,43 @@ namespace View
 {
     public class FloorView : MonoBehaviour
     {
-        public event Action<string, BonusType> OnShipTouch;
-        
+        public event Action<string, BonusType, Vector3> OnShipTouch;
+
         [SerializeField] private BonusType _bonusType;
-        [SerializeField] private Material _goodFloor;
-        [SerializeField] private Material _badFloor;
+        [SerializeField] private float _gravityForce;
+        
+        private bool _isActive;
+        private Rigidbody _body;
+        private Vector3 _direction;
+
+        public void IsActive()
+        {
+            _isActive = true;
+		}
 
         private void Start()
         {
-            switch (_bonusType)
-            {
-                case BonusType.GoodBonus:
-                    gameObject.GetComponent<MeshRenderer>().material = _goodFloor;
-                    break;
-                case BonusType.None:
-                    gameObject.GetComponent<MeshRenderer>().material = _badFloor;
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
+            _body = GetComponent<Rigidbody>();
         }
 
         private void OnTriggerEnter(Collider other)
         {
+            if (other.CompareTag("Planet"))
+            {
+                _body.isKinematic = true;
+                _isActive = false;
+            }
+
             if (!other.gameObject.CompareTag("Player")) return;
-            
-            OnShipTouch?.Invoke(gameObject.name, _bonusType);
+            OnShipTouch?.Invoke(gameObject.name, _bonusType, other.GetComponent<Transform>().position);
             gameObject.GetComponent<BoxCollider>().enabled = false;
+        }
+
+        private void FixedUpdate()
+        {
+            if (!_isActive) return;
+            _direction = (GlobalData.PlanetCenter - transform.position).normalized; 
+            _body.AddForce(_direction * _gravityForce, ForceMode.Acceleration);       
         }
     }
 }

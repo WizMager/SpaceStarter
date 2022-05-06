@@ -10,7 +10,6 @@ namespace View
     {
         public event Action<BonusType> OnFloorTouch;
         
-        [SerializeField] private Vector3 _centerPlanet = Vector3.zero;
         private List<Rigidbody> _rigidbodies;
         private bool _isFirstTouch = true;
 
@@ -29,7 +28,7 @@ namespace View
             _isFirstTouch = true;
         }
         
-        private void ShipTouched(string floorName, BonusType bonusType)
+        private void ShipTouched(string floorName, BonusType bonusType, Vector3 touchedFloorPosition)
         {
             if (_isFirstTouch)
             {
@@ -51,11 +50,16 @@ namespace View
             for (int i = 0; i < _rigidbodies.Count; i++)
             {
                 if (_rigidbodies[i].name != floorName) continue;
-                
+                var startFloorCounter = i;
                 for (int j = i; j < _rigidbodies.Count; j++)
                 {
                     _rigidbodies[j].isKinematic = false;
-                    _rigidbodies[j].AddForce(1f * _rigidbodies[j].transform.forward, ForceMode.Impulse);
+                    _rigidbodies[j].GetComponent<FloorView>().IsActive();
+					var yUpOffset = _rigidbodies[j].GetComponent<BoxCollider>().bounds.size.y;
+					var touchedPosition = touchedFloorPosition;
+					touchedPosition.y = yUpOffset * (j - startFloorCounter + 1);
+					var impulseDirection = (_rigidbodies[j].position - touchedPosition).normalized;
+					_rigidbodies[j].AddForce(_rigidbodies[j].transform.right + impulseDirection, ForceMode.Impulse);
                     _rigidbodies[j].angularVelocity = Vector3.up;
                 }
                 return;
@@ -64,7 +68,7 @@ namespace View
 
         private IEnumerable<Rigidbody> SortRigidbody(IEnumerable<Rigidbody> rigidbodies)
         {
-            return rigidbodies.OrderBy(o => Vector3.Distance(_centerPlanet, o.position)).ToList();
+            return rigidbodies.OrderBy(o => Vector3.Distance(GlobalData.PlanetCenter, o.position)).ToList();
         }
 
         private void OnDestroy()

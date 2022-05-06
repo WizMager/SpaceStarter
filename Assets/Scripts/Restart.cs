@@ -48,6 +48,7 @@ public class Restart : MonoBehaviour
             if (rigidBody != null)
             {
                 rigidBody.isKinematic = true;
+                rigidBody.transform.localScale = Vector3.one;
             }
 
             _allObjectTransforms[j]
