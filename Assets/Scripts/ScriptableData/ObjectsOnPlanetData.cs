@@ -21,5 +21,6 @@ namespace ScriptableData
         public float flyAroundInvisibleObjectAngle;
         public int maximumFloorInHouseOnPlanet;
         public float maximumAngleRotateBuildingAroundItselfOnPlanet;
+        public int buildingsOnPlanet;
     }
 }

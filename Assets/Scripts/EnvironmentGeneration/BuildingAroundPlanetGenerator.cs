@@ -65,7 +65,7 @@ namespace EnvironmentGeneration
             _spawnedBuildings = new List<Transform>();
         }
 
-        public float BuildingsSpawned => _buildingsCounter;
+        public int BuildingsSpawned => _buildingsCounter;
         
         public List<Transform> GenerateBuildingsAroundPlanet()
         {
@@ -143,12 +143,12 @@ namespace EnvironmentGeneration
                         throw new ArgumentOutOfRangeException("Out of range type in generate building");
                 }
 
-                var isGlassHouse = numbersBuildingsWithGlass.Any(buildingWithGlass => i == buildingWithGlass);
-                var building = isGlassHouse ? _houseDirector.BuildGlassHouse(randomFloors) : _houseDirector.BuildSimpleHouse(randomFloors);
-                building.transform.SetPositionAndRotation(_buildingPositions[i], _buildingRotations[i]);
-                building.transform.RotateAround(building.transform.position, building.transform.forward, randomAngleRotationBuilding);
-                _spawnedBuildings.Add(building.transform);
-                building.transform.SetParent(_rootBuildingAroundPlanet.transform);
+                // var isGlassHouse = numbersBuildingsWithGlass.Any(buildingWithGlass => i == buildingWithGlass);
+                // var building = isGlassHouse ? _houseDirector.BuildGlassHouse(randomFloors) : _houseDirector.BuildSimpleHouse(randomFloors);
+                // building.transform.SetPositionAndRotation(_buildingPositions[i], _buildingRotations[i]);
+                // building.transform.RotateAround(building.transform.position, building.transform.forward, randomAngleRotationBuilding);
+                // _spawnedBuildings.Add(building.transform);
+                // building.transform.SetParent(_rootBuildingAroundPlanet.transform);
             }
 
             return _spawnedBuildings;

@@ -24,7 +24,7 @@ namespace Controllers
     
         public void SaveObjects()
         {
-            var objectsTransforms = _environmentGenerator.GenerateBuildingsAroundPlanet();
+            var objectsTransforms = _environmentGenerator.GenerateEnvironment();
             foreach (var spawnedBuilding in objectsTransforms)
             {
                 var buildingTransforms = spawnedBuilding.GetComponent<Transform>();
