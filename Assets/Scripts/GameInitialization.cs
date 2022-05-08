@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Controllers;
+using EnvironmentGeneration;
 using InputClasses;
 using Model;
 using UnityEngine;
@@ -30,11 +31,9 @@ public class GameInitialization
       var restartButtons = Object.FindObjectsOfType<RestartButtonView>();
       var finalScreenView = Object.FindObjectOfType<FinalScreenView>();
       finalScreenView.gameObject.SetActive(false);
-      var positionGenerator = Object.FindObjectOfType<PositionGeneratorView>();
-      
-      var buildingController = new BuildingsController(data, planetView.transform, positionGenerator.transform);
-      buildingController.CreateBuildings(planetView.transform);
-      buildingController.GenerateBuildingsAroundPlanet();
+
+      var buildingController = new EnvironmentGenerator(data, planetView.transform);
+      var generateBuildingsAroundPlanet = buildingController.GenerateBuildingsAroundPlanet();
       var buildingViews = Object.FindObjectsOfType<BuildingView>();
 
       var inputInitialization = new InputInitialization(data.Input.minimalDistanceForSwipe);
@@ -43,7 +42,7 @@ public class GameInitialization
       var playerMoveController = new PlayerMoveController(stateController, playerView, data, inputInitialization.GetAllTouch(),
          planetView, gravityLittleView, playerModel);
       var restartController = new RestartController(stateController);
-      restartController.SaveObjects(buildingController.GetSpawnedBuildings);
+      restartController.SaveObjects(generateBuildingsAroundPlanet);
       restartController.SaveObjects(planetView.GetComponentsInChildren<Transform>().ToList());
       controllers.Add(restartController);
       controllers.Add(new InputController(inputInitialization.GetAllTouch(), inputInitialization.GetSwipe()));
