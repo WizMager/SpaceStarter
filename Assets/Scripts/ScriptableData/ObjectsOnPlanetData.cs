@@ -14,8 +14,12 @@ namespace ScriptableData
         public float maximumAngleBetweenBuildings;
         public float maximumBuildingAngleDown;
         public float maximumBuildingAngleUp;
-        public float maximumAngleRotateBuildingAroundItself;
-        public int maximumFloorInHouse;
+        public float maximumAngleRotateBuildingAroundItselfAroundPlanet;
+        public int maximumFloorInHouseAroundPlanet;
         public int buildingsWithBonus;
+        [Header("Objects On Planet")] 
+        public float flyAroundInvisibleObjectAngle;
+        public int maximumFloorInHouseOnPlanet;
+        public float maximumAngleRotateBuildingAroundItselfOnPlanet;
     }
 }

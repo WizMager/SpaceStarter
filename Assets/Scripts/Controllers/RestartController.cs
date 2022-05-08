@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using EnvironmentGeneration;
 using Interface;
 using UnityEngine;
 using Utils;
@@ -12,15 +13,18 @@ namespace Controllers
         private readonly List<Quaternion> _allObjectStartRotations = new List<Quaternion>();
         private readonly List<Vector3> _allObjectStartScale = new List<Vector3>();
         private readonly StateController _stateController;
+        private readonly EnvironmentGenerator _environmentGenerator;
 
-        public RestartController(StateController stateController)
+        public RestartController(StateController stateController, EnvironmentGenerator environmentGenerator)
         {
             _stateController = stateController;
+            _environmentGenerator = environmentGenerator;
             _stateController.OnStateChange += ChangeState;
         }
     
-        public void SaveObjects(List<Transform> objectsTransforms)
+        public void SaveObjects()
         {
+            var objectsTransforms = _environmentGenerator.GenerateBuildingsAroundPlanet();
             foreach (var spawnedBuilding in objectsTransforms)
             {
                 var buildingTransforms = spawnedBuilding.GetComponent<Transform>();
