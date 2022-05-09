@@ -75,13 +75,16 @@ namespace View
                 _explosionArea, GlobalData.LayerForExplosion);
             foreach (var hitSphereCast in hitsSphereCast)
             {
+                Debug.Log(hitSphereCast.rigidbody.gameObject.name);
                 if (hitSphereCast.rigidbody)
                 {
                     if (hitSphereCast.rigidbody.isKinematic)
                     {
                         hitSphereCast.rigidbody.isKinematic = false;
                     }
-                            
+
+                    Debug.Log(hitSphereCast.rigidbody.gameObject.name);
+
                     var localScale = hitSphereCast.transform.localScale;
                     hitSphereCast.transform.localScale = new Vector3(localScale.x * _scaleModifier, localScale.y * _scaleModifier, localScale.z * _scaleModifier);
                     

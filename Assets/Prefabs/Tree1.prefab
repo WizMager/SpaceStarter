@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2728474202525012661}
   - component: {fileID: 3975804432421694693}
   - component: {fileID: 2061154209402822617}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: pCylinder1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -27,7 +27,7 @@ Transform:
   m_GameObject: {fileID: 1842172982094666943}
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0, y: 0.012487885, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 30, y: 30, z: 30}
   m_Children: []
   m_Father: {fileID: 3057475200552474423}
   m_RootOrder: 0
@@ -88,8 +88,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3057475200552474423}
-  - component: {fileID: -4289248072126658990}
-  m_Layer: 0
+  - component: {fileID: 8251774110620849600}
+  - component: {fileID: 2392123388958411117}
+  m_Layer: 10
   m_Name: Tree1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -105,14 +106,14 @@ Transform:
   m_GameObject: {fileID: 2388462316473503117}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 30, y: 30, z: 30}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 2728474202525012661}
   - {fileID: 7320254033805936998}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &-4289248072126658990
+--- !u!65 &8251774110620849600
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -123,8 +124,24 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 0.5, y: 1.1349688, z: 0.5}
+  m_Center: {x: 0, y: 0.09418714, z: 0}
+--- !u!54 &2392123388958411117
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2388462316473503117}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &4109612610755521116
 GameObject:
   m_ObjectHideFlags: 0
@@ -136,7 +153,7 @@ GameObject:
   - component: {fileID: 7320254033805936998}
   - component: {fileID: 8884653806300622371}
   - component: {fileID: 6340217614084807968}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: pCylinder2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -151,8 +168,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4109612610755521116}
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0, y: 0.0013873035, z: -8.060936e-11}
-  m_LocalScale: {x: 0.27048013, y: 0.27048013, z: 0.27048013}
+  m_LocalPosition: {x: -0, y: -0.374, z: -8.060936e-11}
+  m_LocalScale: {x: 7, y: 7, z: 7}
   m_Children: []
   m_Father: {fileID: 3057475200552474423}
   m_RootOrder: 1
