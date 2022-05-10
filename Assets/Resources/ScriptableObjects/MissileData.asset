@@ -20,8 +20,8 @@ MonoBehaviour:
   rotationSpeed: 3
   explosionParticleSystem: {fileID: 8510677244830863334, guid: 9d69d2a8d25d62845afe6ae61919a641,
     type: 3}
-  explosionArea: 2
+  explosionArea: 5
   explosionForce: 30
-  explosionDelay: 0.4
-  scaleModifier: 0.8
+  explosionDelay: 0.2
+  scaleModifier: 0.9
   explosionDestroy: 2
