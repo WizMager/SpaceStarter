@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7892987110478040873}
   - component: {fileID: 725749566623174447}
   - component: {fileID: 4267763896114900890}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: pPlatonic1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -90,7 +90,7 @@ GameObject:
   - component: {fileID: 2503365615291537113}
   - component: {fileID: 3480196221528189065}
   - component: {fileID: 2016048863268477877}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: pCylinder1
   m_TagString: Untagged
   m_Icon: {fileID: 0}

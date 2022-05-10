@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3783008489232990051}
   - component: {fileID: 2778276667292762419}
   - component: {fileID: 952579682129637903}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: pCylinder1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -90,7 +90,7 @@ GameObject:
   - component: {fileID: 8373399777928897712}
   - component: {fileID: 7705148144380019701}
   - component: {fileID: 5070618505123328246}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: pCylinder2
   m_TagString: Untagged
   m_Icon: {fileID: 0}

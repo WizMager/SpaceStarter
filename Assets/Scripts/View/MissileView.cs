@@ -75,7 +75,7 @@ namespace View
                 _explosionArea, GlobalData.LayerForExplosion);
             foreach (var hitSphereCast in hitsSphereCast)
             {
-                Debug.Log(hitSphereCast.rigidbody.gameObject.name);
+                //Debug.Log(hitSphereCast.rigidbody.gameObject.name);
                 if (hitSphereCast.rigidbody)
                 {
                     if (hitSphereCast.rigidbody.isKinematic)
