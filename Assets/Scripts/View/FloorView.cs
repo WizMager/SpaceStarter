@@ -42,8 +42,8 @@ namespace View
         private void FixedUpdate()
         {
             if (!_isActive) return;
-            _direction = (GlobalData.PlanetCenter - transform.position).normalized; 
-            _body.AddForce(_direction * _gravityForce, ForceMode.Acceleration);       
-        }
-    }
+			_direction = (GlobalData.PlanetCenter - transform.position).normalized;
+			_body.AddForce(_direction * _gravityForce, ForceMode.Acceleration);     
+		}
+	}
 }
