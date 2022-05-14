@@ -35,34 +35,15 @@ namespace EnvironmentGeneration
             var halfEnvironmentObject = _environmentObjects / 2;
             var upCellSize = new Vector3((90f - maxAngleUp) / halfEnvironmentObject, 360f / halfEnvironmentObject,(90f - maxAngleUp) / halfEnvironmentObject);
             var downCellSize = new Vector3((90f - maxAngleDown) / halfEnvironmentObject, 360f / halfEnvironmentObject,(90f - maxAngleDown) / halfEnvironmentObject);
-            var startX = 90f - maxAngleUp;
-            var startZ = 90f - maxAngleUp;
-            var startY = 360f;
-            
-            // do
-            // {
-            //     var planetCell = new PlanetCell
-            //     {
-            //        isOccupied = false
-            //     };
-            //     planetCell.rangeX.x = startX;
-            //     planetCell.rangeY.x = startY;
-            //     planetCell.rangeZ.x = startZ;
-            //     startX -= upCellSize.x;
-            //     startY -= upCellSize.y;
-            //     startZ -= upCellSize.z;
-            //     planetCell.rangeX.y = startX;
-            //     planetCell.rangeY.y = startY;
-            //     planetCell.rangeZ.y = startZ;
-            //     _planetCellsUp.Add(planetCell);
-            // } 
-            // while (startX > upCellSize.x && startZ > upCellSize.z && startY > upCellSize.y);
+            var availableAngleX = 90f - maxAngleUp;
+            var availableAngleY = 360f;
+            var availableAngleZ = 90f - maxAngleUp;
 
-            for (var x = upCellSize.x; x < startX; x+= upCellSize.x)
+            for (var x = upCellSize.x; x < availableAngleX; x+= upCellSize.x)
             {
-                for (var y = upCellSize.y; y < startY; y += upCellSize.y)
+                for (var y = upCellSize.y; y < availableAngleY; y += upCellSize.y)
                 {
-                    for (var z = upCellSize.z; z < startZ; z += upCellSize.z)
+                    for (var z = upCellSize.z; z < availableAngleZ; z += upCellSize.z)
                     {
                         var upCell = new PlanetCell
                         {
@@ -75,29 +56,48 @@ namespace EnvironmentGeneration
                     }
                 }
             }
+
+            availableAngleX = 180f;
+            availableAngleZ = 180f;
+            var startDownX = 90f + maxAngleDown;
+            var startDownZ = 90f + maxAngleDown;
             
-            startX = 90f - maxAngleUp;
-            startZ = 90f - maxAngleUp;
-            startY = 360f;
-            
-            do
+            for (var x = startDownX + downCellSize.x; x < availableAngleX; x+= downCellSize.x)
             {
-                var planetCell = new PlanetCell
+                for (var y = downCellSize.y; y < availableAngleY; y += downCellSize.y)
                 {
-                    isOccupied = false
-                };
-                planetCell.rangeX.x = startX;
-                planetCell.rangeY.x = startY;
-                planetCell.rangeZ.x = startZ;
-                startX -= downCellSize.x;
-                startY -= downCellSize.y;
-                startZ -= downCellSize.z;
-                planetCell.rangeX.y = startX;
-                planetCell.rangeY.y = startY;
-                planetCell.rangeZ.y = startZ;
-                _planetCellsDown.Add(planetCell);
-            } 
-            while (startX > upCellSize.x && startZ > upCellSize.z && startY > upCellSize.y);
+                    for (var z = startDownZ + downCellSize.z; z < availableAngleZ; z += downCellSize.z)
+                    {
+                        var downCell = new PlanetCell
+                        {
+                            isOccupied = false,
+                            rangeX = new Vector2(x - downCellSize.x, x),
+                            rangeY = new Vector2(y - downCellSize.y, y),
+                            rangeZ = new Vector2(z - downCellSize.z, z)
+                        };
+                        _planetCellsDown.Add(downCell);
+                    }
+                }
+            }
+            
+            //     do
+            //     {
+            //         var planetCell = new PlanetCell
+            //         {
+            //             isOccupied = false
+            //         };
+            //         planetCell.rangeX.x = startX;
+            //         planetCell.rangeY.x = startY;
+            //         planetCell.rangeZ.x = startZ;
+            //         startX -= downCellSize.x;
+            //         startY -= downCellSize.y;
+            //         startZ -= downCellSize.z;
+            //         planetCell.rangeX.y = startX;
+            //         planetCell.rangeY.y = startY;
+            //         planetCell.rangeZ.y = startZ;
+            //         _planetCellsDown.Add(planetCell);
+            //     } 
+            //     while (startX > upCellSize.x && startZ > upCellSize.z && startY > upCellSize.y);
         }
         
         public List<Transform> GenerateEnvironment()
@@ -105,8 +105,8 @@ namespace EnvironmentGeneration
             var buildingsAroundPlanet = _buildingAroundPlanetGenerator.GenerateBuildingsAroundPlanet();
             _allEnvironment.Union(buildingsAroundPlanet);
             var numberBuildingsAroundPlanet = _buildingAroundPlanetGenerator.BuildingsSpawned;
-            Debug.Log(_planetCellsUp.Count);
             _buildingOnPlanetGenerator.CreateBuildingAndPosition(_planetCellsUp);
+            _buildingOnPlanetGenerator.CreateBuildingAndPosition(_planetCellsDown);
             return _allEnvironment;
         }
 
