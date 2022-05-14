@@ -50,7 +50,7 @@ namespace View
 			    for (int i = 0; i < _rigidbodies.Count; i++)
 			    {
                     if (_rigidbodies[i].name != floorName) continue;
-                    _count = i - 1;
+                    _count = i + 1;
                     for (int j = i; j < _rigidbodies.Count; j++)
 					{
                         _rigidbodies[j].isKinematic = false;
@@ -69,14 +69,14 @@ namespace View
 
             for (int i = _count; i < _rigidbodies.Count; i++)
             {
-                    _rigidbodies[i].isKinematic = false;
-                    _rigidbodies[i].GetComponent<FloorView>().IsActive();
-                    var direction = (shipPosition - _rigidbodies[i].position).normalized;
-                    var forceDirection = _rigidbodies[i].mass * _forceDestruction;
-                    _rigidbodies[i].AddForceAtPosition(-direction * forceDirection, _rigidbodies[i].transform.right,
-                        ForceMode.Impulse);
-                    _rigidbodies[i].angularVelocity = new Vector3(UnityEngine.Random.Range(0f, 1f), UnityEngine.Random.Range(0f, 1f),
-                            UnityEngine.Random.Range(0f, 1f));
+                 _rigidbodies[i].isKinematic = false;
+                 _rigidbodies[i].GetComponent<FloorView>().IsActive();
+                 var direction = (shipPosition - _rigidbodies[i].position).normalized;
+                 var forceDirection = _rigidbodies[i].mass * _forceDestruction;
+                 _rigidbodies[i].AddForceAtPosition(-direction * forceDirection, _rigidbodies[i].transform.right,
+                     ForceMode.Impulse);
+                 _rigidbodies[i].angularVelocity = new Vector3(UnityEngine.Random.Range(0f, 1f), UnityEngine.Random.Range(0f, 1f),
+                         UnityEngine.Random.Range(0f, 1f));
             }
 
         }
