@@ -3,32 +3,22 @@ using System.Collections.Generic;
 using Builders;
 using ScriptableData;
 using UnityEngine;
+using Utils;
 using Random = UnityEngine.Random;
 
 namespace EnvironmentGeneration
 {
     public class BuildingOnPlanetGenerator
     {
-        private readonly float _maximumBuildingAroundAngleUp;
-        private readonly float _maximumBuildingAroundAngleDown;
-        private readonly float _maximumBuildingAngleUp;
-        private readonly float _maximumBuildingAngleDown;
         private readonly float _invisibleBuildingAngle;
-        private readonly Transform _planet;
         private readonly float _planetRadius;
-        private readonly Transform _positionGenerator;
         private readonly int _maximumFloorInHouse;
         private readonly float _maximumAngleRotateBuildingAroundItself;
         private readonly int _buildingsOnPlanet;
+        private readonly Transform _planet;
         
-        private readonly List<Vector3> _buildingPositions;
-        private readonly List<Vector3> _invisibleBuildingPositions;
-        private readonly List<Quaternion> _buildingRotations;
-        private readonly List<Quaternion> _invisibleBuildingRotations;
         private readonly List<Transform> _spawnedBuildings;
         private readonly GameObject _rootBuildingOnPlanet;
-        private int _invisibleBuildingsCounter;
-        private int _buildingsCounter;
         private readonly List<GameObject> _invisibleBuildings;
 
         private readonly FirstTypeHouseBuilder _firstTypeHouseBuilder;
@@ -39,29 +29,21 @@ namespace EnvironmentGeneration
         private readonly SixthTypeHouseBuilder _sixthTypeHouseBuilder;
         private readonly HouseDirector _houseDirector;
 
-        public BuildingOnPlanetGenerator(AllData data, Transform planet, float planetRadius, GameObject rootEnvironment)
+        public BuildingOnPlanetGenerator(AllData data, float planetRadius, GameObject rootEnvironment, Transform planet)
         {
-            _maximumBuildingAroundAngleUp = data.ObjectsOnPlanetData.maximumBuildingAngleUp;
-            _maximumBuildingAroundAngleDown = data.ObjectsOnPlanetData.maximumBuildingAngleDown;
-            _maximumBuildingAngleUp = 89f;
-            _maximumBuildingAngleDown = 89f;
-            _invisibleBuildingAngle = data.ObjectsOnPlanetData.flyAroundInvisibleObjectAngle;
             _planet = planet;
+            _invisibleBuildingAngle = data.ObjectsOnPlanetData.flyAroundInvisibleObjectAngle;
             _planetRadius = planetRadius;
             _maximumFloorInHouse = data.ObjectsOnPlanetData.maximumFloorInHouseOnPlanet;
             _maximumAngleRotateBuildingAroundItself =
                 data.ObjectsOnPlanetData.maximumAngleRotateBuildingAroundItselfOnPlanet;
-            _positionGenerator = new GameObject("BuildingOnPlanetPositionGenerator").GetComponent<Transform>();
             _buildingsOnPlanet = data.ObjectsOnPlanetData.buildingsOnPlanet;
             _invisibleBuildings = new List<GameObject>();
-            
-            _buildingPositions = new List<Vector3>();
-            _buildingRotations = new List<Quaternion>();
-            _invisibleBuildingPositions = new List<Vector3>();
-            _invisibleBuildingRotations = new List<Quaternion>();
             _spawnedBuildings = new List<Transform>();
+            
             _rootBuildingOnPlanet = new GameObject("BuildingAroundPlanet");
             _rootBuildingOnPlanet.transform.SetParent(rootEnvironment.transform);
+            
             _firstTypeHouseBuilder = new FirstTypeHouseBuilder();
             _secondTypeHouseBuilder = new SecondTypeHouseBuilder();
             _thirdTypeHouseBuilder = new ThirdTypeHouseBuilder();
@@ -74,148 +56,118 @@ namespace EnvironmentGeneration
             };
         }
 
-        private void GeneratePositions(int buildingsAroundPlanet)
+        public List<Transform> CreateBuildingAndPosition(List<PlanetCell> planetCells)
         {
-            var planetPosition = _planet.position;
-            var ray = new Ray(planetPosition, _planet.forward);
-            _positionGenerator.position = ray.GetPoint(_planetRadius);
-            var iterationAngle = 360f / buildingsAroundPlanet;
-            var generateBuildingsOnIteration = Mathf.RoundToInt(_buildingsOnPlanet / buildingsAroundPlanet);
-            for (float i = 0; i < buildingsAroundPlanet; i++)
+            Debug.Log(planetCells.Count);
+            var createdBuildings = 0;
+            do
             {
-                _positionGenerator.RotateAround(planetPosition, _planet.up, iterationAngle * i);
-                for (int j = 0; j < generateBuildingsOnIteration; j++)
+                var randomCell = Random.Range(0, planetCells.Count);
+                Debug.Log($"{randomCell}");
+                if (planetCells[randomCell].isOccupied) continue;
+                planetCells[randomCell].Occupied();
+                createdBuildings++;
+                var randomAngleRotationBuilding = Random.Range(0f, _maximumAngleRotateBuildingAroundItself);
+                var randomFloors = Random.Range(1, _maximumFloorInHouse);
+                var randomBuildingType = Random.Range(0, 5);
+                switch (randomBuildingType)
                 {
-                    var upAngle = Random.Range(_maximumBuildingAroundAngleUp, _maximumBuildingAngleUp);
-                    var downAngle = Random.Range(_maximumBuildingAroundAngleDown, _maximumBuildingAngleDown);
-                    TakeUpPosition(_positionGenerator, upAngle, planetPosition);
-                    TakeDownPosition(_positionGenerator, downAngle, planetPosition);
+                    case 0:
+                        _houseDirector.Builder = _firstTypeHouseBuilder;
+                        break;
+                    case 1:
+                        _houseDirector.Builder = _secondTypeHouseBuilder;
+                        break;
+                    case 2:
+                        _houseDirector.Builder = _thirdTypeHouseBuilder;
+                        break;
+                    case 3:
+                        _houseDirector.Builder = _fourthTypeHouseBuilder;
+                        break;
+                    case 4:
+                        _houseDirector.Builder = _fifthTypeHouseBuilder;
+                        break;
+                    case 5:
+                        _houseDirector.Builder = _sixthTypeHouseBuilder;
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException("Out of range type in generate building");
                 }
-            }
-        }
+                var building = _houseDirector.BuildSimpleHouse(randomFloors);
+                var positionAndRotation = GeneratePositionAndRotation(planetCells[randomCell]);
+                building.transform.SetPositionAndRotation(positionAndRotation, Quaternion.identity);
+                building.transform.RotateAround(building.transform.position, building.transform.forward,
+                    randomAngleRotationBuilding);
+                _spawnedBuildings.Add(building.transform);
+                building.transform.SetParent(_rootBuildingOnPlanet.transform);
+                //if (!positionAndRotation.Item2) continue;
+                //_invisibleBuildings.Add(building);
+                //building.SetActive(false);
+            } while (_buildingsOnPlanet > createdBuildings);
 
-        private void TakeUpPosition(Transform generatorTransform, float upAngle, Vector3 planetPosition)
-        {
-            generatorTransform.RotateAround(planetPosition, _planet.forward, upAngle);
-            if (upAngle < _invisibleBuildingAngle)
-            {
-                _invisibleBuildingPositions.Add(generatorTransform.position);
-                _invisibleBuildingRotations.Add(generatorTransform.rotation);
-                _invisibleBuildingsCounter++;
-            }
-            else
-            {
-                _buildingPositions.Add(generatorTransform.position);
-                _buildingRotations.Add(generatorTransform.rotation);
-                _buildingsCounter++;
-            }
-            generatorTransform.RotateAround(planetPosition, _planet.forward, -upAngle);
-        }
-
-        private void TakeDownPosition(Transform generatorTransform, float downAngle, Vector3 planetPosition)
-        {
-            generatorTransform.RotateAround(planetPosition, _planet.up, -downAngle);
-            if (downAngle < _invisibleBuildingAngle)
-            {
-                _invisibleBuildingPositions.Add(generatorTransform.position);
-                _invisibleBuildingRotations.Add(generatorTransform.rotation);
-                _invisibleBuildingsCounter++;
-            }
-            else
-            {
-                _buildingPositions.Add(generatorTransform.position);
-                _buildingRotations.Add(generatorTransform.rotation);
-                _buildingsCounter++;
-            }
-            generatorTransform.RotateAround(planetPosition, _planet.up, downAngle);
-        }
-        
-        public List<Transform> CreateBuildingAndPosition(int buildingsAroundPlanet)
-        {
-            CreateBuildings(buildingsAroundPlanet);
-            CreateInvisibleBuildings();
+            // foreach (var planetCell in planetCells)
+            // {
+            //     var randomAngleRotationBuilding = Random.Range(0f, _maximumAngleRotateBuildingAroundItself);
+            //     var randomFloors = Random.Range(1, _maximumFloorInHouse);
+            //     var randomBuildingType = Random.Range(0, 5);
+            //     switch (randomBuildingType)
+            //     {
+            //         case 0:
+            //             _houseDirector.Builder = _firstTypeHouseBuilder;
+            //             break;
+            //         case 1:
+            //             _houseDirector.Builder = _secondTypeHouseBuilder;
+            //             break;
+            //         case 2:
+            //             _houseDirector.Builder = _thirdTypeHouseBuilder;
+            //             break;
+            //         case 3:
+            //             _houseDirector.Builder = _fourthTypeHouseBuilder;
+            //             break;
+            //         case 4:
+            //             _houseDirector.Builder = _fifthTypeHouseBuilder;
+            //             break;
+            //         case 5:
+            //             _houseDirector.Builder = _sixthTypeHouseBuilder;
+            //             break;
+            //         default:
+            //             throw new ArgumentOutOfRangeException("Out of range type in generate building");
+            //     }
+            //     var building = _houseDirector.BuildSimpleHouse(randomFloors);
+            //     var positionAndRotation = GeneratePositionAndRotation(planetCell);
+            //     building.transform.SetPositionAndRotation(positionAndRotation, Quaternion.identity);
+            //     building.transform.RotateAround(building.transform.position, building.transform.forward,
+            //         randomAngleRotationBuilding);
+            //     _spawnedBuildings.Add(building.transform);
+            //     building.transform.SetParent(_rootBuildingOnPlanet.transform);
+            // }
+            
             return _spawnedBuildings;
         }
 
-        private void CreateBuildings(int buildingsAroundPlanet)
+        private Vector3 GeneratePositionAndRotation(PlanetCell planetCell)
         {
-            GeneratePositions(buildingsAroundPlanet);
-            for (int i = 0; i < _buildingsCounter; i++)
-            {
-                var randomAngleRotationBuilding = Random.Range(0f, _maximumAngleRotateBuildingAroundItself);
-                var randomFloors = Random.Range(1, _maximumFloorInHouse);
-                var randomBuildingType = Random.Range(0, 5);
-                switch (randomBuildingType)
-                {
-                    case 0: 
-                        _houseDirector.Builder = _firstTypeHouseBuilder;
-                        break;
-                    case 1:
-                        _houseDirector.Builder = _secondTypeHouseBuilder;
-                        break;
-                    case 2: 
-                        _houseDirector.Builder = _thirdTypeHouseBuilder;
-                        break;
-                    case 3:
-                        _houseDirector.Builder = _fourthTypeHouseBuilder;
-                        break;
-                    case 4:
-                        _houseDirector.Builder = _fifthTypeHouseBuilder;
-                        break;
-                    case 5:
-                        _houseDirector.Builder = _sixthTypeHouseBuilder;
-                        break;
-                    default:
-                        throw new ArgumentOutOfRangeException("Out of range type in generate building");
-                }
-
-                var building = _houseDirector.BuildSimpleHouse(randomFloors);
-                building.transform.SetPositionAndRotation(_buildingPositions[i], _buildingRotations[i]);
-                building.transform.RotateAround(building.transform.position, building.transform.forward, randomAngleRotationBuilding);
-                _spawnedBuildings.Add(building.transform);
-                building.transform.SetParent(_rootBuildingOnPlanet.transform);
-            }
-        }
-
-        private void CreateInvisibleBuildings()
-        {
-            for (int i = 0; i < _invisibleBuildingsCounter; i++)
-            {
-                var randomAngleRotationBuilding = Random.Range(0f, _maximumAngleRotateBuildingAroundItself);
-                var randomFloors = Random.Range(1, _maximumFloorInHouse);
-                var randomBuildingType = Random.Range(0, 5);
-                switch (randomBuildingType)
-                {
-                    case 0: 
-                        _houseDirector.Builder = _firstTypeHouseBuilder;
-                        break;
-                    case 1:
-                        _houseDirector.Builder = _secondTypeHouseBuilder;
-                        break;
-                    case 2: 
-                        _houseDirector.Builder = _thirdTypeHouseBuilder;
-                        break;
-                    case 3:
-                        _houseDirector.Builder = _fourthTypeHouseBuilder;
-                        break;
-                    case 4:
-                        _houseDirector.Builder = _fifthTypeHouseBuilder;
-                        break;
-                    case 5:
-                        _houseDirector.Builder = _sixthTypeHouseBuilder;
-                        break;
-                    default:
-                        throw new ArgumentOutOfRangeException("Out of range type in generate building");
-                }
-
-                var building = _houseDirector.BuildSimpleHouse(randomFloors);
-                building.transform.SetPositionAndRotation(_invisibleBuildingPositions[i], _invisibleBuildingRotations[i]);
-                building.transform.RotateAround(building.transform.position, building.transform.forward, randomAngleRotationBuilding);
-                _spawnedBuildings.Add(building.transform);
-                building.transform.SetParent(_rootBuildingOnPlanet.transform);
-                _invisibleBuildings.Add(building);
-                building.SetActive(false);
-            }
+            //var isInvisible = false;
+            //var posGenerator = new GameObject("generator");
+            //var ray = new Ray(_planet.position, _planet.up);
+            //posGenerator.transform.position = ray.GetPoint(_planetRadius);
+            var randomX = Random.Range(planetCell.rangeX.x, planetCell.rangeX.y);
+            // if (randomX > 90f - _invisibleBuildingAngle)
+            // {
+            //     isInvisible = true;
+            // }
+            var randomY = Random.Range(planetCell.rangeY.x, planetCell.rangeY.y);
+            var randomZ = Random.Range(planetCell.rangeZ.x, planetCell.rangeZ.y);
+            Debug.Log($"{randomX}. {randomY}, {randomZ}");
+            var rotation = Quaternion.Euler(randomX, randomY, randomZ);
+            var position = rotation * Vector3.up * _planetRadius;
+            //posGenerator.transform.rotation = rotation;
+            //posGenerator.transform.Translate(posGenerator.transform.forward * _planetRadius,Space.World);
+            // posGenerator.transform.RotateAround(_planet.position, _planet.up, randomY);
+            // posGenerator.transform.RotateAround(_planet.position, _planet.forward, randomZ);
+            // posGenerator.transform.RotateAround(_planet.position, _planet.right, randomX);
+            //Debug.Log($"{position}, {rotation.eulerAngles}");
+            return position;
         }
     }
 }
