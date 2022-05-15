@@ -96,7 +96,7 @@ namespace EnvironmentGeneration
                 var building = _houseDirector.BuildSimpleHouse(randomFloors);
                 var positionAndRotation = GeneratePositionAndRotation(planetCellsTop[randomCell]);
                 building.transform.SetPositionAndRotation(positionAndRotation.Item1, positionAndRotation.Item2);
-                building.transform.RotateAround(building.transform.position, building.transform.forward,
+                building.transform.RotateAround(building.transform.position, building.transform.up,
                     randomAngleRotationBuilding);
                 //building.transform.rotation.SetLookRotation(Vector3.zero, building.transform.forward);
                 //building.transform.Rotate(building.transform.right, 180f);
@@ -149,10 +149,11 @@ namespace EnvironmentGeneration
                 }
                 var building = _houseDirector.BuildSimpleHouse(randomFloors);
                 var positionAndRotation = GeneratePositionAndRotation(planetCellsDown[randomCell]);
-                building.transform.SetPositionAndRotation(positionAndRotation.Item1, Quaternion.identity);
-                building.transform.RotateAround(building.transform.position, building.transform.forward,
-                    randomAngleRotationBuilding);
+                building.transform.SetPositionAndRotation(positionAndRotation.Item1, positionAndRotation.Item2);
+                building.transform.RotateAround(building.transform.position, building.transform.forward, 180f);
                 _spawnedDownBuildings.Add(building.transform);
+                building.transform.RotateAround(building.transform.position, building.transform.up,
+                    randomAngleRotationBuilding);
                 building.transform.SetParent(_rootBuildingOnPlanet.transform);
                 // if (!positionAndRotation.Item2) continue;
                 // _invisibleBuildings.Add(building);

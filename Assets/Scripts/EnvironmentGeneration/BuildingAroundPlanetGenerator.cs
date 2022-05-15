@@ -76,6 +76,7 @@ namespace EnvironmentGeneration
             var planetPosition = _planet.position;
             var ray = new Ray(planetPosition, _planet.forward);
             _positionGenerator.position = ray.GetPoint(_planetRadius);
+            _positionGenerator.RotateAround(planetPosition, _planet.right, 90f);
             for (float i = 0; i < 360f; )
             {
                 var iterationAngle = Random.Range(_minimumAngleBetweenBuildings, _maximumAngleBetweenBuildings);
@@ -144,7 +145,7 @@ namespace EnvironmentGeneration
                 var isGlassHouse = numbersBuildingsWithGlass.Any(buildingWithGlass => i == buildingWithGlass);
                 var building = isGlassHouse ? _houseDirector.BuildGlassHouse(randomFloors) : _houseDirector.BuildSimpleHouse(randomFloors);
                 building.transform.SetPositionAndRotation(_buildingPositions[i], _buildingRotations[i]);
-                building.transform.RotateAround(building.transform.position, building.transform.forward, randomAngleRotationBuilding);
+                building.transform.RotateAround(building.transform.position, building.transform.up, randomAngleRotationBuilding);
                 _spawnedBuildings.Add(building.transform);
                 building.transform.SetParent(_rootBuildingAroundPlanet.transform);
             }
