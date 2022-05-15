@@ -98,7 +98,7 @@ namespace EnvironmentGeneration
                 building.transform.SetPositionAndRotation(positionAndRotation.Item1, positionAndRotation.Item2);
                 building.transform.RotateAround(building.transform.position, building.transform.forward,
                     randomAngleRotationBuilding);
-                //building.transform.rotation.SetLookRotation(Vector3.zero);
+                //building.transform.rotation.SetLookRotation(Vector3.zero, building.transform.forward);
                 //building.transform.Rotate(building.transform.right, 180f);
                 _spawnedTopBuildings.Add(building.transform);
                 building.transform.SetParent(_rootBuildingOnPlanet.transform);
