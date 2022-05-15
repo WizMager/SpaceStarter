@@ -65,8 +65,6 @@ namespace EnvironmentGeneration
             _spawnedBuildings = new List<Transform>();
         }
 
-        public int BuildingsSpawned => _buildingsCounter;
-        
         public List<Transform> GenerateBuildingsAroundPlanet()
         {
             GeneratePositions();

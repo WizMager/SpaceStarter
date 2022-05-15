@@ -10,8 +10,8 @@ namespace EnvironmentGeneration
     public class EnvironmentGenerator
     {
         private readonly List<Transform> _allEnvironment;
-        private List<PlanetCell> _planetCellsUp;
-        private List<PlanetCell> _planetCellsDown;
+        private readonly List<PlanetCell> _planetCellsTop;
+        private readonly List<PlanetCell> _planetCellsDown;
         private readonly int _environmentObjects;
 
         private readonly BuildingAroundPlanetGenerator _buildingAroundPlanetGenerator;
@@ -19,7 +19,7 @@ namespace EnvironmentGeneration
 
         public EnvironmentGenerator(AllData data, Transform planet)
         {
-            _planetCellsUp = new List<PlanetCell>();
+            _planetCellsTop = new List<PlanetCell>();
             _planetCellsDown = new List<PlanetCell>();
             _environmentObjects = data.ObjectsOnPlanetData.buildingsOnPlanet;
             GenerateCells(data.ObjectsOnPlanetData.maximumBuildingAngleUp, data.ObjectsOnPlanetData.maximumBuildingAngleDown);
@@ -27,7 +27,7 @@ namespace EnvironmentGeneration
             var rootEnvironment = new GameObject("PlanetEnvironment");
             var planetRadius = planet.GetComponent<SphereCollider>().radius;
             _buildingAroundPlanetGenerator = new BuildingAroundPlanetGenerator(data, planet, planetRadius, rootEnvironment);
-            _buildingOnPlanetGenerator = new BuildingOnPlanetGenerator(data, planetRadius, rootEnvironment, planet);
+            _buildingOnPlanetGenerator = new BuildingOnPlanetGenerator(data, planetRadius, rootEnvironment);
         }
 
         private void GenerateCells(float maxAngleUp, float maxAngleDown)
@@ -46,13 +46,12 @@ namespace EnvironmentGeneration
                     for (var z = upCellSize.z; z < availableAngleZ; z += upCellSize.z)
                     {
                         var upCell = new PlanetCell
-                        {
-                            isOccupied = false,
-                            rangeX = new Vector2(x - upCellSize.x, x),
-                            rangeY = new Vector2(y - upCellSize.y, y),
-                            rangeZ = new Vector2(z - upCellSize.z, z)
-                        };
-                        _planetCellsUp.Add(upCell);
+                        (
+                            new Vector2(x - upCellSize.x, x),
+                            new Vector2(y - upCellSize.y, y),
+                            new Vector2(z - upCellSize.z, z)
+                        );
+                        _planetCellsTop.Add(upCell);
                     }
                 }
             }
@@ -69,12 +68,11 @@ namespace EnvironmentGeneration
                     for (var z = startDownZ + downCellSize.z; z < availableAngleZ; z += downCellSize.z)
                     {
                         var downCell = new PlanetCell
-                        {
-                            isOccupied = false,
-                            rangeX = new Vector2(x - downCellSize.x, x),
-                            rangeY = new Vector2(y - downCellSize.y, y),
-                            rangeZ = new Vector2(z - downCellSize.z, z)
-                        };
+                        (
+                            new Vector2(x - downCellSize.x, x),
+                            new Vector2(y - downCellSize.y, y),
+                            new Vector2(z - downCellSize.z, z)
+                        );
                         _planetCellsDown.Add(downCell);
                     }
                 }
@@ -103,12 +101,13 @@ namespace EnvironmentGeneration
         public List<Transform> GenerateEnvironment()
         {
             var buildingsAroundPlanet = _buildingAroundPlanetGenerator.GenerateBuildingsAroundPlanet();
-            _allEnvironment.Union(buildingsAroundPlanet);
-            var numberBuildingsAroundPlanet = _buildingAroundPlanetGenerator.BuildingsSpawned;
-            _buildingOnPlanetGenerator.CreateBuildingAndPosition(_planetCellsUp);
-            _buildingOnPlanetGenerator.CreateBuildingAndPosition(_planetCellsDown);
+            var topBuildingsOnPlanet = _buildingOnPlanetGenerator.CreateTopBuildingAndPosition(_planetCellsTop);
+            var downBuildingsOnPlanet = _buildingOnPlanetGenerator.CreateDownBuildingAndPosition(_planetCellsDown);
+            _allEnvironment.AddRange(buildingsAroundPlanet);
+            _allEnvironment.AddRange(topBuildingsOnPlanet);
+            _allEnvironment.AddRange(downBuildingsOnPlanet);
+
             return _allEnvironment;
         }
-
     }
 }
