@@ -22,8 +22,9 @@ namespace EnvironmentGeneration
         {
             _planetCellsTop = new List<PlanetCell>();
             _planetCellsDown = new List<PlanetCell>();
-            _environmentObjects = data.ObjectsOnPlanetData.buildingsOnPlanet;
+            _environmentObjects = data.ObjectsOnPlanetData.buildingsOnPlanet + data.ObjectsOnPlanetData.buildingsOnPlanet + data.ObjectsOnPlanetData.cheliksOnPlanet;
             GenerateCells(data.ObjectsOnPlanetData.maximumBuildingAngleUp, data.ObjectsOnPlanetData.maximumBuildingAngleDown);
+            Debug.Log($"top {_planetCellsTop.Count}, down {_planetCellsDown.Count}");
             _allEnvironment = new List<Transform>();
             var rootEnvironment = new GameObject("PlanetEnvironment");
             var planetRadius = planet.GetComponent<SphereCollider>().radius;
@@ -35,7 +36,8 @@ namespace EnvironmentGeneration
 
         private void GenerateCells(float maxAngleUp, float maxAngleDown)
         {
-            var halfEnvironmentObject = _environmentObjects / 2;
+            var halfEnvironmentObject = _environmentObjects / 40;
+            Debug.Log(halfEnvironmentObject);
             var upCellSize = new Vector3((90f - maxAngleUp) / halfEnvironmentObject, 360f / halfEnvironmentObject,(90f - maxAngleUp) / halfEnvironmentObject);
             var downCellSize = new Vector3((90f - maxAngleDown) / halfEnvironmentObject, 360f / halfEnvironmentObject,(90f - maxAngleDown) / halfEnvironmentObject);
             var availableAngleX = 90f - maxAngleUp;

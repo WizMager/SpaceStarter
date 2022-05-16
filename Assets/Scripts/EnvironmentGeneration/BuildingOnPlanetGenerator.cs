@@ -59,6 +59,7 @@ namespace EnvironmentGeneration
         public List<Transform> CreateTopBuildingAndPosition(List<PlanetCell> planetCellsTop)
         {
             var createdBuildings = 0;
+            var halfBuildingsOnPlanet = _buildingsOnPlanet / 2;
             do
             {
                 var randomCell = Random.Range(0, planetCellsTop.Count);
@@ -105,7 +106,7 @@ namespace EnvironmentGeneration
                 // if (!positionAndRotation.Item2) continue;
                 // _invisibleBuildings.Add(building);
                 // building.SetActive(false);
-            } while (_buildingsOnPlanet > createdBuildings);
+            } while (halfBuildingsOnPlanet > createdBuildings);
 
             return _spawnedTopBuildings;
         }
@@ -113,6 +114,7 @@ namespace EnvironmentGeneration
         public List<Transform> CreateDownBuildingAndPosition(List<PlanetCell> planetCellsDown)
         {
             var createdBuildings = 0;
+            var halfBuildingsOnPlanet = _buildingsOnPlanet / 2;
             do
             {
                 var randomCell = Random.Range(0, planetCellsDown.Count);
@@ -158,7 +160,7 @@ namespace EnvironmentGeneration
                 // if (!positionAndRotation.Item2) continue;
                 // _invisibleBuildings.Add(building);
                 // building.SetActive(false);
-            } while (_buildingsOnPlanet > createdBuildings);
+            } while (halfBuildingsOnPlanet > createdBuildings);
 
             return _spawnedDownBuildings;
         }
