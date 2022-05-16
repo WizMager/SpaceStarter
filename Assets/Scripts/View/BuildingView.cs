@@ -13,6 +13,7 @@ namespace View
         
         private List<Rigidbody> _rigidbodies;
         private bool _isFirstTouch = true;
+        private bool _onTheGround = true;
 
         private void Start()
         {
@@ -93,5 +94,33 @@ namespace View
                 rb.GetComponent<FloorView>().OnShipTouch -= ShipTouched;
             }
         }
+        private void Update()
+        {
+            if (!_onTheGround) return;
+            var groundRay = new Ray(transform.position, -transform.up);
+            var raycastHit = new RaycastHit[1];
+
+            if (Physics.RaycastNonAlloc(groundRay, raycastHit, 1f) >= 1)
+            {
+                return;
+            }
+
+            _onTheGround = false;
+
+            for (int i = 0; i < _rigidbodies.Count; i++)
+            {
+                if (_rigidbodies[i].isKinematic)
+                {
+                    continue;
+                }
+                _rigidbodies[i].isKinematic = false;
+
+                _rigidbodies[i].AddForce(transform.up * UnityEngine.Random.Range(0f, 2f), ForceMode.Impulse);
+                _rigidbodies[i].angularVelocity = new Vector3(UnityEngine.Random.Range(-1f, 1f), UnityEngine.Random.Range(-1f, 1f),
+                    UnityEngine.Random.Range(-1f, 1f));
+                return;
+            }
+        }
+
     }
 }
