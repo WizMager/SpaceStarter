@@ -56,13 +56,17 @@ namespace View
 					{
                         _rigidbodies[j].isKinematic = false;
 				        _rigidbodies[j].GetComponent<FloorView>().IsActive();
-				        var direction = (shipPosition - _rigidbodies[j].position).normalized;
-				        var forceDirection = _rigidbodies[j].mass * _forceDestruction;
-				        _rigidbodies[j].AddForceAtPosition(-direction * forceDirection, _rigidbodies[j].transform.right,
-				         ForceMode.Impulse);
-				        _rigidbodies[j].angularVelocity = new Vector3(UnityEngine.Random.Range(0f, 1f), UnityEngine.Random.Range(0f, 1f),
-			                    UnityEngine.Random.Range(0f, 1f));
-					}
+				        //var direction = (shipPosition - _rigidbodies[j].position).normalized;
+                        var direction = (_rigidbodies[i].position - shipPosition).normalized;
+                        var forceDirection = _rigidbodies[j].mass * _forceDestruction;
+                        //_rigidbodies[j].AddForceAtPosition(-direction * forceDirection, _rigidbodies[j].transform.right,
+                        // ForceMode.Impulse);
+                        //_rigidbodies[j].angularVelocity = new Vector3(UnityEngine.Random.Range(0f, 1f), UnityEngine.Random.Range(0f, 1f),
+                        //           UnityEngine.Random.Range(0f, 1f));
+                        _rigidbodies[j].AddForce(direction * forceDirection * j / _rigidbodies.Count, ForceMode.Impulse);
+                        _rigidbodies[j].angularVelocity = new Vector3(UnityEngine.Random.Range(-1f, 1f), UnityEngine.Random.Range(-1f, 1f),
+                                 UnityEngine.Random.Range(-1f, 1f));
+                    }
 			    }
                 
                 //_isFirstTouch = false;
@@ -72,12 +76,14 @@ namespace View
             {
                  _rigidbodies[i].isKinematic = false;
                  _rigidbodies[i].GetComponent<FloorView>().IsActive();
-                 var direction = (shipPosition - _rigidbodies[i].position).normalized;
-                 var forceDirection = _rigidbodies[i].mass * _forceDestruction;
-                 _rigidbodies[i].AddForceAtPosition(-direction * forceDirection, _rigidbodies[i].transform.right,
-                     ForceMode.Impulse);
-                 _rigidbodies[i].angularVelocity = new Vector3(UnityEngine.Random.Range(0f, 1f), UnityEngine.Random.Range(0f, 1f),
-                         UnityEngine.Random.Range(0f, 1f));
+                // var direction = (shipPosition - _rigidbodies[i].position).normalized;
+                var direction = (_rigidbodies[i].position - shipPosition).normalized;
+                var forceDirection = _rigidbodies[i].mass * _forceDestruction;
+                 //_rigidbodies[i].AddForceAtPosition(-direction * forceDirection, _rigidbodies[i].transform.right,
+                 //    ForceMode.Impulse);
+                _rigidbodies[i].AddForce(direction * forceDirection * 2f, ForceMode.Impulse);
+                _rigidbodies[i].angularVelocity = new Vector3(UnityEngine.Random.Range(-1f, 1f), UnityEngine.Random.Range(-1f, 1f),
+                         UnityEngine.Random.Range(-1f, 1f));
             }
 
         }
