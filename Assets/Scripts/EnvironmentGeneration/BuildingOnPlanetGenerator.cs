@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Builders;
+using Builders.HouseBuilder;
 using ScriptableData;
 using UnityEngine;
 using Utils;

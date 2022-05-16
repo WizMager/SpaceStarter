@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using View;
 
-namespace Builders
+namespace Builders.HouseBuilder
 {
     public class FirstTypeHouseBuilder : IHouseBuilder
     {

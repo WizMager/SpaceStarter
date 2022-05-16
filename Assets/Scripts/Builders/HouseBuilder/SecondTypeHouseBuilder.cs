@@ -1,9 +1,9 @@
 ﻿using UnityEngine;
 using View;
 
-namespace Builders
+namespace Builders.HouseBuilder
 {
-    public class SixthTypeHouseBuilder : IHouseBuilder
+    public class SecondTypeHouseBuilder : IHouseBuilder
     {
         private GameObject _house;
         private readonly GameObject _simpleFloor;
@@ -14,14 +14,14 @@ namespace Builders
         private int _houseNumber;
         private int _floorNumber;
         private const string FloorName = "Floor";
-        private const string HouseName = "HouseSixthType";
+        private const string HouseName = "HouseSecondType";
         private float _localPositionY;
 
-        public SixthTypeHouseBuilder()
+        public SecondTypeHouseBuilder()
         {
-            _simpleFloor = Resources.Load<GameObject>("Buildings/SixthTypeBuilding/SimpleFloor6");
+            _simpleFloor = Resources.Load<GameObject>("Buildings/SecondTypeBuilding/SimpleFloorType2");
             _glassFloor = Resources.Load<GameObject>("Buildings/GlassBuilding/GlassFloor");
-            _roof = Resources.Load<GameObject>("Buildings/SixthTypeBuilding/Roof6");
+            _roof = Resources.Load<GameObject>("Buildings/SecondTypeBuilding/RoofType2");
             _glassRoof = Resources.Load<GameObject>("Buildings/GlassBuilding/GlassRoof");
         }
 
