@@ -109,7 +109,7 @@ namespace Utils
             StopAllCoroutines();
             _isActive = false;
             _collider.enabled = false;
-            StartCoroutine(FlyIntoSpace());
+            //StartCoroutine(FlyIntoSpace());
         }
 
         private IEnumerator FlyIntoSpace()

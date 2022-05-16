@@ -43,9 +43,10 @@ namespace EnvironmentGeneration
                 createdCheliks++;
                 var randomTreeType = Random.Range(0, _cheliksPrefabs.Count);
                 var positionAndRotation = GeneratePositionAndRotation(planetCellsDown[randomCell]);
-                var tree = Object.Instantiate(_cheliksPrefabs[randomTreeType], positionAndRotation.Item1, positionAndRotation.Item2);
-                _spawnedTopCheliks.Add(tree.transform);
-                tree.transform.SetParent(_rootCheliksOnPlanet.transform);
+                var chelik = Object.Instantiate(_cheliksPrefabs[randomTreeType], positionAndRotation.Item1, positionAndRotation.Item2);
+                chelik.transform.Translate(new Vector3(0, 0.2f, 0));
+                _spawnedTopCheliks.Add(chelik.transform);
+                chelik.transform.SetParent(_rootCheliksOnPlanet.transform);
                 // if (!positionAndRotation.Item2) continue;
                 // _invisibleBuildings.Add(building);
                 // building.SetActive(false);
@@ -68,9 +69,9 @@ namespace EnvironmentGeneration
                 createdTrees++;
                 var randomTreeType = Random.Range(0, _cheliksPrefabs.Count);
                 var positionAndRotation = GeneratePositionAndRotation(planetCellsDown[randomCell]);
-                var tree = Object.Instantiate(_cheliksPrefabs[randomTreeType], positionAndRotation.Item1, positionAndRotation.Item2);
-                _spawnedDownCheliks.Add(tree.transform);
-                tree.transform.SetParent(_rootCheliksOnPlanet.transform);
+                var chelik = Object.Instantiate(_cheliksPrefabs[randomTreeType], positionAndRotation.Item1, positionAndRotation.Item2);
+                _spawnedDownCheliks.Add(chelik.transform);
+                chelik.transform.SetParent(_rootCheliksOnPlanet.transform);
                 // if (!positionAndRotation.Item2) continue;
                 // _invisibleBuildings.Add(building);
                 // building.SetActive(false);
