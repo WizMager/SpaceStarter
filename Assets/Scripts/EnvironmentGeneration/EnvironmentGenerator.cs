@@ -16,6 +16,7 @@ namespace EnvironmentGeneration
         private readonly BuildingAroundPlanetGenerator _buildingAroundPlanetGenerator;
         private readonly BuildingOnPlanetGenerator _buildingOnPlanetGenerator;
         private readonly TreesOnPlanetGenerator _treesOnPlanetGenerator;
+        private readonly CheliksOnPlanetGenerator _cheliksOnPlanetGenerator;
 
         public EnvironmentGenerator(AllData data, Transform planet)
         {
@@ -29,6 +30,7 @@ namespace EnvironmentGeneration
             _buildingAroundPlanetGenerator = new BuildingAroundPlanetGenerator(data, planet, planetRadius, rootEnvironment);
             _buildingOnPlanetGenerator = new BuildingOnPlanetGenerator(data, planetRadius, rootEnvironment);
             _treesOnPlanetGenerator = new TreesOnPlanetGenerator(data, planetRadius, rootEnvironment);
+            _cheliksOnPlanetGenerator = new CheliksOnPlanetGenerator(data, planetRadius, rootEnvironment);
         }
 
         private void GenerateCells(float maxAngleUp, float maxAngleDown)
@@ -106,11 +108,15 @@ namespace EnvironmentGeneration
             var downBuildingsOnPlanet = _buildingOnPlanetGenerator.CreateDownBuildingAndPosition(_planetCellsDown);
             var topTreesOnPlanet = _treesOnPlanetGenerator.CreateTopTreesAndPosition(_planetCellsTop);
             var downTreesOnPlanet = _treesOnPlanetGenerator.CreateDownTreesAndPosition(_planetCellsDown);
+            var topCheliksOnPlanet = _cheliksOnPlanetGenerator.CreateTopTreesAndPosition(_planetCellsTop);
+            var downCheliksOnPlanet = _cheliksOnPlanetGenerator.CreateDownTreesAndPosition(_planetCellsDown);
             _allEnvironment.AddRange(buildingsAroundPlanet);
             _allEnvironment.AddRange(topBuildingsOnPlanet);
             _allEnvironment.AddRange(downBuildingsOnPlanet);
             _allEnvironment.AddRange(topTreesOnPlanet);
             _allEnvironment.AddRange(downTreesOnPlanet);
+            _allEnvironment.AddRange(topCheliksOnPlanet);
+            _allEnvironment.AddRange(downCheliksOnPlanet);
 
             return _allEnvironment;
         }

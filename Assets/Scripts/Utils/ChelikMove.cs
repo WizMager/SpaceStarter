@@ -27,7 +27,7 @@ namespace Utils
         private void Start()
         {
             _collider = GetComponent<BoxCollider>();
-            _centerPlanet = CenterPlanet();
+            _centerPlanet = Vector3.zero;
         }
 
 
@@ -123,14 +123,7 @@ namespace Utils
             }
             Destroy(gameObject);
         }
-        
-        private Vector3 CenterPlanet()
-        {
-            var planetView = FindObjectOfType<PlanetView>();
 
-            return planetView.gameObject.transform.position;
-        }
-        
         private void OnTriggerEnter(Collider other)
         {
             HouseColliderEntered();
