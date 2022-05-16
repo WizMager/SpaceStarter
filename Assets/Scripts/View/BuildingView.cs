@@ -65,7 +65,7 @@ namespace View
 					}
 			    }
                 
-                _isFirstTouch = false;
+                //_isFirstTouch = false;
             }
 
             for (int i = _count; i < _rigidbodies.Count; i++)
