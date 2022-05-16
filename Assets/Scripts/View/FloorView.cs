@@ -6,7 +6,7 @@ namespace View
 {
     public class FloorView : MonoBehaviour
     {
-        public event Action<string, FloorType> OnShipTouch;
+        public event Action<string, FloorType, Vector3> OnShipTouch;
 
         [SerializeField] private FloorType _floorType;
         [SerializeField] private float _gravityForce;
@@ -34,15 +34,16 @@ namespace View
             }
 
             if (!other.gameObject.CompareTag("Player")) return;
-            OnShipTouch?.Invoke(gameObject.name, _floorType);
+            var shipPosition = other.transform.position;
+            OnShipTouch?.Invoke(gameObject.name, _floorType, shipPosition);
             gameObject.GetComponent<BoxCollider>().enabled = false;
         }
 
         private void FixedUpdate()
         {
             if (!_isActive) return;
-            _direction = (GlobalData.PlanetCenter - transform.position).normalized; 
-            _body.AddForce(_direction * _gravityForce, ForceMode.Acceleration);       
-        }
-    }
+			_direction = (GlobalData.PlanetCenter - transform.position).normalized;
+			_body.AddForce(_direction * _gravityForce, ForceMode.Acceleration);     
+		}
+	}
 }
