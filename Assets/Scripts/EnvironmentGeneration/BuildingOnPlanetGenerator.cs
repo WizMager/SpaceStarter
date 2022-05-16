@@ -41,7 +41,7 @@ namespace EnvironmentGeneration
             _spawnedTopBuildings = new List<Transform>();
             _spawnedDownBuildings = new List<Transform>();
             
-            _rootBuildingOnPlanet = new GameObject("BuildingAroundPlanet");
+            _rootBuildingOnPlanet = new GameObject("BuildingsOnPlanet");
             _rootBuildingOnPlanet.transform.SetParent(rootEnvironment.transform);
             
             _firstTypeHouseBuilder = new FirstTypeHouseBuilder();

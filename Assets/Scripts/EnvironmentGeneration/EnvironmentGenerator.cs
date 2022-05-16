@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 using ScriptableData;
 using UnityEngine;
 using Utils;
@@ -16,6 +15,7 @@ namespace EnvironmentGeneration
 
         private readonly BuildingAroundPlanetGenerator _buildingAroundPlanetGenerator;
         private readonly BuildingOnPlanetGenerator _buildingOnPlanetGenerator;
+        private readonly TreesOnPlanetGenerator _treesOnPlanetGenerator;
 
         public EnvironmentGenerator(AllData data, Transform planet)
         {
@@ -28,6 +28,7 @@ namespace EnvironmentGeneration
             var planetRadius = planet.GetComponent<SphereCollider>().radius;
             _buildingAroundPlanetGenerator = new BuildingAroundPlanetGenerator(data, planet, planetRadius, rootEnvironment);
             _buildingOnPlanetGenerator = new BuildingOnPlanetGenerator(data, planetRadius, rootEnvironment);
+            _treesOnPlanetGenerator = new TreesOnPlanetGenerator(data, planetRadius, rootEnvironment);
         }
 
         private void GenerateCells(float maxAngleUp, float maxAngleDown)
@@ -103,9 +104,13 @@ namespace EnvironmentGeneration
             var buildingsAroundPlanet = _buildingAroundPlanetGenerator.GenerateBuildingsAroundPlanet();
             var topBuildingsOnPlanet = _buildingOnPlanetGenerator.CreateTopBuildingAndPosition(_planetCellsTop);
             var downBuildingsOnPlanet = _buildingOnPlanetGenerator.CreateDownBuildingAndPosition(_planetCellsDown);
+            var topTreesOnPlanet = _treesOnPlanetGenerator.CreateTopTreesAndPosition(_planetCellsTop);
+            var downTreesOnPlanet = _treesOnPlanetGenerator.CreateDownTreesAndPosition(_planetCellsDown);
             _allEnvironment.AddRange(buildingsAroundPlanet);
             _allEnvironment.AddRange(topBuildingsOnPlanet);
             _allEnvironment.AddRange(downBuildingsOnPlanet);
+            _allEnvironment.AddRange(topTreesOnPlanet);
+            _allEnvironment.AddRange(downTreesOnPlanet);
 
             return _allEnvironment;
         }

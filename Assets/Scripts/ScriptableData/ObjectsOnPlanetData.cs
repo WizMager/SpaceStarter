@@ -20,5 +20,7 @@ namespace ScriptableData
         public int maximumFloorInHouseOnPlanet;
         public float maximumAngleRotateBuildingAroundItselfOnPlanet;
         public int buildingsOnPlanet;
+        public int treesOnPlanet;
+        public int cheliksOnPlanet;
     }
 }

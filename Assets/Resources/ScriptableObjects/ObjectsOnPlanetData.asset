@@ -23,3 +23,5 @@ MonoBehaviour:
   maximumFloorInHouseOnPlanet: 5
   maximumAngleRotateBuildingAroundItselfOnPlanet: 180
   buildingsOnPlanet: 100
+  treesOnPlanet: 100
+  cheliksOnPlanet: 100
