@@ -34,7 +34,7 @@ namespace View
 
        private int _count;
 
-        private void ShipTouched(string floorName, FloorType floorType, Vector3 shipPosition)
+        private void ShipTouched(string floorName, FloorType floorType, Vector3 shipPosition, Quaternion shipRotation)
         {
             int iFloorNumber = 0;
             if (_isFirstTouch)
@@ -101,9 +101,9 @@ namespace View
             //var explosion = UnityEngine.Object.Instantiate(_floorExplosion, _rigidbodies[iFloorNumber].transform.gameObject.transform, false);
             var explosion = UnityEngine.Object.Instantiate(_floorExplosion);
             explosion.transform.position = _rigidbodies[iFloorNumber].transform.position;
-            //explosion.transform.rotation = shipPosition.rotation;
+            explosion.transform.rotation = shipRotation;
             _rigidbodies[iFloorNumber].gameObject.active = false;
-            GameObject.Destroy(explosion, 50f);
+            //GameObject.Destroy(explosion, 50f);
         }
 
 		private IEnumerable<Rigidbody> SortRigidbody(IEnumerable<Rigidbody> rigidbodies)
