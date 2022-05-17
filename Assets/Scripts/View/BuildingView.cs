@@ -18,7 +18,7 @@ namespace View
 
         private void Start()
         {
-            //_floorExplosion = 
+            _floorExplosion = Resources.Load<GameObject>("Particles/FloorExplosion");
             _rigidbodies = new List<Rigidbody>(SortRigidbody(transform.GetComponentsInChildren<Rigidbody>()));
 
             foreach (var rb in _rigidbodies)
@@ -36,6 +36,7 @@ namespace View
 
         private void ShipTouched(string floorName, FloorType floorType, Vector3 shipPosition)
         {
+            int iFloorNumber = 0;
             if (_isFirstTouch)
             {
                 switch (floorType)
@@ -52,7 +53,14 @@ namespace View
 
 			    for (int i = 0; i < _rigidbodies.Count; i++)
 			    {
-                    if (_rigidbodies[i].name != floorName) continue;
+                    if (_rigidbodies[i].name == floorName)
+                    {
+                        iFloorNumber = i;
+                    }
+                    else
+                    {
+                        continue;
+                    }
                     _count = i + 1;
                     for (int j = i; j < _rigidbodies.Count; j++)
 					{
@@ -60,12 +68,14 @@ namespace View
 				        _rigidbodies[j].GetComponent<FloorView>().IsActive();
 				        //var direction = (shipPosition - _rigidbodies[j].position).normalized;
                         var direction = (_rigidbodies[i].position - shipPosition).normalized;
+                        var directionFromPlanet = (_rigidbodies[i].position - GlobalData.PlanetCenter).normalized;
                         var forceDirection = _rigidbodies[j].mass * _forceDestruction;
                         //_rigidbodies[j].AddForceAtPosition(-direction * forceDirection, _rigidbodies[j].transform.right,
                         // ForceMode.Impulse);
                         //_rigidbodies[j].angularVelocity = new Vector3(UnityEngine.Random.Range(0f, 1f), UnityEngine.Random.Range(0f, 1f),
                         //           UnityEngine.Random.Range(0f, 1f));
                         _rigidbodies[j].AddForce(direction * forceDirection * j / _rigidbodies.Count, ForceMode.Impulse);
+                        _rigidbodies[j].AddForce(directionFromPlanet * forceDirection * 5f, ForceMode.Impulse);
                         _rigidbodies[j].angularVelocity = new Vector3(UnityEngine.Random.Range(-1f, 1f), UnityEngine.Random.Range(-1f, 1f),
                                  UnityEngine.Random.Range(-1f, 1f));
                     }
@@ -81,13 +91,18 @@ namespace View
                 // var direction = (shipPosition - _rigidbodies[i].position).normalized;
                 var direction = (_rigidbodies[i].position - shipPosition).normalized;
                 var forceDirection = _rigidbodies[i].mass * _forceDestruction;
-                 //_rigidbodies[i].AddForceAtPosition(-direction * forceDirection, _rigidbodies[i].transform.right,
-                 //    ForceMode.Impulse);
-                _rigidbodies[i].AddForce(direction * forceDirection * 2f, ForceMode.Impulse);
-                _rigidbodies[i].angularVelocity = new Vector3(UnityEngine.Random.Range(-1f, 1f), UnityEngine.Random.Range(-1f, 1f),
-                         UnityEngine.Random.Range(-1f, 1f));
+                //_rigidbodies[i].AddForceAtPosition(-direction * forceDirection, _rigidbodies[i].transform.right,
+                //    ForceMode.Impulse);
+                //_rigidbodies[i].AddForce(direction * forceDirection * 2f, ForceMode.Impulse);
+                //_rigidbodies[i].angularVelocity = new Vector3(UnityEngine.Random.Range(-1f, 1f), UnityEngine.Random.Range(-1f, 1f),
+                //         UnityEngine.Random.Range(-1f, 1f));
             }
 
+            //var explosion = UnityEngine.Object.Instantiate(_floorExplosion, _rigidbodies[iFloorNumber].transform.gameObject.transform, false);
+            var explosion = UnityEngine.Object.Instantiate(_floorExplosion);
+            explosion.transform.position = _rigidbodies[iFloorNumber].transform.position;
+            _rigidbodies[iFloorNumber].gameObject.active = false;
+            //GameObject.Destroy(explosion, 10f);
         }
 
 		private IEnumerable<Rigidbody> SortRigidbody(IEnumerable<Rigidbody> rigidbodies)
