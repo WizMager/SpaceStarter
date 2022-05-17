@@ -14,9 +14,11 @@ namespace View
         private List<Rigidbody> _rigidbodies;
         private bool _isFirstTouch = true;
         private bool _onTheGround = true;
+        private GameObject _floorExplosion;
 
         private void Start()
         {
+            //_floorExplosion = 
             _rigidbodies = new List<Rigidbody>(SortRigidbody(transform.GetComponentsInChildren<Rigidbody>()));
 
             foreach (var rb in _rigidbodies)
