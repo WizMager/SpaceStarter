@@ -36,6 +36,8 @@ namespace View
             if (!other.gameObject.CompareTag("Player")) return;
             var shipPosition = other.transform.position;
             var shipRotation = other.transform.rotation;
+            //Debug.Log("gameObject " + gameObject.transform.position);
+            //Debug.DrawLine(shipPosition, gameObject.transform.position - shipPosition, Color.red, 1000f);
             OnShipTouch?.Invoke(gameObject.name, _floorType, shipPosition, shipRotation);
             gameObject.GetComponent<BoxCollider>().enabled = false;
         }
