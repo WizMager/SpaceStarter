@@ -75,6 +75,7 @@ namespace Controllers
             missileView.transform.SetPositionAndRotation(missileStartPosition, _camera.transform.rotation);
             missileView.OnFlyEnd += MissileFlyEnded;
             missileView.SetTarget(raycastHit[0].point, _planet);
+            Debug.DrawLine(_camera.transform.position, raycastHit[0].point, Color.red, 1000f);
             _playerModel.ShootRocket();
         }
 
