@@ -101,8 +101,9 @@ namespace View
             //var explosion = UnityEngine.Object.Instantiate(_floorExplosion, _rigidbodies[iFloorNumber].transform.gameObject.transform, false);
             var explosion = UnityEngine.Object.Instantiate(_floorExplosion);
             explosion.transform.position = _rigidbodies[iFloorNumber].transform.position;
+            //explosion.transform.rotation = shipPosition.rotation;
             _rigidbodies[iFloorNumber].gameObject.active = false;
-            //GameObject.Destroy(explosion, 10f);
+            GameObject.Destroy(explosion, 50f);
         }
 
 		private IEnumerable<Rigidbody> SortRigidbody(IEnumerable<Rigidbody> rigidbodies)
