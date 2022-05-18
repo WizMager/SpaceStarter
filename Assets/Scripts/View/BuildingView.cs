@@ -103,7 +103,7 @@ namespace View
                 var explosion = UnityEngine.Object.Instantiate(_floorExplosion);
                 explosion.transform.position = _rigidbodies[iFloorNumber].transform.position;
                 explosion.transform.rotation = shipRotation;
-                _rigidbodies[iFloorNumber].gameObject.SetActive(false);
+                //_rigidbodies[iFloorNumber].gameObject.SetActive(false);
                 GameObject.Destroy(explosion, 5f);
 
             }
