@@ -85,8 +85,8 @@ namespace View
 
                         Debug.DrawLine(_rigidbodies[j].position, direction * 100f, Color.red, 1000f);
                         //_rigidbodies[j].AddForce(directionFromPlanet * forceDirection * 5f, ForceMode.Impulse);
-                        //_rigidbodies[j].angularVelocity = new Vector3(UnityEngine.Random.Range(-1f, 1f), UnityEngine.Random.Range(-1f, 1f),
-                        //         UnityEngine.Random.Range(-1f, 1f));
+                        _rigidbodies[j].angularVelocity = new Vector3(UnityEngine.Random.Range(-1f, 1f), UnityEngine.Random.Range(-1f, 1f),
+                                 UnityEngine.Random.Range(-1f, 1f));
                         impactFactor = impactFactor / 4;
                         //_rigidbodies[j].gameObject.SetActive(false);
 
