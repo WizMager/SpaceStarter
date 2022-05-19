@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Controllers;
+using EnvironmentGeneration;
 using InputClasses;
 using Model;
 using UnityEngine;
@@ -30,21 +31,17 @@ public class GameInitialization
       var restartButtons = Object.FindObjectsOfType<RestartButtonView>();
       var finalScreenView = Object.FindObjectOfType<FinalScreenView>();
       finalScreenView.gameObject.SetActive(false);
-      var positionGenerator = Object.FindObjectOfType<PositionGeneratorView>();
-      
-      var buildingController = new BuildingsController(data, planetView.transform, positionGenerator.transform);
-      buildingController.CreateBuildings(planetView.transform);
-      buildingController.GenerateBuildingsAroundPlanet();
-      var buildingViews = Object.FindObjectsOfType<BuildingView>();
 
+      var environmentGenerator = new EnvironmentGenerator(data, planetView.transform);
+      
       var inputInitialization = new InputInitialization(data.Input.minimalDistanceForSwipe);
       var stateController = new StateController(planetView, playerView, data, gravityView, gravityLittleView, camera, 
          playerModel, deadView, firstPersonView, restartButtons, finalScreenView, rocketIndicatorViews);
       var playerMoveController = new PlayerMoveController(stateController, playerView, data, inputInitialization.GetAllTouch(),
          planetView, gravityLittleView, playerModel);
-      var restartController = new RestartController(stateController);
-      restartController.SaveObjects(buildingController.GetSpawnedBuildings);
-      restartController.SaveObjects(planetView.GetComponentsInChildren<Transform>().ToList());
+      var restartController = new RestartController(stateController, environmentGenerator);
+      restartController.SaveObjects();
+      var buildingViews = Object.FindObjectsOfType<BuildingView>();
       controllers.Add(restartController);
       controllers.Add(new InputController(inputInitialization.GetAllTouch(), inputInitialization.GetSwipe()));
       controllers.Add(new CameraController(stateController, playerView.transform, camera.transform, planetView.transform, 

@@ -6,5 +6,7 @@ namespace ScriptableData
     public class PrefabLinkData : ScriptableObject
     {
         public GameObject missilePrefab;
+        public GameObject[] trees;
+        public GameObject[] cheliks;
     }
 }

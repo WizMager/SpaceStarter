@@ -12,11 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b95842b163c840b58e63f345b7a71208, type: 3}
   m_Name: ObjectsOnPlanetData
   m_EditorClassIdentifier: 
-  objectsTypeOnPlanet: []
   minimalAngleBetweenBuildings: 10
   maximumAngleBetweenBuildings: 15
   maximumBuildingAngleDown: 5
   maximumBuildingAngleUp: 5
-  maximumAngleRotateBuildingAroundItself: 180
-  maximumFloorInHouse: 10
+  maximumAngleRotateBuildingAroundItselfAroundPlanet: 180
+  maximumFloorInHouseAroundPlanet: 9
   buildingsWithBonus: 8
+  flyAroundInvisibleObjectAngle: 50
+  maximumFloorInHouseOnPlanet: 5
+  maximumAngleRotateBuildingAroundItselfOnPlanet: 180
+  buildingsOnPlanet: 100
+  treesOnPlanet: 100
+  cheliksOnPlanet: 100

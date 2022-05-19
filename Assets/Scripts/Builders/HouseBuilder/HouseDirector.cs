@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Builders
+namespace Builders.HouseBuilder
 {
     public class HouseDirector
     {
