@@ -6,7 +6,7 @@ namespace View
 {
     public class FloorView : MonoBehaviour
     {
-        public event Action<string, FloorType, Vector3> OnShipTouch;
+        public event Action<string, FloorType, Vector3, Quaternion> OnShipTouch;
 
         [SerializeField] private FloorType _floorType;
         [SerializeField] private float _gravityForce;
@@ -35,7 +35,10 @@ namespace View
 
             if (!other.gameObject.CompareTag("Player")) return;
             var shipPosition = other.transform.position;
-            OnShipTouch?.Invoke(gameObject.name, _floorType, shipPosition);
+            var shipRotation = other.transform.rotation;
+            //Debug.Log("gameObject " + gameObject.transform.position);
+            //Debug.DrawLine(shipPosition, gameObject.transform.position - shipPosition, Color.red, 1000f);
+            OnShipTouch?.Invoke(gameObject.name, _floorType, shipPosition, shipRotation);
             gameObject.GetComponent<BoxCollider>().enabled = false;
         }
 
