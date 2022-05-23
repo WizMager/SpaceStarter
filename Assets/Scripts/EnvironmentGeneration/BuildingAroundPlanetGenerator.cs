@@ -78,7 +78,7 @@ namespace EnvironmentGeneration
             var ray = new Ray(planetPosition, _planet.forward);
             _positionGenerator.position = ray.GetPoint(_planetRadius);
             _positionGenerator.RotateAround(planetPosition, _planet.right, 90f);
-            for (float i = 0; i < 360f; )
+            for (float i = 0; i < 360f;)
             {
                 var iterationAngle = Random.Range(_minimumAngleBetweenBuildings, _maximumAngleBetweenBuildings);
                 if (360f - i < _minimumAngleBetweenBuildings)

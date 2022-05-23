@@ -97,6 +97,11 @@ namespace View
                     var chelikMoveScript = hitSphereCast.collider.GetComponent<ChelikMove>();
                     chelikMoveScript.DeactivateChelikMove();
                 }
+                else if (hitSphereCast.transform.CompareTag("Tree"))
+                {
+                    var treeScript = hitSphereCast.collider.GetComponent<ObjectOnPlanet>();
+                    treeScript.AddBlastForce();
+                }
             }
             OnFlyEnd?.Invoke(gameObject.GetComponent<MissileView>());
         }

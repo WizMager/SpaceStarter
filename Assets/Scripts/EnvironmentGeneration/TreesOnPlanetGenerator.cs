@@ -31,7 +31,7 @@ namespace EnvironmentGeneration
             _rootTreesOnPlanet.transform.SetParent(rootEnvironment.transform);
             _treesOnPlanet = data.ObjectsOnPlanetData.treesOnPlanet;
         }
-        
+
         public List<Transform> CreateTopTreesAndPosition(List<PlanetCell> planetCellsDown)
         {
             var createdTrees = 0;
@@ -58,7 +58,7 @@ namespace EnvironmentGeneration
 
             return _spawnedTopTrees;
         }
-        
+
         public List<Transform> CreateDownTreesAndPosition(List<PlanetCell> planetCellsDown)
         {
             var createdTrees = 0;
@@ -75,7 +75,7 @@ namespace EnvironmentGeneration
                 var positionAndRotation = GeneratePositionAndRotation(planetCellsDown[randomCell]);
                 var tree = Object.Instantiate(_treesPrefabs[randomTreeType], positionAndRotation.Item1, positionAndRotation.Item2);
                 _spawnedDownTrees.Add(tree.transform);
-                //tree.transform.RotateAround(tree.transform.position, tree.transform.up, randomAngleRotationBuilding);
+                tree.transform.RotateAround(tree.transform.position, tree.transform.forward, 180);
                 tree.transform.SetParent(_rootTreesOnPlanet.transform);
                 // if (!positionAndRotation.Item2) continue;
                 // _invisibleBuildings.Add(building);

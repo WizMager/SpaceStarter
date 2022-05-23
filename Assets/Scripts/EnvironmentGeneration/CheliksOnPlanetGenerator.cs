@@ -71,6 +71,7 @@ namespace EnvironmentGeneration
                 var positionAndRotation = GeneratePositionAndRotation(planetCellsDown[randomCell]);
                 var chelik = Object.Instantiate(_cheliksPrefabs[randomTreeType], positionAndRotation.Item1, positionAndRotation.Item2);
                 _spawnedDownCheliks.Add(chelik.transform);
+                chelik.transform.RotateAround(chelik.transform.position, chelik.transform.forward, 180);
                 chelik.transform.SetParent(_rootCheliksOnPlanet.transform);
                 // if (!positionAndRotation.Item2) continue;
                 // _invisibleBuildings.Add(building);

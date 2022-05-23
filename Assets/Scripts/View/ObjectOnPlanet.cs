@@ -15,19 +15,29 @@ namespace View
 
         private void Update()
         {
+            CheckForImpulse();
+        }
+
+        public void AddBlastForce()
+        {
             if (!_onTheGround) return;
-            var groundRay = new Ray(transform.position, -transform.up);
-            var raycastHit = new RaycastHit[1];
+            //var groundRay = new Ray(transform.position, -transform.up);
+            //var raycastHit = new RaycastHit[1];
 
-            if (Physics.RaycastNonAlloc(groundRay, raycastHit, 1f) >= 1)
-            {
-                return;
-            }
-
-            _onTheGround = false;
+            //if (Physics.RaycastNonAlloc(groundRay, raycastHit, 1f) >= 1)
+            //{
+            //    return;
+            //}
             _rb.AddForce(transform.up * Random.Range(0f, 2f), ForceMode.Impulse);
             _rb.angularVelocity = new Vector3(Random.Range(-1f, 1f), Random.Range(-1f, 1f),
                 Random.Range(-1f, 1f));
+        }
+        private void CheckForImpulse()
+        {
+            if (_rb.velocity.magnitude > 0)
+            {
+                _onTheGround = false;
+            }
         }
 
     }
