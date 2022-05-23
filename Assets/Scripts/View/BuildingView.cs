@@ -61,7 +61,7 @@ namespace View
                     {
                         continue;
                     }
-                    float impactFactor = _rigidbodies.Count;
+                    float impactFactor = _rigidbodies.Count / 2f;
                     //_count = i + 1;
                     for (int j = i; j < _rigidbodies.Count; j++)
 					{
@@ -96,7 +96,7 @@ namespace View
 
                     }
 
-                    impactFactor = _rigidbodies.Count;
+                    impactFactor = _rigidbodies.Count / 5f;
                     for (int j = i - 1; j >=0; j--)
                     {
                         _rigidbodies[j].isKinematic = false;
@@ -111,7 +111,7 @@ namespace View
                         Debug.DrawLine(_rigidbodies[j].position, direction * 100f, Color.red, 1000f);
                         _rigidbodies[j].angularVelocity = new Vector3(UnityEngine.Random.Range(-1f, 1f), UnityEngine.Random.Range(-1f, 1f),
                                  UnityEngine.Random.Range(-1f, 1f));
-                        impactFactor = impactFactor / 4f;
+                        impactFactor = impactFactor / 10f;
                     }
 
                 }
