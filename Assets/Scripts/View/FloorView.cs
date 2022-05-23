@@ -20,6 +20,11 @@ namespace View
             _isActive = true;
 		}
 
+        public FloorType GetFloorType()
+        {
+            return _floorType;
+        }
+
         private void Start()
         {
             _body = GetComponent<Rigidbody>();

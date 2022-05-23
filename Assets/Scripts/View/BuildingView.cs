@@ -87,7 +87,7 @@ namespace View
                         //_rigidbodies[j].AddForce(directionFromPlanet * forceDirection * 5f, ForceMode.Impulse);
                         _rigidbodies[j].angularVelocity = new Vector3(UnityEngine.Random.Range(-1f, 1f), UnityEngine.Random.Range(-1f, 1f),
                                  UnityEngine.Random.Range(-1f, 1f));
-                        impactFactor = impactFactor / 4;
+                        impactFactor = impactFactor / 4f;
                         //_rigidbodies[j].gameObject.SetActive(false);
 
                         //var sphere = GameObject.CreatePrimitive(PrimitiveType.Sphere);
@@ -95,15 +95,37 @@ namespace View
 
 
                     }
+
+                    impactFactor = _rigidbodies.Count;
+                    for (int j = i - 1; j >=0; j--)
+                    {
+                        _rigidbodies[j].isKinematic = false;
+                        _rigidbodies[j].GetComponent<FloorView>().IsActive();
+
+                        var rb = _rigidbodies[j];
+                        var direction = (rb.position - shipPosition).normalized;
+                        var forceDirection = _rigidbodies[j].mass * _forceDestruction;
+
+                        _rigidbodies[j].AddForce(direction * impactFactor * forceDirection, ForceMode.Impulse);
+
+                        Debug.DrawLine(_rigidbodies[j].position, direction * 100f, Color.red, 1000f);
+                        _rigidbodies[j].angularVelocity = new Vector3(UnityEngine.Random.Range(-1f, 1f), UnityEngine.Random.Range(-1f, 1f),
+                                 UnityEngine.Random.Range(-1f, 1f));
+                        impactFactor = impactFactor / 4f;
+                    }
+
                 }
-                
+
                 _isFirstTouch = false;
 
                 //var explosion = UnityEngine.Object.Instantiate(_floorExplosion, _rigidbodies[iFloorNumber].transform.gameObject.transform, false);
                 var explosion = UnityEngine.Object.Instantiate(_floorExplosion);
                 explosion.transform.position = _rigidbodies[iFloorNumber].transform.position;
                 explosion.transform.rotation = shipRotation;
-                //_rigidbodies[iFloorNumber].gameObject.SetActive(false);
+                if (floorType == FloorType.GlassFloor)
+                {
+                    _rigidbodies[iFloorNumber].gameObject.SetActive(false);
+                }
                 GameObject.Destroy(explosion, 5f);
 
             }

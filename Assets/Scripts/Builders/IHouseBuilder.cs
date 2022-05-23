@@ -4,6 +4,7 @@ namespace Builders
 {
     public interface IHouseBuilder
     {
+        //bool IsDestructible();
         void ResetHouse();
         void CreateSimpleFloor();
         void CreateGlassFloor();
