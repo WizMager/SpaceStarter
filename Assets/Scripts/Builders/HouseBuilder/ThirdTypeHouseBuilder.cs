@@ -19,9 +19,9 @@ namespace Builders.HouseBuilder
 
         public ThirdTypeHouseBuilder()
         {
-            _simpleFloor = Resources.Load<GameObject>("Buildings/ThirdTypeBuilding/SimpleFloorType3");
+            _simpleFloor = Resources.Load<GameObject>("Buildings/House3Type/SimpleFloorType3");
             _glassFloor = Resources.Load<GameObject>("Buildings/GlassBuilding/GlassFloor");
-            _roof = Resources.Load<GameObject>("Buildings/ThirdTypeBuilding/RoofType3");
+            _roof = Resources.Load<GameObject>("Buildings/House3Type/RoofType3");
             _glassRoof = Resources.Load<GameObject>("Buildings/GlassBuilding/GlassRoof");
         }
 

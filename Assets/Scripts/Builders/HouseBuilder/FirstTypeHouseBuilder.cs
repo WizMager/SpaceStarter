@@ -19,9 +19,9 @@ namespace Builders.HouseBuilder
 
         public FirstTypeHouseBuilder()
         {
-            _simpleFloor = Resources.Load<GameObject>("Buildings/FirstTypeBuilding/SimpleFloorType1");
+            _simpleFloor = Resources.Load<GameObject>("Buildings/House1Type/House1Floor");
             _glassFloor = Resources.Load<GameObject>("Buildings/GlassBuilding/GlassFloor");
-            _roof = Resources.Load<GameObject>("Buildings/FirstTypeBuilding/RoofType1");
+            _roof = Resources.Load<GameObject>("Buildings/House1Type/House1Roof");
             _glassRoof = Resources.Load<GameObject>("Buildings/GlassBuilding/GlassRoof");
         }
 
@@ -38,12 +38,9 @@ namespace Builders.HouseBuilder
             var simpleFloor = Object.Instantiate(_simpleFloor, _house.transform, false);
             simpleFloor.name = FloorName + _floorNumber;
             _floorNumber++;
-            var sizeY = simpleFloor.GetComponent<BoxCollider>().bounds.size.y;
-            //var position = new Vector3(0, 0, _localPositionZ + sizeY / 2);
+            var sizeY = simpleFloor.GetComponentInChildren<BoxCollider>().bounds.size.y;
             var position = new Vector3(0, _localPositionY + sizeY / 2, 0);
             simpleFloor.transform.localPosition = position;
-            var rotation = Quaternion.Euler(0f, 0f, 0f);
-            simpleFloor.transform.localRotation = rotation;
             _localPositionY += sizeY;
         }
 
@@ -65,12 +62,9 @@ namespace Builders.HouseBuilder
             var roof = Object.Instantiate(_roof, _house.transform, false);
             roof.name = FloorName + _floorNumber;
             _floorNumber++;
-            var sizeY = roof.GetComponent<BoxCollider>().bounds.size.y;
+            var sizeY = roof.GetComponentInChildren<MeshRenderer>().bounds.size.y;
             var position = new Vector3(0, _localPositionY + sizeY / 2, 0);
             roof.transform.localPosition = position;
-            var rotation = Quaternion.Euler(0f, 0f, 0f);
-            roof.transform.localRotation = rotation;
-            _localPositionY += sizeY;
         }
 
         public void CreateGlassRoof()
@@ -83,7 +77,6 @@ namespace Builders.HouseBuilder
             roof.transform.localPosition = position;
             var rotation = Quaternion.Euler(0f, 0f, 0f);
             roof.transform.localRotation = rotation;
-            _localPositionY += sizeY;
         }
 
         public GameObject GetHouse()

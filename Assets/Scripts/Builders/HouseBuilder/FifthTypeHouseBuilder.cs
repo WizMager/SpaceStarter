@@ -19,9 +19,9 @@ namespace Builders.HouseBuilder
 
         public FifthTypeHouseBuilder()
         {
-            _simpleFloor = Resources.Load<GameObject>("Buildings/FifthTypeBuilding/SimpleFloor5");
+            _simpleFloor = Resources.Load<GameObject>("Buildings/House5Type/SimpleFloor5");
             _glassFloor = Resources.Load<GameObject>("Buildings/GlassBuilding/GlassFloor");
-            _roof = Resources.Load<GameObject>("Buildings/FifthTypeBuilding/Roof5");
+            _roof = Resources.Load<GameObject>("Buildings/House5Type/Roof5");
             _glassRoof = Resources.Load<GameObject>("Buildings/GlassBuilding/GlassRoof");
         }
 

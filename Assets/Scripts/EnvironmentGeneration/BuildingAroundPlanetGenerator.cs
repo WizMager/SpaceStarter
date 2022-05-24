@@ -77,7 +77,7 @@ namespace EnvironmentGeneration
             var planetPosition = _planet.position;
             var ray = new Ray(planetPosition, _planet.forward);
             _positionGenerator.position = ray.GetPoint(_planetRadius);
-            _positionGenerator.RotateAround(planetPosition, _planet.right, 90f);
+            _positionGenerator.RotateAround(_positionGenerator.transform.position, _planet.right, 90f);
             for (float i = 0; i < 360f; )
             {
                 var iterationAngle = Random.Range(_minimumAngleBetweenBuildings, _maximumAngleBetweenBuildings);
@@ -88,10 +88,10 @@ namespace EnvironmentGeneration
                 i += iterationAngle;
                 _positionGenerator.RotateAround(planetPosition, _planet.up, iterationAngle);
                 var upOrDownAngle = Random.Range(-_maximumBuildingAngleDown, _maximumBuildingAngleUp);
-                _positionGenerator.RotateAround(planetPosition, _planet.forward, upOrDownAngle);
+                _positionGenerator.RotateAround(planetPosition, _planet.right, upOrDownAngle);
                 _buildingPositions.Add(_positionGenerator.position);
                 _buildingRotations.Add(_positionGenerator.rotation);
-                _positionGenerator.RotateAround(planetPosition, _planet.forward, -upOrDownAngle);
+                _positionGenerator.RotateAround(planetPosition, _planet.right, -upOrDownAngle);
                 _buildingsCounter++;
             }
         }
@@ -118,7 +118,8 @@ namespace EnvironmentGeneration
             {
                 var randomAngleRotationBuilding = Random.Range(0f, _maximumAngleRotateBuildingAroundItself);
                 var randomFloors = Random.Range(1, _maximumFloorsInHouse);
-                var randomBuildingType = Random.Range(0, 5);
+                //var randomBuildingType = Random.Range(0, 5);
+                var randomBuildingType = 0;
                 switch (randomBuildingType)
                 {
                     case 0: 

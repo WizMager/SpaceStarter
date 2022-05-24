@@ -19,9 +19,9 @@ namespace Builders.HouseBuilder
 
         public FourthTypeHouseBuilder()
         {
-            _simpleFloor = Resources.Load<GameObject>("Buildings/FourthTypeBuilding/SimpleRoofType4");
+            _simpleFloor = Resources.Load<GameObject>("Buildings/House4Type/SimpleRoofType4");
             _glassFloor = Resources.Load<GameObject>("Buildings/GlassBuilding/GlassFloor");
-            _roof = Resources.Load<GameObject>("Buildings/FourthTypeBuilding/RoofType4");
+            _roof = Resources.Load<GameObject>("Buildings/House4Type/RoofType4");
             _glassRoof = Resources.Load<GameObject>("Buildings/GlassBuilding/GlassRoof");
         }
 

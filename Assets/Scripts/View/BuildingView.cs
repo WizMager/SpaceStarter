@@ -23,7 +23,15 @@ namespace View
 
             foreach (var rb in _rigidbodies)
             {
-                rb.GetComponent<FloorView>().OnShipTouch += ShipTouched;
+                var floorView = rb.GetComponent<FloorView>();
+                if (floorView)
+                {
+                    floorView.OnShipTouch += ShipTouched;
+                }
+                else
+                {
+                    rb.GetComponentInParent<FloorView>().OnShipTouch += ShipTouched;
+                }
             }
         }
 
