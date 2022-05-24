@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3975804432421694693}
   - component: {fileID: 2061154209402822617}
   m_Layer: 0
-  m_Name: pCylinder1
+  m_Name: Crown
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -181,7 +181,7 @@ GameObject:
   - component: {fileID: 8884653806300622371}
   - component: {fileID: 6340217614084807968}
   m_Layer: 0
-  m_Name: pCylinder2
+  m_Name: Trunk
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -227,7 +227,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 5561349426305759274, guid: 14f476937a6a61549a0b62b753ed4d41, type: 3}
+  - {fileID: 2100000, guid: 4feacf69559ebdb489347d567cab3203, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
