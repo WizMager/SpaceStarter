@@ -19,9 +19,9 @@ namespace Builders.HouseBuilder
 
         public SixthTypeHouseBuilder()
         {
-            _simpleFloor = Resources.Load<GameObject>("Buildings/House6Type/SimpleFloor6");
+            _simpleFloor = Resources.Load<GameObject>("Buildings/House6Type/House6Floor");
             _glassFloor = Resources.Load<GameObject>("Buildings/GlassBuilding/GlassFloor");
-            _roof = Resources.Load<GameObject>("Buildings/House6Type/Roof6");
+            _roof = Resources.Load<GameObject>("Buildings/House6Type/House6Roof");
             _glassRoof = Resources.Load<GameObject>("Buildings/GlassBuilding/GlassRoof");
         }
 
@@ -38,7 +38,7 @@ namespace Builders.HouseBuilder
             var simpleFloor = Object.Instantiate(_simpleFloor, _house.transform, false);
             simpleFloor.name = FloorName + _floorNumber;
             _floorNumber++;
-            var sizeY = simpleFloor.GetComponent<BoxCollider>().bounds.size.y;
+            var sizeY = simpleFloor.GetComponentInChildren<BoxCollider>().bounds.size.y;
             var position = new Vector3(0, _localPositionY + sizeY / 2, 0);
             simpleFloor.transform.localPosition = position;
             var rotation = Quaternion.Euler(0f, 0f, 0f);
@@ -64,7 +64,7 @@ namespace Builders.HouseBuilder
             var roof = Object.Instantiate(_roof, _house.transform, false);
             roof.name = FloorName + _floorNumber;
             _floorNumber++;
-            var sizeY = roof.GetComponent<BoxCollider>().bounds.size.y;
+            var sizeY = roof.GetComponentInChildren<BoxCollider>().bounds.size.y;
             var position = new Vector3(0, _localPositionY + sizeY / 2, 0);
             roof.transform.localPosition = position;
             var rotation = Quaternion.Euler(0f, 0f, 0f);

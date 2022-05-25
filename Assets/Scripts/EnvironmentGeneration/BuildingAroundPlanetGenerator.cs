@@ -118,8 +118,7 @@ namespace EnvironmentGeneration
             {
                 var randomAngleRotationBuilding = Random.Range(0f, _maximumAngleRotateBuildingAroundItself);
                 var randomFloors = Random.Range(1, _maximumFloorsInHouse);
-                //var randomBuildingType = Random.Range(0, 5);
-                var randomBuildingType = 0;
+                var randomBuildingType = Random.Range(0, 5);
                 switch (randomBuildingType)
                 {
                     case 0: 

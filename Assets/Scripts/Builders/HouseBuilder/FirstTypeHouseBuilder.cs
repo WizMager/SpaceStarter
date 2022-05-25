@@ -62,7 +62,7 @@ namespace Builders.HouseBuilder
             var roof = Object.Instantiate(_roof, _house.transform, false);
             roof.name = FloorName + _floorNumber;
             _floorNumber++;
-            var sizeY = roof.GetComponentInChildren<MeshRenderer>().bounds.size.y;
+            var sizeY = roof.GetComponentInChildren<BoxCollider>().bounds.size.y;
             var position = new Vector3(0, _localPositionY + sizeY / 2, 0);
             roof.transform.localPosition = position;
         }
