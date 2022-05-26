@@ -51,7 +51,7 @@ namespace Builders.HouseBuilder
             var glassFloor = Object.Instantiate(_glassFloor, _house.transform, false);
             glassFloor.name = FloorName + _floorNumber;
             _floorNumber++;
-            var sizeY = glassFloor.GetComponent<BoxCollider>().bounds.size.y;
+            var sizeY = glassFloor.GetComponentInChildren<BoxCollider>().bounds.size.y;
             var position = new Vector3(0, _localPositionY + sizeY / 2, 0);
             glassFloor.transform.localPosition = position;
             var rotation = Quaternion.Euler(0f, 0f, 0f);
@@ -77,7 +77,7 @@ namespace Builders.HouseBuilder
             var roof = Object.Instantiate(_glassRoof, _house.transform, false);
             roof.name = FloorName + _floorNumber;
             _floorNumber++;
-            var sizeY = roof.GetComponent<BoxCollider>().bounds.size.y;
+            var sizeY = roof.GetComponentInChildren<BoxCollider>().bounds.size.y;
             var position = new Vector3(0, _localPositionY + sizeY / 2, 0);
             roof.transform.localPosition = position;
             var rotation = Quaternion.Euler(0f, 0f, 0f);
