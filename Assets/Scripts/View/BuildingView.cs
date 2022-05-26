@@ -49,29 +49,25 @@ namespace View
                 }
                 for (int i = 0; i < _rigidbodies.Count; i++)
 			    {
-                    if (_rigidbodies[i].name == floorName)
+                    if (_rigidbodies[i].GetComponentInParent<FloorView>().name == floorName)
                     {
                         iFloorNumber = i;
+                        break;
                     }
-                    else
-                    {
-                        continue;
-                    }
-                    float impactFactor = _rigidbodies.Count;
-                    for (int j = i; j < _rigidbodies.Count; j++)
-					{
-                        _rigidbodies[j].isKinematic = false;
-				        _rigidbodies[j].GetComponentInParent<FloorView>().IsActive();
-                        var rb = _rigidbodies[j];
-                        var direction = (rb.position - shipPosition).normalized;
-                        var forceDirection = _rigidbodies[j].mass * _forceDestruction;
-                        _rigidbodies[j].AddForce(direction * impactFactor * forceDirection, ForceMode.Impulse);
-
-                        Debug.DrawLine(_rigidbodies[j].position, direction * 100f, Color.red, 1000f);
-                        _rigidbodies[j].angularVelocity = new Vector3(UnityEngine.Random.Range(-1f, 1f), UnityEngine.Random.Range(-1f, 1f),
-                                 UnityEngine.Random.Range(-1f, 1f));
-                        impactFactor = impactFactor / 4;
-                    }
+                }
+                float impactFactor = _rigidbodies.Count;
+                for (int j = iFloorNumber; j < _rigidbodies.Count; j++)
+                {
+                    _rigidbodies[j].isKinematic = false;
+                    _rigidbodies[j].GetComponentInParent<FloorView>().IsActive();
+                    var rb = _rigidbodies[j];
+                    var direction = (rb.position - shipPosition).normalized;
+                    var forceDirection = _rigidbodies[j].mass * _forceDestruction;
+                    _rigidbodies[j].AddForce(direction * impactFactor * forceDirection, ForceMode.Impulse);
+                    Debug.DrawLine(_rigidbodies[j].position, direction * 100f, Color.red, 1000f);
+                    _rigidbodies[j].angularVelocity = new Vector3(UnityEngine.Random.Range(-1f, 1f), UnityEngine.Random.Range(-1f, 1f),
+                        UnityEngine.Random.Range(-1f, 1f));
+                    impactFactor = impactFactor / 4;
                 }
                 
                 _isFirstTouch = false;
