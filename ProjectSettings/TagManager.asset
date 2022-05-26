@@ -9,6 +9,7 @@ TagManager:
   - Chelik
   - Floor
   - Planet
+  - Tree
   layers:
   - Default
   - TransparentFX

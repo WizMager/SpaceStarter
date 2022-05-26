@@ -7,6 +7,7 @@ namespace View
     {
         private Rigidbody _rb;
         private bool _onTheGround = true;
+        [SerializeField] private float _rayLength = 1f;
 
         private void Start()
         {
@@ -15,20 +16,26 @@ namespace View
 
         private void Update()
         {
-            if (!_onTheGround) return;
-            var groundRay = new Ray(transform.position, -transform.up);
-            var raycastHit = new RaycastHit[1];
+            CheckForImpulse();
+        }
 
-            if (Physics.RaycastNonAlloc(groundRay, raycastHit, 1f) >= 1)
-            {
-                return;
-            }
+        public void AddBlastForce()
+        {
+            //var groundRay = new Ray(transform.position, -transform.up);
+            //var raycastHit = new RaycastHit[1];
 
-            _onTheGround = false;
+            //if (Physics.RaycastNonAlloc(groundRay, raycastHit, 1f) >= 1)
+            //{
+            //    return;
+            //}
             _rb.AddForce(transform.up * Random.Range(0f, 2f), ForceMode.Impulse);
             _rb.angularVelocity = new Vector3(Random.Range(-1f, 1f), Random.Range(-1f, 1f),
                 Random.Range(-1f, 1f));
         }
-
+        private void CheckForImpulse() 
+        { 
+            if (Physics.Raycast(transform.position, -transform.up, _rayLength)) return;
+            AddBlastForce();
+        }
     }
 }
