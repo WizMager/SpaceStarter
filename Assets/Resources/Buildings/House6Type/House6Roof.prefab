@@ -29,7 +29,7 @@ Transform:
   m_LocalScale: {x: 0.037, y: 0.014, z: 0.037}
   m_Children: []
   m_Father: {fileID: 7688957872402118817}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &7946689814219375719
 BoxCollider:
@@ -153,7 +153,7 @@ Transform:
   m_LocalScale: {x: 0.037, y: 0.014, z: 0.037}
   m_Children: []
   m_Father: {fileID: 7688957872402118817}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &2336592181208698874
 BoxCollider:
@@ -269,6 +269,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7688957872402118817}
   - component: {fileID: -4826970817814298835}
+  - component: {fileID: 6342369017059563441}
   m_Layer: 0
   m_Name: House6Roof
   m_TagString: Untagged
@@ -290,7 +291,6 @@ Transform:
   - {fileID: 7426058538883102919}
   - {fileID: 4586276415154612711}
   - {fileID: 4719400451641594104}
-  - {fileID: 7614646283436890023}
   - {fileID: 5879795234820118954}
   - {fileID: 550120926690559174}
   m_Father: {fileID: 0}
@@ -310,6 +310,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _floorType: 0
   _gravityForce: 10
+--- !u!54 &6342369017059563441
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7061497838664475163}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &7269986898600802841
 GameObject:
   m_ObjectHideFlags: 0
@@ -389,50 +405,3 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!1 &9199905969114649575
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 7614646283436890023}
-  - component: {fileID: 4952548409966216145}
-  m_Layer: 0
-  m_Name: RigidBody
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &7614646283436890023
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9199905969114649575}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.5176174, y: 0.0017594295, z: -0.0037848067}
-  m_LocalScale: {x: 0.025, y: 0.025, z: 0.025}
-  m_Children: []
-  m_Father: {fileID: 7688957872402118817}
-  m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!54 &4952548409966216145
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9199905969114649575}
-  serializedVersion: 2
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0
-  m_UseGravity: 0
-  m_IsKinematic: 1
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0

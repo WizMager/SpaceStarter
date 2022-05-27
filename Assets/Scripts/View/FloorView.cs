@@ -6,7 +6,7 @@ namespace View
 {
     public class FloorView : MonoBehaviour
     {
-        public event Action<string, FloorType, Vector3, Quaternion> OnShipTouch;
+        public event Action<int, FloorType, Vector3, Quaternion> OnShipTouch;
 
         [SerializeField] private FloorType _floorType;
         [SerializeField] private float _gravityForce;
@@ -15,15 +15,21 @@ namespace View
         private bool _isActive;
         private Rigidbody _body;
         private Vector3 _direction;
+        public int _floorNumber = -1;
 
         public void IsActive()
         {
             _isActive = true;
 		}
 
+        public void SetFloorNumber(int floorNumber)
+        {
+            _floorNumber = floorNumber;
+        }
+
         private void Start()
         {
-            _body = GetComponentInChildren<Rigidbody>();
+            _body = GetComponent<Rigidbody>();
             var colliders = GetComponentsInChildren<BoxCollider>();
             foreach (var boxCollider in colliders)
             {
@@ -47,7 +53,8 @@ namespace View
             {
                 var shipPosition = gameObjectReceive.transform.position;
                 var shipRotation = gameObjectReceive.transform.rotation;
-                OnShipTouch?.Invoke(gameObject.name, _floorType, shipPosition, shipRotation);
+                //OnShipTouch?.Invoke(gameObject.name, _floorType, shipPosition, shipRotation);
+                OnShipTouch?.Invoke(_floorNumber, _floorType, shipPosition, shipRotation);
                 var colliders = gameObject.GetComponentsInChildren<BoxCollider>();
                 foreach (var boxCollider in colliders)
                 {
