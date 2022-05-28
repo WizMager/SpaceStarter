@@ -25,14 +25,7 @@ namespace EnvironmentGeneration
         private int _buildingsCounter;
         private readonly GameObject _rootBuildingAroundPlanet;
         private readonly HouseBuilder[] _houseBuilders;
-
-        // TODO Убрать если HauseBuilder работает
-        //private readonly FirstTypeHouseBuilder _firstTypeHouseBuilder;
-        //private readonly SecondTypeHouseBuilder _secondTypeHouseBuilder;
-        //private readonly ThirdTypeHouseBuilder _thirdTypeHouseBuilder;
-        //private readonly FourthTypeHouseBuilder _fourthTypeHouseBuilder;
-        //private readonly FifthTypeHouseBuilder _fifthTypeHouseBuilder;
-        //private readonly SixthTypeHouseBuilder _sixthTypeHouseBuilder;
+        
         private readonly HouseDirector _houseDirector;
         private readonly List<Vector3> _buildingPositions;
         private readonly List<Quaternion> _buildingRotations;
@@ -64,17 +57,6 @@ namespace EnvironmentGeneration
                 new HouseBuilder(5),
                 new HouseBuilder(6)
             };
-            // TODO Убрать если HauseBuilder работает
-            //_firstTypeHouseBuilder = new FirstTypeHouseBuilder();
-            //_secondTypeHouseBuilder = new SecondTypeHouseBuilder();
-            //_thirdTypeHouseBuilder = new ThirdTypeHouseBuilder();
-            //_fourthTypeHouseBuilder = new FourthTypeHouseBuilder();
-            //_fifthTypeHouseBuilder = new FifthTypeHouseBuilder();
-            //_sixthTypeHouseBuilder = new SixthTypeHouseBuilder();
-            //_houseDirector = new HouseDirector
-            //{
-            //    Builder = _firstTypeHouseBuilder
-            //};
             _houseDirector = new HouseDirector
             {
                 Builder = _houseBuilders[0]
@@ -136,30 +118,6 @@ namespace EnvironmentGeneration
                 var randomFloors = Random.Range(1, _maximumFloorsInHouse);
                 var randomBuildingType = Random.Range(0, 5);
                 _houseDirector.Builder = _houseBuilders[randomBuildingType];
-                // TODO Убрать если HauseBuilder работает
-                //switch (randomBuildingType)
-                //{
-                //    case 0: 
-                //        _houseDirector.Builder = _firstTypeHouseBuilder;
-                //        break;
-                //    case 1:
-                //        _houseDirector.Builder = _secondTypeHouseBuilder;
-                //        break;
-                //    case 2: 
-                //        _houseDirector.Builder = _thirdTypeHouseBuilder;
-                //        break;
-                //    case 3:
-                //        _houseDirector.Builder = _fourthTypeHouseBuilder;
-                //        break;
-                //    case 4:
-                //        _houseDirector.Builder = _fifthTypeHouseBuilder;
-                //        break;
-                //    case 5:
-                //        _houseDirector.Builder = _sixthTypeHouseBuilder;
-                //        break;
-                //    default:
-                //        throw new ArgumentOutOfRangeException("Out of range type in generate building");
-                //}
 
                 var isGlassHouse = numbersBuildingsWithGlass.Any(buildingWithGlass => i == buildingWithGlass);
                 var building = isGlassHouse ? _houseDirector.BuildGlassHouse(randomFloors) : _houseDirector.BuildSimpleHouse(randomFloors);

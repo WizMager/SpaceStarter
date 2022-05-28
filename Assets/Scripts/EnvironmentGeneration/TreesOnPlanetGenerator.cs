@@ -51,9 +51,6 @@ namespace EnvironmentGeneration
                 //TODO: here can realize rotate around itself
                 //tree.transform.RotateAround(tree.transform.position, tree.transform.up, randomAngleRotationBuilding);
                 tree.transform.SetParent(_rootTreesOnPlanet.transform);
-                // if (!positionAndRotation.Item2) continue;
-                // _invisibleBuildings.Add(building);
-                // building.SetActive(false);
             } while (halfTreesOnPlanet > createdTrees);
 
             return _spawnedTopTrees;

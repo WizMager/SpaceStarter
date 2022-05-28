@@ -10,6 +10,7 @@ TagManager:
   - Floor
   - Planet
   - Tree
+  - TriggerCollider
   layers:
   - Default
   - TransparentFX

@@ -57,7 +57,7 @@ namespace Builders.HouseBuilder
             CreateRoof(FloorType.GlassFloor);
         }
 
-        public void CreateFloor(FloorType floorType)
+        private void CreateFloor(FloorType floorType)
         {
             GameObject floor;
             switch (floorType)
@@ -71,10 +71,10 @@ namespace Builders.HouseBuilder
                 default:
                     throw new ArgumentOutOfRangeException(nameof(floorType), floorType, null);
             }
-            Create(floor);
+            CreateBuildingObject(floor);
         }
 
-        public void CreateRoof(FloorType floorType)
+        private void CreateRoof(FloorType floorType)
         {
             GameObject floor;
             switch (floorType)
@@ -88,10 +88,10 @@ namespace Builders.HouseBuilder
                 default:
                     throw new ArgumentOutOfRangeException(nameof(floorType), floorType, null);
             }
-            Create(floor);
+            CreateBuildingObject(floor);
         }
 
-        private void Create(GameObject floor)
+        private void CreateBuildingObject(GameObject floor)
         {
             floor.name = FloorName + _floorNumber;
             floor.GetComponent<FloorView>().SetFloorNumber(_floorNumber);

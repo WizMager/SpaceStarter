@@ -96,7 +96,7 @@ namespace View
 
         private void OnDestroy()
         {
-            // TODO сделать отписку от событий.
+            // TODO add unsubscribe code
             foreach (var rb in _rigidbodies)
             {
 

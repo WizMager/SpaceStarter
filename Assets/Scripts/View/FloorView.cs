@@ -15,7 +15,7 @@ namespace View
         private bool _isActive;
         private Rigidbody _body;
         private Vector3 _direction;
-        public int _floorNumber = -1;
+        private int _floorNumber = -1;
 
         public void IsActive()
         {
@@ -53,7 +53,6 @@ namespace View
             {
                 var shipPosition = gameObjectReceive.transform.position;
                 var shipRotation = gameObjectReceive.transform.rotation;
-                //OnShipTouch?.Invoke(gameObject.name, _floorType, shipPosition, shipRotation);
                 OnShipTouch?.Invoke(_floorNumber, _floorType, shipPosition, shipRotation);
                 var colliders = gameObject.GetComponentsInChildren<BoxCollider>();
                 foreach (var boxCollider in colliders)
