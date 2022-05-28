@@ -13,7 +13,7 @@ namespace Controllers
         private readonly IUserInput<Vector3>[] _touch;
         private readonly Camera _camera;
         private readonly Transform _planet;
-        private readonly Transform _missileStartPosition;
+        private readonly Vector3 _missileStartPosition;
         private readonly GameObject _missile;
         private readonly StateController _stateController;
         private readonly PlayerModel _playerModel;
@@ -23,18 +23,18 @@ namespace Controllers
         private bool _isActive;
         private Vector3 _touchDownPosition;
 
-        public ShootController(IUserInput<Vector3>[] touch, Camera camera, ScriptableData.AllData data, Transform missileStartPosition, 
+        public ShootController(IUserInput<Vector3>[] touch, Camera camera, ScriptableData.AllData data, Vector3 missileStartPosition, 
             Transform planet, StateController stateController, PlayerModel playerModel)
         {
             _touch = touch;
             _camera = camera;
             _planet = planet;
-            _missile = data.Missile.missilePrefab;
+            _missile = data.Prefab.missilePrefab;
             _missileStartPosition = missileStartPosition;
             _stateController = stateController;
             _playerModel = playerModel;
 
-            _missilePool = new MissilePoolUsing(_missile, _missileStartPosition, 5);
+            _missilePool = new MissilePoolUsing(_missile, _camera.transform, 5);
             _activeMissile = new List<MissileView>();
 
             _touch[(int) TouchInputState.InputTouchDown].OnChange += TouchDown;
@@ -49,7 +49,7 @@ namespace Controllers
                 case GameState.ShootPlanet:
                     _isActive = true;
                     break;
-                case GameState.Restart:
+                case GameState.RestartAfterWaiting:
                     foreach (var missileView in _activeMissile)
                     {
                         _missilePool.Push(missileView);
@@ -66,12 +66,16 @@ namespace Controllers
         {
             var ray = _camera.ScreenPointToRay(touchPosition);
             var raycastHit = new RaycastHit[1];
-            Physics.RaycastNonAlloc(ray, raycastHit, _camera.farClipPlane, GlobalData.LayerForAim);
+            Vector3 dirNorm = (_camera.transform.position - _planet.position).normalized;
+            Vector3 missileStartPosition = _camera.transform.position + dirNorm * _missileStartPosition.z + Vector3.up * _missileStartPosition.y + Vector3.right * _missileStartPosition.x;
+
+            Physics.RaycastNonAlloc(ray, raycastHit, _camera.farClipPlane, GlobalData.LayerForExplosion);
             var missileView = _missilePool.Pop();
             _activeMissile.Add(missileView);
-            missileView.transform.SetPositionAndRotation(_missileStartPosition.position, _missileStartPosition.rotation);
+            missileView.transform.SetPositionAndRotation(missileStartPosition, _camera.transform.rotation);
             missileView.OnFlyEnd += MissileFlyEnded;
             missileView.SetTarget(raycastHit[0].point, _planet);
+            Debug.DrawLine(_camera.transform.position, raycastHit[0].point, Color.red, 1000f);
             _playerModel.ShootRocket();
         }
 

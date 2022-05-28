@@ -12,18 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a2adc827b714141943a1f1f7943bf73, type: 3}
   m_Name: PlanetData
   m_EditorClassIdentifier: 
-  flyAngle: 130
+  flyAngle: 360
   startGravity: 1
   gravityAcceleration: 25
   maxGravity: 30
-  startSpeedRotationAroundPlanet: 25
+  startSpeedRotationAroundPlanet: 15
   startEngineForce: 1
   engineAcceleration: 25
   maxEngineForce: 30
-  moveSpeedToEdgeGravity: 11
-  rotationTimeToEdgeGravity: 1
+  moveSpeedToEdgeGravity: 10
   moveSpeedCenterGravity: 3
-  rotationInGravitySpeed: 175
   moveSpeedToPlanet: 7
   distanceFromCenterPlanetToSpawn: 40
   rotationSpeedArcFromPlanet: 15

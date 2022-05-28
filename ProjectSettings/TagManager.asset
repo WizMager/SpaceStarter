@@ -3,7 +3,14 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - ScoreIndicator
+  - Portal
+  - Chelik
+  - Floor
+  - Planet
+  - Tree
+  - TriggerCollider
   layers:
   - Default
   - TransparentFX
@@ -15,7 +22,7 @@ TagManager:
   - 
   - 
   - 
-  - 
+  - Explosion
   - 
   - 
   - 

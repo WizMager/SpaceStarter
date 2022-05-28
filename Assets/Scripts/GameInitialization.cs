@@ -1,4 +1,7 @@
-﻿using Controllers;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Controllers;
+using EnvironmentGeneration;
 using InputClasses;
 using Model;
 using UnityEngine;
@@ -11,14 +14,13 @@ public class GameInitialization
    {
       var playerView = Object.FindObjectOfType<ShipView>();
       var camera = Object.FindObjectOfType<Camera>();
-      var missilePosition = camera.transform.GetChild(0).transform;
+      var missilePosition = data.MissileData.missilePosition;
       var playerIndicatorView = Object.FindObjectOfType<PlayerIndicatorView>();
       var deadView = Object.FindObjectOfType<DeadScreenView>();
       var planetView = Object.FindObjectOfType<PlanetView>();
       var gravityView = Object.FindObjectOfType<GravityView>();
       var gravityLittleView = Object.FindObjectOfType<GravityLittleView>();
       var playerModel = new PlayerModel(data.Player.startHealth, data.Player.missileCount);
-      var buildingViews = Object.FindObjectsOfType<BuildingView>();
       var rocketIndicatorViews = Object.FindObjectsOfType<RocketIndicatorView>();
       foreach (var rocketIndicatorView in rocketIndicatorViews)
       {
@@ -29,21 +31,22 @@ public class GameInitialization
       var restartButtons = Object.FindObjectsOfType<RestartButtonView>();
       var finalScreenView = Object.FindObjectOfType<FinalScreenView>();
       finalScreenView.gameObject.SetActive(false);
-      var restart = Object.FindObjectOfType<Restart>();
 
-      var buildingController = new BuildingsController(data, planetView.transform);
-      buildingController.CreateBuildings(planetView.transform);
-
+      var environmentGenerator = new EnvironmentGenerator(data, planetView.transform);
+      
       var inputInitialization = new InputInitialization(data.Input.minimalDistanceForSwipe);
       var stateController = new StateController(planetView, playerView, data, gravityView, gravityLittleView, camera, 
-         playerModel, deadView, firstPersonView, restartButtons, finalScreenView);
+         playerModel, deadView, firstPersonView, restartButtons, finalScreenView, rocketIndicatorViews);
       var playerMoveController = new PlayerMoveController(stateController, playerView, data, inputInitialization.GetAllTouch(),
          planetView, gravityLittleView, playerModel);
-      restart.TakeStateController(stateController);
+      var restartController = new RestartController(stateController, environmentGenerator);
+      restartController.SaveObjects();
+      var buildingViews = Object.FindObjectsOfType<BuildingView>();
+      controllers.Add(restartController);
       controllers.Add(new InputController(inputInitialization.GetAllTouch(), inputInitialization.GetSwipe()));
       controllers.Add(new CameraController(stateController, playerView.transform, camera.transform, planetView.transform, 
          data, inputInitialization.GetSwipe()));
-      controllers.Add(new BonusController(stateController, playerModel, playerIndicatorView, BonusTypeValue(data),buildingViews));
+      controllers.Add(new BonusController(stateController, playerModel, playerIndicatorView, buildingViews));
       controllers.Add(new PlayerHealthController(playerModel, playerMoveController, data.Player.multiplyDamageTake,
          data.Player.startDamageTake, data.Player.endDamageTake));
       controllers.Add(new PortalController(playerView.transform, planetView.transform, data, stateController));
@@ -52,10 +55,4 @@ public class GameInitialization
       controllers.Add(playerMoveController);
       controllers.Add(stateController);
    }
-
-   private int[] BonusTypeValue(ScriptableData.AllData data)
-   {
-      return new [] {data.Bonus.goodBonus, data.Bonus.badBonus};
-   }
-
 }

@@ -1,103 +1,68 @@
 ﻿using System;
+using System.Collections;
 using Controllers;
 using UnityEngine;
 using Utils;
+using View;
 
 namespace StateClasses
 {
     public class FlyToCenterGravity : IDisposable
     {
         public event Action OnFinish;
-
-        private readonly float _rotationSpeedGravity;
+        
         private readonly float _moveSpeedGravity;
-        private readonly Transform _playerTransform;
+        private readonly Transform _shipTransform;
         private readonly Transform _planet;
         private readonly StateController _stateController;
-    
-        private Vector3 _direction;
-        private float _pathCenter;
-        private bool _isMoved;
-        private float _edgeRotationAngle;
-        private readonly SphereCollider _planetCollider;
-        private bool _isActive;
-    
-        
-        public FlyToCenterGravity(Transform playerTransform, float rotationSpeedGravity, float moveSpeedGravity, 
+        private readonly ShipView _shipView;
+
+        private readonly float _planetRadius;
+
+        public FlyToCenterGravity(ShipView shipView, float moveSpeedGravity, 
             Transform planet, StateController stateController)
         {
-            _rotationSpeedGravity = rotationSpeedGravity;
             _moveSpeedGravity = moveSpeedGravity;
-            _playerTransform = playerTransform;
+            _shipTransform = shipView.transform;
             _planet = planet;
             _stateController = stateController;
-            _planetCollider = _planet.GetComponent<SphereCollider>();
+            _planetRadius = _planet.GetComponent<SphereCollider>().radius;
+            _shipView = shipView;
 
             _stateController.OnStateChange += StateChange;
         }
 
         private void StateChange(GameState gameState)
         {
-            if (gameState == GameState.ToCenterGravity)
+            switch (gameState)
             {
-                _isActive = true;
-                _isMoved = false;
-                var playerPosition = _playerTransform.position;
-                var planetPosition = _planet.position;
-                _direction = (planetPosition - playerPosition).normalized;
-                _pathCenter = (Vector3.Distance(playerPosition, planetPosition) - _planetCollider.radius) / 2;
-                _edgeRotationAngle = Vector3.Angle(_playerTransform.right, _direction);
-            }
-            else
-            {
-                _isActive = false;
+                case GameState.ToCenterGravity:
+                    _shipView.StartCoroutine(RotateAndMove());
+                    break;
+                default:
+                    _shipView.StopCoroutine(RotateAndMove());
+                    break;
             }
         }
 
-        private void MoveAndRotate(float deltaTime)
+        private IEnumerator RotateAndMove()
         {
-            if (_isMoved)
+            var playerPosition = _shipTransform.position;
+            var planetPosition = _planet.position;
+            var direction = (planetPosition - playerPosition).normalized;
+            var pathCenter = (Vector3.Distance(playerPosition, planetPosition) - _planetRadius) / 2;
+            var finishRotation = Quaternion.Euler(0, 90, 90);
+            var startRotation = _shipTransform.rotation;
+            for (float i = 0; i < pathCenter; )
             {
-                Rotate(deltaTime);
-            }
-            else
-            {
-                Move(deltaTime);
-            }
-        }
-        
-        private void Rotate(float deltaTime)
-        {
-            if (_edgeRotationAngle > 0)
-            {
-                var offsetAngle = deltaTime * _rotationSpeedGravity;
-                _playerTransform.Rotate(_playerTransform.up, -offsetAngle);
-                _edgeRotationAngle -= offsetAngle;
-            }
-            else
-            {
-                OnFinish?.Invoke();
-            }
-        }
+                var moveStep = Time.deltaTime * _moveSpeedGravity;
+                i += moveStep;
+                _shipTransform.Translate(direction * moveStep, Space.World);
+                _shipTransform.rotation = Quaternion.Lerp(startRotation, finishRotation, i / pathCenter);
 
-        private void Move(float deltaTime)
-        {
-            if (_pathCenter >= 0)
-            {
-                var speed = deltaTime * _moveSpeedGravity;
-                _playerTransform.Translate(_direction * speed, Space.World);
-                _pathCenter -= speed;
+                yield return null;
             }
-            else
-            {
-                _isMoved = true;
-            }
-        }
-
-        public void FlyToCenter(float deltaTime)
-        {
-            if (!_isActive) return;
-            MoveAndRotate(deltaTime);
+            OnFinish?.Invoke();
         }
 
         public void Dispose()

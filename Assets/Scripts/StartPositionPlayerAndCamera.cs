@@ -9,10 +9,11 @@ public class StartPositionPlayerAndCamera
     private readonly Transform _camera;
     private readonly float _startDistanceFromPlanet;
     private readonly float _startCameraHeight;
+    private readonly float _restartCameraHeight;
     private readonly GravityLittleView _gravityLittleView;
 
     public StartPositionPlayerAndCamera(Transform playerTransform, Transform planetTransform, Transform gravityTransform,
-        Transform cameraTransform, float startDistanceFromPlanet, float startCameraHeight, GravityLittleView gravityLittleView)
+        Transform cameraTransform, float startDistanceFromPlanet, float startCameraHeight, float restartCameraHeight, GravityLittleView gravityLittleView)
     {
         _player = playerTransform;
         _planet = planetTransform;
@@ -20,6 +21,7 @@ public class StartPositionPlayerAndCamera
         _camera = cameraTransform;
         _startDistanceFromPlanet = startDistanceFromPlanet;
         _startCameraHeight = startCameraHeight;
+        _restartCameraHeight = restartCameraHeight;
         _gravityLittleView = gravityLittleView;
     }
 
@@ -33,14 +35,14 @@ public class StartPositionPlayerAndCamera
         var gravityRadius = _gravity.gameObject.GetComponent<MeshCollider>().bounds.size.x / 2;
         var pathToCenter = gravityRadius - (gravityRadius - _planet.gameObject.GetComponent<SphereCollider>().radius) / 2;
         var startPlayerPosition = planetRay.GetPoint(pathToCenter);
-        var rotation = Quaternion.FromToRotation(_planet.forward, _planet.right);
-        
+        var rotation = Quaternion.FromToRotation(_planet.forward, _planet.right) * Quaternion.Euler(0, 0, 90f);
+
         _player.position = startPlayerPosition;
         _player.LookAt(_planet.position);
         _player.rotation = rotation;
 
         var cameraPosition = startPlayerPosition;
-        cameraPosition.y = _startCameraHeight;
+        cameraPosition.y = _restartCameraHeight;
         var startRotation = Quaternion.Euler(new Vector3(90, 180, 180));
         _camera.SetPositionAndRotation(cameraPosition, startRotation);
     }

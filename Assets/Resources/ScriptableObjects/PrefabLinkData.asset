@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b14fbe7eb1d246dc979d89b73d4416b3, type: 3}
+  m_Name: PrefabLinkData
+  m_EditorClassIdentifier: 
+  missilePrefab: {fileID: 3817833196089825922, guid: c16d0120de15f7c4aac83b3f6635bca1,
+    type: 3}
+  trees:
+  - {fileID: 2388462316473503117, guid: ed30239bc0eedc0458cee023f98d1d42, type: 3}
+  - {fileID: 3496775918336712795, guid: 5c895956bea201f468a9360687c04e6b, type: 3}
+  - {fileID: 2757685960723155425, guid: ca3ee4e2800164a4e974bbdf6ff50962, type: 3}
+  - {fileID: 1982899223965360744, guid: f6d8d74ee96a1664485703ac5512fc92, type: 3}
+  cheliks:
+  - {fileID: 8188460256541391138, guid: 7795086a4aec3734dbf5dcf94482f48e, type: 3}

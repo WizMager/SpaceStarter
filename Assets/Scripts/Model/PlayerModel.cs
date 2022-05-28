@@ -11,9 +11,10 @@ namespace Model
         public event Action OnZeroHealth;
         public event Action OnZeroRocketLeft;
 
-        private int _basePlayerHealth;
+        private readonly int _basePlayerHealth;
         private int _playerHealth;
-        private int _basePlayerRocket;
+        private readonly int _basePlayerRocket;
+        private int _touchedHouses;
         private int _playerRocket;
         private int _playerScore;
         private int _playerQuality;
@@ -26,6 +27,7 @@ namespace Model
             _playerHealth = startPlayerHealth;
             _basePlayerRocket = startPlayerRocket;
             _playerRocket = startPlayerRocket;
+            _touchedHouses = 0;
             _playerScore = 0;
             _playerTryCount = 1;
             _scoreMultiply = 1;
@@ -55,20 +57,21 @@ namespace Model
             }
         }
         
-        public void TakeBonus(BonusType bonusType, int value)
+        public void TouchHouse(FloorType floorType)
         {
-            switch (bonusType)
+            switch (floorType)
             {
-                case BonusType.GoodBonus:
-                    _playerRocket += value;
+                case FloorType.GlassFloor:
+                    _playerRocket += 1;
                     OnChangeRocket?.Invoke(_playerRocket);
                     break;
-                case BonusType.None:
-                    _playerScore += value;
+                case FloorType.SimpleFloor:
+                    _touchedHouses += 1;
+                    _playerScore = _touchedHouses * _playerRocket;
                     OnChangeScore?.Invoke(_playerScore);
                     break;
                 default:
-                    throw new ArgumentOutOfRangeException(nameof(bonusType), bonusType, null);
+                    throw new ArgumentOutOfRangeException(nameof(floorType), floorType, null);
             }
         }
 
@@ -92,6 +95,7 @@ namespace Model
         {
         _playerHealth = _basePlayerHealth;
         _playerRocket = _basePlayerRocket;
+        _touchedHouses = 0;
         _playerScore = 0;
         _playerQuality = 0;
         _playerTryCount = 1;

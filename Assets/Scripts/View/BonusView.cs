@@ -6,7 +6,7 @@ namespace View
 {
     public class BonusView : MonoBehaviour
     {
-        public BonusType bonusType;
+        public FloorType floorType;
         public event Action<GameObject> OnBonusPickUp;
         
         private void OnTriggerEnter(Collider other)

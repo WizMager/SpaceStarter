@@ -72,16 +72,19 @@ namespace View
                 yield return null;
             }
             var hitsSphereCast = Physics.SphereCastAll(transform.position, _explosionArea, transform.forward,
-                _explosionArea, GlobalData.LayerForAim);
+                _explosionArea, GlobalData.LayerForExplosion);
             foreach (var hitSphereCast in hitsSphereCast)
             {
+                //Debug.Log(hitSphereCast.rigidbody.gameObject.name);
                 if (hitSphereCast.rigidbody)
                 {
                     if (hitSphereCast.rigidbody.isKinematic)
                     {
                         hitSphereCast.rigidbody.isKinematic = false;
                     }
-                            
+
+                    Debug.Log(hitSphereCast.rigidbody.gameObject.name);
+
                     var localScale = hitSphereCast.transform.localScale;
                     hitSphereCast.transform.localScale = new Vector3(localScale.x * _scaleModifier, localScale.y * _scaleModifier, localScale.z * _scaleModifier);
                     
@@ -93,6 +96,11 @@ namespace View
                 {
                     var chelikMoveScript = hitSphereCast.collider.GetComponent<ChelikMove>();
                     chelikMoveScript.DeactivateChelikMove();
+                }
+                else if (hitSphereCast.transform.CompareTag("Tree"))
+                {
+                    var treeScript = hitSphereCast.collider.GetComponent<ObjectOnPlanet>();
+                    treeScript.AddBlastForce();
                 }
             }
             OnFlyEnd?.Invoke(gameObject.GetComponent<MissileView>());

@@ -75,7 +75,7 @@ namespace Controllers
                     _isActive = false;
                     _upAndDownAroundPlanet.Active(false);
                     OnStopTakeDamage?.Invoke();
-                    _shipView.RestartConnectTurbine();
+                    _shipView.RestartTurbine();
                     break;
                 default:
                     _isActive = false;
