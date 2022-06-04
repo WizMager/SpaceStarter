@@ -21,12 +21,7 @@ namespace EnvironmentGeneration
         private readonly GameObject _rootBuildingOnPlanet;
         private readonly List<GameObject> _invisibleBuildings;
 
-        private readonly FirstTypeHouseBuilder _firstTypeHouseBuilder;
-        private readonly SecondTypeHouseBuilder _secondTypeHouseBuilder;
-        private readonly ThirdTypeHouseBuilder _thirdTypeHouseBuilder;
-        private readonly FourthTypeHouseBuilder _fourthTypeHouseBuilder;
-        private readonly FifthTypeHouseBuilder _fifthTypeHouseBuilder;
-        private readonly SixthTypeHouseBuilder _sixthTypeHouseBuilder;
+        private readonly HouseBuilder[] _houseBuilders;
         private readonly HouseDirector _houseDirector;
 
         public BuildingOnPlanetGenerator(AllData data, float planetRadius, GameObject rootEnvironment)
@@ -43,16 +38,18 @@ namespace EnvironmentGeneration
             
             _rootBuildingOnPlanet = new GameObject("BuildingsOnPlanet");
             _rootBuildingOnPlanet.transform.SetParent(rootEnvironment.transform);
-            
-            _firstTypeHouseBuilder = new FirstTypeHouseBuilder();
-            _secondTypeHouseBuilder = new SecondTypeHouseBuilder();
-            _thirdTypeHouseBuilder = new ThirdTypeHouseBuilder();
-            _fourthTypeHouseBuilder = new FourthTypeHouseBuilder();
-            _fifthTypeHouseBuilder = new FifthTypeHouseBuilder();
-            _sixthTypeHouseBuilder = new SixthTypeHouseBuilder();
+
+            _houseBuilders = new HouseBuilder[6] {
+                new HouseBuilder(1),
+                new HouseBuilder(2),
+                new HouseBuilder(3),
+                new HouseBuilder(4),
+                new HouseBuilder(5),
+                new HouseBuilder(6)
+            };
             _houseDirector = new HouseDirector
             {
-                Builder = _firstTypeHouseBuilder
+                Builder = _houseBuilders[0]
             };
         }
 
@@ -71,29 +68,7 @@ namespace EnvironmentGeneration
                 var randomAngleRotationBuilding = Random.Range(0f, _maximumAngleRotateBuildingAroundItself);
                 var randomFloors = Random.Range(1, _maximumFloorInHouse);
                 var randomBuildingType = Random.Range(0, 5);
-                switch (randomBuildingType)
-                {
-                    case 0:
-                        _houseDirector.Builder = _firstTypeHouseBuilder;
-                        break;
-                    case 1:
-                        _houseDirector.Builder = _secondTypeHouseBuilder;
-                        break;
-                    case 2:
-                        _houseDirector.Builder = _thirdTypeHouseBuilder;
-                        break;
-                    case 3:
-                        _houseDirector.Builder = _fourthTypeHouseBuilder;
-                        break;
-                    case 4:
-                        _houseDirector.Builder = _fifthTypeHouseBuilder;
-                        break;
-                    case 5:
-                        _houseDirector.Builder = _sixthTypeHouseBuilder;
-                        break;
-                    default:
-                        throw new ArgumentOutOfRangeException("Out of range type in generate building");
-                }
+                _houseDirector.Builder = _houseBuilders[randomBuildingType];
                 var building = _houseDirector.BuildSimpleHouse(randomFloors);
                 var positionAndRotation = GeneratePositionAndRotation(planetCellsTop[randomCell]);
                 building.transform.SetPositionAndRotation(positionAndRotation.Item1, positionAndRotation.Item2);
@@ -126,29 +101,7 @@ namespace EnvironmentGeneration
                 var randomAngleRotationBuilding = Random.Range(0f, _maximumAngleRotateBuildingAroundItself);
                 var randomFloors = Random.Range(1, _maximumFloorInHouse);
                 var randomBuildingType = Random.Range(0, 5);
-                switch (randomBuildingType)
-                {
-                    case 0:
-                        _houseDirector.Builder = _firstTypeHouseBuilder;
-                        break;
-                    case 1:
-                        _houseDirector.Builder = _secondTypeHouseBuilder;
-                        break;
-                    case 2:
-                        _houseDirector.Builder = _thirdTypeHouseBuilder;
-                        break;
-                    case 3:
-                        _houseDirector.Builder = _fourthTypeHouseBuilder;
-                        break;
-                    case 4:
-                        _houseDirector.Builder = _fifthTypeHouseBuilder;
-                        break;
-                    case 5:
-                        _houseDirector.Builder = _sixthTypeHouseBuilder;
-                        break;
-                    default:
-                        throw new ArgumentOutOfRangeException("Out of range type in generate building");
-                }
+                _houseDirector.Builder = _houseBuilders[randomBuildingType];
                 var building = _houseDirector.BuildSimpleHouse(randomFloors);
                 var positionAndRotation = GeneratePositionAndRotation(planetCellsDown[randomCell]);
                 building.transform.SetPositionAndRotation(positionAndRotation.Item1, positionAndRotation.Item2);

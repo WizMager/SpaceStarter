@@ -20,7 +20,6 @@ namespace View
         {
             _floorExplosion = Resources.Load<GameObject>("Particles/FloorExplosion");
             _rigidbodies = new List<Rigidbody>(SortRigidbody(transform.GetComponentsInChildren<Rigidbody>()));
-
             foreach (var rb in _rigidbodies)
             {
                 rb.GetComponent<FloorView>().OnShipTouch += ShipTouched;
@@ -32,11 +31,8 @@ namespace View
             _isFirstTouch = true;
         }
 
-       //private int _count;
-
-        private void ShipTouched(string floorName, FloorType floorType, Vector3 shipPosition, Quaternion shipRotation)
+        private void ShipTouched(int floorNumber, FloorType floorType, Vector3 shipPosition, Quaternion shipRotation)
         {
-            int iFloorNumber = 0;
             if (_isFirstTouch)
             {
                 switch (floorType)
@@ -51,88 +47,60 @@ namespace View
                         throw new ArgumentOutOfRangeException(nameof(floorType), floorType, null);
                 }
 
-			    for (int i = 0; i < _rigidbodies.Count; i++)
-			    {
-                    if (_rigidbodies[i].name == floorName)
-                    {
-                        iFloorNumber = i;
-                    }
-                    else
-                    {
-                        continue;
-                    }
-                    float impactFactor = _rigidbodies.Count;
-                    //_count = i + 1;
-                    for (int j = i; j < _rigidbodies.Count; j++)
-					{
+                for (int i = 0; i < _rigidbodies.Count; i++)
+                {
 
-                        _rigidbodies[j].isKinematic = false;
-				        _rigidbodies[j].GetComponent<FloorView>().IsActive();
+                    float impactFactor = 5f - (Math.Abs(floorNumber - i)) * 2f;
 
-                        //var direction = (shipPosition - _rigidbodies[j].position).normalized;
-                        var rb = _rigidbodies[j];
-                        var direction = (rb.position - shipPosition).normalized;
-                        //Debug.Log("_rigidbodies[j].position " + _rigidbodies[j].position);
-                        //Debug.Log("direction " + direction);
-                        //var directionFromPlanet = (_rigidbodies[i].position - GlobalData.PlanetCenter).normalized;
-                        var forceDirection = _rigidbodies[j].mass * _forceDestruction;
-                        //_rigidbodies[j].AddForceAtPosition(-direction * forceDirection, _rigidbodies[j].transform.right,
-                        // ForceMode.Impulse);
-                        //_rigidbodies[j].angularVelocity = new Vector3(UnityEngine.Random.Range(0f, 1f), UnityEngine.Random.Range(0f, 1f),
-                        //           UnityEngine.Random.Range(0f, 1f));
-
-                        _rigidbodies[j].AddForce(direction * impactFactor * forceDirection, ForceMode.Impulse);
-
-                        Debug.DrawLine(_rigidbodies[j].position, direction * 100f, Color.red, 1000f);
-                        //_rigidbodies[j].AddForce(directionFromPlanet * forceDirection * 5f, ForceMode.Impulse);
-                        _rigidbodies[j].angularVelocity = new Vector3(UnityEngine.Random.Range(-1f, 1f), UnityEngine.Random.Range(-1f, 1f),
-                                 UnityEngine.Random.Range(-1f, 1f));
-                        impactFactor = impactFactor / 4;
-                        //_rigidbodies[j].gameObject.SetActive(false);
-
-                        //var sphere = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-                        //sphere.transform.position = _rigidbodies[j].position;
-
-
-                    }
+                    _rigidbodies[i].isKinematic = false;
+                    _rigidbodies[i].GetComponent<FloorView>().IsActive();
+                    var rb = _rigidbodies[i];
+                    var direction = (rb.position - shipPosition).normalized;
+                    var forceDirection = _rigidbodies[i].mass * _forceDestruction;
+                    _rigidbodies[i].AddForce(direction * impactFactor * forceDirection, ForceMode.Impulse);
+                    _rigidbodies[i].angularVelocity = new Vector3(UnityEngine.Random.Range(-1f, 1f), UnityEngine.Random.Range(-1f, 1f),
+                        UnityEngine.Random.Range(-1f, 1f));
                 }
                 
                 _isFirstTouch = false;
 
-                //var explosion = UnityEngine.Object.Instantiate(_floorExplosion, _rigidbodies[iFloorNumber].transform.gameObject.transform, false);
-                var explosion = UnityEngine.Object.Instantiate(_floorExplosion);
-                explosion.transform.position = _rigidbodies[iFloorNumber].transform.position;
+                if (floorType == FloorType.GlassFloor)
+                {
+                    _rigidbodies[floorNumber].gameObject.SetActive(false);
+                }
+
+                var explosion = Instantiate(_floorExplosion);
+                explosion.transform.position = _rigidbodies[floorNumber].transform.position;
                 explosion.transform.rotation = shipRotation;
-                //_rigidbodies[iFloorNumber].gameObject.SetActive(false);
-                GameObject.Destroy(explosion, 5f);
+                Destroy(explosion, 5f);
 
             }
+            else
+            {
+                float impactFactor = 2f;
+                var rb = _rigidbodies[floorNumber];
+                var direction = (rb.position - shipPosition).normalized;
+                var forceDirection = _rigidbodies[floorNumber].mass * _forceDestruction;
+                _rigidbodies[floorNumber].AddForce(direction * impactFactor * forceDirection, ForceMode.Impulse);
+                _rigidbodies[floorNumber].angularVelocity = new Vector3(UnityEngine.Random.Range(-1f, 1f), UnityEngine.Random.Range(-1f, 1f),
+                            UnityEngine.Random.Range(-1f, 1f));
+            }
 
-            //for (int i = _count; i < _rigidbodies.Count; i++)
-            //{
-            //     _rigidbodies[i].isKinematic = false;
-            //     _rigidbodies[i].GetComponent<FloorView>().IsActive();
-            //    // var direction = (shipPosition - _rigidbodies[i].position).normalized;
-            //    var direction = (_rigidbodies[i].position - shipPosition).normalized;
-            //    var forceDirection = _rigidbodies[i].mass * _forceDestruction;
-            //    //_rigidbodies[i].AddForceAtPosition(-direction * forceDirection, _rigidbodies[i].transform.right,
-            //    //    ForceMode.Impulse);
-            //    //_rigidbodies[i].AddForce(direction * forceDirection * 2f, ForceMode.Impulse);
-            //    //_rigidbodies[i].angularVelocity = new Vector3(UnityEngine.Random.Range(-1f, 1f), UnityEngine.Random.Range(-1f, 1f),
-            //    //         UnityEngine.Random.Range(-1f, 1f));
-            //}
+
         }
 
-		private IEnumerable<Rigidbody> SortRigidbody(IEnumerable<Rigidbody> rigidbodies)
+        private IEnumerable<Rigidbody> SortRigidbody(IEnumerable<Rigidbody> rigidbodies)
         {
             return rigidbodies.OrderBy(o => Vector3.Distance(GlobalData.PlanetCenter, o.position)).ToList();
         }
 
         private void OnDestroy()
         {
+            // TODO add unsubscribe code
             foreach (var rb in _rigidbodies)
             {
-                rb.GetComponent<FloorView>().OnShipTouch -= ShipTouched;
+
+                //rb.GetComponentInParent<FloorView>().OnShipTouch += ShipTouched;
             }
         }
         private void Update()
