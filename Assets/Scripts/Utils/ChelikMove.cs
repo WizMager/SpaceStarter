@@ -1,4 +1,5 @@
 using System.Collections;
+using Controllers;
 using UnityEngine;
 using View;
 using Random = UnityEngine.Random;
@@ -23,6 +24,7 @@ namespace Utils
         private float _lastTimeForRotate;
         private bool _isActive = true;
         private BoxCollider _collider;
+        private StateController _stateController;
         
         private void Start()
         {
@@ -60,7 +62,27 @@ namespace Utils
             var rotationAxis = transform.position - _centerPlanet;
             transform.RotateAround(_centerPlanet, rotationAxis, 180f);
         }
-        
+
+        public void GetStateController(StateController stateController)
+        {
+            _stateController = stateController;
+            _stateController.OnStateChange += ChangeState;
+        }
+
+        private void ChangeState(GameState state)
+        {
+            switch (state)
+            {
+                case GameState.Restart:
+                    _isActive = false;
+                    _collider.enabled = true;
+                    break;
+                default:
+                    _isActive = true;
+                    break;
+            }
+        }
+
         private IEnumerator Rotate()
         {
             _isActive = false;
@@ -109,7 +131,7 @@ namespace Utils
             StopAllCoroutines();
             _isActive = false;
             _collider.enabled = false;
-            //StartCoroutine(FlyIntoSpace());
+            StartCoroutine(FlyIntoSpace());
         }
 
         private IEnumerator FlyIntoSpace()
@@ -121,9 +143,9 @@ namespace Utils
                 _body.transform.RotateAround(transform.position, transform.right, _rotateIntoSpace * Time.deltaTime);
                 yield return null;
             }
-            Destroy(gameObject);
+            //Destroy(gameObject);
         }
-
+        
         private void OnTriggerEnter(Collider other)
         {
             HouseColliderEntered();

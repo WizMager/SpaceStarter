@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using Controllers;
 using ScriptableData;
 using UnityEngine;
 using Utils;
@@ -21,7 +22,7 @@ namespace EnvironmentGeneration
         private readonly TreesOnPlanetGenerator _treesOnPlanetGenerator;
         private readonly CheliksOnPlanetGenerator _cheliksOnPlanetGenerator;
 
-        public EnvironmentGenerator(AllData data, PlanetView planetView)
+        public EnvironmentGenerator(StateController stateController, AllData data, PlanetView planetView)
         {
             _planetView = planetView;
             _planetCellsTop = new List<PlanetCell>();
@@ -35,7 +36,7 @@ namespace EnvironmentGeneration
             _buildingAroundPlanetGenerator = new BuildingAroundPlanetGenerator(data, planetView.transform, planetRadius, rootEnvironment);
             _buildingOnPlanetGenerator = new BuildingOnPlanetGenerator(data, planetRadius, rootEnvironment);
             _treesOnPlanetGenerator = new TreesOnPlanetGenerator(data, planetRadius, rootEnvironment);
-            _cheliksOnPlanetGenerator = new CheliksOnPlanetGenerator(data, planetRadius, rootEnvironment);
+            _cheliksOnPlanetGenerator = new CheliksOnPlanetGenerator(stateController, data, planetRadius, rootEnvironment);
         }
 
         private void GenerateCells(float maxAngleUp, float maxAngleDown)
@@ -114,8 +115,8 @@ namespace EnvironmentGeneration
             var downBuildingsOnPlanet = _buildingOnPlanetGenerator.CreateDownBuildingAndPosition(_planetCellsDown);
             var topTreesOnPlanet = _treesOnPlanetGenerator.CreateTopTreesAndPosition(_planetCellsTop);
             var downTreesOnPlanet = _treesOnPlanetGenerator.CreateDownTreesAndPosition(_planetCellsDown);
-            var topCheliksOnPlanet = _cheliksOnPlanetGenerator.CreateTopTreesAndPosition(_planetCellsTop);
-            var downCheliksOnPlanet = _cheliksOnPlanetGenerator.CreateDownTreesAndPosition(_planetCellsDown);
+            var topCheliksOnPlanet = _cheliksOnPlanetGenerator.CreateTopCheliksAndPosition(_planetCellsTop);
+            var downCheliksOnPlanet = _cheliksOnPlanetGenerator.CreateDownCheliksAndPosition(_planetCellsDown);
             var planetPieces = _planetView.GetComponentsInChildren<Transform>().ToList();
 
             _allEnvironment.AddRange(buildingsAroundPlanet);
