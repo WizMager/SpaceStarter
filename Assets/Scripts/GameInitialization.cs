@@ -32,7 +32,7 @@ public class GameInitialization
       var finalScreenView = Object.FindObjectOfType<FinalScreenView>();
       finalScreenView.gameObject.SetActive(false);
 
-      var environmentGenerator = new EnvironmentGenerator(data, planetView.transform);
+      var environmentGenerator = new EnvironmentGenerator(data, planetView);
       
       var inputInitialization = new InputInitialization(data.Input.minimalDistanceForSwipe);
       var stateController = new StateController(planetView, playerView, data, gravityView, gravityLittleView, camera, 
