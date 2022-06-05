@@ -1,7 +1,6 @@
 using System.Collections;
 using Controllers;
 using UnityEngine;
-using View;
 using Random = UnityEngine.Random;
 
 namespace Utils
