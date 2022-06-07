@@ -19,6 +19,8 @@ MonoBehaviour:
   maximumAngleRotateBuildingAroundItselfAroundPlanet: 180
   maximumFloorInHouseAroundPlanet: 9
   buildingsWithBonus: 8
+  minimalAngleBetweenTrees: 5
+  maximumAngleBetweenTrees: 15
   flyAroundInvisibleObjectAngle: 50
   maximumFloorInHouseOnPlanet: 5
   maximumAngleRotateBuildingAroundItselfOnPlanet: 180

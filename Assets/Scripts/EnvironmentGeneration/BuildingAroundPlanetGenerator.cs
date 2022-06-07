@@ -5,12 +5,17 @@ using Builders;
 using Builders.HouseBuilder;
 using ScriptableData;
 using UnityEngine;
+using Object = UnityEngine.Object;
 using Random = UnityEngine.Random;
 
 namespace EnvironmentGeneration
 {
     public class BuildingAroundPlanetGenerator
     {
+        private readonly Transform _positionGenerator;
+        private readonly Transform _planet;
+        private readonly float _planetRadius;
+        #region Buildings
         private readonly float _minimumAngleBetweenBuildings;
         private readonly float _maximumAngleBetweenBuildings;
         private readonly float _maximumBuildingAngleUp;
@@ -18,9 +23,6 @@ namespace EnvironmentGeneration
         private readonly float _maximumAngleRotateBuildingAroundItself;
         private readonly int _maximumFloorsInHouse;
         private readonly int _buildingWithGlass;
-        private readonly Transform _positionGenerator;
-        private readonly Transform _planet;
-        private readonly float _planetRadius;
         
         private int _buildingsCounter;
         private readonly GameObject _rootBuildingAroundPlanet;
@@ -30,7 +32,21 @@ namespace EnvironmentGeneration
         private readonly List<Vector3> _buildingPositions;
         private readonly List<Quaternion> _buildingRotations;
         private readonly List<Transform> _spawnedBuildings;
+        #endregion
+        #region Trees
+        private readonly float _minimumAngleBetweenTrees;
+        private readonly float _maximumAngleBetweenTrees;
 
+        private int _treesCounter;
+
+        private readonly GameObject _rootTreesAroundPlanet;
+
+        private readonly List<GameObject> _treesPrefabs;
+
+        private readonly List<Transform> _spawnedTrees;
+        private readonly List<Vector3> _treesPositions;
+        private readonly List<Quaternion> _treesRotations;       
+        #endregion
         public BuildingAroundPlanetGenerator(AllData data, Transform planet, float planetRadius, GameObject rootEnvironment)
         {
             _minimumAngleBetweenBuildings = data.ObjectsOnPlanetData.minimalAngleBetweenBuildings;
@@ -62,15 +78,35 @@ namespace EnvironmentGeneration
                 Builder = _houseBuilders[0]
             };
             _spawnedBuildings = new List<Transform>();
+
+            _maximumAngleBetweenTrees = data.ObjectsOnPlanetData.maximumAngleBetweenTrees;
+            _minimumAngleBetweenTrees = data.ObjectsOnPlanetData.minimalAngleBetweenTrees;
+
+            _treesPrefabs = new List<GameObject>(data.Prefab.trees.Length);
+            foreach (var tree in data.Prefab.trees)
+            {
+                _treesPrefabs.Add(tree);
+            }
+
+            _rootTreesAroundPlanet = new GameObject("TreesAroundPlanet");
+            
+            _spawnedTrees = new List<Transform>();
+            _treesPositions = new List<Vector3>();
+            _treesRotations = new List<Quaternion>();
         }
 
         public List<Transform> GenerateBuildingsAroundPlanet()
         {
-            GeneratePositions();
+            GeneratePositionsForBuildings();
             return CreateBuildingAndPosition();
         }
+        public List<Transform> GenerateTreesAroundPlanet()
+        {
+            GeneratePositionsForTrees();
+            return CreateTreeAndPosition();
+        }
         
-        private void GeneratePositions()
+        private void GeneratePositionsForBuildings()
         {
             var planetPosition = _planet.position;
             var ray = new Ray(planetPosition, _planet.forward);
@@ -128,6 +164,43 @@ namespace EnvironmentGeneration
             }
 
             return _spawnedBuildings;
+        }
+
+        private void GeneratePositionsForTrees()
+        {
+            var planetPosition = _planet.position;
+            var ray = new Ray(planetPosition, _planet.forward);
+            _positionGenerator.position = ray.GetPoint(_planetRadius);
+            _positionGenerator.RotateAround(_positionGenerator.transform.position, _planet.right, 90f);
+            for (float i = 0; i < 360f;)
+            {
+                var iterationAngle = Random.Range(_minimumAngleBetweenTrees, _maximumAngleBetweenTrees);
+                if (360f - i < _minimumAngleBetweenTrees)
+                {
+                    return;
+                }
+                i += iterationAngle;
+                _positionGenerator.RotateAround(planetPosition, _planet.up, iterationAngle);
+                var upOrDownAngle = Random.Range(-_maximumBuildingAngleDown, _maximumBuildingAngleUp);
+                _positionGenerator.RotateAround(planetPosition, _planet.right, upOrDownAngle);
+                _treesPositions.Add(_positionGenerator.position);
+                _treesRotations.Add(_positionGenerator.rotation);
+                _positionGenerator.RotateAround(planetPosition, _planet.right, -upOrDownAngle);
+                _treesCounter++;
+            }
+        }
+        private List<Transform> CreateTreeAndPosition()
+        {
+            for(int i = 0; i < _treesCounter; i++)
+            {
+                var randomTreeType = Random.Range(0, _treesPrefabs.Count);
+                var tree = Object.Instantiate(_treesPrefabs[randomTreeType]);
+                tree.transform.SetPositionAndRotation(_treesPositions[i], _treesRotations[i]);
+                tree.transform.RotateAround(tree.transform.position, tree.transform.right, 270);
+                _spawnedTrees.Add(tree.transform);
+                tree.transform.SetParent(_rootTreesAroundPlanet.transform);
+            }
+            return _spawnedTrees;
         }
     }
 }

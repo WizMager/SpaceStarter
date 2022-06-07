@@ -6,7 +6,7 @@ namespace View
     public class ObjectOnPlanet : MonoBehaviour
     {
         private Rigidbody _rb;
-        private bool _onTheGround = true;
+        //private bool _onTheGround = true;
         [SerializeField] private float _rayLength = 1f;
 
         private void Start()
@@ -17,6 +17,14 @@ namespace View
         private void Update()
         {
             CheckForImpulse();
+        }
+
+        private void OnTriggerEnter(Collider other)
+        {
+            if (other.CompareTag("Building"))
+            {
+                Destroy(gameObject);
+            }
         }
 
         public void AddBlastForce()

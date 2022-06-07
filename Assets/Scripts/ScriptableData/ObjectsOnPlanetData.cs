@@ -15,6 +15,9 @@ namespace ScriptableData
         public float maximumAngleRotateBuildingAroundItselfAroundPlanet;
         public int maximumFloorInHouseAroundPlanet;
         public int buildingsWithBonus;
+        [Header("Trees Around Planet Generation")]
+        public float minimalAngleBetweenTrees;
+        public float maximumAngleBetweenTrees;
         [Header("Objects On Planet")] 
         public float flyAroundInvisibleObjectAngle;
         public int maximumFloorInHouseOnPlanet;
