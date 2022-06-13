@@ -43,7 +43,7 @@ namespace Controllers
                     FlyAroundPlanet(-7f);
                     _isRotate = false;
                     break;
-                case GameState.ArcFlyFromPlanet:
+                case GameState.ArcFlyRadius:
                     _atmosphere.gameObject.SetActive(false);
                     _isRotate = false;
                     break;
