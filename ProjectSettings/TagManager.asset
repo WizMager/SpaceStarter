@@ -11,6 +11,7 @@ TagManager:
   - Planet
   - Tree
   - TriggerCollider
+  - Building
   layers:
   - Default
   - TransparentFX

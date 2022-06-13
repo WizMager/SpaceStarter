@@ -111,6 +111,7 @@ namespace EnvironmentGeneration
         public List<Transform> GenerateEnvironment()
         {
             var buildingsAroundPlanet = _buildingAroundPlanetGenerator.GenerateBuildingsAroundPlanet();
+            var treesAroundPlanet = _buildingAroundPlanetGenerator.GenerateTreesAroundPlanet();
             var topBuildingsOnPlanet = _buildingOnPlanetGenerator.CreateTopBuildingAndPosition(_planetCellsTop);
             var downBuildingsOnPlanet = _buildingOnPlanetGenerator.CreateDownBuildingAndPosition(_planetCellsDown);
             var topTreesOnPlanet = _treesOnPlanetGenerator.CreateTopTreesAndPosition(_planetCellsTop);
@@ -120,6 +121,7 @@ namespace EnvironmentGeneration
             var planetPieces = _planetView.GetComponentsInChildren<Transform>().ToList();
 
             _allEnvironment.AddRange(buildingsAroundPlanet);
+            _allEnvironment.AddRange(treesAroundPlanet);
             _allEnvironment.AddRange(topBuildingsOnPlanet);
             _allEnvironment.AddRange(downBuildingsOnPlanet);
             _allEnvironment.AddRange(topTreesOnPlanet);
