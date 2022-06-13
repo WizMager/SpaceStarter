@@ -31,6 +31,7 @@ public class GameInitialization
       var restartButtons = Object.FindObjectsOfType<RestartButtonView>();
       var finalScreenView = Object.FindObjectOfType<FinalScreenView>();
       finalScreenView.gameObject.SetActive(false);
+      var atmosphereView = Object.FindObjectOfType<AtmosphereView>();
 
       var inputInitialization = new InputInitialization(data.Input.minimalDistanceForSwipe);
       var stateController = new StateController(planetView, playerView, data, gravityView, gravityLittleView, camera, 
@@ -51,6 +52,8 @@ public class GameInitialization
       controllers.Add(new PortalController(playerView.transform, planetView.transform, data, stateController));
       controllers.Add(new ShootController(inputInitialization.GetAllTouch(), camera, data, missilePosition,
          planetView.transform, stateController, playerModel));
+      controllers.Add(new AtmosphereController(stateController, planetView.transform, playerView.transform,
+         atmosphereView.transform));
       controllers.Add(playerMoveController);
       controllers.Add(stateController);
    }
