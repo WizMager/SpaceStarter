@@ -32,11 +32,10 @@ public class GameInitialization
       var finalScreenView = Object.FindObjectOfType<FinalScreenView>();
       finalScreenView.gameObject.SetActive(false);
 
-      var environmentGenerator = new EnvironmentGenerator(data, planetView.transform);
-      
       var inputInitialization = new InputInitialization(data.Input.minimalDistanceForSwipe);
       var stateController = new StateController(planetView, playerView, data, gravityView, gravityLittleView, camera, 
          playerModel, deadView, firstPersonView, restartButtons, finalScreenView, rocketIndicatorViews);
+      var environmentGenerator = new EnvironmentGenerator(stateController, data, planetView);
       var playerMoveController = new PlayerMoveController(stateController, playerView, data, inputInitialization.GetAllTouch(),
          planetView, gravityLittleView, playerModel);
       var restartController = new RestartController(stateController, environmentGenerator);
