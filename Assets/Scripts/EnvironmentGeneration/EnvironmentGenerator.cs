@@ -33,7 +33,7 @@ namespace EnvironmentGeneration
             _allEnvironment = new List<Transform>();
             var rootEnvironment = new GameObject("PlanetEnvironment");
             var planetRadius = planetView.GetComponent<SphereCollider>().radius;
-            _buildingAroundPlanetGenerator = new BuildingAroundPlanetGenerator(data, planetView.transform, planetRadius, rootEnvironment);
+            _buildingAroundPlanetGenerator = new BuildingAroundPlanetGenerator(stateController, data, planetView.transform, planetRadius, rootEnvironment);
             _buildingOnPlanetGenerator = new BuildingOnPlanetGenerator(data, planetRadius, rootEnvironment);
             _treesOnPlanetGenerator = new TreesOnPlanetGenerator(data, planetRadius, rootEnvironment);
             _cheliksOnPlanetGenerator = new CheliksOnPlanetGenerator(stateController, data, planetRadius, rootEnvironment);
@@ -87,25 +87,6 @@ namespace EnvironmentGeneration
                     }
                 }
             }
-            
-            //     do
-            //     {
-            //         var planetCell = new PlanetCell
-            //         {
-            //             isOccupied = false
-            //         };
-            //         planetCell.rangeX.x = startX;
-            //         planetCell.rangeY.x = startY;
-            //         planetCell.rangeZ.x = startZ;
-            //         startX -= downCellSize.x;
-            //         startY -= downCellSize.y;
-            //         startZ -= downCellSize.z;
-            //         planetCell.rangeX.y = startX;
-            //         planetCell.rangeY.y = startY;
-            //         planetCell.rangeZ.y = startZ;
-            //         _planetCellsDown.Add(planetCell);
-            //     } 
-            //     while (startX > upCellSize.x && startZ > upCellSize.z && startY > upCellSize.y);
         }
         
         public List<Transform> GenerateEnvironment()

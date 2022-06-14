@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Builders.HouseBuilder;
+using Controllers;
 using ScriptableData;
 using UnityEngine;
+using View;
 using Object = UnityEngine.Object;
 using Random = UnityEngine.Random;
 
@@ -21,6 +23,7 @@ namespace EnvironmentGeneration
         private readonly float _maximumAngleRotateBuildingAroundItself;
         private readonly int _maximumFloorsInHouse;
         private readonly int _buildingWithGlass;
+        private readonly StateController _stateController;
         
         private int _buildingsCounter;
         private readonly GameObject _rootBuildingAroundPlanet;
@@ -45,8 +48,9 @@ namespace EnvironmentGeneration
         private readonly List<Vector3> _treesPositions;
         private readonly List<Quaternion> _treesRotations;       
         #endregion
-        public BuildingAroundPlanetGenerator(AllData data, Transform planet, float planetRadius, GameObject rootEnvironment)
+        public BuildingAroundPlanetGenerator(StateController stateController, AllData data, Transform planet, float planetRadius, GameObject rootEnvironment)
         {
+            _stateController = stateController;
             _minimumAngleBetweenBuildings = data.ObjectsOnPlanetData.minimalAngleBetweenBuildings;
             _maximumAngleBetweenBuildings = data.ObjectsOnPlanetData.maximumAngleBetweenBuildings;
             _maximumBuildingAngleUp = data.ObjectsOnPlanetData.maximumBuildingAngleUp;
@@ -193,6 +197,7 @@ namespace EnvironmentGeneration
             {
                 var randomTreeType = Random.Range(0, _treesPrefabs.Count);
                 var tree = Object.Instantiate(_treesPrefabs[randomTreeType]);
+                tree.GetComponent<ObjectOnPlanet>().GetStateController(_stateController);
                 tree.transform.SetPositionAndRotation(_treesPositions[i], _treesRotations[i]);
                 tree.transform.RotateAround(tree.transform.position, tree.transform.right, 270);
                 _spawnedTrees.Add(tree.transform);
