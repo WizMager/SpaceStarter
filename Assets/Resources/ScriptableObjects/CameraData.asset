@@ -18,7 +18,7 @@ MonoBehaviour:
   firstPersonRotationSpeed: 0.1
   firstPersonDriftSpeed: 1.2
   cameraDownPosition: 15
-  cameraDownSpeed: 10
+  cameraDownSpeed: 7
   cameraOffsetBeforeRotation: 10
   startCameraHeight: 40
   moveSpeedFlyFromPlanet: 1.5
