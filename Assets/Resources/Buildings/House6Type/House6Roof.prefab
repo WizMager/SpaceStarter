@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4785984226888815335}
   - component: {fileID: 2324779402365451097}
   m_Layer: 0
-  m_Name: polySurface2
+  m_Name: Tubes
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -258,7 +258,7 @@ GameObject:
   - component: {fileID: 2541758694225017349}
   - component: {fileID: 2804673347500113743}
   m_Layer: 0
-  m_Name: polySurface1
+  m_Name: Block
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
