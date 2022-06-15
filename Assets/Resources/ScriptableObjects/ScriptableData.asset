@@ -22,3 +22,4 @@ MonoBehaviour:
     type: 2}
   _restartData: {fileID: 11400000, guid: 48e3ef8caeba7e84a83d26d0ea6db2dd, type: 2}
   _missileData: {fileID: 11400000, guid: ba0f3da42a58a264bb753c0ab378ac1d, type: 2}
+  _materialsData: {fileID: 11400000, guid: 9de6be4df2fa78444b76c8ec486519ad, type: 2}

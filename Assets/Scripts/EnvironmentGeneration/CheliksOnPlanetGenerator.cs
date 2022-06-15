@@ -51,9 +51,6 @@ namespace EnvironmentGeneration
                 chelik.transform.Translate(new Vector3(0, 0.2f, 0));
                 _spawnedTopCheliks.Add(chelik.transform);
                 chelik.transform.SetParent(_rootCheliksOnPlanet.transform);
-                // if (!positionAndRotation.Item2) continue;
-                // _invisibleBuildings.Add(building);
-                // building.SetActive(false);
             } while (halfCheliksOnPlanet > createdCheliks);
 
             return _spawnedTopCheliks;
@@ -78,9 +75,6 @@ namespace EnvironmentGeneration
                 _spawnedDownCheliks.Add(chelik.transform);
                 chelik.transform.RotateAround(chelik.transform.position, chelik.transform.forward, 180);
                 chelik.transform.SetParent(_rootCheliksOnPlanet.transform);
-                // if (!positionAndRotation.Item2) continue;
-                // _invisibleBuildings.Add(building);
-                // building.SetActive(false);
             } while (halfCheliksOnPlanet > createdTrees);
 
             return _spawnedDownCheliks;

@@ -13,7 +13,7 @@ namespace Builders.HouseBuilder
         private readonly GameObject _roof;
         private readonly GameObject _glassRoof;
 
-        private int _houseTypeNumber;
+        private readonly int _houseTypeNumber;
         private int _houseNumber;
         private int _floorNumber;
         private const string FloorName = "Floor";

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Builders.HouseBuilder;
 using ScriptableData;
 using UnityEngine;
@@ -19,7 +18,6 @@ namespace EnvironmentGeneration
         private readonly List<Transform> _spawnedTopBuildings;
         private readonly List<Transform> _spawnedDownBuildings;
         private readonly GameObject _rootBuildingOnPlanet;
-        private readonly List<GameObject> _invisibleBuildings;
 
         private readonly HouseBuilder[] _houseBuilders;
         private readonly HouseDirector _houseDirector;
@@ -32,7 +30,6 @@ namespace EnvironmentGeneration
             _maximumAngleRotateBuildingAroundItself =
                 data.ObjectsOnPlanetData.maximumAngleRotateBuildingAroundItselfOnPlanet;
             _buildingsOnPlanet = data.ObjectsOnPlanetData.buildingsOnPlanet;
-            _invisibleBuildings = new List<GameObject>();
             _spawnedTopBuildings = new List<Transform>();
             _spawnedDownBuildings = new List<Transform>();
             
@@ -74,13 +71,8 @@ namespace EnvironmentGeneration
                 building.transform.SetPositionAndRotation(positionAndRotation.Item1, positionAndRotation.Item2);
                 building.transform.RotateAround(building.transform.position, building.transform.up,
                     randomAngleRotationBuilding);
-                //building.transform.rotation.SetLookRotation(Vector3.zero, building.transform.forward);
-                //building.transform.Rotate(building.transform.right, 180f);
                 _spawnedTopBuildings.Add(building.transform);
                 building.transform.SetParent(_rootBuildingOnPlanet.transform);
-                // if (!positionAndRotation.Item2) continue;
-                // _invisibleBuildings.Add(building);
-                // building.SetActive(false);
             } while (halfBuildingsOnPlanet > createdBuildings);
 
             return _spawnedTopBuildings;
@@ -110,9 +102,6 @@ namespace EnvironmentGeneration
                 building.transform.RotateAround(building.transform.position, building.transform.up,
                     randomAngleRotationBuilding);
                 building.transform.SetParent(_rootBuildingOnPlanet.transform);
-                // if (!positionAndRotation.Item2) continue;
-                // _invisibleBuildings.Add(building);
-                // building.SetActive(false);
             } while (halfBuildingsOnPlanet > createdBuildings);
 
             return _spawnedDownBuildings;
