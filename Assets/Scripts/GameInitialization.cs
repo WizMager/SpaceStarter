@@ -41,6 +41,7 @@ public class GameInitialization
          planetView, gravityLittleView, playerModel);
       var restartController = new RestartController(stateController, environmentGenerator);
       restartController.SaveObjects();
+      restartController.SavePlanet();
       var buildingViews = Object.FindObjectsOfType<BuildingView>();
       controllers.Add(restartController);
       controllers.Add(new InputController(inputInitialization.GetAllTouch(), inputInitialization.GetSwipe()));

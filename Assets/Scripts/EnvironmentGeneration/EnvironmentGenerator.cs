@@ -94,24 +94,40 @@ namespace EnvironmentGeneration
             var buildingsAroundPlanet = _buildingAroundPlanetGenerator.GenerateBuildingsAroundPlanet();
             var treesAroundPlanet = _buildingAroundPlanetGenerator.GenerateTreesAroundPlanet();
             var topBuildingsOnPlanet = _buildingOnPlanetGenerator.CreateTopBuildingAndPosition(_planetCellsTop);
-            var downBuildingsOnPlanet = _buildingOnPlanetGenerator.CreateDownBuildingAndPosition(_planetCellsDown);
+            //var downBuildingsOnPlanet = _buildingOnPlanetGenerator.CreateDownBuildingAndPosition(_planetCellsDown);
             var topTreesOnPlanet = _treesOnPlanetGenerator.CreateTopTreesAndPosition(_planetCellsTop);
             var downTreesOnPlanet = _treesOnPlanetGenerator.CreateDownTreesAndPosition(_planetCellsDown);
             var topCheliksOnPlanet = _cheliksOnPlanetGenerator.CreateTopCheliksAndPosition(_planetCellsTop);
             var downCheliksOnPlanet = _cheliksOnPlanetGenerator.CreateDownCheliksAndPosition(_planetCellsDown);
-            var planetPieces = _planetView.GetComponentsInChildren<Transform>().ToList();
 
             _allEnvironment.AddRange(buildingsAroundPlanet);
             _allEnvironment.AddRange(treesAroundPlanet);
-            _allEnvironment.AddRange(topBuildingsOnPlanet);
-            _allEnvironment.AddRange(downBuildingsOnPlanet);
+            //_allEnvironment.AddRange(topBuildingsOnPlanet);
+            //_allEnvironment.AddRange(downBuildingsOnPlanet);
             _allEnvironment.AddRange(topTreesOnPlanet);
             _allEnvironment.AddRange(downTreesOnPlanet);
             _allEnvironment.AddRange(topCheliksOnPlanet);
             _allEnvironment.AddRange(downCheliksOnPlanet);
-            _allEnvironment.AddRange(planetPieces);
 
             return _allEnvironment;
+        }
+
+        public void ClearCells()
+        {
+            foreach (var planetCell in _planetCellsDown)
+            {
+                planetCell.DeOccupied();
+            }
+
+            foreach (var planetCell in _planetCellsTop)
+            {
+                planetCell.DeOccupied();
+            }
+        }
+        
+        public List<Transform> TakePlanetPieces()
+        {
+            return _planetView.GetComponentsInChildren<Transform>().ToList();
         }
     }
 }

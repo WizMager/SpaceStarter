@@ -52,8 +52,9 @@ namespace EnvironmentGeneration
 
         public List<Transform> CreateTopBuildingAndPosition(List<PlanetCell> planetCellsTop)
         {
+            var spawnedTopBuildings = new List<Transform>();
             var createdBuildings = 0;
-            var halfBuildingsOnPlanet = _buildingsOnPlanet / 2;
+            var halfBuildingsOnPlanet = Mathf.RoundToInt(_buildingsOnPlanet / 2);
             do
             {
                 var randomCell = Random.Range(0, planetCellsTop.Count);
@@ -71,17 +72,18 @@ namespace EnvironmentGeneration
                 building.transform.SetPositionAndRotation(positionAndRotation.Item1, positionAndRotation.Item2);
                 building.transform.RotateAround(building.transform.position, building.transform.up,
                     randomAngleRotationBuilding);
-                _spawnedTopBuildings.Add(building.transform);
+                spawnedTopBuildings.Add(building.transform);
                 building.transform.SetParent(_rootBuildingOnPlanet.transform);
             } while (halfBuildingsOnPlanet > createdBuildings);
 
-            return _spawnedTopBuildings;
+            return spawnedTopBuildings;
         }
         
         public List<Transform> CreateDownBuildingAndPosition(List<PlanetCell> planetCellsDown)
         {
+            var spawnedDownBuildings = new List<Transform>();
             var createdBuildings = 0;
-            var halfBuildingsOnPlanet = _buildingsOnPlanet / 2;
+            var halfBuildingsOnPlanet = Mathf.RoundToInt(_buildingsOnPlanet / 2);
             do
             {
                 var randomCell = Random.Range(0, planetCellsDown.Count);
@@ -98,54 +100,39 @@ namespace EnvironmentGeneration
                 var positionAndRotation = GeneratePositionAndRotation(planetCellsDown[randomCell]);
                 building.transform.SetPositionAndRotation(positionAndRotation.Item1, positionAndRotation.Item2);
                 building.transform.RotateAround(building.transform.position, building.transform.forward, 180f);
-                _spawnedDownBuildings.Add(building.transform);
+                spawnedDownBuildings.Add(building.transform);
                 building.transform.RotateAround(building.transform.position, building.transform.up,
                     randomAngleRotationBuilding);
                 building.transform.SetParent(_rootBuildingOnPlanet.transform);
             } while (halfBuildingsOnPlanet > createdBuildings);
 
-            return _spawnedDownBuildings;
+            return spawnedDownBuildings;
         }
 
-        private (Vector3, Quaternion, bool) GeneratePositionAndRotation(PlanetCell planetCell)
+        private (Vector3, Quaternion) GeneratePositionAndRotation(PlanetCell planetCell)
         {
-            var isInvisible = false;
             var randomX = Random.Range(planetCell.rangeX.x, planetCell.rangeX.y);
             var vectorUp = Vector3.up;
-            if (randomX < 90f)
-            {
-                if (randomX > 90f - _invisibleBuildingAngle)
-                {
-                    isInvisible = true;
-                }
-            }
-            else
-            {
-                vectorUp = -Vector3.up; 
-                if (randomX < 90f + _invisibleBuildingAngle)
-                {
-                    isInvisible = true;
-                }
-            }
+            // if (randomX < 90f)
+            // {
+            //     if (randomX > 90f - _invisibleBuildingAngle)
+            //     {
+            //         isInvisible = true;
+            //     }
+            // }
+            // else
+            // {
+            //     vectorUp = -Vector3.up; 
+            //     if (randomX < 90f + _invisibleBuildingAngle)
+            //     {
+            //         isInvisible = true;
+            //     }
+            // }
             var randomY = Random.Range(planetCell.rangeY.x, planetCell.rangeY.y);
             var randomZ = Random.Range(planetCell.rangeZ.x, planetCell.rangeZ.y);
-            if (randomZ < 90f)
-            {
-                if (randomX > 90f - _invisibleBuildingAngle)
-                {
-                    isInvisible = true;
-                }
-            }
-            else
-            {
-                if (randomZ < 90f + _invisibleBuildingAngle)
-                {
-                    isInvisible = true;
-                }
-            }
             var rotation = Quaternion.Euler(randomX, randomY, randomZ);
             var position = rotation * vectorUp * _planetRadius;
-            return (position, rotation, isInvisible);
+            return (position, rotation);
         }
     }
 }

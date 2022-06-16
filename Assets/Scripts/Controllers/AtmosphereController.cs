@@ -52,6 +52,11 @@ namespace Controllers
                     _atmosphere.SetPositionAndRotation(_atmosphereStartPosition, _atmosphereStartRotation);
                     _isRotate = false;
                     break;
+                case GameState.NextLevel:
+                    _atmosphere.gameObject.SetActive(true);
+                    _atmosphere.SetPositionAndRotation(_atmosphereStartPosition, _atmosphereStartRotation);
+                    _isRotate = false;
+                    break;
             }
         }
 

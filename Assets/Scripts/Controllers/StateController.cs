@@ -21,6 +21,7 @@ namespace Controllers
         private readonly Button[] _restartButtons;
         private readonly FinalScreenView _finalScreenView;
         private readonly List<GameObject> _rocketIndicators;
+        private readonly GameObject _ship;
 
         private readonly StartPositionPlayerAndCamera _startPosition;
         private readonly FlewAngleCounter _flewAngle;
@@ -38,8 +39,10 @@ namespace Controllers
 
         public StateController(PlanetView planetView, ShipView shipView, AllData data, GravityView gravityView, 
             GravityLittleView gravityLittleView, Camera camera, PlayerModel playerModel, DeadScreenView deadView, 
-            FirstPersonView firstPersonView, RestartButtonView[] restartButtons, FinalScreenView finalScreenView, RocketIndicatorView[] rocketIndicatorViews)
+            FirstPersonView firstPersonView, RestartButtonView[] restartButtons, FinalScreenView finalScreenView, 
+            RocketIndicatorView[] rocketIndicatorViews)
         {
+            _ship = shipView.gameObject;
             _playerModel = playerModel;
             _deadView = deadView;
             _firstPersonView = firstPersonView;
@@ -102,6 +105,7 @@ namespace Controllers
             foreach (var restartButton in _restartButtons)
             {
                 restartButton.onClick.AddListener(Restart);
+                restartButton.onClick.AddListener(NextLevel);
             }
 
             _deadView.gameObject.SetActive(false);
@@ -144,6 +148,19 @@ namespace Controllers
             _startPosition.SetRestart();
             _playerModel.ResetRound();
         }
+
+        private void NextLevel()
+        {
+            OnStateChange?.Invoke(GameState.NextLevel);
+            Debug.Log(GameState.NextLevel);
+            SwitchUIWhenInteract(false);
+            _finalScreenView.gameObject.SetActive(false);
+            _deadView.gameObject.SetActive(false);
+            _ship.SetActive(true);
+            _startPosition.SetNextRound();
+            _playerModel.ResetRound();
+            OnStateChange?.Invoke(GameState.EdgeGravityToPlanet);
+        }
         
         private void RestartAfterWaiting()
         {
@@ -153,18 +170,13 @@ namespace Controllers
             OnStateChange?.Invoke(GameState.FlyAroundPlanet);
             Debug.Log(GameState.FlyAroundPlanet);
         }
-        
-        private void TestFinalScreen()
-        {
-            Debug.Log("Click on next level");
-        }
-        
+
         private void EndCycle()
         {
             _finalScreenView.gameObject.SetActive(true);
             var buttons = _finalScreenView.SetValue(_playerModel.GetValueToFinalScreen());
             buttons[0].onClick.AddListener(Restart);
-            buttons[1].onClick.AddListener(TestFinalScreen);
+            buttons[1].onClick.AddListener(NextLevel);
             Debug.Log("End Cycle");
         }
         
