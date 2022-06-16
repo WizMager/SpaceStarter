@@ -12,10 +12,34 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 618bd8b70b2c43738511a74f67242361, type: 3}
   m_Name: MaterialData
   m_EditorClassIdentifier: 
-  tree1Type: []
-  tree2Type: []
-  tree3Type: []
-  tree4Type: []
+  tree1Type:
+  - {fileID: 2100000, guid: 1661bca55a1b25a45b9e137c35ba4e30, type: 2}
+  - {fileID: 2100000, guid: 62cbedbef0a35424f9b03ff4e2618f79, type: 2}
+  - {fileID: 2100000, guid: d5e76e3693ea2b148b01c5a0ead0202e, type: 2}
+  - {fileID: 2100000, guid: 4feacf69559ebdb489347d567cab3203, type: 2}
+  - {fileID: 2100000, guid: 8d6f7a999423b7f4da32f9f08ba4969d, type: 2}
+  - {fileID: 2100000, guid: b984ffabfa7cbcc429017a27c18d49be, type: 2}
+  tree2Type:
+  - {fileID: 2100000, guid: 1a28e00f0430ff845b8555074a64bae1, type: 2}
+  - {fileID: 2100000, guid: 334de1c0e10171040b6aac2932b365dd, type: 2}
+  - {fileID: 2100000, guid: bceeedb0987fd7c45a4ba324b25b6678, type: 2}
+  - {fileID: 2100000, guid: d30c22e53238e50449a0e668c9359da6, type: 2}
+  - {fileID: 2100000, guid: 2411ab2df269ed54bbc190c412531064, type: 2}
+  - {fileID: 2100000, guid: db5ae279ba1bc30429c6c77bfc895d9e, type: 2}
+  tree3Type:
+  - {fileID: 2100000, guid: 4bc0ef964aff3fa4183104463259ea6a, type: 2}
+  - {fileID: 2100000, guid: bfaafe77d60d01f499eb2c2d1f4acb73, type: 2}
+  - {fileID: 2100000, guid: b2d893acd2d660b469fbc30f85228c6a, type: 2}
+  - {fileID: 2100000, guid: d8111979ee7cdd54b82b153cf11e523a, type: 2}
+  - {fileID: 2100000, guid: 4b72f128e45746d49bea94a238709236, type: 2}
+  - {fileID: 2100000, guid: 25be9460361c81948baa552aca2491eb, type: 2}
+  tree4Type:
+  - {fileID: 2100000, guid: 7bd3625996e9fd04083cff4800960f61, type: 2}
+  - {fileID: 2100000, guid: 82a1492ec1743ce47b0df1390b2fb9bd, type: 2}
+  - {fileID: 2100000, guid: 8c7e5407cb8a12943af60637d675612e, type: 2}
+  - {fileID: 2100000, guid: 42832fc8bb0f78e409fe2c4af98fcd07, type: 2}
+  - {fileID: 2100000, guid: 15df290aa7abce5418094c78defa5959, type: 2}
+  - {fileID: 2100000, guid: 9be2f1430a1fc7642b53fbe7200ea2a1, type: 2}
   glassFloor: []
   house1Type: []
   house2Type: []

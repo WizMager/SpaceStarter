@@ -12,6 +12,8 @@ TagManager:
   - Tree
   - TriggerCollider
   - Building
+  - Crown
+  - Trunk
   layers:
   - Default
   - TransparentFX

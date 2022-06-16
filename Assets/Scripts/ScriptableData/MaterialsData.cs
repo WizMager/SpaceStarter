@@ -5,7 +5,7 @@ namespace ScriptableData
     [CreateAssetMenu(menuName = "Data/MaterialData", fileName = "MaterialData")]
     public class MaterialsData : ScriptableObject
     {
-        [Header("Trees")] 
+        [Header("Trees")]
         public Material[] tree1Type;
         public Material[] tree2Type;
         public Material[] tree3Type;
