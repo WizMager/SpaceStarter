@@ -18,11 +18,6 @@ namespace Utils
 
         public bool IsOccupied { get; private set; }
 
-        public void DeOccupied()
-        {
-            IsOccupied = false;
-        }
-        
         public void Occupied()
         {
             IsOccupied = true;

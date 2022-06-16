@@ -58,6 +58,7 @@ namespace EnvironmentGeneration
             do
             {
                 var randomCell = Random.Range(0, planetCellsTop.Count);
+                Debug.Log(planetCellsTop[randomCell].IsOccupied);
                 if (planetCellsTop[randomCell].IsOccupied) continue;
                 var tempCell = planetCellsTop[randomCell];
                 tempCell.Occupied();
@@ -69,9 +70,9 @@ namespace EnvironmentGeneration
                 _houseDirector.Builder = _houseBuilders[randomBuildingType];
                 var building = _houseDirector.BuildSimpleHouse(randomFloors);
                 var positionAndRotation = GeneratePositionAndRotation(planetCellsTop[randomCell]);
-                building.transform.SetPositionAndRotation(positionAndRotation.Item1, positionAndRotation.Item2);
-                building.transform.RotateAround(building.transform.position, building.transform.up,
-                    randomAngleRotationBuilding);
+                 building.transform.SetPositionAndRotation(positionAndRotation.Item1, positionAndRotation.Item2);
+                 building.transform.RotateAround(building.transform.position, building.transform.up,
+                     randomAngleRotationBuilding);
                 spawnedTopBuildings.Add(building.transform);
                 building.transform.SetParent(_rootBuildingOnPlanet.transform);
             } while (halfBuildingsOnPlanet > createdBuildings);
@@ -113,21 +114,10 @@ namespace EnvironmentGeneration
         {
             var randomX = Random.Range(planetCell.rangeX.x, planetCell.rangeX.y);
             var vectorUp = Vector3.up;
-            // if (randomX < 90f)
-            // {
-            //     if (randomX > 90f - _invisibleBuildingAngle)
-            //     {
-            //         isInvisible = true;
-            //     }
-            // }
-            // else
-            // {
-            //     vectorUp = -Vector3.up; 
-            //     if (randomX < 90f + _invisibleBuildingAngle)
-            //     {
-            //         isInvisible = true;
-            //     }
-            // }
+            if (randomX > 90f)
+            {
+                vectorUp = -Vector3.up; 
+            }
             var randomY = Random.Range(planetCell.rangeY.x, planetCell.rangeY.y);
             var randomZ = Random.Range(planetCell.rangeZ.x, planetCell.rangeZ.y);
             var rotation = Quaternion.Euler(randomX, randomY, randomZ);

@@ -91,10 +91,11 @@ namespace EnvironmentGeneration
         
         public List<Transform> GenerateEnvironment()
         {
+            ClearCells();
             var buildingsAroundPlanet = _buildingAroundPlanetGenerator.GenerateBuildingsAroundPlanet();
             var treesAroundPlanet = _buildingAroundPlanetGenerator.GenerateTreesAroundPlanet();
             var topBuildingsOnPlanet = _buildingOnPlanetGenerator.CreateTopBuildingAndPosition(_planetCellsTop);
-            //var downBuildingsOnPlanet = _buildingOnPlanetGenerator.CreateDownBuildingAndPosition(_planetCellsDown);
+            var downBuildingsOnPlanet = _buildingOnPlanetGenerator.CreateDownBuildingAndPosition(_planetCellsDown);
             var topTreesOnPlanet = _treesOnPlanetGenerator.CreateTopTreesAndPosition(_planetCellsTop);
             var downTreesOnPlanet = _treesOnPlanetGenerator.CreateDownTreesAndPosition(_planetCellsDown);
             var topCheliksOnPlanet = _cheliksOnPlanetGenerator.CreateTopCheliksAndPosition(_planetCellsTop);
@@ -102,8 +103,8 @@ namespace EnvironmentGeneration
 
             _allEnvironment.AddRange(buildingsAroundPlanet);
             _allEnvironment.AddRange(treesAroundPlanet);
-            //_allEnvironment.AddRange(topBuildingsOnPlanet);
-            //_allEnvironment.AddRange(downBuildingsOnPlanet);
+            _allEnvironment.AddRange(topBuildingsOnPlanet);
+            _allEnvironment.AddRange(downBuildingsOnPlanet);
             _allEnvironment.AddRange(topTreesOnPlanet);
             _allEnvironment.AddRange(downTreesOnPlanet);
             _allEnvironment.AddRange(topCheliksOnPlanet);
@@ -112,16 +113,20 @@ namespace EnvironmentGeneration
             return _allEnvironment;
         }
 
-        public void ClearCells()
+        private void ClearCells()
         {
-            foreach (var planetCell in _planetCellsDown)
+            for (int i = 0; i < _planetCellsTop.Count; i++)
             {
-                planetCell.DeOccupied();
+                if (!_planetCellsTop[i].IsOccupied) continue;
+                var tempCell = new PlanetCell(_planetCellsTop[i].rangeX, _planetCellsTop[i].rangeY, _planetCellsTop[i].rangeZ);
+                _planetCellsTop[i] = tempCell;
             }
 
-            foreach (var planetCell in _planetCellsTop)
+            for (int i = 0; i < _planetCellsDown.Count; i++)
             {
-                planetCell.DeOccupied();
+                if (!_planetCellsDown[i].IsOccupied) continue;
+                var tempCell = new PlanetCell(_planetCellsDown[i].rangeX, _planetCellsDown[i].rangeY, _planetCellsDown[i].rangeZ);
+                _planetCellsDown[i] = tempCell;
             }
         }
         

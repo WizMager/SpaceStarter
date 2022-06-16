@@ -86,7 +86,6 @@ namespace Controllers
 
         private void NextLevel()
         {
-            _environmentGenerator.ClearCells();
             foreach (var objectTransform in _allObjectTransforms)
             {
                 Object.Destroy(objectTransform.parent.gameObject);
