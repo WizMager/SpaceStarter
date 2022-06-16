@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1020143446539886890}
   m_Layer: 0
   m_Name: Tube
-  m_TagString: Untagged
+  m_TagString: OtherPartFloor
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -193,7 +193,7 @@ GameObject:
   - component: {fileID: 323214985002831115}
   m_Layer: 0
   m_Name: BigWindows
-  m_TagString: Untagged
+  m_TagString: WindowFloor
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -341,7 +341,7 @@ GameObject:
   - component: {fileID: 1258648658234314681}
   m_Layer: 0
   m_Name: Body
-  m_TagString: Untagged
+  m_TagString: BlockFloor
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -420,7 +420,7 @@ GameObject:
   - component: {fileID: 5554454937313541827}
   m_Layer: 0
   m_Name: WindowsFrames
-  m_TagString: Untagged
+  m_TagString: WindowFrameFloor
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -499,7 +499,7 @@ GameObject:
   - component: {fileID: 8921372984533973273}
   m_Layer: 0
   m_Name: Windows
-  m_TagString: Untagged
+  m_TagString: WindowFloor
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

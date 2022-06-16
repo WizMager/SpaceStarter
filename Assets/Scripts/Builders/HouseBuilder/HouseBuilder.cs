@@ -2,6 +2,7 @@
 using View;
 using Utils;
 using System;
+using ScriptableData;
 
 namespace Builders.HouseBuilder
 {
@@ -20,13 +21,16 @@ namespace Builders.HouseBuilder
         private const string HouseName = "HouseType";
         private float _localPositionY;
 
-        public HouseBuilder(int houseTypeNumber)
+        private readonly PaintFloor _paintFloor;
+
+        public HouseBuilder(AllData allData, int houseTypeNumber)
         {
             _houseTypeNumber = houseTypeNumber;
             _simpleFloor = Resources.Load<GameObject>($"Buildings/House{houseTypeNumber}Type/House{houseTypeNumber}Floor");
             _glassFloor = Resources.Load<GameObject>("Buildings/GlassBuilding/GlassFloor");
             _roof = Resources.Load<GameObject>($"Buildings/House{houseTypeNumber}Type/House{houseTypeNumber}Roof");
             _glassRoof = Resources.Load<GameObject>("Buildings/GlassBuilding/GlassRoof");
+            _paintFloor = new PaintFloor(allData.Materials, houseTypeNumber);
         }
 
         public void ResetHouse()
@@ -64,9 +68,11 @@ namespace Builders.HouseBuilder
             {
                 case FloorType.SimpleFloor:
                     floor = UnityEngine.Object.Instantiate(_simpleFloor, _house.transform, false);
+                    _paintFloor.Paint(floor, false);
                     break;
                 case FloorType.GlassFloor:
                     floor = UnityEngine.Object.Instantiate(_glassFloor, _house.transform, false);
+                    _paintFloor.Paint(floor, true);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(floorType), floorType, null);
@@ -81,9 +87,11 @@ namespace Builders.HouseBuilder
             {
                 case FloorType.SimpleFloor:
                     floor = UnityEngine.Object.Instantiate(_roof, _house.transform, false);
+                    _paintFloor.Paint(floor, false);
                     break;
                 case FloorType.GlassFloor:
                     floor = UnityEngine.Object.Instantiate(_glassRoof, _house.transform, false);
+                    _paintFloor.Paint(floor, true);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(floorType), floorType, null);

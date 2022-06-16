@@ -57,7 +57,7 @@ GameObject:
   - component: {fileID: 3224382292787631599}
   m_Layer: 0
   m_Name: Tube
-  m_TagString: Untagged
+  m_TagString: OtherPartFloor
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -259,7 +259,7 @@ GameObject:
   - component: {fileID: 3030988093545402873}
   m_Layer: 0
   m_Name: Block
-  m_TagString: Untagged
+  m_TagString: BlockFloor
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

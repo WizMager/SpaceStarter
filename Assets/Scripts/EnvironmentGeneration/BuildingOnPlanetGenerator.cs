@@ -36,13 +36,13 @@ namespace EnvironmentGeneration
             _rootBuildingOnPlanet = new GameObject("BuildingsOnPlanet");
             _rootBuildingOnPlanet.transform.SetParent(rootEnvironment.transform);
 
-            _houseBuilders = new HouseBuilder[6] {
-                new HouseBuilder(1),
-                new HouseBuilder(2),
-                new HouseBuilder(3),
-                new HouseBuilder(4),
-                new HouseBuilder(5),
-                new HouseBuilder(6)
+            _houseBuilders = new HouseBuilder[] {
+                new HouseBuilder(data,1),
+                new HouseBuilder(data,2),
+                new HouseBuilder(data,3),
+                new HouseBuilder(data,4),
+                new HouseBuilder(data,5),
+                new HouseBuilder(data,6)
             };
             _houseDirector = new HouseDirector
             {

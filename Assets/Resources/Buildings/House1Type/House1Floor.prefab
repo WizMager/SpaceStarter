@@ -92,7 +92,7 @@ GameObject:
   - component: {fileID: 5633217996004453985}
   m_Layer: 0
   m_Name: WindowsFrames
-  m_TagString: Untagged
+  m_TagString: WindowFrameFloor
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -215,7 +215,7 @@ GameObject:
   - component: {fileID: 6353917880133651574}
   m_Layer: 0
   m_Name: Windows
-  m_TagString: Untagged
+  m_TagString: WindowFloor
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -430,7 +430,7 @@ GameObject:
   - component: {fileID: 775762865837318510}
   m_Layer: 0
   m_Name: Block
-  m_TagString: Untagged
+  m_TagString: BlockFloor
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

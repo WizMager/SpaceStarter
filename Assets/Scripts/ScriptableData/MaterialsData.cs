@@ -11,7 +11,7 @@ namespace ScriptableData
         public Material[] tree3Type;
         public Material[] tree4Type;
         [Header("Houses")] 
-        public Material[] glassFloor;
+        public Material[] glassHouse;
         public Material[] house1Type;
         public Material[] house2Type;
         public Material[] house3Type;
