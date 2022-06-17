@@ -7,9 +7,9 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Water
-  m_Shader: {fileID: 4800000, guid: 1e53924631ff5ac4384da53b34cbdea8, type: 3}
-  m_ShaderKeywords: _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A
+  m_Name: Atmosphere2
+  m_Shader: {fileID: 4800000, guid: 46b193864db745b3bd29dcd6fd81e864, type: 3}
+  m_ShaderKeywords: 
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -20,10 +20,6 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _BumpMap:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _Cube:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
@@ -44,8 +40,8 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 25c1ac9387bed134a9801af233e16a87, type: 3}
-        m_Scale: {x: 15, y: 15}
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
         m_Texture: {fileID: 0}
@@ -59,29 +55,37 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _SpecGlossMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _TerrainHolesTexture:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     m_Floats:
-    - _Brightness: 0.041
     - _BumpScale: 1
-    - _Contrast: 1.173
-    - _Cutoff: 0.452
+    - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
-    - _GlossMapScale: 0.847
-    - _Glossiness: 0.5
+    - _GlossMapScale: 1
+    - _Glossiness: 0.305
     - _GlossyReflections: 1
-    - _Metallic: 0.528
+    - _Metallic: 0
     - _Mode: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.02
-    - _Saturation: 1.56
-    - _ShadowStrength: 0
-    - _ShadowThreshold: 0
-    - _SmoothnessTextureChannel: 1
+    - _Shininess: 0.7
+    - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _UVSec: 0
     - _ZWrite: 1
     m_Colors:
-    - _Color: {r: 0.4000089, g: 0.43621245, b: 0.8396226, a: 1}
-    - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _ReflectColor: {r: 0, g: 0, b: 0, a: 0.5}
+    - _BottomColor: {r: 0, g: 0.029027557, b: 0.03773582, a: 0.7529412}
+    - _Color: {r: 0.021600582, g: 0.009967966, b: 0.3018868, a: 0.36078432}
+    - _Color2: {r: 0.4141153, g: 0.698017, b: 0.8867924, a: 0.3254902}
+    - _Emission: {r: 0.103773594, g: 0.05629228, b: 0.05629228, a: 0}
+    - _EmissionColor: {r: 0.103773594, g: 0.05629228, b: 0.05629228, a: 0}
+    - _SpecColor: {r: 0.4716981, g: 0.3671235, b: 0.3671235, a: 1}
+    - _TopColor: {r: 0.047111444, g: 0.018244924, b: 0.7735849, a: 1}

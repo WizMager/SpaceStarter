@@ -21,6 +21,7 @@ namespace EnvironmentGeneration
         private readonly BuildingOnPlanetGenerator _buildingOnPlanetGenerator;
         private readonly TreesOnPlanetGenerator _treesOnPlanetGenerator;
         private readonly CheliksOnPlanetGenerator _cheliksOnPlanetGenerator;
+        private readonly PaintPlanet _paintPlanet;
 
         public EnvironmentGenerator(StateController stateController, AllData data, PlanetView planetView)
         {
@@ -37,6 +38,7 @@ namespace EnvironmentGeneration
             _buildingOnPlanetGenerator = new BuildingOnPlanetGenerator(data, planetRadius, rootEnvironment);
             _treesOnPlanetGenerator = new TreesOnPlanetGenerator(data, planetRadius, rootEnvironment);
             _cheliksOnPlanetGenerator = new CheliksOnPlanetGenerator(stateController, data, planetRadius, rootEnvironment);
+            _paintPlanet = new PaintPlanet(data.Materials);
         }
 
         private void GenerateCells(float maxAngleUp, float maxAngleDown)
@@ -132,7 +134,9 @@ namespace EnvironmentGeneration
         
         public List<Transform> TakePlanetPieces()
         {
-            return _planetView.GetComponentsInChildren<Transform>().ToList();
+            var pieces = _planetView.GetComponentsInChildren<Transform>().ToList();
+            _paintPlanet.Paint(pieces);
+            return pieces;
         }
     }
 }

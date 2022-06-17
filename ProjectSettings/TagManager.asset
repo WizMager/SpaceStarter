@@ -18,6 +18,9 @@ TagManager:
   - WindowFloor
   - WindowFrameFloor
   - OtherPartFloor
+  - PlanetWater
+  - PlanetGround
+  - PlanetGrass
   layers:
   - Default
   - TransparentFX

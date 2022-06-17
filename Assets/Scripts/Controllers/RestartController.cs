@@ -1,8 +1,13 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using EnvironmentGeneration;
 using Interface;
+using ScriptableData;
 using UnityEngine;
 using Utils;
+using Object = UnityEngine.Object;
+using Random = UnityEngine.Random;
 
 namespace Controllers
 {
@@ -18,14 +23,16 @@ namespace Controllers
         private readonly List<Vector3> _planetPiecesScales = new List<Vector3>();
         private readonly StateController _stateController;
         private readonly EnvironmentGenerator _environmentGenerator;
+        private readonly PaintPlanet _paintPlanet;
 
-        public RestartController(StateController stateController, EnvironmentGenerator environmentGenerator)
+        public RestartController(StateController stateController, EnvironmentGenerator environmentGenerator, MaterialsData materialsData)
         {
             _stateController = stateController;
             _environmentGenerator = environmentGenerator;
+            _paintPlanet = new PaintPlanet(materialsData);
             _stateController.OnStateChange += ChangeState;
         }
-    
+
         public void SaveObjects()
         {
             var objectsTransforms = _environmentGenerator.GenerateEnvironment();
@@ -105,9 +112,10 @@ namespace Controllers
                     rigidBody.transform.localScale = Vector3.one;
                 }
             }
+            _paintPlanet.Paint(_planetPieces);
             SaveObjects();
         }
-        
+
         public void Clean()
         {
             _stateController.OnStateChange -= ChangeState;

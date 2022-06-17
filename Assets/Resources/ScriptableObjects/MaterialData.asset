@@ -131,8 +131,23 @@ MonoBehaviour:
   - {fileID: 2100000, guid: b15c0d81628990941892772a386ef1c1, type: 2}
   - {fileID: 2100000, guid: 340c12c6f1db5fc41bcf1aff151eda6b, type: 2}
   - {fileID: 2100000, guid: bc2f3d2a8715b184aaae0263eb8864cf, type: 2}
-  atmospherePlanet: []
-  grassPlanet: []
-  groundPlanet: []
-  waterPlanet: []
-  chelik: []
+  atmospherePlanet:
+  - {fileID: 2100000, guid: cc03e8b04a76b934fbe98adce4744734, type: 2}
+  - {fileID: 2100000, guid: ce61eff608a2d8340ad123067dd37dfb, type: 2}
+  - {fileID: 2100000, guid: 58c6f99ffeacb964f9cf34508e5e6e47, type: 2}
+  grassPlanet:
+  - {fileID: 2100000, guid: 4c72a86e38b4238418b7db1ce06070f1, type: 2}
+  - {fileID: 2100000, guid: 3e1b2cc6be0c1d24e84c2d735a8a4405, type: 2}
+  - {fileID: 2100000, guid: 914bf7843b1907a4ba35e777cefe9c16, type: 2}
+  groundPlanet:
+  - {fileID: 2100000, guid: 9c8b85c6c91f62c44aaeda1fc6d2afd9, type: 2}
+  - {fileID: 2100000, guid: efe0a127270cc0341a288d574f8059c2, type: 2}
+  - {fileID: 2100000, guid: b476a3cfa8dcd09498424c20ed2c1d98, type: 2}
+  waterPlanet:
+  - {fileID: 2100000, guid: 93d6bf1b48a8c77449b6a371cd42ad73, type: 2}
+  - {fileID: 2100000, guid: da3ddbb8336e36f4685b8521ebb14f8c, type: 2}
+  - {fileID: 2100000, guid: 7139f91ff3b2bab4c81946972842ece8, type: 2}
+  chelik:
+  - {fileID: 2100000, guid: 0eac8a1ad2e3ff44fb8fb37fe742980b, type: 2}
+  - {fileID: 2100000, guid: 58fcea6b5f5f67442884046da09b0324, type: 2}
+  - {fileID: 2100000, guid: 3314b224c30b8fd4e912575e1deb0f8b, type: 2}
