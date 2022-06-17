@@ -27,6 +27,8 @@ namespace View
             _floorNumber = floorNumber;
         }
 
+        public FloorType GetFloorType => _floorType;
+
         private void Start()
         {
             _body = GetComponent<Rigidbody>();

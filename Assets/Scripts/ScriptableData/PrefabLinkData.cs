@@ -8,5 +8,7 @@ namespace ScriptableData
         public GameObject missilePrefab;
         public GameObject[] trees;
         public GameObject[] cheliks;
+        public GameObject[] _floors;
+        public GameObject[] _roofs;
     }
 }

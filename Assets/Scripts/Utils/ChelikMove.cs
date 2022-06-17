@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using Controllers;
 using UnityEngine;
@@ -149,6 +150,5 @@ namespace Utils
         {
             HouseColliderEntered();
         }
-        
     }
 }

@@ -15,6 +15,7 @@ namespace EnvironmentGeneration
         private readonly List<Transform> _spawnedDownCheliks;
         private readonly int _cheliksOnPlanet;
         private readonly StateController _stateController;
+        private readonly MaterialsData _materialsData;
         
         public CheliksOnPlanetGenerator(StateController stateController, AllData data, float planetRadius, GameObject rootEnvironment)
         {
@@ -25,35 +26,40 @@ namespace EnvironmentGeneration
             foreach (var chelik in data.Prefab.cheliks)
             {
                 _cheliksPrefabs.Add(chelik);
+                
             }
             _planetRadius = planetRadius;
             _rootCheliksOnPlanet = new GameObject("CheliksOnPlanet");
             _rootCheliksOnPlanet.transform.SetParent(rootEnvironment.transform);
             _cheliksOnPlanet = data.ObjectsOnPlanetData.cheliksOnPlanet;
+            _materialsData = data.Materials;
         }
         
-        public List<Transform> CreateTopCheliksAndPosition(List<PlanetCell> planetCellsDown)
+        public List<Transform> CreateTopCheliksAndPosition(List<PlanetCell> planetCellsTop)
         {
             var createdCheliks = 0;
             var halfCheliksOnPlanet = Mathf.RoundToInt(_cheliksOnPlanet / 2);
+            var randomColorType = Random.Range(0, _materialsData.chelik.Length);
             do
             {
-                var randomCell = Random.Range(0, planetCellsDown.Count);
-                if (planetCellsDown[randomCell].IsOccupied) continue;
-                var tempCell = planetCellsDown[randomCell];
+                var randomCell = Random.Range(0, planetCellsTop.Count);
+                if (planetCellsTop[randomCell].IsOccupied) continue;
+                var tempCell = planetCellsTop[randomCell];
                 tempCell.Occupied();
-                planetCellsDown[randomCell] = tempCell;
+                planetCellsTop[randomCell] = tempCell;
                 createdCheliks++;
-                var randomTreeType = Random.Range(0, _cheliksPrefabs.Count);
-                var positionAndRotation = GeneratePositionAndRotation(planetCellsDown[randomCell]);
-                var chelik = Object.Instantiate(_cheliksPrefabs[randomTreeType], positionAndRotation.Item1, positionAndRotation.Item2);
+                var randomChelikType = Random.Range(0, _cheliksPrefabs.Count);
+                var positionAndRotation = GeneratePositionAndRotation(planetCellsTop[randomCell]);
+                var chelik = Object.Instantiate(_cheliksPrefabs[randomChelikType], positionAndRotation.Item1, positionAndRotation.Item2);
                 chelik.GetComponent<ChelikMove>().GetStateController(_stateController);
+                var meshRenderers = chelik.GetComponentsInChildren<MeshRenderer>();
+                foreach (var mesh in meshRenderers)
+                {
+                    mesh.material = _materialsData.chelik[randomColorType];
+                }
                 chelik.transform.Translate(new Vector3(0, 0.2f, 0));
                 _spawnedTopCheliks.Add(chelik.transform);
                 chelik.transform.SetParent(_rootCheliksOnPlanet.transform);
-                // if (!positionAndRotation.Item2) continue;
-                // _invisibleBuildings.Add(building);
-                // building.SetActive(false);
             } while (halfCheliksOnPlanet > createdCheliks);
 
             return _spawnedTopCheliks;
@@ -71,16 +77,13 @@ namespace EnvironmentGeneration
                 tempCell.Occupied();
                 planetCellsDown[randomCell] = tempCell;
                 createdTrees++;
-                var randomTreeType = Random.Range(0, _cheliksPrefabs.Count);
+                var randomChelikType = Random.Range(0, _cheliksPrefabs.Count);
                 var positionAndRotation = GeneratePositionAndRotation(planetCellsDown[randomCell]);
-                var chelik = Object.Instantiate(_cheliksPrefabs[randomTreeType], positionAndRotation.Item1, positionAndRotation.Item2);
+                var chelik = Object.Instantiate(_cheliksPrefabs[randomChelikType], positionAndRotation.Item1, positionAndRotation.Item2);
                 chelik.GetComponent<ChelikMove>().GetStateController(_stateController);
                 _spawnedDownCheliks.Add(chelik.transform);
                 chelik.transform.RotateAround(chelik.transform.position, chelik.transform.forward, 180);
                 chelik.transform.SetParent(_rootCheliksOnPlanet.transform);
-                // if (!positionAndRotation.Item2) continue;
-                // _invisibleBuildings.Add(building);
-                // building.SetActive(false);
             } while (halfCheliksOnPlanet > createdTrees);
 
             return _spawnedDownCheliks;

@@ -39,8 +39,9 @@ public class GameInitialization
       var environmentGenerator = new EnvironmentGenerator(stateController, data, planetView);
       var playerMoveController = new PlayerMoveController(stateController, playerView, data, inputInitialization.GetAllTouch(),
          planetView, gravityLittleView, playerModel);
-      var restartController = new RestartController(stateController, environmentGenerator);
+      var restartController = new RestartController(stateController, environmentGenerator, data.Materials);
       restartController.SaveObjects();
+      restartController.SavePlanet();
       var buildingViews = Object.FindObjectsOfType<BuildingView>();
       controllers.Add(restartController);
       controllers.Add(new InputController(inputInitialization.GetAllTouch(), inputInitialization.GetSwipe()));
@@ -53,7 +54,7 @@ public class GameInitialization
       controllers.Add(new ShootController(inputInitialization.GetAllTouch(), camera, data, missilePosition,
          planetView.transform, stateController, playerModel));
       controllers.Add(new AtmosphereController(stateController, planetView.transform, playerView.transform,
-         atmosphereView.transform));
+         atmosphereView.transform, data.Materials));
       controllers.Add(playerMoveController);
       controllers.Add(stateController);
    }

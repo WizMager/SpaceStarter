@@ -12,6 +12,15 @@ TagManager:
   - Tree
   - TriggerCollider
   - Building
+  - Crown
+  - Trunk
+  - BlockFloor
+  - WindowFloor
+  - WindowFrameFloor
+  - OtherPartFloor
+  - PlanetWater
+  - PlanetGround
+  - PlanetGrass
   layers:
   - Default
   - TransparentFX

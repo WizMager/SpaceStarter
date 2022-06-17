@@ -11,6 +11,10 @@ public class StartPositionPlayerAndCamera
     private readonly float _startCameraHeight;
     private readonly float _restartCameraHeight;
     private readonly GravityLittleView _gravityLittleView;
+    private Vector3 _defaultPlayerPosition;
+    //private Vector3 _defaultPlayerRotation;
+    private Vector3 _defaultCameraPosition;
+    private Quaternion _defaultCameraRotation;
 
     public StartPositionPlayerAndCamera(Transform playerTransform, Transform planetTransform, Transform gravityTransform,
         Transform cameraTransform, float startDistanceFromPlanet, float startCameraHeight, float restartCameraHeight, GravityLittleView gravityLittleView)
@@ -46,23 +50,30 @@ public class StartPositionPlayerAndCamera
         var startRotation = Quaternion.Euler(new Vector3(90, 180, 180));
         _camera.SetPositionAndRotation(cameraPosition, startRotation);
     }
+
+    public void SetNextRound()
+    {
+        _player.position = _defaultPlayerPosition;
+        _player.LookAt(_planet.position);
+        _camera.SetPositionAndRotation(_defaultCameraPosition, _defaultCameraRotation);
+    }
     
     public void Set()
     {
         var planetRay = new Ray(_planet.position, _planet.forward);
-        var startPlayerPosition = planetRay.GetPoint(_startDistanceFromPlanet);
-        _player.position = startPlayerPosition;
+        _defaultPlayerPosition = planetRay.GetPoint(_startDistanceFromPlanet);
+        _player.position = _defaultPlayerPosition;
         _player.LookAt(_planet.position);
         
         var cameraRay = new Ray(_player.position, _player.forward);
         var planetRadius = _planet.GetComponent<SphereCollider>().radius;
         var distanceHalfGravity = (_gravity.GetComponent<MeshCollider>().bounds.size.x / 2 - planetRadius) / 2;
         var distanceToCenterGravity = _startDistanceFromPlanet - planetRadius - distanceHalfGravity;
-        var startPosition = cameraRay.GetPoint(distanceToCenterGravity);
-        startPosition.y = _startCameraHeight;
+        _defaultCameraPosition = cameraRay.GetPoint(distanceToCenterGravity);
+        _defaultCameraPosition.y = _startCameraHeight;
         //TODO: this is just for test and never will be change
-        startPosition.z += 1.2f;
-        var startRotation = Quaternion.Euler(new Vector3(90, 180, 180));
-        _camera.SetPositionAndRotation(startPosition, startRotation);
+        _defaultCameraPosition.z += 1.2f;
+        _defaultCameraRotation = Quaternion.Euler(new Vector3(90, 180, 180));
+        _camera.SetPositionAndRotation(_defaultCameraPosition, _defaultCameraRotation);
     }
 }

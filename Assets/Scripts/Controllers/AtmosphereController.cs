@@ -1,4 +1,5 @@
 ﻿using Interface;
+using ScriptableData;
 using UnityEngine;
 using Utils;
 
@@ -6,11 +7,12 @@ namespace Controllers
 {
     public class AtmosphereController : IExecute
     {
-        private Vector3 _planetCenter;
-        private Transform _planet;
-        private Transform _player;
-        private Transform _atmosphere;
+        private readonly Vector3 _planetCenter;
+        private readonly Transform _planet;
+        private readonly Transform _player;
+        private readonly Transform _atmosphere;
         private StateController _stateController;
+        private readonly MaterialsData _materialsData;
 
         private bool _isRotate;
         private Vector3 _atmosphereStartPosition;
@@ -18,7 +20,7 @@ namespace Controllers
         private Vector3 _startVectorAround;
         private Vector3 _endVectorAround;
 
-        public AtmosphereController(StateController stateController, Transform planet, Transform player, Transform atmosphere)
+        public AtmosphereController(StateController stateController, Transform planet, Transform player, Transform atmosphere, MaterialsData materialsData)
         {
             _stateController = stateController;
             _planet = planet;
@@ -27,6 +29,8 @@ namespace Controllers
             _atmosphere = atmosphere;
             _atmosphereStartPosition = atmosphere.position;
             _atmosphereStartRotation = atmosphere.rotation;
+            _materialsData = materialsData;
+            PaintAtmosphere(_materialsData, _atmosphere);
 
             _stateController.OnStateChange += ChangeState;
         }
@@ -52,6 +56,12 @@ namespace Controllers
                     _atmosphere.SetPositionAndRotation(_atmosphereStartPosition, _atmosphereStartRotation);
                     _isRotate = false;
                     break;
+                case GameState.NextLevel:
+                    _atmosphere.gameObject.SetActive(true);
+                    _atmosphere.SetPositionAndRotation(_atmosphereStartPosition, _atmosphereStartRotation);
+                    _isRotate = false;
+                    PaintAtmosphere(_materialsData, _atmosphere);
+                    break;
             }
         }
 
@@ -74,6 +84,12 @@ namespace Controllers
         {
             if (!_isRotate) return;
             FlyAroundPlanet();
+        }
+
+        private void PaintAtmosphere(MaterialsData materialsData, Transform atmosphere)
+        {
+            var randomColor = Random.Range(0, materialsData.atmospherePlanet.Length);
+            atmosphere.GetComponent<MeshRenderer>().material = materialsData.atmospherePlanet[randomColor];
         }
     }
 }

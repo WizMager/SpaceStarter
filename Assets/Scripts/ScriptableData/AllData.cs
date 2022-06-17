@@ -15,6 +15,7 @@ namespace ScriptableData
         [SerializeField] private ObjectsOnPlanetData _objectsOnPlanetData;
         [SerializeField] private RestartData _restartData;
         [SerializeField] private MissileData _missileData;
+        [SerializeField] private MaterialsData _materialsData;
 
         public PlayerData Player
         {
@@ -131,6 +132,18 @@ namespace ScriptableData
                 return _missileData;
             }
         }
+        
+        public MaterialsData Materials
+        {
+            get
+            {
+                if (_materialsData == null)
+                {
+                    throw new NullReferenceException("You don't create or set MaterialsData scriptable object");
+                }
 
+                return _materialsData;
+            }
+        }
     }
 }

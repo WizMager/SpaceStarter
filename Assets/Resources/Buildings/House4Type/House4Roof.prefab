@@ -26,7 +26,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3976847187510927103}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.00099, y: -0.00631, z: 0}
+  m_LocalPosition: {x: -0.00099, y: -0.00381, z: 0}
   m_LocalScale: {x: 0.025, y: 0.025, z: 0.025}
   m_Children: []
   m_Father: {fileID: 5463960878391614439}
@@ -43,7 +43,7 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.9, y: 1, z: 1}
+  m_Size: {x: 0.9, y: 1.2, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &849127684728562088
 MonoBehaviour:
@@ -140,7 +140,7 @@ GameObject:
   - component: {fileID: 6538586927950746145}
   m_Layer: 0
   m_Name: Block
-  m_TagString: Untagged
+  m_TagString: BlockFloor
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -219,7 +219,7 @@ GameObject:
   - component: {fileID: 3639395467932670363}
   m_Layer: 0
   m_Name: WindowsFrames
-  m_TagString: Untagged
+  m_TagString: WindowFrameFloor
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -343,7 +343,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 7000c5e286a0dc94bb4c9a7ffe696106, type: 2}
+  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -377,7 +377,7 @@ GameObject:
   - component: {fileID: 3195126520525195670}
   m_Layer: 0
   m_Name: TubeAndColumn
-  m_TagString: Untagged
+  m_TagString: OtherPartFloor
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -501,7 +501,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 7000c5e286a0dc94bb4c9a7ffe696106, type: 2}
+  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -535,7 +535,7 @@ GameObject:
   - component: {fileID: 1233707098162365731}
   m_Layer: 0
   m_Name: Windows
-  m_TagString: Untagged
+  m_TagString: WindowFloor
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -626,7 +626,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9183037804977120667}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.00099, y: -0.00631, z: 0}
+  m_LocalPosition: {x: -0.00099, y: -0.00381, z: 0}
   m_LocalScale: {x: 0.025, y: 0.025, z: 0.025}
   m_Children: []
   m_Father: {fileID: 5463960878391614439}
@@ -640,8 +640,8 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9183037804977120667}
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.9, y: 1, z: 1}
+  m_Size: {x: 0.9, y: 1.2, z: 1}
   m_Center: {x: 0, y: 0, z: 0}

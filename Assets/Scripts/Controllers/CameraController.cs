@@ -145,13 +145,6 @@ namespace Controllers
             }
         }
 
-        private void FollowPlayer()
-        {
-            var offsetPosition = _player.position;
-            offsetPosition.y = _camera.position.y;
-            _camera.position = offsetPosition;
-        }
-
         private void CameraDown(float deltaTime)
         {
             if (_camera.position.y <= _cameraCenterGravityDownPosition) return;
