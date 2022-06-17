@@ -161,6 +161,8 @@ namespace EnvironmentGeneration
                 var building = isGlassHouse ? _houseDirector.BuildGlassHouse(randomFloors) : _houseDirector.BuildSimpleHouse(randomFloors);
                 building.transform.SetPositionAndRotation(_buildingPositions[i], _buildingRotations[i]);
                 building.transform.RotateAround(building.transform.position, building.transform.up, randomAngleRotationBuilding);
+                building.AddComponent<BoxCollider>();
+                building.gameObject.tag = "Building";
                 _spawnedBuildings.Add(building.transform);
                 building.transform.SetParent(_rootBuildingAroundPlanet.transform);
             }
