@@ -60,6 +60,8 @@ public class StartPositionPlayerAndCamera
         var distanceToCenterGravity = _startDistanceFromPlanet - planetRadius - distanceHalfGravity;
         var startPosition = cameraRay.GetPoint(distanceToCenterGravity);
         startPosition.y = _startCameraHeight;
+        //TODO: this is just for test and never will be change
+        startPosition.z += 1.2f;
         var startRotation = Quaternion.Euler(new Vector3(90, 180, 180));
         _camera.SetPositionAndRotation(startPosition, startRotation);
     }

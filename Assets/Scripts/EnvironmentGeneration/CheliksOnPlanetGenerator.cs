@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Controllers;
 using ScriptableData;
 using UnityEngine;
 using Utils;
@@ -13,9 +14,11 @@ namespace EnvironmentGeneration
         private readonly List<Transform> _spawnedTopCheliks;
         private readonly List<Transform> _spawnedDownCheliks;
         private readonly int _cheliksOnPlanet;
+        private readonly StateController _stateController;
         
-        public CheliksOnPlanetGenerator(AllData data, float planetRadius, GameObject rootEnvironment)
+        public CheliksOnPlanetGenerator(StateController stateController, AllData data, float planetRadius, GameObject rootEnvironment)
         {
+            _stateController = stateController;
             _cheliksPrefabs = new List<GameObject>(data.Prefab.cheliks.Length);
             _spawnedTopCheliks = new List<Transform>();
             _spawnedDownCheliks = new List<Transform>();
@@ -29,7 +32,7 @@ namespace EnvironmentGeneration
             _cheliksOnPlanet = data.ObjectsOnPlanetData.cheliksOnPlanet;
         }
         
-        public List<Transform> CreateTopTreesAndPosition(List<PlanetCell> planetCellsDown)
+        public List<Transform> CreateTopCheliksAndPosition(List<PlanetCell> planetCellsDown)
         {
             var createdCheliks = 0;
             var halfCheliksOnPlanet = Mathf.RoundToInt(_cheliksOnPlanet / 2);
@@ -44,6 +47,7 @@ namespace EnvironmentGeneration
                 var randomTreeType = Random.Range(0, _cheliksPrefabs.Count);
                 var positionAndRotation = GeneratePositionAndRotation(planetCellsDown[randomCell]);
                 var chelik = Object.Instantiate(_cheliksPrefabs[randomTreeType], positionAndRotation.Item1, positionAndRotation.Item2);
+                chelik.GetComponent<ChelikMove>().GetStateController(_stateController);
                 chelik.transform.Translate(new Vector3(0, 0.2f, 0));
                 _spawnedTopCheliks.Add(chelik.transform);
                 chelik.transform.SetParent(_rootCheliksOnPlanet.transform);
@@ -55,7 +59,7 @@ namespace EnvironmentGeneration
             return _spawnedTopCheliks;
         }
         
-        public List<Transform> CreateDownTreesAndPosition(List<PlanetCell> planetCellsDown)
+        public List<Transform> CreateDownCheliksAndPosition(List<PlanetCell> planetCellsDown)
         {
             var createdTrees = 0;
             var halfCheliksOnPlanet = Mathf.RoundToInt(_cheliksOnPlanet / 2);
@@ -70,6 +74,7 @@ namespace EnvironmentGeneration
                 var randomTreeType = Random.Range(0, _cheliksPrefabs.Count);
                 var positionAndRotation = GeneratePositionAndRotation(planetCellsDown[randomCell]);
                 var chelik = Object.Instantiate(_cheliksPrefabs[randomTreeType], positionAndRotation.Item1, positionAndRotation.Item2);
+                chelik.GetComponent<ChelikMove>().GetStateController(_stateController);
                 _spawnedDownCheliks.Add(chelik.transform);
                 chelik.transform.RotateAround(chelik.transform.position, chelik.transform.forward, 180);
                 chelik.transform.SetParent(_rootCheliksOnPlanet.transform);

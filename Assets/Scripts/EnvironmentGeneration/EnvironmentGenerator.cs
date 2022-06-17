@@ -1,7 +1,10 @@
 using System.Collections.Generic;
+using System.Linq;
+using Controllers;
 using ScriptableData;
 using UnityEngine;
 using Utils;
+using View;
 
 
 namespace EnvironmentGeneration
@@ -12,14 +15,16 @@ namespace EnvironmentGeneration
         private readonly List<PlanetCell> _planetCellsTop;
         private readonly List<PlanetCell> _planetCellsDown;
         private readonly int _environmentObjects;
+        private readonly PlanetView _planetView;
 
         private readonly BuildingAroundPlanetGenerator _buildingAroundPlanetGenerator;
         private readonly BuildingOnPlanetGenerator _buildingOnPlanetGenerator;
         private readonly TreesOnPlanetGenerator _treesOnPlanetGenerator;
         private readonly CheliksOnPlanetGenerator _cheliksOnPlanetGenerator;
 
-        public EnvironmentGenerator(AllData data, Transform planet)
+        public EnvironmentGenerator(StateController stateController, AllData data, PlanetView planetView)
         {
+            _planetView = planetView;
             _planetCellsTop = new List<PlanetCell>();
             _planetCellsDown = new List<PlanetCell>();
             _environmentObjects = data.ObjectsOnPlanetData.buildingsOnPlanet + data.ObjectsOnPlanetData.buildingsOnPlanet + data.ObjectsOnPlanetData.cheliksOnPlanet;
@@ -27,11 +32,11 @@ namespace EnvironmentGeneration
             Debug.Log($"top {_planetCellsTop.Count}, down {_planetCellsDown.Count}");
             _allEnvironment = new List<Transform>();
             var rootEnvironment = new GameObject("PlanetEnvironment");
-            var planetRadius = planet.GetComponent<SphereCollider>().radius;
-            _buildingAroundPlanetGenerator = new BuildingAroundPlanetGenerator(data, planet, planetRadius, rootEnvironment);
+            var planetRadius = planetView.GetComponent<SphereCollider>().radius;
+            _buildingAroundPlanetGenerator = new BuildingAroundPlanetGenerator(stateController, data, planetView.transform, planetRadius, rootEnvironment);
             _buildingOnPlanetGenerator = new BuildingOnPlanetGenerator(data, planetRadius, rootEnvironment);
             _treesOnPlanetGenerator = new TreesOnPlanetGenerator(data, planetRadius, rootEnvironment);
-            _cheliksOnPlanetGenerator = new CheliksOnPlanetGenerator(data, planetRadius, rootEnvironment);
+            _cheliksOnPlanetGenerator = new CheliksOnPlanetGenerator(stateController, data, planetRadius, rootEnvironment);
         }
 
         private void GenerateCells(float maxAngleUp, float maxAngleDown)
@@ -82,43 +87,29 @@ namespace EnvironmentGeneration
                     }
                 }
             }
-            
-            //     do
-            //     {
-            //         var planetCell = new PlanetCell
-            //         {
-            //             isOccupied = false
-            //         };
-            //         planetCell.rangeX.x = startX;
-            //         planetCell.rangeY.x = startY;
-            //         planetCell.rangeZ.x = startZ;
-            //         startX -= downCellSize.x;
-            //         startY -= downCellSize.y;
-            //         startZ -= downCellSize.z;
-            //         planetCell.rangeX.y = startX;
-            //         planetCell.rangeY.y = startY;
-            //         planetCell.rangeZ.y = startZ;
-            //         _planetCellsDown.Add(planetCell);
-            //     } 
-            //     while (startX > upCellSize.x && startZ > upCellSize.z && startY > upCellSize.y);
         }
         
         public List<Transform> GenerateEnvironment()
         {
             var buildingsAroundPlanet = _buildingAroundPlanetGenerator.GenerateBuildingsAroundPlanet();
+            var treesAroundPlanet = _buildingAroundPlanetGenerator.GenerateTreesAroundPlanet();
             var topBuildingsOnPlanet = _buildingOnPlanetGenerator.CreateTopBuildingAndPosition(_planetCellsTop);
             var downBuildingsOnPlanet = _buildingOnPlanetGenerator.CreateDownBuildingAndPosition(_planetCellsDown);
             var topTreesOnPlanet = _treesOnPlanetGenerator.CreateTopTreesAndPosition(_planetCellsTop);
             var downTreesOnPlanet = _treesOnPlanetGenerator.CreateDownTreesAndPosition(_planetCellsDown);
-            var topCheliksOnPlanet = _cheliksOnPlanetGenerator.CreateTopTreesAndPosition(_planetCellsTop);
-            var downCheliksOnPlanet = _cheliksOnPlanetGenerator.CreateDownTreesAndPosition(_planetCellsDown);
+            var topCheliksOnPlanet = _cheliksOnPlanetGenerator.CreateTopCheliksAndPosition(_planetCellsTop);
+            var downCheliksOnPlanet = _cheliksOnPlanetGenerator.CreateDownCheliksAndPosition(_planetCellsDown);
+            var planetPieces = _planetView.GetComponentsInChildren<Transform>().ToList();
+
             _allEnvironment.AddRange(buildingsAroundPlanet);
+            _allEnvironment.AddRange(treesAroundPlanet);
             _allEnvironment.AddRange(topBuildingsOnPlanet);
             _allEnvironment.AddRange(downBuildingsOnPlanet);
             _allEnvironment.AddRange(topTreesOnPlanet);
             _allEnvironment.AddRange(downTreesOnPlanet);
             _allEnvironment.AddRange(topCheliksOnPlanet);
             _allEnvironment.AddRange(downCheliksOnPlanet);
+            _allEnvironment.AddRange(planetPieces);
 
             return _allEnvironment;
         }

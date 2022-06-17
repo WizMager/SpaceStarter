@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "com.nox7atra.unity-figma-gradients": "https://github.com/Nox7atra/Unity-Figma-Gradients.git?path=/Assets/Figma%20Gradients",
     "com.unity.2d.sprite": "1.0.0",
     "com.unity.collab-proxy": "1.2.16",
     "com.unity.device-simulator": "3.0.3-preview",
