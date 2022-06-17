@@ -1,7 +1,8 @@
-using System.Collections.Generic;
+    using System.Collections.Generic;
 using EnvironmentGeneration;
 using Interface;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using Utils;
 
 namespace Controllers
@@ -48,19 +49,20 @@ namespace Controllers
 
         private void RestartActivate()
         {
-            for (int j = 0; j < _allObjectTransforms.Count; j++)
-            {
-                var rigidBody = _allObjectTransforms[j].GetComponent<Rigidbody>();
-                if (rigidBody != null)
-                {
-                    rigidBody.isKinematic = true;
-                    rigidBody.transform.localScale = Vector3.one;
-                }
+            //for (int j = 0; j < _allObjectTransforms.Count; j++)
+            //{
+            //    var rigidBody = _allObjectTransforms[j].GetComponent<Rigidbody>();
+            //    if (rigidBody != null)
+            //    {
+            //        rigidBody.isKinematic = true;
+            //        rigidBody.transform.localScale = Vector3.one;
+            //    }
 
-                _allObjectTransforms[j]
-                    .SetPositionAndRotation(_allObjectStartPositions[j], _allObjectStartRotations[j]);
-                _allObjectTransforms[j].localScale = _allObjectStartScale[j];
-            }
+            //    _allObjectTransforms[j]
+            //        .SetPositionAndRotation(_allObjectStartPositions[j], _allObjectStartRotations[j]);
+            //    _allObjectTransforms[j].localScale = _allObjectStartScale[j];
+            //}
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
 
         public void Clean()

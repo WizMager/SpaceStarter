@@ -40,7 +40,7 @@ namespace View
         {
             if (other.CompareTag("Building"))
             {
-                _stateController.OnStateChange -= ChangeState;
+                //_stateController.OnStateChange -= ChangeState;
                 Destroy(gameObject);
             }
         }
