@@ -1,12 +1,5 @@
 {
   "dependencies": {
-    "com.nox7atra.unity-figma-gradients": {
-      "version": "https://github.com/Nox7atra/Unity-Figma-Gradients.git?path=/Assets/Figma%20Gradients",
-      "depth": 0,
-      "source": "git",
-      "dependencies": {},
-      "hash": "cc509a656b45662ba0f1fd9658388b46f536da82"
-    },
     "com.unity.2d.sprite": {
       "version": "1.0.0",
       "depth": 0,
