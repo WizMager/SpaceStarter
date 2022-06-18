@@ -32,14 +32,16 @@ public class GameInitialization
       var finalScreenView = Object.FindObjectOfType<FinalScreenView>();
       finalScreenView.gameObject.SetActive(false);
       var atmosphereView = Object.FindObjectOfType<AtmosphereView>();
+      var afterRestart = Object.FindObjectOfType<AfterRestart>();
 
       var inputInitialization = new InputInitialization(data.Input.minimalDistanceForSwipe);
       var stateController = new StateController(planetView, playerView, data, gravityView, gravityLittleView, camera, 
          playerModel, deadView, firstPersonView, restartButtons, finalScreenView, rocketIndicatorViews);
-      var environmentGenerator = new EnvironmentGenerator(stateController, data, planetView);
+      afterRestart.TakeStateController(stateController);
+      var environmentGenerator = new EnvironmentGenerator(stateController, data, planetView, afterRestart);
       var playerMoveController = new PlayerMoveController(stateController, playerView, data, inputInitialization.GetAllTouch(),
          planetView, gravityLittleView, playerModel);
-      var restartController = new RestartController(stateController, environmentGenerator, data.Materials);
+      var restartController = new RestartController(stateController, environmentGenerator, data.Materials, afterRestart);
       restartController.SaveObjects();
       restartController.SavePlanet();
       var buildingViews = Object.FindObjectsOfType<BuildingView>();

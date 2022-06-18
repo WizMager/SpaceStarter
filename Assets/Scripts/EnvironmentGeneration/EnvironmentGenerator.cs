@@ -23,7 +23,7 @@ namespace EnvironmentGeneration
         private readonly CheliksOnPlanetGenerator _cheliksOnPlanetGenerator;
         private readonly PaintPlanet _paintPlanet;
 
-        public EnvironmentGenerator(StateController stateController, AllData data, PlanetView planetView)
+        public EnvironmentGenerator(StateController stateController, AllData data, PlanetView planetView, AfterRestart afterRestart)
         {
             _planetView = planetView;
             _planetCellsTop = new List<PlanetCell>();
@@ -34,9 +34,10 @@ namespace EnvironmentGeneration
             _allEnvironment = new List<Transform>();
             var rootEnvironment = new GameObject("PlanetEnvironment");
             var planetRadius = planetView.GetComponent<SphereCollider>().radius;
+            //var materialsTake = new MaterialsTake(data);
             _buildingAroundPlanetGenerator = new BuildingAroundPlanetGenerator(stateController, data, planetView.transform, planetRadius, rootEnvironment);
             _buildingOnPlanetGenerator = new BuildingOnPlanetGenerator(data, planetRadius, rootEnvironment);
-            _treesOnPlanetGenerator = new TreesOnPlanetGenerator(data, planetRadius, rootEnvironment);
+            _treesOnPlanetGenerator = new TreesOnPlanetGenerator(data, planetRadius, rootEnvironment, materialsTake.TreesMaterial);
             _cheliksOnPlanetGenerator = new CheliksOnPlanetGenerator(stateController, data, planetRadius, rootEnvironment);
             _paintPlanet = new PaintPlanet(data.Materials);
         }

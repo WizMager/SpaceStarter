@@ -12,7 +12,6 @@ public class StartPositionPlayerAndCamera
     private readonly float _restartCameraHeight;
     private readonly GravityLittleView _gravityLittleView;
     private Vector3 _defaultPlayerPosition;
-    //private Vector3 _defaultPlayerRotation;
     private Vector3 _defaultCameraPosition;
     private Quaternion _defaultCameraRotation;
 
