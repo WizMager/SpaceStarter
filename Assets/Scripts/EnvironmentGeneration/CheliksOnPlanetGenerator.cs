@@ -15,9 +15,9 @@ namespace EnvironmentGeneration
         private readonly List<Transform> _spawnedDownCheliks;
         private readonly int _cheliksOnPlanet;
         private readonly StateController _stateController;
-        private readonly MaterialsData _materialsData;
+        private readonly Material _material;
         
-        public CheliksOnPlanetGenerator(StateController stateController, AllData data, float planetRadius, GameObject rootEnvironment)
+        public CheliksOnPlanetGenerator(StateController stateController, AllData data, float planetRadius, GameObject rootEnvironment, Material material)
         {
             _stateController = stateController;
             _cheliksPrefabs = new List<GameObject>(data.Prefab.cheliks.Length);
@@ -32,14 +32,13 @@ namespace EnvironmentGeneration
             _rootCheliksOnPlanet = new GameObject("CheliksOnPlanet");
             _rootCheliksOnPlanet.transform.SetParent(rootEnvironment.transform);
             _cheliksOnPlanet = data.ObjectsOnPlanetData.cheliksOnPlanet;
-            _materialsData = data.Materials;
+            _material = material;
         }
         
         public List<Transform> CreateTopCheliksAndPosition(List<PlanetCell> planetCellsTop)
         {
             var createdCheliks = 0;
             var halfCheliksOnPlanet = Mathf.RoundToInt(_cheliksOnPlanet / 2);
-            var randomColorType = Random.Range(0, _materialsData.chelik.Length);
             do
             {
                 var randomCell = Random.Range(0, planetCellsTop.Count);
@@ -55,7 +54,7 @@ namespace EnvironmentGeneration
                 var meshRenderers = chelik.GetComponentsInChildren<MeshRenderer>();
                 foreach (var mesh in meshRenderers)
                 {
-                    mesh.material = _materialsData.chelik[randomColorType];
+                    mesh.material = _material;
                 }
                 chelik.transform.Translate(new Vector3(0, 0.2f, 0));
                 _spawnedTopCheliks.Add(chelik.transform);

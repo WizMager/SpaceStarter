@@ -23,23 +23,23 @@ namespace EnvironmentGeneration
         private readonly CheliksOnPlanetGenerator _cheliksOnPlanetGenerator;
         private readonly PaintPlanet _paintPlanet;
 
-        public EnvironmentGenerator(StateController stateController, AllData data, PlanetView planetView, AfterRestart afterRestart)
+        public EnvironmentGenerator(StateController stateController, AllData data, PlanetView planetView, 
+            Dictionary<int, Dictionary<int, List<Material>>> preparedMaterials)
         {
             _planetView = planetView;
             _planetCellsTop = new List<PlanetCell>();
             _planetCellsDown = new List<PlanetCell>();
             _environmentObjects = data.ObjectsOnPlanetData.buildingsOnPlanet + data.ObjectsOnPlanetData.buildingsOnPlanet + data.ObjectsOnPlanetData.cheliksOnPlanet;
             GenerateCells(data.ObjectsOnPlanetData.maximumBuildingAngleUp, data.ObjectsOnPlanetData.maximumBuildingAngleDown);
-            Debug.Log($"top {_planetCellsTop.Count}, down {_planetCellsDown.Count}");
             _allEnvironment = new List<Transform>();
             var rootEnvironment = new GameObject("PlanetEnvironment");
             var planetRadius = planetView.GetComponent<SphereCollider>().radius;
-            //var materialsTake = new MaterialsTake(data);
-            _buildingAroundPlanetGenerator = new BuildingAroundPlanetGenerator(stateController, data, planetView.transform, planetRadius, rootEnvironment);
-            _buildingOnPlanetGenerator = new BuildingOnPlanetGenerator(data, planetRadius, rootEnvironment);
-            _treesOnPlanetGenerator = new TreesOnPlanetGenerator(data, planetRadius, rootEnvironment, materialsTake.TreesMaterial);
-            _cheliksOnPlanetGenerator = new CheliksOnPlanetGenerator(stateController, data, planetRadius, rootEnvironment);
-            _paintPlanet = new PaintPlanet(data.Materials);
+            _buildingAroundPlanetGenerator = new BuildingAroundPlanetGenerator(stateController, data, planetView.transform, 
+                planetRadius, rootEnvironment, preparedMaterials[0], preparedMaterials[2]);
+            _buildingOnPlanetGenerator = new BuildingOnPlanetGenerator(data, planetRadius, rootEnvironment, preparedMaterials[0]);
+            _treesOnPlanetGenerator = new TreesOnPlanetGenerator(data, planetRadius, rootEnvironment, preparedMaterials[2]);
+            _cheliksOnPlanetGenerator = new CheliksOnPlanetGenerator(stateController, data, planetRadius, rootEnvironment, preparedMaterials[3][0][0]);
+            _paintPlanet = new PaintPlanet(preparedMaterials[2][0]);
         }
 
         private void GenerateCells(float maxAngleUp, float maxAngleDown)

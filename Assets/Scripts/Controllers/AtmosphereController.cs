@@ -1,5 +1,4 @@
 ﻿using Interface;
-using ScriptableData;
 using UnityEngine;
 using Utils;
 
@@ -12,15 +11,13 @@ namespace Controllers
         private readonly Transform _player;
         private readonly Transform _atmosphere;
         private StateController _stateController;
-        private readonly MaterialsData _materialsData;
-
         private bool _isRotate;
         private Vector3 _atmosphereStartPosition;
         private Quaternion _atmosphereStartRotation;
         private Vector3 _startVectorAround;
         private Vector3 _endVectorAround;
 
-        public AtmosphereController(StateController stateController, Transform planet, Transform player, Transform atmosphere, MaterialsData materialsData)
+        public AtmosphereController(StateController stateController, Transform planet, Transform player, Transform atmosphere, Material material)
         {
             _stateController = stateController;
             _planet = planet;
@@ -29,9 +26,7 @@ namespace Controllers
             _atmosphere = atmosphere;
             _atmosphereStartPosition = atmosphere.position;
             _atmosphereStartRotation = atmosphere.rotation;
-            _materialsData = materialsData;
-            PaintAtmosphere(_materialsData, _atmosphere);
-
+            atmosphere.GetComponent<MeshRenderer>().material = material;
             _stateController.OnStateChange += ChangeState;
         }
 
@@ -60,7 +55,7 @@ namespace Controllers
                     _atmosphere.gameObject.SetActive(true);
                     _atmosphere.SetPositionAndRotation(_atmosphereStartPosition, _atmosphereStartRotation);
                     _isRotate = false;
-                    PaintAtmosphere(_materialsData, _atmosphere);
+                    //PaintAtmosphere(_materialsData, _atmosphere);
                     break;
             }
         }
@@ -84,12 +79,6 @@ namespace Controllers
         {
             if (!_isRotate) return;
             FlyAroundPlanet();
-        }
-
-        private void PaintAtmosphere(MaterialsData materialsData, Transform atmosphere)
-        {
-            var randomColor = Random.Range(0, materialsData.atmospherePlanet.Length);
-            atmosphere.GetComponent<MeshRenderer>().material = materialsData.atmospherePlanet[randomColor];
         }
     }
 }

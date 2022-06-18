@@ -1,50 +1,76 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using ScriptableData;
 using UnityEngine;
-using Random = UnityEngine.Random;
 
 namespace Utils
 {
     public class MaterialsTake
     {
-        private readonly List<Material[]> _treesMaterials;
+        private readonly MaterialsData _materialsData;
 
-        public List<Material[]> TreesMaterial => _treesMaterials;
-
-        public MaterialsTake(AllData data)
+        public MaterialsTake(MaterialsData materialsData)
         {
-            _treesMaterials = GetTreesMaterials(data.Prefab.trees.Length, data.Materials);
+            _materialsData = materialsData;
         }
-        
-        private List<Material[]> GetTreesMaterials(int treePrefabs, MaterialsData materialsData)
+
+        public Dictionary<int, Dictionary<int, List<Material>>> TakeRandomMaterials(int randomColorNumber)
         {
-            var type1 = materialsData.tree1Type;
-            var type1Length = materialsData.tree1Type.Length;
-            var treesMaterials = new List<Material[]>
+            var preparedMaterials = new Dictionary<int, Dictionary<int, List<Material>>>(7);
+            for (int i = 0; i < _materialsData.floor.Count; i++)
             {
-                materialsData.tree1Type,
-                materialsData.tree2Type,
-                materialsData.tree3Type,
-                materialsData.tree4Type
-            };
-            if (treesMaterials.Count != treePrefabs)
-            {
-                throw new ArgumentOutOfRangeException(
-                    "Number of tree prefabs is does not mach with number materials types");
+                var currentTypeLength = _materialsData.floor[i].materials.Count;
+                var chosenMaterials = new List<Material>(4)
+                {
+                    [0] = _materialsData.floor[i].materials[randomColorNumber],
+                    [1] = _materialsData.floor[i].materials[randomColorNumber + currentTypeLength / 4],
+                    [2] = _materialsData.floor[i].materials[randomColorNumber + currentTypeLength / 4 * 2],
+                    [3] = _materialsData.floor[i].materials[randomColorNumber + currentTypeLength / 4 * 3]
+                };
+                preparedMaterials[0].Add(i, chosenMaterials);
             }
 
-            return treesMaterials;
-        }
+            for (int i = 0; i < _materialsData.planet.Count; i++)
+            {
+                var currentTypeLength = _materialsData.planet[i].materials.Count;
+                var chosenMaterials = new List<Material>(3)
+                {
+                    [0] = _materialsData.planet[i].materials[randomColorNumber],
+                    [1] = _materialsData.planet[i].materials[randomColorNumber + currentTypeLength / 3],
+                    [2] = _materialsData.planet[i].materials[randomColorNumber + currentTypeLength / 3 * 2]
+                };
+                preparedMaterials[1].Add(i, chosenMaterials);
+            }
+            
+            for (int i = 0; i < _materialsData.tree.Count; i++)
+            {
+                var currentTypeLength = _materialsData.tree[i].materials.Count;
+                var chosenMaterials = new List<Material>(2)
+                {
+                    [0] = _materialsData.tree[i].materials[randomColorNumber],
+                    [1] = _materialsData.tree[i].materials[randomColorNumber + currentTypeLength / 2]
+                };
+                preparedMaterials[2].Add(i, chosenMaterials);
+            }
 
-        private Material[] TakeRandomMaterialForType(Material[] materials)
-        {
-            var length = materials.Length;
-            var randomColorNumber = Random.Range(0, length / 2);
-            var takeMaterial = new Material[2];
-            takeMaterial[0] = materials[randomColorNumber];
-            takeMaterial[1] = materials[randomColorNumber + length / 2];
-
+            for (int i = 0; i < _materialsData.chelik.Count; i++)
+            {
+                var chosenMaterials = new List<Material>(1)
+                {
+                    [0] = _materialsData.chelik[i].materials[randomColorNumber],
+                };
+                preparedMaterials[3].Add(i, chosenMaterials);
+            }
+            
+            for (int i = 0; i < _materialsData.atmosphere.Count; i++)
+            {
+                var chosenMaterials = new List<Material>(1)
+                {
+                    [0] = _materialsData.atmosphere[i].materials[randomColorNumber],
+                };
+                preparedMaterials[4].Add(i, chosenMaterials);
+            }
+            
+            return preparedMaterials;
         }
     }
 }

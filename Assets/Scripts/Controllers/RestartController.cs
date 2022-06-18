@@ -31,7 +31,8 @@ namespace Controllers
         {
             _stateController = stateController;
             _environmentGenerator = environmentGenerator;
-            _paintPlanet = new PaintPlanet(materialsData);
+            var planetMaterials = afterRestart.PrepareMaterials;
+            _paintPlanet = new PaintPlanet(planetMaterials[1][0]);
             _stateController.OnStateChange += ChangeState;
         }
 

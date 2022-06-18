@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7be750b8c7ef4a7aaa61c4baa79a0171, type: 3}
+  m_Name: GlassFloorMaterial
+  m_EditorClassIdentifier: 
+  materials:
+  - {fileID: 2100000, guid: faae56880a875584abb88814d0490d38, type: 2}
+  - {fileID: 2100000, guid: a979f419a42b9714f83f7445cd84de2c, type: 2}
+  - {fileID: 2100000, guid: 5be6c3632fdafa14bb6582ea0208031a, type: 2}
+  - {fileID: 2100000, guid: fdb566209412bd24c99dd855d14593b4, type: 2}
+  - {fileID: 2100000, guid: 9e5a0990576fc8945987d57f5cbc2af9, type: 2}
+  - {fileID: 2100000, guid: 6feae48f5a649db45b10117e85377df4, type: 2}
+  - {fileID: 2100000, guid: 182790c03cf260a49b623a0f1f878f15, type: 2}
+  - {fileID: 2100000, guid: bd267baeb0debfe48a3ef1b998ee3301, type: 2}
+  - {fileID: 2100000, guid: 567f595c3a6f2674a8a8f47c467af179, type: 2}
+  - {fileID: 2100000, guid: 090d5a5df3057e14d95ea76a7e1cefa0, type: 2}
+  - {fileID: 2100000, guid: 752d0cff8cb00d14d87d85d8bb99d6cf, type: 2}
+  - {fileID: 2100000, guid: 901dae6d2630ed341bd8958297dbe9c0, type: 2}

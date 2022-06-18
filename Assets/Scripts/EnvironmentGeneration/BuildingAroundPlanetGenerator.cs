@@ -48,7 +48,8 @@ namespace EnvironmentGeneration
         private readonly List<Vector3> _treesPositions;
         private readonly List<Quaternion> _treesRotations;       
         #endregion
-        public BuildingAroundPlanetGenerator(StateController stateController, AllData data, Transform planet, float planetRadius, GameObject rootEnvironment)
+        public BuildingAroundPlanetGenerator(StateController stateController, AllData data, Transform planet, float planetRadius, 
+            GameObject rootEnvironment, Dictionary<int, List<Material>> floorMaterials, Dictionary<int, List<Material>> treesMaterials)
         {
             _stateController = stateController;
             _minimumAngleBetweenBuildings = data.ObjectsOnPlanetData.minimalAngleBetweenBuildings;
@@ -67,13 +68,13 @@ namespace EnvironmentGeneration
             
             _rootBuildingAroundPlanet = new GameObject("BuildingAroundPlanet");
             _rootBuildingAroundPlanet.transform.SetParent(rootEnvironment.transform);
-            _houseBuilders = new HouseBuilder[] { 
-                new HouseBuilder(data,1),
-                new HouseBuilder(data,2),
-                new HouseBuilder(data,3),
-                new HouseBuilder(data,4),
-                new HouseBuilder(data,5),
-                new HouseBuilder(data,6)
+            _houseBuilders = new [] { 
+                new HouseBuilder(1, floorMaterials[0], floorMaterials[1]),
+                new HouseBuilder(2, floorMaterials[0], floorMaterials[2]),
+                new HouseBuilder(3, floorMaterials[0], floorMaterials[3]),
+                new HouseBuilder(4, floorMaterials[0], floorMaterials[4]),
+                new HouseBuilder(5, floorMaterials[0], floorMaterials[5]),
+                new HouseBuilder(6, floorMaterials[0], floorMaterials[6])
             };
             _houseDirector = new HouseDirector
             {
@@ -85,9 +86,9 @@ namespace EnvironmentGeneration
             _minimumAngleBetweenTrees = data.ObjectsOnPlanetData.minimalAngleBetweenTrees;
 
             _treesPrefabs = new List<GameObject>(data.Prefab.trees.Length);
-            foreach (var tree in data.Prefab.trees)
+            for (int i = 0; i < data.Prefab.trees.Length; i++)
             {
-                _treesPrefabs.Add(tree);
+                _treesPrefabs.Add(PaintTree(data.Prefab.trees[i], treesMaterials[i]));
             }
 
             _rootTreesAroundPlanet = new GameObject("TreesAroundPlanet");
@@ -97,6 +98,24 @@ namespace EnvironmentGeneration
             _treesRotations = new List<Quaternion>();
         }
 
+        private GameObject PaintTree(GameObject tree, List<Material> materials)
+        {
+            var meshRenderers = tree.GetComponentsInChildren<MeshRenderer>();
+            foreach (var meshRenderer in meshRenderers)
+            {
+                if (meshRenderer.gameObject.CompareTag("Crown"))
+                {
+                    meshRenderer.material = materials[0];
+                }
+
+                if (meshRenderer.gameObject.CompareTag("Trunk"))
+                {
+                    meshRenderer.material = materials[1];
+                }
+            }
+            return tree;
+        }
+        
         public List<Transform> GenerateBuildingsAroundPlanet()
         {
             GeneratePositionsForBuildings();
