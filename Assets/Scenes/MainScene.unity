@@ -4602,7 +4602,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _maxNumberForRandom: 3
-  _allData: {fileID: 0}
+  _allData: {fileID: 11400000, guid: 8bce00c37c555e24795d78a06223e3ed, type: 2}
 --- !u!4 &2097515147
 Transform:
   m_ObjectHideFlags: 0

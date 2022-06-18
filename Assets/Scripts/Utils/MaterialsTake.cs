@@ -19,7 +19,7 @@ namespace Utils
             for (int i = 0; i < _materialsData.floor.Count; i++)
             {
                 var currentTypeLength = _materialsData.floor[i].materials.Count;
-                var chosenMaterials = new List<Material>(4)
+                var chosenMaterials = new List<Material>
                 {
                     [0] = _materialsData.floor[i].materials[randomColorNumber],
                     [1] = _materialsData.floor[i].materials[randomColorNumber + currentTypeLength / 4],

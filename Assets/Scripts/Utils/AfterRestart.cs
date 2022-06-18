@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Controllers;
 using ScriptableData;
 using UnityEngine;
@@ -24,13 +25,14 @@ namespace Utils
             DontDestroyOnLoad(gameObject);
         }
 
-        public void CreateMaterialTake()
+        private void Start()
         {
             _materialsTake = new MaterialsTake(_allData.Materials);
         }
 
         public void TakeStateController(StateController stateController)
         {
+            _materialsTake = new MaterialsTake(_allData.Materials);
             _stateController = stateController;
             _stateController.OnStateChange += ChangeState;
             _firstTimeLevelLaunch = true;
@@ -55,7 +57,7 @@ namespace Utils
 
         private void ColorNumberRandomization()
         {
-            _colorNumbers = Random.Range(0, _maxNumberForRandom + 1);
+            _colorNumbers = Random.Range(0, _maxNumberForRandom);
         }
     }
 }

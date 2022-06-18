@@ -34,7 +34,6 @@ public class GameInitialization
       finalScreenView.gameObject.SetActive(false);
       var atmosphereView = Object.FindObjectOfType<AtmosphereView>();
       var afterRestart = Object.FindObjectOfType<AfterRestart>();
-      afterRestart.CreateMaterialTake();
 
       var inputInitialization = new InputInitialization(data.Input.minimalDistanceForSwipe);
       var stateController = new StateController(planetView, playerView, data, gravityView, gravityLittleView, camera, 
