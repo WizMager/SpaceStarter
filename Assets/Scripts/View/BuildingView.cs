@@ -118,16 +118,11 @@ namespace View
 
             for (int i = 0; i < _rigidbodies.Count; i++)
             {
-                if (_rigidbodies[i].isKinematic)
-                {
-                    continue;
-                }
                 _rigidbodies[i].isKinematic = false;
 
                 _rigidbodies[i].AddForce(transform.up * UnityEngine.Random.Range(0f, 2f), ForceMode.Impulse);
                 _rigidbodies[i].angularVelocity = new Vector3(UnityEngine.Random.Range(-1f, 1f), UnityEngine.Random.Range(-1f, 1f),
                     UnityEngine.Random.Range(-1f, 1f));
-                return;
             }
         }
 
