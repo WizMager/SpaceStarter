@@ -9,40 +9,30 @@ namespace EnvironmentGeneration
 {
     public class BuildingOnPlanetGenerator
     {
-        private readonly float _invisibleBuildingAngle;
         private readonly float _planetRadius;
         private readonly int _maximumFloorInHouse;
         private readonly float _maximumAngleRotateBuildingAroundItself;
         private readonly int _buildingsOnPlanet;
-
-        private readonly List<Transform> _spawnedTopBuildings;
-        private readonly List<Transform> _spawnedDownBuildings;
         private readonly GameObject _rootBuildingOnPlanet;
-
         private readonly HouseBuilder[] _houseBuilders;
         private readonly HouseDirector _houseDirector;
 
-        public BuildingOnPlanetGenerator(AllData data, float planetRadius, GameObject rootEnvironment)
+        public BuildingOnPlanetGenerator(AllData data, float planetRadius, GameObject rootEnvironment, Dictionary<int, List<Material>> materials)
         {
-            _invisibleBuildingAngle = data.ObjectsOnPlanetData.flyAroundInvisibleObjectAngle;
             _planetRadius = planetRadius;
             _maximumFloorInHouse = data.ObjectsOnPlanetData.maximumFloorInHouseOnPlanet;
             _maximumAngleRotateBuildingAroundItself =
                 data.ObjectsOnPlanetData.maximumAngleRotateBuildingAroundItselfOnPlanet;
             _buildingsOnPlanet = data.ObjectsOnPlanetData.buildingsOnPlanet;
-            _spawnedTopBuildings = new List<Transform>();
-            _spawnedDownBuildings = new List<Transform>();
-            
             _rootBuildingOnPlanet = new GameObject("BuildingsOnPlanet");
             _rootBuildingOnPlanet.transform.SetParent(rootEnvironment.transform);
-
-            _houseBuilders = new HouseBuilder[] {
-                new HouseBuilder(data,1),
-                new HouseBuilder(data,2),
-                new HouseBuilder(data,3),
-                new HouseBuilder(data,4),
-                new HouseBuilder(data,5),
-                new HouseBuilder(data,6)
+            _houseBuilders = new HouseBuilder[] { 
+                new HouseBuilder(1, materials[0], materials[1]),
+                new HouseBuilder(2, materials[0], materials[2]),
+                new HouseBuilder(3, materials[0], materials[3]),
+                new HouseBuilder(4, materials[0], materials[4]),
+                new HouseBuilder(5, materials[0], materials[5]),
+                new HouseBuilder(6, materials[0], materials[6])
             };
             _houseDirector = new HouseDirector
             {
@@ -58,7 +48,6 @@ namespace EnvironmentGeneration
             do
             {
                 var randomCell = Random.Range(0, planetCellsTop.Count);
-                Debug.Log(planetCellsTop[randomCell].IsOccupied);
                 if (planetCellsTop[randomCell].IsOccupied) continue;
                 var tempCell = planetCellsTop[randomCell];
                 tempCell.Occupied();

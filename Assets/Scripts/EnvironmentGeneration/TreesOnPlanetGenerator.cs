@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using ScriptableData;
 using UnityEngine;
 using Utils;
@@ -17,59 +16,36 @@ namespace EnvironmentGeneration
         private readonly List<Transform> _spawnedDownTrees;
         private readonly int _treesOnPlanet;
 
-        public TreesOnPlanetGenerator(AllData data, float planetRadius, GameObject rootEnvironment)
+        public TreesOnPlanetGenerator(AllData data, float planetRadius, GameObject rootEnvironment, Dictionary<int, List<Material>> materials)
         {
             _treesPrefabs = new List<GameObject>(data.Prefab.trees);
-            var treesMaterials = new List<Material[]>(GetTreesMaterials(data.Prefab.trees.Length, data.Materials));
             for (int i = 0; i < data.Prefab.trees.Length; i++)
             {
-                _treesPrefabs.Add(PaintTree(data.Prefab.trees[i], treesMaterials[i]));
+                _treesPrefabs.Add(PaintTree(data.Prefab.trees[i], materials[i]));
             }
             _spawnedTopTrees = new List<Transform>();
             _spawnedDownTrees = new List<Transform>();
-            
-
             _planetRadius = planetRadius;
             _rootTreesOnPlanet = new GameObject("TreesOnPlanet");
             _rootTreesOnPlanet.transform.SetParent(rootEnvironment.transform);
             _treesOnPlanet = data.ObjectsOnPlanetData.treesOnPlanet;
         }
 
-        private List<Material[]> GetTreesMaterials(int treePrefabs, MaterialsData materialsData)
-        {
-            var treesMaterials = new List<Material[]>
-            {
-                materialsData.tree1Type,
-                materialsData.tree2Type,
-                materialsData.tree3Type,
-                materialsData.tree4Type
-            };
-            if (treesMaterials.Count != treePrefabs)
-            {
-                throw new ArgumentOutOfRangeException(
-                    "Number of tree prefabs is does not mach with number materials types");
-            }
-
-            return treesMaterials;
-        }
-        
-        private GameObject PaintTree(GameObject tree, Material[] treeMaterials)
+        private GameObject PaintTree(GameObject tree, List<Material> materials)
         {
             var meshRenderers = tree.GetComponentsInChildren<MeshRenderer>();
-            var randomMaterialNumber = Random.Range(0, treeMaterials.Length / 2 - 1);
             foreach (var meshRenderer in meshRenderers)
             {
                 if (meshRenderer.gameObject.CompareTag("Crown"))
                 {
-                    meshRenderer.material = treeMaterials[randomMaterialNumber];
+                    meshRenderer.material = materials[0];
                 }
 
                 if (meshRenderer.gameObject.CompareTag("Trunk"))
                 {
-                    meshRenderer.material = treeMaterials[randomMaterialNumber + treeMaterials.Length / 2];
+                    meshRenderer.material = materials[1];
                 }
             }
-
             return tree;
         }
 

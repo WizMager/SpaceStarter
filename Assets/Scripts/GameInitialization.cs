@@ -5,6 +5,7 @@ using EnvironmentGeneration;
 using InputClasses;
 using Model;
 using UnityEngine;
+using Utils;
 using View;
 using Object = UnityEngine.Object;
 
@@ -32,14 +33,16 @@ public class GameInitialization
       var finalScreenView = Object.FindObjectOfType<FinalScreenView>();
       finalScreenView.gameObject.SetActive(false);
       var atmosphereView = Object.FindObjectOfType<AtmosphereView>();
+      var afterRestart = Object.FindObjectOfType<AfterRestart>();
 
       var inputInitialization = new InputInitialization(data.Input.minimalDistanceForSwipe);
       var stateController = new StateController(planetView, playerView, data, gravityView, gravityLittleView, camera, 
-         playerModel, deadView, firstPersonView, restartButtons, finalScreenView, rocketIndicatorViews);
-      var environmentGenerator = new EnvironmentGenerator(stateController, data, planetView);
+         playerModel, deadView, firstPersonView, restartButtons, finalScreenView, rocketIndicatorViews, afterRestart.FirstTimeLevelLaunch);
+      afterRestart.TakeStateController(stateController);
+      var environmentGenerator = new EnvironmentGenerator(stateController, data, planetView, afterRestart.PrepareMaterials);
       var playerMoveController = new PlayerMoveController(stateController, playerView, data, inputInitialization.GetAllTouch(),
          planetView, gravityLittleView, playerModel);
-      var restartController = new RestartController(stateController, environmentGenerator, data.Materials);
+      var restartController = new RestartController(stateController, environmentGenerator, data.Materials, afterRestart);
       restartController.SaveObjects();
       restartController.SavePlanet();
       var buildingViews = Object.FindObjectsOfType<BuildingView>();
@@ -54,7 +57,7 @@ public class GameInitialization
       controllers.Add(new ShootController(inputInitialization.GetAllTouch(), camera, data, missilePosition,
          planetView.transform, stateController, playerModel));
       controllers.Add(new AtmosphereController(stateController, planetView.transform, playerView.transform,
-         atmosphereView.transform, data.Materials));
+         atmosphereView.transform, afterRestart.PrepareMaterials[4][0][0]));
       controllers.Add(playerMoveController);
       controllers.Add(stateController);
    }

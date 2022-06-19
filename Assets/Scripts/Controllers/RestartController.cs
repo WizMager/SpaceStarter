@@ -6,6 +6,7 @@ using Interface;
 using ScriptableData;
 using UnityEngine;
 using Utils;
+using View;
 using Object = UnityEngine.Object;
 using Random = UnityEngine.Random;
 
@@ -25,11 +26,13 @@ namespace Controllers
         private readonly EnvironmentGenerator _environmentGenerator;
         private readonly PaintPlanet _paintPlanet;
 
-        public RestartController(StateController stateController, EnvironmentGenerator environmentGenerator, MaterialsData materialsData)
+        public RestartController(StateController stateController, EnvironmentGenerator environmentGenerator, MaterialsData materialsData, 
+            AfterRestart afterRestart)
         {
             _stateController = stateController;
             _environmentGenerator = environmentGenerator;
-            _paintPlanet = new PaintPlanet(materialsData);
+            var planetMaterials = afterRestart.PrepareMaterials;
+            _paintPlanet = new PaintPlanet(planetMaterials[1][0]);
             _stateController.OnStateChange += ChangeState;
         }
 

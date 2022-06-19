@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7be750b8c7ef4a7aaa61c4baa79a0171, type: 3}
+  m_Name: FloorMaterialType 1
+  m_EditorClassIdentifier: 
+  materials:
+  - {fileID: 2100000, guid: 46bd5203d542fa646b167f681f968205, type: 2}
+  - {fileID: 2100000, guid: 870e6784a464b2941bf0fb204da20a93, type: 2}
+  - {fileID: 2100000, guid: e4a329145f673f84688223868dd0af16, type: 2}
+  - {fileID: 2100000, guid: 802632107f2af934d97c1b40a35f3eb6, type: 2}
+  - {fileID: 2100000, guid: 0695a2a73c07e2845964161ee5629ca1, type: 2}
+  - {fileID: 2100000, guid: 21f78bca55342004bb3e681df6cffd6c, type: 2}
+  - {fileID: 2100000, guid: 31dec3e86c1f1bc42828856cb7d3a378, type: 2}
+  - {fileID: 2100000, guid: 951f3ffcdf030ef44b80a3f4691568fe, type: 2}
+  - {fileID: 2100000, guid: 2a347c82c9968c040a246479ae815b26, type: 2}
+  - {fileID: 2100000, guid: d7c241851f9bf464297b962c295fb4bf, type: 2}
+  - {fileID: 2100000, guid: 5a3b62092f7c7904b9ab8910edf1387b, type: 2}
+  - {fileID: 2100000, guid: 9eac27ab087f71a46978a7642e535714, type: 2}

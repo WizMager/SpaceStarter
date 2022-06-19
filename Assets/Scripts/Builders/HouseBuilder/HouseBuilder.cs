@@ -2,7 +2,7 @@
 using View;
 using Utils;
 using System;
-using ScriptableData;
+using System.Collections.Generic;
 
 namespace Builders.HouseBuilder
 {
@@ -23,14 +23,14 @@ namespace Builders.HouseBuilder
 
         private readonly PaintFloor _paintFloor;
 
-        public HouseBuilder(AllData allData, int houseTypeNumber)
+        public HouseBuilder(int houseTypeNumber, List<Material> glassFloor, List<Material> simpleFloor)
         {
             _houseTypeNumber = houseTypeNumber;
             _simpleFloor = Resources.Load<GameObject>($"Buildings/House{houseTypeNumber}Type/House{houseTypeNumber}Floor");
             _glassFloor = Resources.Load<GameObject>("Buildings/GlassBuilding/GlassFloor");
             _roof = Resources.Load<GameObject>($"Buildings/House{houseTypeNumber}Type/House{houseTypeNumber}Roof");
             _glassRoof = Resources.Load<GameObject>("Buildings/GlassBuilding/GlassRoof");
-            _paintFloor = new PaintFloor(allData.Materials, houseTypeNumber);
+            _paintFloor = new PaintFloor(glassFloor, simpleFloor);
         }
 
         public void ResetHouse()
