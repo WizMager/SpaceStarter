@@ -39,13 +39,12 @@ namespace EnvironmentGeneration
             _buildingOnPlanetGenerator = new BuildingOnPlanetGenerator(data, planetRadius, rootEnvironment, preparedMaterials[0]);
             _treesOnPlanetGenerator = new TreesOnPlanetGenerator(data, planetRadius, rootEnvironment, preparedMaterials[2]);
             _cheliksOnPlanetGenerator = new CheliksOnPlanetGenerator(stateController, data, planetRadius, rootEnvironment, preparedMaterials[3][0][0]);
-            _paintPlanet = new PaintPlanet(preparedMaterials[2][0]);
+            _paintPlanet = new PaintPlanet(preparedMaterials[1][0]);
         }
 
         private void GenerateCells(float maxAngleUp, float maxAngleDown)
         {
             var halfEnvironmentObject = _environmentObjects / 40;
-            Debug.Log(halfEnvironmentObject);
             var upCellSize = new Vector3((90f - maxAngleUp) / halfEnvironmentObject, 360f / halfEnvironmentObject,(90f - maxAngleUp) / halfEnvironmentObject);
             var downCellSize = new Vector3((90f - maxAngleDown) / halfEnvironmentObject, 360f / halfEnvironmentObject,(90f - maxAngleDown) / halfEnvironmentObject);
             var availableAngleX = 90f - maxAngleUp;

@@ -48,7 +48,6 @@ namespace EnvironmentGeneration
             do
             {
                 var randomCell = Random.Range(0, planetCellsTop.Count);
-                Debug.Log(planetCellsTop[randomCell].IsOccupied);
                 if (planetCellsTop[randomCell].IsOccupied) continue;
                 var tempCell = planetCellsTop[randomCell];
                 tempCell.Occupied();
