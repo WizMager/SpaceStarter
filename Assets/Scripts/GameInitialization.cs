@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Controllers;
+﻿using Controllers;
 using EnvironmentGeneration;
 using InputClasses;
 using Model;
@@ -42,7 +40,7 @@ public class GameInitialization
       var environmentGenerator = new EnvironmentGenerator(stateController, data, planetView, afterRestart.PrepareMaterials);
       var playerMoveController = new PlayerMoveController(stateController, playerView, data, inputInitialization.GetAllTouch(),
          planetView, gravityLittleView, playerModel, afterRestart);
-      var restartController = new RestartController(stateController, environmentGenerator, data.Materials, afterRestart);
+      var restartController = new RestartController(stateController, environmentGenerator, afterRestart);
          restartController.SaveObjects();
       restartController.SavePlanet();
       var buildingViews = Object.FindObjectsOfType<BuildingView>();

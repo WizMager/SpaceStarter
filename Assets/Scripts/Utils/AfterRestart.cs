@@ -17,8 +17,8 @@ namespace Utils
         private MaterialsTake _materialsTake;
 
         public (Vector3 position, Quaternion rotation) TurbineRestart { get; set; }
-        public Dictionary<int, List<Transform>> SpawnedTransforms { get; set; }
-
+        public Dictionary<int, List<Vector3>> SpawnedPositions { get; set; }
+        public Dictionary<int, List<Quaternion>> SpawnedRotations { get; set; }
         public bool FirstTimeLevelLaunch => _firstTimeLevelLaunch;
         public Dictionary<int, Dictionary<int, List<Material>>> PrepareMaterials => _preparedMaterials;
         

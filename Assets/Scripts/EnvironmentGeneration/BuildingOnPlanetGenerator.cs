@@ -69,17 +69,21 @@ namespace EnvironmentGeneration
             return spawnedTopBuildings;
         }
         
-        public void SetBuildingAndPosition(List<Transform> transforms)
+        public List<Transform> SetBuildingAndPosition(List<Vector3> positions, List<Quaternion> rotations)
         {
-            for (int i = 0; i < transforms.Count; i++)
+            var spawnedDownBuildings = new List<Transform>();
+            for (int i = 0; i < positions.Count; i++)
             {
                 var randomFloors = Random.Range(1, _maximumFloorInHouse);
                 var randomBuildingType = Random.Range(0, 5);
                 _houseDirector.Builder = _houseBuilders[randomBuildingType];
                 var building = _houseDirector.BuildSimpleHouse(randomFloors);
-                building.transform.SetPositionAndRotation(transforms[i].position, transforms[i].rotation);
+                building.transform.SetPositionAndRotation(positions[i], rotations[i]);
                 building.transform.SetParent(_rootBuildingOnPlanet.transform);
+                spawnedDownBuildings.Add(building.transform);
             }
+
+            return spawnedDownBuildings;
         }
         
         public List<Transform> CreateDownBuildingAndPosition(List<PlanetCell> planetCellsDown)

@@ -39,12 +39,13 @@ namespace Controllers
             var objectsTransforms = new List<Transform>();
             if (!_afterRestart.FirstTimeLevelLaunch)
             {
-                objectsTransforms = _environmentGenerator.SetEnvironment(_afterRestart.SpawnedTransforms);
+                objectsTransforms = _environmentGenerator.SetEnvironment(_afterRestart.SpawnedPositions, _afterRestart.SpawnedRotations);
             }
             else
             {
                 objectsTransforms = _environmentGenerator.GenerateEnvironment();
-                _afterRestart.SpawnedTransforms = _environmentGenerator.GetAllEnvironment;
+                _afterRestart.SpawnedPositions = _environmentGenerator.GetAllPositions;
+                _afterRestart.SpawnedRotations = _environmentGenerator.GetAllRotations;
             }
             
             foreach (var spawnedBuilding in objectsTransforms)
