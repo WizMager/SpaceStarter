@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Controllers;
 using ScriptableData;
 using UnityEngine;
+using Object = UnityEngine.Object;
 using Random = UnityEngine.Random;
 
 namespace Utils
@@ -11,7 +12,7 @@ namespace Utils
     {
         [SerializeField] private int _maxNumberForRandom;
         [SerializeField] private AllData _allData;
-        private bool _firstTimeLevelLaunch;
+        private bool _firstTimeLevelLaunch = true;
         private int _colorNumbers;
         private StateController _stateController;
         private Dictionary<int, Dictionary<int, List<Material>>> _preparedMaterials;
@@ -22,6 +23,11 @@ namespace Utils
         
         private void Awake()
         {
+            var otherAfterRestart = FindObjectsOfType<AfterRestart>();
+            if (otherAfterRestart.Length > 1)
+            {
+                Destroy(gameObject);
+            }
             DontDestroyOnLoad(gameObject);
         }
 
@@ -35,8 +41,10 @@ namespace Utils
             _materialsTake = new MaterialsTake(_allData.Materials);
             _stateController = stateController;
             _stateController.OnStateChange += ChangeState;
-            _firstTimeLevelLaunch = true;
-            ColorNumberRandomization();
+            if (_firstTimeLevelLaunch)
+            {
+                ColorNumberRandomization();
+            }
             _preparedMaterials = _materialsTake.TakeRandomMaterials(_colorNumbers);
         }
 

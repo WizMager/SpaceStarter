@@ -15,6 +15,7 @@ namespace Utils
 
         public Dictionary<int, Dictionary<int, List<Material>>> TakeRandomMaterials(int randomColorNumber)
         {
+            Debug.Log(randomColorNumber);
             var preparedMaterials = new Dictionary<int, Dictionary<int, List<Material>>>(7);
             preparedMaterials.Add(0, new Dictionary<int, List<Material>>(7));
             for (int i = 0; i < _materialsData.floor.Count; i++)

@@ -37,7 +37,7 @@ public class GameInitialization
 
       var inputInitialization = new InputInitialization(data.Input.minimalDistanceForSwipe);
       var stateController = new StateController(planetView, playerView, data, gravityView, gravityLittleView, camera, 
-         playerModel, deadView, firstPersonView, restartButtons, finalScreenView, rocketIndicatorViews);
+         playerModel, deadView, firstPersonView, restartButtons, finalScreenView, rocketIndicatorViews, afterRestart.FirstTimeLevelLaunch);
       afterRestart.TakeStateController(stateController);
       var environmentGenerator = new EnvironmentGenerator(stateController, data, planetView, afterRestart.PrepareMaterials);
       var playerMoveController = new PlayerMoveController(stateController, playerView, data, inputInitialization.GetAllTouch(),

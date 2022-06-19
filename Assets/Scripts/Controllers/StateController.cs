@@ -5,6 +5,7 @@ using Model;
 using ScriptableData;
 using StateClasses;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Utils;
 using View;
@@ -21,8 +22,6 @@ namespace Controllers
         private readonly Button[] _restartButtons;
         private readonly FinalScreenView _finalScreenView;
         private readonly List<GameObject> _rocketIndicators;
-        private readonly GameObject _ship;
-
         private readonly StartPositionPlayerAndCamera _startPosition;
         private readonly FlewAngleCounter _flewAngle;
         private readonly FlyToCenterGravity _toCenterGravity;
@@ -40,9 +39,8 @@ namespace Controllers
         public StateController(PlanetView planetView, ShipView shipView, AllData data, GravityView gravityView, 
             GravityLittleView gravityLittleView, Camera camera, PlayerModel playerModel, DeadScreenView deadView, 
             FirstPersonView firstPersonView, RestartButtonView[] restartButtons, FinalScreenView finalScreenView, 
-            RocketIndicatorView[] rocketIndicatorViews)
+            RocketIndicatorView[] rocketIndicatorViews, bool isFirstTry)
         {
-            _ship = shipView.gameObject;
             _playerModel = playerModel;
             _deadView = deadView;
             _firstPersonView = firstPersonView;
@@ -108,9 +106,22 @@ namespace Controllers
                 restartButton.onClick.AddListener(NextLevel);
             }
 
-            _deadView.gameObject.SetActive(false);
-            _startPosition.Set();
-            SwitchUIWhenInteract(false);
+            if (isFirstTry)
+            {
+                _deadView.gameObject.SetActive(false); 
+                SwitchUIWhenInteract(false);
+            }
+            else
+            {
+                OnStateChange?.Invoke(GameState.Restart);
+                Debug.Log(GameState.Restart);
+                SwitchUIWhenInteract(true);
+                _finalScreenView.gameObject.SetActive(false);
+                _deadView.gameObject.SetActive(false);
+            }
+            
+            _startPosition.SetPlayerAndCamera(isFirstTry);
+            
         }
 
         private void SwitchUIWhenInteract(bool isActive)
@@ -141,25 +152,29 @@ namespace Controllers
         private void Restart()
         {
             OnStateChange?.Invoke(GameState.Restart);
-            Debug.Log(GameState.Restart);
-            SwitchUIWhenInteract(true);
-            _finalScreenView.gameObject.SetActive(false);
-            _deadView.gameObject.SetActive(false);
-            _startPosition.SetRestart();
-            _playerModel.ResetRound();
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            // OnStateChange?.Invoke(GameState.Restart);
+            // Debug.Log(GameState.Restart);
+            // SwitchUIWhenInteract(true);
+            // _finalScreenView.gameObject.SetActive(false);
+            // _deadView.gameObject.SetActive(false);
+            // //_startPosition.SetRestart();
+            // _playerModel.ResetRound();
         }
 
         private void NextLevel()
         {
             OnStateChange?.Invoke(GameState.NextLevel);
-            Debug.Log(GameState.NextLevel);
-            SwitchUIWhenInteract(false);
-            _finalScreenView.gameObject.SetActive(false);
-            _deadView.gameObject.SetActive(false);
-            _ship.SetActive(true);
-            _startPosition.SetNextRound();
-            _playerModel.ResetRound();
-            OnStateChange?.Invoke(GameState.EdgeGravityToPlanet);
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            // OnStateChange?.Invoke(GameState.NextLevel);
+            // Debug.Log(GameState.NextLevel);
+            // SwitchUIWhenInteract(false);
+            // _finalScreenView.gameObject.SetActive(false);
+            // _deadView.gameObject.SetActive(false);
+            // _ship.SetActive(true);
+            // //_startPosition.SetNextRound();
+            // _playerModel.ResetRound();
+            // OnStateChange?.Invoke(GameState.EdgeGravityToPlanet);
         }
         
         private void RestartAfterWaiting()

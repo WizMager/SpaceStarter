@@ -11,9 +11,6 @@ public class StartPositionPlayerAndCamera
     private readonly float _startCameraHeight;
     private readonly float _restartCameraHeight;
     private readonly GravityLittleView _gravityLittleView;
-    private Vector3 _defaultPlayerPosition;
-    private Vector3 _defaultCameraPosition;
-    private Quaternion _defaultCameraRotation;
 
     public StartPositionPlayerAndCamera(Transform playerTransform, Transform planetTransform, Transform gravityTransform,
         Transform cameraTransform, float startDistanceFromPlanet, float startCameraHeight, float restartCameraHeight, GravityLittleView gravityLittleView)
@@ -28,7 +25,19 @@ public class StartPositionPlayerAndCamera
         _gravityLittleView = gravityLittleView;
     }
 
-    public void SetRestart()
+    public void SetPlayerAndCamera(bool isFirstTry)
+    {
+        if (isFirstTry)
+        {
+            SetDefault();
+        }
+        else
+        {
+            SetRestart();
+        }
+    }
+    
+    private void SetRestart()
     {
         _player.gameObject.SetActive(true);
         _planet.GetComponent<SphereCollider>().enabled = true;
@@ -50,29 +59,21 @@ public class StartPositionPlayerAndCamera
         _camera.SetPositionAndRotation(cameraPosition, startRotation);
     }
 
-    public void SetNextRound()
-    {
-        _player.position = _defaultPlayerPosition;
-        _player.LookAt(_planet.position);
-        _camera.SetPositionAndRotation(_defaultCameraPosition, _defaultCameraRotation);
-    }
-    
-    public void Set()
+    private void SetDefault()
     {
         var planetRay = new Ray(_planet.position, _planet.forward);
-        _defaultPlayerPosition = planetRay.GetPoint(_startDistanceFromPlanet);
-        _player.position = _defaultPlayerPosition;
+        _player.position = planetRay.GetPoint(_startDistanceFromPlanet);
         _player.LookAt(_planet.position);
         
         var cameraRay = new Ray(_player.position, _player.forward);
         var planetRadius = _planet.GetComponent<SphereCollider>().radius;
         var distanceHalfGravity = (_gravity.GetComponent<MeshCollider>().bounds.size.x / 2 - planetRadius) / 2;
         var distanceToCenterGravity = _startDistanceFromPlanet - planetRadius - distanceHalfGravity;
-        _defaultCameraPosition = cameraRay.GetPoint(distanceToCenterGravity);
-        _defaultCameraPosition.y = _startCameraHeight;
+        var defaultCameraPosition = cameraRay.GetPoint(distanceToCenterGravity);
+        defaultCameraPosition.y = _startCameraHeight;
         //TODO: this is just for test and never will be change
-        _defaultCameraPosition.z += 1.2f;
-        _defaultCameraRotation = Quaternion.Euler(new Vector3(90, 180, 180));
-        _camera.SetPositionAndRotation(_defaultCameraPosition, _defaultCameraRotation);
+        defaultCameraPosition.z += 1.2f;
+        var defaultCameraRotation = Quaternion.Euler(new Vector3(90, 180, 180));
+        _camera.SetPositionAndRotation(defaultCameraPosition, defaultCameraRotation);
     }
 }
