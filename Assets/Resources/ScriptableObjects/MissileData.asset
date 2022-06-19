@@ -15,13 +15,13 @@ MonoBehaviour:
   missilePosition: {x: 0, y: -2, z: 1}
   timeBeforeStartEngine: 0.3
   timeBeforeEngineStop: 15
-  initialImpulse: 100
-  engineAcceleration: 1000
+  initialImpulse: 150
+  engineAcceleration: 1200
   rotationSpeed: 3
   explosionParticleSystem: {fileID: 8510677244830863334, guid: 9d69d2a8d25d62845afe6ae61919a641,
     type: 3}
-  explosionArea: 5
-  explosionForce: 30
-  explosionDelay: 0.2
-  scaleModifier: 0.9
+  explosionArea: 4.5
+  explosionForce: 32
+  explosionDelay: 0.3
+  scaleModifier: 0.85
   explosionDestroy: 2
