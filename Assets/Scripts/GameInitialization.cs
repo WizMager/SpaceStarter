@@ -43,7 +43,7 @@ public class GameInitialization
       var playerMoveController = new PlayerMoveController(stateController, playerView, data, inputInitialization.GetAllTouch(),
          planetView, gravityLittleView, playerModel, afterRestart);
       var restartController = new RestartController(stateController, environmentGenerator, data.Materials, afterRestart);
-      restartController.SaveObjects();
+         restartController.SaveObjects();
       restartController.SavePlanet();
       var buildingViews = Object.FindObjectsOfType<BuildingView>();
       controllers.Add(restartController);

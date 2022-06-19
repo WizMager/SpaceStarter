@@ -121,10 +121,21 @@ namespace EnvironmentGeneration
             GeneratePositionsForBuildings();
             return CreateBuildingAndPosition();
         }
+        
+        public void SetBuildingsAroundPlanet(List<Transform> transforms)
+        {
+            CreateBuildingAndPosition(transforms);
+        }
+        
         public List<Transform> GenerateTreesAroundPlanet()
         {
             GeneratePositionsForTrees();
             return CreateTreeAndPosition();
+        }
+        
+        public void SetTreesAroundPlanet(List<Transform> transforms)
+        {
+            CreateTreeAndPosition(transforms);
         }
         
         private void GeneratePositionsForBuildings()
@@ -187,6 +198,22 @@ namespace EnvironmentGeneration
             return _spawnedBuildings;
         }
 
+        private void CreateBuildingAndPosition(List<Transform> transforms)
+        {
+            var numbersBuildingsWithGlass = TakeRandomFloorNumber(_buildingsCounter);
+            for (int i = 0; i < _buildingsCounter; i++)
+            {
+                var randomFloors = Random.Range(1, _maximumFloorsInHouse);
+                var randomBuildingType = Random.Range(0, 5);
+                _houseDirector.Builder = _houseBuilders[randomBuildingType];
+                var isGlassHouse = numbersBuildingsWithGlass.Any(buildingWithGlass => i == buildingWithGlass);
+                var building = isGlassHouse ? _houseDirector.BuildGlassHouse(randomFloors) : _houseDirector.BuildSimpleHouse(randomFloors);
+                building.transform.SetPositionAndRotation(transforms[i].position, transforms[i].rotation);
+                _spawnedBuildings.Add(building.transform);
+                building.transform.SetParent(_rootBuildingAroundPlanet.transform);
+            }
+        }
+        
         private void GeneratePositionsForTrees()
         {
             var planetPosition = _planet.position;
@@ -210,6 +237,7 @@ namespace EnvironmentGeneration
                 _treesCounter++;
             }
         }
+
         private List<Transform> CreateTreeAndPosition()
         {
             for(int i = 0; i < _treesCounter; i++)
@@ -223,6 +251,19 @@ namespace EnvironmentGeneration
                 tree.transform.SetParent(_rootTreesAroundPlanet.transform);
             }
             return _spawnedTrees;
+        }
+        
+        private void CreateTreeAndPosition(List<Transform> transforms)
+        {
+            for(int i = 0; i < _treesCounter; i++)
+            {
+                var randomTreeType = Random.Range(0, _treesPrefabs.Count);
+                var tree = Object.Instantiate(_treesPrefabs[randomTreeType]);
+                tree.GetComponent<ObjectOnPlanet>().GetStateController(_stateController);
+                tree.transform.SetPositionAndRotation(transforms[i].position, transforms[i].rotation);
+                _spawnedTrees.Add(tree.transform);
+                tree.transform.SetParent(_rootTreesAroundPlanet.transform);
+            }
         }
     }
 }

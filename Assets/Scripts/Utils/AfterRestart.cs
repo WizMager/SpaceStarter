@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Controllers;
 using ScriptableData;
 using UnityEngine;
-using Object = UnityEngine.Object;
 using Random = UnityEngine.Random;
 
 namespace Utils
@@ -19,6 +17,8 @@ namespace Utils
         private MaterialsTake _materialsTake;
 
         public (Vector3 position, Quaternion rotation) TurbineRestart { get; set; }
+        public Dictionary<int, List<Transform>> SpawnedTransforms { get; set; }
+
         public bool FirstTimeLevelLaunch => _firstTimeLevelLaunch;
         public Dictionary<int, Dictionary<int, List<Material>>> PrepareMaterials => _preparedMaterials;
         
