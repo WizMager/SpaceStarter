@@ -25,10 +25,12 @@ namespace Controllers
         private readonly StateController _stateController;
         private readonly EnvironmentGenerator _environmentGenerator;
         private readonly PaintPlanet _paintPlanet;
+        private readonly AfterRestart _afterRestart;
 
-        public RestartController(StateController stateController, EnvironmentGenerator environmentGenerator, MaterialsData materialsData, 
+        public RestartController(StateController stateController, EnvironmentGenerator environmentGenerator, 
             AfterRestart afterRestart)
         {
+            _afterRestart = afterRestart;
             _stateController = stateController;
             _environmentGenerator = environmentGenerator;
             var planetMaterials = afterRestart.PrepareMaterials;
@@ -38,7 +40,17 @@ namespace Controllers
 
         public void SaveObjects()
         {
-            var objectsTransforms = _environmentGenerator.GenerateEnvironment();
+            var objectsTransforms = new List<Transform>();
+            if (!_afterRestart.FirstTimeLevelLaunch)
+            {
+                objectsTransforms = _environmentGenerator.SetEnvironment(_afterRestart.SpawnedTransforms);
+            }
+            else
+            {
+                objectsTransforms = _environmentGenerator.GenerateEnvironment();
+                _afterRestart.SpawnedTransforms = _environmentGenerator.GetAllEnvironment;
+            }
+            
             foreach (var spawnedBuilding in objectsTransforms)
             {
                 var buildingTransforms = spawnedBuilding.GetComponent<Transform>();

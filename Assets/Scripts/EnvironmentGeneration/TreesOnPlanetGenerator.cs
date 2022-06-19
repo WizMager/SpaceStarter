@@ -49,6 +49,16 @@ namespace EnvironmentGeneration
             return tree;
         }
 
+        public void SetTreesAndPosition(List<Transform> transforms)
+        {
+            for (int i = 0; i < transforms.Count; i++)
+            {
+                var randomTreeType = Random.Range(0, _treesPrefabs.Count);
+                var tree = Object.Instantiate(_treesPrefabs[randomTreeType], transforms[i].position,transforms[i].rotation);
+                tree.transform.SetParent(_rootTreesOnPlanet.transform); 
+            }
+        }
+        
         public List<Transform> CreateTopTreesAndPosition(List<PlanetCell> planetCellsDown)
         {
             var createdTrees = 0;

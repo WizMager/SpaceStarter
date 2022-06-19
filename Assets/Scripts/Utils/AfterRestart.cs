@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Controllers;
 using ScriptableData;
 using UnityEngine;
-using Object = UnityEngine.Object;
 using Random = UnityEngine.Random;
 
 namespace Utils
@@ -17,6 +15,8 @@ namespace Utils
         private StateController _stateController;
         private Dictionary<int, Dictionary<int, List<Material>>> _preparedMaterials;
         private MaterialsTake _materialsTake;
+
+        public Dictionary<int, List<Transform>> SpawnedTransforms { get; set; }
 
         public bool FirstTimeLevelLaunch => _firstTimeLevelLaunch;
         public Dictionary<int, Dictionary<int, List<Material>>> PrepareMaterials => _preparedMaterials;

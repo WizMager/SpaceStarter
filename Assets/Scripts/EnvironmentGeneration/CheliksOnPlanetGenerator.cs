@@ -35,6 +35,24 @@ namespace EnvironmentGeneration
             _material = material;
         }
         
+        public void SetCheliksAndPosition(List<Transform> transforms)
+        {
+            for (int i = 0; i < transforms.Count; i++)
+            {
+                var randomChelikType = Random.Range(0, _cheliksPrefabs.Count);
+                var chelik = Object.Instantiate(_cheliksPrefabs[randomChelikType], transforms[i].position, transforms[i].rotation);
+                chelik.GetComponent<ChelikMove>().GetStateController(_stateController);
+                var meshRenderers = chelik.GetComponentsInChildren<MeshRenderer>();
+                foreach (var mesh in meshRenderers)
+                {
+                    mesh.material = _material;
+                }
+                chelik.transform.Translate(new Vector3(0, 0.2f, 0));
+                _spawnedTopCheliks.Add(chelik.transform);
+                chelik.transform.SetParent(_rootCheliksOnPlanet.transform);
+            }
+        }
+        
         public List<Transform> CreateTopCheliksAndPosition(List<PlanetCell> planetCellsTop)
         {
             var createdCheliks = 0;

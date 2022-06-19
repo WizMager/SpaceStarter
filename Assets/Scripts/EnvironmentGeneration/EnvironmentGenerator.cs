@@ -11,7 +11,7 @@ namespace EnvironmentGeneration
 {
     public class EnvironmentGenerator
     {
-        private readonly List<Transform> _allEnvironment;
+        private Dictionary<int, List<Transform>> _allEnvironment;
         private readonly List<PlanetCell> _planetCellsTop;
         private readonly List<PlanetCell> _planetCellsDown;
         private readonly int _environmentObjects;
@@ -23,6 +23,8 @@ namespace EnvironmentGeneration
         private readonly CheliksOnPlanetGenerator _cheliksOnPlanetGenerator;
         private readonly PaintPlanet _paintPlanet;
 
+        public Dictionary<int, List<Transform>> GetAllEnvironment => _allEnvironment;
+        
         public EnvironmentGenerator(StateController stateController, AllData data, PlanetView planetView, 
             Dictionary<int, Dictionary<int, List<Material>>> preparedMaterials)
         {
@@ -31,7 +33,7 @@ namespace EnvironmentGeneration
             _planetCellsDown = new List<PlanetCell>();
             _environmentObjects = data.ObjectsOnPlanetData.buildingsOnPlanet + data.ObjectsOnPlanetData.buildingsOnPlanet + data.ObjectsOnPlanetData.cheliksOnPlanet;
             GenerateCells(data.ObjectsOnPlanetData.maximumBuildingAngleUp, data.ObjectsOnPlanetData.maximumBuildingAngleDown);
-            _allEnvironment = new List<Transform>();
+            _allEnvironment = new Dictionary<int, List<Transform>>();
             var rootEnvironment = new GameObject("PlanetEnvironment");
             var planetRadius = planetView.GetComponent<SphereCollider>().radius;
             _buildingAroundPlanetGenerator = new BuildingAroundPlanetGenerator(stateController, data, planetView.transform, 
@@ -93,7 +95,6 @@ namespace EnvironmentGeneration
 
         public List<Transform> GenerateEnvironment()
         {
-            ClearCells();
             var buildingsAroundPlanet = _buildingAroundPlanetGenerator.GenerateBuildingsAroundPlanet();
             var treesAroundPlanet = _buildingAroundPlanetGenerator.GenerateTreesAroundPlanet();
             var topBuildingsOnPlanet = _buildingOnPlanetGenerator.CreateTopBuildingAndPosition(_planetCellsTop);
@@ -103,35 +104,43 @@ namespace EnvironmentGeneration
             var topCheliksOnPlanet = _cheliksOnPlanetGenerator.CreateTopCheliksAndPosition(_planetCellsTop);
             var downCheliksOnPlanet = _cheliksOnPlanetGenerator.CreateDownCheliksAndPosition(_planetCellsDown);
 
-            _allEnvironment.AddRange(buildingsAroundPlanet);
-            _allEnvironment.AddRange(treesAroundPlanet);
-            _allEnvironment.AddRange(topBuildingsOnPlanet);
-            _allEnvironment.AddRange(downBuildingsOnPlanet);
-            _allEnvironment.AddRange(topTreesOnPlanet);
-            _allEnvironment.AddRange(downTreesOnPlanet);
-            _allEnvironment.AddRange(topCheliksOnPlanet);
-            _allEnvironment.AddRange(downCheliksOnPlanet);
+            _allEnvironment.Add(0, buildingsAroundPlanet);
+            _allEnvironment.Add(1, treesAroundPlanet);
+            _allEnvironment.Add(2, topBuildingsOnPlanet);
+            _allEnvironment.Add(3, downBuildingsOnPlanet);
+            _allEnvironment.Add(4, topTreesOnPlanet);
+            _allEnvironment.Add(5, downTreesOnPlanet);
+            _allEnvironment.Add(6, topCheliksOnPlanet);
+            _allEnvironment.Add(7, downCheliksOnPlanet);
 
-            return _allEnvironment;
-        }
-
-        private void ClearCells()
-        {
-            for (int i = 0; i < _planetCellsTop.Count; i++)
+            var transformsList = new List<Transform>();
+            foreach (var transforms in _allEnvironment)
             {
-                if (!_planetCellsTop[i].IsOccupied) continue;
-                var tempCell = new PlanetCell(_planetCellsTop[i].rangeX, _planetCellsTop[i].rangeY, _planetCellsTop[i].rangeZ);
-                _planetCellsTop[i] = tempCell;
+                transformsList.AddRange(transforms.Value);
             }
-
-            for (int i = 0; i < _planetCellsDown.Count; i++)
-            {
-                if (!_planetCellsDown[i].IsOccupied) continue;
-                var tempCell = new PlanetCell(_planetCellsDown[i].rangeX, _planetCellsDown[i].rangeY, _planetCellsDown[i].rangeZ);
-                _planetCellsDown[i] = tempCell;
-            }
+            return transformsList;
         }
         
+        public List<Transform> SetEnvironment(Dictionary<int, List<Transform>> allEnvironment)
+        {
+            _allEnvironment = allEnvironment;
+            //_buildingAroundPlanetGenerator.SetBuildingsAroundPlanet(_allEnvironment[0]);
+            // _buildingAroundPlanetGenerator.SetTreesAroundPlanet(_allEnvironment[1]);
+            // _buildingOnPlanetGenerator.SetBuildingAndPosition(_allEnvironment[2]);
+            // _buildingOnPlanetGenerator.SetBuildingAndPosition(_allEnvironment[3]);
+            // _treesOnPlanetGenerator.SetTreesAndPosition(_allEnvironment[4]);
+            // _treesOnPlanetGenerator.SetTreesAndPosition(_allEnvironment[5]);
+            // _cheliksOnPlanetGenerator.SetCheliksAndPosition(_allEnvironment[6]);
+            //_cheliksOnPlanetGenerator.SetCheliksAndPosition(_allEnvironment[7]);
+
+            var transformsList = new List<Transform>();
+            foreach (var transforms in _allEnvironment)
+            {
+                transformsList.AddRange(transforms.Value);
+            }
+            return transformsList;
+        }
+
         public List<Transform> TakePlanetPieces()
         {
             var pieces = _planetView.GetComponentsInChildren<Transform>().ToList();

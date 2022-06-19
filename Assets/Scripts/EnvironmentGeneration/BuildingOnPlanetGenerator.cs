@@ -69,6 +69,19 @@ namespace EnvironmentGeneration
             return spawnedTopBuildings;
         }
         
+        public void SetBuildingAndPosition(List<Transform> transforms)
+        {
+            for (int i = 0; i < transforms.Count; i++)
+            {
+                var randomFloors = Random.Range(1, _maximumFloorInHouse);
+                var randomBuildingType = Random.Range(0, 5);
+                _houseDirector.Builder = _houseBuilders[randomBuildingType];
+                var building = _houseDirector.BuildSimpleHouse(randomFloors);
+                building.transform.SetPositionAndRotation(transforms[i].position, transforms[i].rotation);
+                building.transform.SetParent(_rootBuildingOnPlanet.transform);
+            }
+        }
+        
         public List<Transform> CreateDownBuildingAndPosition(List<PlanetCell> planetCellsDown)
         {
             var spawnedDownBuildings = new List<Transform>();
