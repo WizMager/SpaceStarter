@@ -5,15 +5,14 @@ namespace View
 {
     public class TurbineShipView : MonoBehaviour
     {
+        [SerializeField] private Transform _planet;
         private float _speedRotation;
-        private Transform _planet;
         private float _flyAngle;
         private bool _isFlyAroundPlanet;
         private float _currentAngle;
 
-        public void SetValueFields(Transform planet, AllData data)
+        public void SetValueFields(AllData data)
         {
-            _planet = planet;
             _flyAngle = data.Planet.flyAngle;
             _speedRotation = data.Planet.startSpeedRotationAroundPlanet;
         }

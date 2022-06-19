@@ -1,14 +1,10 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using EnvironmentGeneration;
 using Interface;
 using ScriptableData;
 using UnityEngine;
 using Utils;
-using View;
 using Object = UnityEngine.Object;
-using Random = UnityEngine.Random;
 
 namespace Controllers
 {

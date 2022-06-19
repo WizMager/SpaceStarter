@@ -28,6 +28,9 @@ public class GameStarter : MonoBehaviour
 
     private void OnDestroy()
     {
-        _controllers.Clean();
+        if (_controllers != null)
+        {
+            _controllers.Clean();
+        }
     }
 }

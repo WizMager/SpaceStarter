@@ -18,28 +18,33 @@ namespace Controllers
         private readonly StateController _stateController;
         private readonly PlayerModel _playerModel;
         private readonly ShipView _shipView;
-        private readonly Transform _planetTransform;
-        private readonly AllData _data;
 
         private bool _isActive;
         private float _wholeFlyTime;
         
         public PlayerMoveController(StateController stateController, ShipView shipView, AllData data, IUserInput<Vector3>[] touchInput, 
-            PlanetView planetView, GravityLittleView gravityView, PlayerModel playerModel)
+            PlanetView planetView, GravityLittleView gravityView, PlayerModel playerModel, AfterRestart afterRestart)
         {
             _shipView = shipView;
+            _shipView.Initialization(data);
              var playerTransform = shipView.transform;
-             _planetTransform = planetView.transform;
-             _data = data;
+             var planetTransform = planetView.transform;
 
-             _rotationAroundPlanet = new RotationAroundPlanet(data.Planet.startSpeedRotationAroundPlanet, playerTransform, _planetTransform);
+             _rotationAroundPlanet = new RotationAroundPlanet(data.Planet.startSpeedRotationAroundPlanet, playerTransform, planetTransform);
             _upAndDownAroundPlanet = new UpAndDownAroundPlanet(data.Planet.startEngineForce, data.Planet.startGravity,
                 playerTransform, planetView, gravityView, touchInput, data.Planet.maxGravity,
                 data.Planet.maxEngineForce, data.Planet.gravityAcceleration, data.Planet.engineAcceleration, 
                 data.Player.cooldownTakeDamage, data.Player.thresholdAfterTouchPlanetGravity);
             _stateController = stateController;
             _playerModel = playerModel;
-            _shipView.SetupAndCalculate(data);
+            if (afterRestart.FirstTimeLevelLaunch)
+            {
+                afterRestart.TurbineRestart = _shipView.SetupAndCalculate();
+            }
+            else
+            {
+                _shipView.Setup(afterRestart.TurbineRestart.position, afterRestart.TurbineRestart.rotation);
+            }
 
             _stateController.OnStateChange += StateChange;
             _upAndDownAroundPlanet.OnTakeDamage += TakeDamage;

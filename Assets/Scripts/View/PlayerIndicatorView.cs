@@ -39,7 +39,10 @@ namespace View
 
         private void OnDestroy()
         {
-            _model.OnChangeScore -= SetScoreText;
+            if (_model != null)
+            {
+                _model.OnChangeScore -= SetScoreText;
+            }
         }
     }
 }

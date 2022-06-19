@@ -92,7 +92,10 @@ namespace View
         
         private void OnDestroy()
         {
-            _playerModel.OnChangeRocket -= RocketChanged;
+            if (_playerModel != null)
+            {
+                _playerModel.OnChangeRocket -= RocketChanged;
+            }
         }
     }
 }

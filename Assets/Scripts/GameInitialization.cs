@@ -41,7 +41,7 @@ public class GameInitialization
       afterRestart.TakeStateController(stateController);
       var environmentGenerator = new EnvironmentGenerator(stateController, data, planetView, afterRestart.PrepareMaterials);
       var playerMoveController = new PlayerMoveController(stateController, playerView, data, inputInitialization.GetAllTouch(),
-         planetView, gravityLittleView, playerModel);
+         planetView, gravityLittleView, playerModel, afterRestart);
       var restartController = new RestartController(stateController, environmentGenerator, data.Materials, afterRestart);
       restartController.SaveObjects();
       restartController.SavePlanet();

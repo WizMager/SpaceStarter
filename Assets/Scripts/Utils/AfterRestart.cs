@@ -18,6 +18,7 @@ namespace Utils
         private Dictionary<int, Dictionary<int, List<Material>>> _preparedMaterials;
         private MaterialsTake _materialsTake;
 
+        public (Vector3 position, Quaternion rotation) TurbineRestart { get; set; }
         public bool FirstTimeLevelLaunch => _firstTimeLevelLaunch;
         public Dictionary<int, Dictionary<int, List<Material>>> PrepareMaterials => _preparedMaterials;
         
