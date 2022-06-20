@@ -67,7 +67,6 @@ namespace Utils
         private void ColorNumberRandomization()
         {
             _colorNumbers = Random.Range(0, _maxNumberForRandom);
-            _colorNumbers = 1;
         }
     }
 }
